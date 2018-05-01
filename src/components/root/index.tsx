@@ -2,10 +2,10 @@ import * as React from "react";
 import {Menu, MenuItemProps} from "semantic-ui-react";
 import {Dashboard} from "../dashboard/index";
 
-const menuItems = ['Stats', 'Emails', 'Galleries', 'Blogs', 'Comments'];
+const menuItems = ['Home', 'Stats', 'Emails', 'Galleries', 'Blogs', 'Comments'];
 
 export class Root extends React.Component {
-    state: {activeItem: string} = { activeItem: 'Stats' };
+    state: {activeItem: string} = { activeItem: 'Home' };
 
     handleItemClick = (e: any, { name }: MenuItemProps) => this.setState({ activeItem: name })
 

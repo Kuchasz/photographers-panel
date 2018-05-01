@@ -10,7 +10,7 @@ const sections: {icon: SemanticICONS, value: number, label: string}[] = [
 export class Dashboard extends React.Component {
     render() {
         return <Statistic.Group size={'small'}>
-            {sections.map(section => <Statistic>
+            {sections.map(section => <Statistic key={section.label}>
                 <Statistic.Value><Icon size={'tiny'} name={section.icon}/>{section.value}</Statistic.Value>
                 <Statistic.Label>{section.label}</Statistic.Label>
             </Statistic>)}
