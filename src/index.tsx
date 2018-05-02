@@ -2,5 +2,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Root} from "./components/root/index";
 import "./index.scss";
+import {BrowserRouter} from "react-router-dom";
 
-ReactDOM.render(<Root/>, document.querySelector("#root"));
+ReactDOM.render(
+    <BrowserRouter>
+        <Root/>
+    </BrowserRouter>,
+    document.querySelector("#root"));
