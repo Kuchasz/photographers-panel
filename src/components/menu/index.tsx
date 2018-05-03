@@ -1,5 +1,5 @@
 import * as React from "react";
-import {SemanticCOLORS, Sidebar, Menu as SemanticMenu, MenuItemProps} from "semantic-ui-react";
+import {SemanticCOLORS, Menu as SemanticMenu, MenuItemProps} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 
 const colors: SemanticCOLORS[] = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
@@ -23,17 +23,18 @@ export class Menu extends React.Component {
     render() {
         const {activeItem} = this.state;
 
-        return <Sidebar as={SemanticMenu}
-                        visible={true}
-                        icon='labeled'
-                        size={'tiny'}
-                        vertical
-                        compact
-                        inverted>
-            {menuItems.map((mi, id) => <SemanticMenu.Item key={mi.text} as={ Link } to={mi.route} name={mi.text} icon={mi.icon} color={colors[id]}
-                                                          active={activeItem === mi.text}
-                                                          onClick={this.handleItemClick}/>)}
-        </Sidebar>
+        return <SemanticMenu style={{height: '100%', borderRadius: '0px'}} icon='labeled' size='tiny' vertical compact inverted>
+            {menuItems.map((mi, id) => <SemanticMenu.Item
+                style={{borderRadius:'0px'}}
+                key={mi.text}
+                as={Link}
+                to={mi.route}
+                name={mi.text}
+                icon={mi.icon}
+                color={colors[id]}
+                active={activeItem === mi.text}
+                onClick={this.handleItemClick}/>)}
+        </SemanticMenu>
     }
 
 }
