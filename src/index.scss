@@ -3,7 +3,12 @@
 }
 
 #layout{
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
   height: 100%;
+
+  > #content{
+    overflow-y: auto;
+    flex: 1;
+  }
+
 }

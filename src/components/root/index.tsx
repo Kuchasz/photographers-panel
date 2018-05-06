@@ -11,7 +11,7 @@ export class Root extends React.Component {
                 <div>
                     <Menu/>
                 </div>
-                <div>
+                <div id="content">
                     <Route exact path='/' component={Dashboard}/>
                     <Route exact path='/galleries' component={Galleries}/>
                 </div>
