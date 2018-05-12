@@ -20,27 +20,48 @@ interface Props {
 
 interface State {
     selectedGallery?: number;
+    visits: VisitsSummary[];
 }
 
-const fakedata = {
-    labels: [
-        'uno', 'duo', 'tri', 'quattro', 'picko'
-    ],
-    datasets: [
-        {data: [14,233,31,44,512]}
-    ]
+//http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=189
+
+const formatDate = (date: Date) => {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
 };
 
 export class Galleries extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = {selectedGallery: undefined};
+        this.state = {
+            selectedGallery: undefined,
+            visits: []};
     }
 
+    onGallerySelected(selectedGallery: number) {
+        this.setState({selectedGallery});
+
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setMonth(startDate.getMonth() - 1);
+
+        fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
+            .then(resp => resp.json())
+            .then((resp: RootObject) => this.setState({visits: resp.dailyVisits}));
+    };
+
     render() {
-        return <div style={{display: 'flex'}}>
-            <GalleriesList onSelect={gallery => this.setState({selectedGallery: gallery})}/>
-            <Line options={{responsive: true}} data={fakedata}/>
+        const data = {
+            labels: this.state.visits.map(visit => visit.date.toString()),
+            datasets: [
+                {data: this.state.visits.map(visit => Number(visit.visits))}
+                ]
+        };
+        return <div style={{display: 'flex', flexDirection: 'column'}}>
+            <Line height={100} width={300} options={{responsive: true}} data={data}/>
+            <GalleriesList onSelect={gallery => this.onGallerySelected(gallery)}/>
         </div>
     }
 }
