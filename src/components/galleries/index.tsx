@@ -56,12 +56,14 @@ export class Galleries extends React.Component<Props, State> {
         const data = {
             labels: this.state.visits.map(visit => visit.date.toString()),
             datasets: [
-                {data: this.state.visits.map(visit => Number(visit.visits))}
+                {borderColor: '#32CD32', data: this.state.visits.map(visit => Number(visit.visits))}
                 ]
         };
-        return <div style={{display: 'flex', flexDirection: 'column'}}>
+        return <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
             <Line height={100} width={300} options={{responsive: true}} data={data}/>
-            <GalleriesList onSelect={gallery => this.onGallerySelected(gallery)}/>
+            <div>
+                <GalleriesList onSelect={gallery => this.onGallerySelected(gallery)}/>
+            </div>
         </div>
     }
 }
