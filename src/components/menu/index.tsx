@@ -1,6 +1,6 @@
 import * as React from "react";
 import {SemanticCOLORS, Menu as SemanticMenu, MenuItemProps} from "semantic-ui-react";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 const colors: SemanticCOLORS[] = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
 
@@ -14,14 +14,21 @@ const menuItems = [
     {route: 'logout', icon: "log out", text: 'Logout'}
 ];
 
-export class Menu extends React.Component {
+interface Props{
+    location: {
+        pathname: string;
+    }
+}
+interface State{}
+
+class MenuComponent extends React.Component<Props, State> {
 
     state: { activeItem: string } = {activeItem: 'Home'};
 
     handleItemClick = (e: any, {name}: MenuItemProps) => this.setState({activeItem: name});
 
     render() {
-        const {activeItem} = this.state;
+        const activeItem = this.props.location.pathname.toLowerCase().substr(1);
 
         return <SemanticMenu style={{height: '100%', borderRadius: '0px'}} icon='labeled' size='tiny' vertical compact inverted>
             {menuItems.map((mi, id) => <SemanticMenu.Item
@@ -32,10 +39,11 @@ export class Menu extends React.Component {
                 name={mi.text}
                 icon={mi.icon}
                 color={colors[id]}
-                active={activeItem === mi.text}
+                active={activeItem === mi.route}
                 onClick={this.handleItemClick}/>)}
         </SemanticMenu>
     }
 
 }
 
+export const Menu = withRouter(props => <MenuComponent {...props}/>);
