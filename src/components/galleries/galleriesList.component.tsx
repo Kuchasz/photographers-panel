@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {SemanticCOLORS, Popup, Icon, Table} from 'semantic-ui-react';
+import {Soon} from "../soon";
 
 enum GalleryStates {
     NotReady = "0",
@@ -101,9 +102,9 @@ export class GalleriesList extends React.Component<Props, State> {
                         color={getColorFromGalleryState(gallery.state)}></Icon>}
                                        content={getPopupFromGalleryState(gallery.state)}></Popup></Table.Cell>
                     <Table.Cell>{gallery.place}</Table.Cell>
-                    <Table.Cell>{new Date().toDateString()}</Table.Cell>
-                    <Table.Cell>555</Table.Cell>
-                    <Table.Cell>NAVIGATE</Table.Cell>
+                    <Table.Cell><Soon/></Table.Cell>
+                    <Table.Cell><Soon/></Table.Cell>
+                    <Table.Cell><Soon/></Table.Cell>
                 </Table.Row>)}
             </Table.Body>
         </Table>;
