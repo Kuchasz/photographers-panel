@@ -2,7 +2,7 @@ import * as React from 'react';
 import {GalleriesList} from "./galleriesList.component";
 import {Line} from 'react-chartjs-2';
 import * as chartjs from "chart.js";
-import {Dimmer, Loader, Segment} from "semantic-ui-react";
+import {Dimmer, Loader, Segment, Grid} from "semantic-ui-react";
 
 const moment = require('moment');
 
@@ -86,11 +86,16 @@ export class Galleries extends React.Component<Props, State> {
             ]
         };
         return <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <Segment style={{height: '200px'}}>
+            <Segment>
                 <Dimmer active={this.state.isLoading} inverted>
                     <Loader size='medium'>Loading</Loader>
                 </Dimmer>
-                <Line options={chartOptions} data={data}/>
+                <Grid style={{height: '300px'}}>
+                    <Grid.Row>
+                        <Grid.Column width={8}><Line options={chartOptions} data={data}/></Grid.Column>
+                        <Grid.Column width={8}><Line options={chartOptions} data={data}/></Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Segment>
             <div style={{overflowY: 'auto'}}>
                 <GalleriesList onSelect={gallery => this.onGallerySelected(gallery)}/>
