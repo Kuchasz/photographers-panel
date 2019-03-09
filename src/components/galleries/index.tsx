@@ -1,22 +1,9 @@
 import * as React from 'react';
-import {GalleriesList} from "./galleriesList.component";
-import {Line} from 'react-chartjs-2';
-import * as chartjs from "chart.js";
-import {Dimmer, Loader, Segment, Grid} from "semantic-ui-react";
+import {GalleriesList} from "./galleriesList";
+import { GalleryVisits } from './galleryVisits';
+import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
 
-const moment = require('moment');
 
-export interface VisitsSummary {
-    date: string;
-    visits: string;
-}
-
-export interface RootObject {
-    bestDay: VisitsSummary;
-    dailyVisits: VisitsSummary[];
-    sumOfVisits: number;
-    rangeSumOfVisits?: number;
-}
 
 interface Props {
 
@@ -26,6 +13,7 @@ interface State {
     selectedGallery?: number;
     isLoading: boolean;
     visits: VisitsSummary[];
+    galleries: Gallery[];
 }
 
 //http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=189
@@ -37,36 +25,24 @@ const formatDate = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
-const chartOptions: chartjs.ChartOptions = {
-    maintainAspectRatio: false,
-    responsive: true,
-    legend: {
-        display: false
-    },
-    scales: {
-        yAxes: [
-            {
-                ticks: {
-                    beginAtZero: true
-                }
-            }
-        ]
-    }
-};
-
-const formatDateToDayAndMonth = (dateString: string) => moment(dateString, "DD-MM-YYYY").format("DD/MM");
-
 export class Galleries extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
             selectedGallery: undefined,
             visits: [],
-            isLoading: false
+            isLoading: false,
+            galleries: []
         };
     }
 
-    onGallerySelected(selectedGallery: number) {
+    componentDidMount() {
+        fetch('http://api.pyszstudio.pl/Galleries/Index')
+            .then(resp => resp.json())
+            .then((galleries: Gallery[]) => this.setState({galleries}));
+    }
+
+    onGallerySelected = (selectedGallery: number) => {
         this.setState({selectedGallery, isLoading: true});
 
         const endDate = new Date();
@@ -75,30 +51,14 @@ export class Galleries extends React.Component<Props, State> {
 
         fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
             .then(resp => resp.json())
-            .then((resp: RootObject) => this.setState({isLoading: false, visits: resp.dailyVisits}));
+            .then((resp: GalleriesVistsRootObject) => this.setState({isLoading: false, visits: resp.dailyVisits}));
     };
 
     render() {
-        const data = {
-            labels: this.state.visits.map(visit => formatDateToDayAndMonth(visit.date)),
-            datasets: [
-                {borderColor: '#32CD32', data: this.state.visits.map(visit => Number(visit.visits))}
-            ]
-        };
         return <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <Segment>
-                <Dimmer active={this.state.isLoading} inverted>
-                    <Loader size='medium'>Loading</Loader>
-                </Dimmer>
-                <Grid style={{height: '300px'}}>
-                    <Grid.Row>
-                        <Grid.Column width={8}><Line options={chartOptions} data={data}/></Grid.Column>
-                        <Grid.Column width={8}><Line options={chartOptions} data={data}/></Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Segment>
+            <GalleryVisits isLoading={this.state.isLoading} visits={this.state.visits}></GalleryVisits>
             <div style={{overflowY: 'auto'}}>
-                <GalleriesList onSelect={gallery => this.onGallerySelected(gallery)}/>
+                <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected}/>
             </div>
         </div>
     }

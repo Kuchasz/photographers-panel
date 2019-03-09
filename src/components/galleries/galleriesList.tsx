@@ -1,32 +1,16 @@
 import * as React from 'react';
-import {SemanticCOLORS, Popup, Icon, Table} from 'semantic-ui-react';
-import {Soon} from "../soon";
+import { SemanticCOLORS, Popup, Icon, Table } from 'semantic-ui-react';
+import { Soon } from "../soon";
+import { Gallery, GalleryStates } from './state';
 
-enum GalleryStates {
-    NotReady = "0",
-    Available = "1",
-    TurnedOff = "2"
-}
 
-interface Gallery {
-    id: number;
-    date: string;
-    place: string;
-    bride: string;
-    groom: string;
-    lastname: string;
-    state: GalleryStates;
-    pass: string;
-    dir: string;
-    BlogEntryId: string;
-}
 
 interface Props {
     onSelect: (id: number) => void;
+    galleries: Gallery[];
 }
 
 interface State {
-    galleries: Gallery[];
     selectedGallery?: number;
 }
 
@@ -56,19 +40,14 @@ const getPopupFromGalleryState = (galleryState: GalleryStates): string => {
     }
 };
 
+const iconStyle = {boxShadow: 'none'};
+
 export class GalleriesList extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            galleries: [],
             selectedGallery: undefined
         }
-    }
-
-    componentDidMount() {
-        fetch('http://api.pyszstudio.pl/Galleries/Index')
-            .then(resp => resp.json())
-            .then((galleries: Gallery[]) => this.setState({galleries}));
     }
 
     onGalleryClicked(gallery: number) {
@@ -78,7 +57,9 @@ export class GalleriesList extends React.Component<Props, State> {
     }
 
     render() {
-        const {galleries, selectedGallery} = this.state;
+        console.log('renders');
+        const {selectedGallery} = this.state;
+        const {galleries} = this.props;
         return <Table selectable>
             <Table.Header>
                 <Table.Row>
@@ -96,7 +77,7 @@ export class GalleriesList extends React.Component<Props, State> {
                     onClick={() => this.onGalleryClicked(gallery.id)}>
                     <Table.Cell><Popup trigger={<Icon
                         bordered
-                        style={{boxShadow: 'none'}}
+                        style={iconStyle}
                         name='info circle'
                         size='large'
                         color={getColorFromGalleryState(gallery.state)}></Icon>}
@@ -108,17 +89,5 @@ export class GalleriesList extends React.Component<Props, State> {
                 </Table.Row>)}
             </Table.Body>
         </Table>;
-
-        // <List selection divided verticalAlign='middle'>
-        //     {galleries.map((gallery: Gallery) => <List.Item
-
-        //         >
-
-        //         <List.Content>
-        //             <List.Header>{gallery.date}</List.Header>
-        //             <List.Description>{gallery.place}</List.Description>
-        //         </List.Content>
-        //     </List.Item>)}
-        // </List>;
     }
 }

@@ -1,0 +1,9 @@
+#root {
+  height: 100%; }
+
+#layout {
+  display: flex;
+  height: 100%; }
+  #layout > #content {
+    overflow-y: auto;
+    flex: 1; }
