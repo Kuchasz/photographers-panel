@@ -58,7 +58,7 @@ const GalleryListItem = React.memo(({isSelected, id, onSelect, state, place}: {i
     <Table.Cell><Soon/></Table.Cell>
     </Table.Row>)
 
-export const GalleriesList = ({onSelect, galleries}: Props) => <Table selectable>
+export const GalleriesList = ({onSelect, galleries}: Props) => <Table style={{willChange: 'transform'}}selectable>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>State</Table.HeaderCell>

@@ -67,7 +67,7 @@ export class Galleries extends React.Component<Props, State> {
     render() {
         return <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
             <GalleryVisits isLoading={this.state.isLoading} visits={this.state.visits}></GalleryVisits>
-            <div style={{overflowY: 'auto'}}>
+            <div style={{willChange: 'transform', overflowY: 'auto'}}>
                 <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected}/>
             </div>
         </div>
