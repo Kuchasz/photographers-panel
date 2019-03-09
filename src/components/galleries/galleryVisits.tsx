@@ -1,4 +1,4 @@
-import { Segment, Dimmer, Loader, Grid } from "semantic-ui-react";
+import { Dimmer, Loader, Grid } from "semantic-ui-react";
 import { utc as moment } from "moment";
 import React from "react";
 import { Line } from "react-chartjs-2";
@@ -31,7 +31,7 @@ const getData = (visits: VisitsSummary[]) => ({
     ]
 });
 
-export const GalleryVisits = ({isLoading, visits}: {isLoading: boolean, visits: VisitsSummary[]}) => <Segment>
+export const GalleryVisits = ({isLoading, visits}: {isLoading: boolean, visits: VisitsSummary[]}) => <>
     <Dimmer active={isLoading} inverted>
         <Loader size='medium'>Loading</Loader>
     </Dimmer>
@@ -40,4 +40,4 @@ export const GalleryVisits = ({isLoading, visits}: {isLoading: boolean, visits: 
             <Grid.Column><Line options={chartOptions} data={getData(visits)}/></Grid.Column>
         </Grid.Row>
     </Grid>
-</Segment>
+</>

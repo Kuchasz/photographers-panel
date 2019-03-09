@@ -2,6 +2,7 @@ import * as React from 'react';
 import {GalleriesList} from "./galleriesList";
 import { GalleryVisits } from './galleryVisits';
 import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
+import { Segment } from 'semantic-ui-react';
 
 
 
@@ -66,10 +67,12 @@ export class Galleries extends React.Component<Props, State> {
 
     render() {
         return <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <GalleryVisits isLoading={this.state.isLoading} visits={this.state.visits}></GalleryVisits>
-            <div style={{willChange: 'transform', overflowY: 'auto'}}>
+            <Segment>
+                <GalleryVisits isLoading={this.state.isLoading} visits={this.state.visits}></GalleryVisits>
+            </Segment>
+            <Segment style={{willChange: 'transform', overflowY: 'auto'}}>
                 <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected}/>
-            </div>
+            </Segment>
         </div>
     }
 }
