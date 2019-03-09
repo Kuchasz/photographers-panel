@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SemanticCOLORS, Popup, Icon, Table } from 'semantic-ui-react';
+import { SemanticCOLORS, Icon, Table } from 'semantic-ui-react';
 import { Soon } from "../soon";
 import { Gallery, GalleryStates } from './state';
 
@@ -8,10 +8,6 @@ import { Gallery, GalleryStates } from './state';
 interface Props {
     onSelect: (id: number) => void;
     galleries: Gallery[];
-}
-
-interface State {
-    selectedGallery?: number;
 }
 
 const getColorFromGalleryState = (galleryState: GalleryStates): SemanticCOLORS => {
@@ -27,40 +23,42 @@ const getColorFromGalleryState = (galleryState: GalleryStates): SemanticCOLORS =
     }
 };
 
-const getPopupFromGalleryState = (galleryState: GalleryStates): string => {
-    switch (galleryState) {
-        case GalleryStates.Available:
-            return 'Gallery is available';
-        case GalleryStates.TurnedOff:
-            return 'Gallery is turned off';
-        case GalleryStates.NotReady:
-            return 'Gallery is not ready yet';
-        default:
-            throw new Error('Not handled GalleryState!');
-    }
-};
+// const getPopupFromGalleryState = (galleryState: GalleryStates): string => {
+//     switch (galleryState) {
+//         case GalleryStates.Available:
+//             return 'Gallery is available';
+//         case GalleryStates.TurnedOff:
+//             return 'Gallery is turned off';
+//         case GalleryStates.NotReady:
+//             return 'Gallery is not ready yet';
+//         default:
+//             throw new Error('Not handled GalleryState!');
+//     }
+// };
 
 const iconStyle = {boxShadow: 'none'};
 
-export class GalleriesList extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            selectedGallery: undefined
-        }
-    }
+const onGalleryClicked = (galleryId: number, trigger: (id: number) => void) => trigger(galleryId);
 
-    onGalleryClicked(gallery: number) {
-        const {onSelect} = this.props;
-        onSelect(gallery);
-        this.setState({selectedGallery: gallery});
-    }
+const GalleryListItem = React.memo(({isSelected, id, onSelect, state, place}: {isSelected:boolean, id:number, onSelect:(id:number)=>void, state:GalleryStates, place:string}) => <Table.Row
+    active={isSelected}
+    key={id}
+    onClick={() => onGalleryClicked(id, onSelect)}>
+    <Table.Cell>
+        <Icon
+        bordered
+        style={iconStyle}
+        name='info circle'
+        size='large'
+        color={getColorFromGalleryState(state)}></Icon>
+                    </Table.Cell>
+    <Table.Cell>{place}</Table.Cell>
+    <Table.Cell><Soon/></Table.Cell>
+    <Table.Cell><Soon/></Table.Cell>
+    <Table.Cell><Soon/></Table.Cell>
+    </Table.Row>)
 
-    render() {
-        console.log('renders');
-        const {selectedGallery} = this.state;
-        const {galleries} = this.props;
-        return <Table selectable>
+export const GalleriesList = ({onSelect, galleries}: Props) => <Table selectable>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>State</Table.HeaderCell>
@@ -71,23 +69,6 @@ export class GalleriesList extends React.Component<Props, State> {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {galleries.map((gallery: Gallery) => <Table.Row
-                    active={gallery.id === selectedGallery}
-                    key={gallery.id}
-                    onClick={() => this.onGalleryClicked(gallery.id)}>
-                    <Table.Cell><Popup trigger={<Icon
-                        bordered
-                        style={iconStyle}
-                        name='info circle'
-                        size='large'
-                        color={getColorFromGalleryState(gallery.state)}></Icon>}
-                                       content={getPopupFromGalleryState(gallery.state)}></Popup></Table.Cell>
-                    <Table.Cell>{gallery.place}</Table.Cell>
-                    <Table.Cell><Soon/></Table.Cell>
-                    <Table.Cell><Soon/></Table.Cell>
-                    <Table.Cell><Soon/></Table.Cell>
-                </Table.Row>)}
+                {galleries.map(({id, isSelected, state, place}) => <GalleryListItem key={id} id={id} onSelect={onSelect} isSelected={isSelected} state={state} place={place}></GalleryListItem>)}
             </Table.Body>
         </Table>;
-    }
-}

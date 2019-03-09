@@ -20,6 +20,7 @@ export interface Gallery {
     pass: string;
     dir: string;
     BlogEntryId: string;
+    isSelected: boolean;
 }
 
 export interface GalleriesVistsRootObject {

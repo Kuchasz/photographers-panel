@@ -37,7 +37,7 @@ export const GalleryVisits = ({isLoading, visits}: {isLoading: boolean, visits: 
     </Dimmer>
     <Grid style={{height: '300px'}}>
         <Grid.Row>
-            <Grid.Column width={8}><Line options={chartOptions} data={getData(visits)}/></Grid.Column>
+            <Grid.Column><Line options={chartOptions} data={getData(visits)}/></Grid.Column>
         </Grid.Row>
     </Grid>
 </Segment>

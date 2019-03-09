@@ -10,7 +10,6 @@ interface Props {
 }
 
 interface State {
-    selectedGallery?: number;
     isLoading: boolean;
     visits: VisitsSummary[];
     galleries: Gallery[];
@@ -29,7 +28,6 @@ export class Galleries extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            selectedGallery: undefined,
             visits: [],
             isLoading: false,
             galleries: []
@@ -39,11 +37,23 @@ export class Galleries extends React.Component<Props, State> {
     componentDidMount() {
         fetch('http://api.pyszstudio.pl/Galleries/Index')
             .then(resp => resp.json())
-            .then((galleries: Gallery[]) => this.setState({galleries}));
+            .then((galleries: Gallery[]) => {
+                this.setState({galleries: galleries.map(x =>({...x, isSelected: false}))})
+            });
     }
 
     onGallerySelected = (selectedGallery: number) => {
-        this.setState({selectedGallery, isLoading: true});
+        
+        this.setState(state => ({
+            isLoading: true,
+            galleries: state.galleries.map(x => 
+                x.id === selectedGallery 
+                    ? ({...x, isSelected: true})
+                    : x.isSelected 
+                        ? ({...x, isSelected: false})
+                        : x
+                    )
+        }));
 
         const endDate = new Date();
         const startDate = new Date();
