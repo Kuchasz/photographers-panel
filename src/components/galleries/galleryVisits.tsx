@@ -1,9 +1,10 @@
 import { utc as moment } from "moment";
 import React from "react";
 import { Line } from "react-chartjs-2";
-import { Loader } from "rsuite";
+import { FlexboxGrid, Panel } from "rsuite";
 import { ChartOptions } from "chart.js";
 import { VisitsSummary } from "./state";
+import "./galleryVisits.less";
 
 const chartOptions: ChartOptions = {
     maintainAspectRatio: false,
@@ -33,9 +34,15 @@ const getData = (visits: VisitsSummary[]) => ({
     ]
 });
 
-export const GalleryVisits = ({isLoading, visits}: {isLoading: boolean, visits: VisitsSummary[]}) => <>
-    <div style={{height: '300px', position: 'relative'}}>
-        { isLoading ? <Loader backdrop content="loading..." vertical />: null }
-        <Line options={chartOptions} data={getData(visits)}/>
-    </div>
+export const GalleryVisits = ({visits}: {visits: VisitsSummary[]}) => <>
+    <FlexboxGrid style={{ height: '100%', position: 'relative' }}>
+        <FlexboxGrid.Item style={{height: '100%'}} colspan={18}>
+            <Panel className="visits-chart" header={<h3>Visits</h3>}>
+                <Line options={chartOptions} data={getData(visits)}/>
+            </Panel>
+        </FlexboxGrid.Item>
+        <FlexboxGrid.Item colspan={6}>
+            <Panel header={<h3>Stats</h3>}></Panel>
+        </FlexboxGrid.Item>
+    </FlexboxGrid>
 </>

@@ -1,3 +1,14 @@
+#root {
+  height: 100%;
+}
+#layout {
+  display: flex;
+  height: 100%;
+}
+#layout > #content {
+  overflow-y: auto;
+  flex: 1;
+}
 /* stylelint-disable */
 /* stylelint-disable */
 body {
@@ -18979,12 +18990,3 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 .rs-uploader-picture-text .rs-uploader-file-item-has-error .rs-uploader-file-item-status a:hover {
   text-decoration: none;
 }
-#root {
-  height: 100%; }
-
-#layout {
-  display: flex;
-  height: 100%; }
-  #layout > #content {
-    overflow-y: auto;
-    flex: 1; }

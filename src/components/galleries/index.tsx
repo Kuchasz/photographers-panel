@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {GalleriesList} from "./galleriesList";
+import { GalleriesList } from "./galleriesList";
 import { GalleryVisits } from './galleryVisits';
 import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
-import { Panel } from "rsuite";
+import { Panel, FlexboxGrid, Loader } from "rsuite";
 
 
 interface Props {
@@ -24,7 +24,6 @@ const formatDate = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
-const galleryVisitsHeader = <h3>Visits</h3>;
 const galleriesHeader = <h3>Galleries</h3>;
 //const galleriesStyle = {display: 'flex', flexDirection: 'column', height: '100%'};
 
@@ -42,12 +41,12 @@ export class Galleries extends React.Component<Props, State> {
         fetch('http://api.pyszstudio.pl/Galleries/Index')
             .then(resp => resp.json())
             .then((galleries: Gallery[]) => {
-                this.setState({galleries: galleries.map(x =>({...x, isSelected: false}))})
+                this.setState({ galleries: galleries.map(x => ({ ...x, isSelected: false })) })
             });
     }
 
     onGallerySelected = (selectedGallery: Gallery) => {
-        
+
         this.setState(state => ({
             isLoading: true//,
             // galleries: state.galleries.map(x => 
@@ -65,17 +64,20 @@ export class Galleries extends React.Component<Props, State> {
 
         setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery.id}`)
             .then(resp => resp.json())
-            .then((resp: GalleriesVistsRootObject) => this.setState({isLoading: false, visits: resp.dailyVisits})), 1000);
+            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, visits: resp.dailyVisits })), 1000);
     };
 
     render() {
-        return <div>
-            <Panel header={galleryVisitsHeader}>
-                <GalleryVisits isLoading={this.state.isLoading} visits={this.state.visits}></GalleryVisits>
-            </Panel>
-            <Panel header={galleriesHeader}>
-                <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected}/>
-            </Panel>
-        </div>
+        return <FlexboxGrid>
+            <FlexboxGrid.Item style={{height:'300px'}} colspan={24}>
+                <GalleryVisits visits={this.state.visits}></GalleryVisits>
+                { this.state.isLoading ? <Loader backdrop content="loading..." vertical />: null }
+            </FlexboxGrid.Item>
+            <FlexboxGrid.Item colspan={24}>
+                <Panel header={galleriesHeader}>
+                    <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
+                </Panel>
+            </FlexboxGrid.Item>
+        </FlexboxGrid>
     }
 }

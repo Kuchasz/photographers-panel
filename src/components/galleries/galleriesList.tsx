@@ -1,7 +1,6 @@
 import * as React from 'react';
-// import { Soon } from "../soon";
 import { Gallery, GalleryStates } from './state';
-import { Table, Icon } from "rsuite";
+import { Tooltip, Table, Icon, Whisper } from "rsuite";
 
 interface Props {
     onSelect: (item: any) => void;
@@ -24,18 +23,11 @@ const getColorFromGalleryState = (galleryState: GalleryStates): any => {
     }
 };
 
-// const getPopupFromGalleryState = (galleryState: GalleryStates): string => {
-//     switch (galleryState) {
-//         case GalleryStates.Available:
-//             return 'Gallery is available';
-//         case GalleryStates.TurnedOff:
-//             return 'Gallery is turned off';
-//         case GalleryStates.NotReady:
-//             return 'Gallery is not ready yet';
-//         default:
-//             throw new Error('Not handled GalleryState!');
-//     }
-// };
+const tooltips = {
+    [GalleryStates.Available]: <Tooltip>Gallery is <i>available</i>.</Tooltip>,
+    [GalleryStates.TurnedOff]: <Tooltip>Gallery is <i>turned off</i>.</Tooltip>,
+    [GalleryStates.NotReady]: <Tooltip>Gallery is <i>not ready yet</i>.</Tooltip>,
+};
 
 // const iconStyle = {boxShadow: 'none'};
 
@@ -82,7 +74,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
             <Table.Column align="center" fixed>
             <Table.HeaderCell>State</Table.HeaderCell>
             <Table.Cell dataKey="state">{(gallery: Gallery) =>
-                    <Icon icon="info" style={{color: getColorFromGalleryState(gallery.state)}}/>
+                    <Whisper trigger="hover" speaker={tooltips[gallery.state]}><Icon icon="info" style={{color: getColorFromGalleryState(gallery.state)}}/></Whisper>
                 }
             </Table.Cell>
             </Table.Column>
