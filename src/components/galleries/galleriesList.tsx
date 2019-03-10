@@ -10,18 +10,19 @@ interface Props {
 interface State{
 
 }
-// const getColorFromGalleryState = (galleryState: GalleryStates): any => {
-//     switch (galleryState) {
-//         case GalleryStates.Available:
-//             return 'green';
-//         case GalleryStates.TurnedOff:
-//             return 'red';
-//         case GalleryStates.NotReady:
-//             return 'grey';
-//         default:
-//             throw new Error('Not handled GalleryState!');
-//     }
-// };
+
+const getColorFromGalleryState = (galleryState: GalleryStates): any => {
+    switch (galleryState) {
+        case GalleryStates.Available:
+            return '#4CAF50';
+        case GalleryStates.TurnedOff:
+            return '#F44336';
+        case GalleryStates.NotReady:
+            return '#FFC107';
+        default:
+            throw new Error('Not handled GalleryState!');
+    }
+};
 
 // const getPopupFromGalleryState = (galleryState: GalleryStates): string => {
 //     switch (galleryState) {
@@ -80,8 +81,8 @@ export class GalleriesList extends React.PureComponent<Props, State>{
     render() { return <Table height={400} onRowClick={this.props.onSelect} data={this.props.galleries}>
             <Table.Column align="center" fixed>
             <Table.HeaderCell>State</Table.HeaderCell>
-            <Table.Cell dataKey="state">{(state: GalleryStates) =>
-                    <Icon icon="info" />
+            <Table.Cell dataKey="state">{(gallery: Gallery) =>
+                    <Icon icon="info" style={{color: getColorFromGalleryState(gallery.state)}}/>
                 }
             </Table.Cell>
             </Table.Column>
