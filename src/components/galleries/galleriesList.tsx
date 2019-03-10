@@ -4,10 +4,12 @@ import { Gallery, GalleryStates } from './state';
 import { Table, Icon } from "rsuite";
 
 interface Props {
-    onSelect: (id: number) => void;
+    onSelect: (item: any) => void;
     galleries: Gallery[];
 }
+interface State{
 
+}
 // const getColorFromGalleryState = (galleryState: GalleryStates): any => {
 //     switch (galleryState) {
 //         case GalleryStates.Available:
@@ -73,8 +75,10 @@ interface Props {
 
 //style={{color:{getColorFromGalleryState(state)}}}
 
-export const GalleriesList = ({onSelect, galleries}: Props) => <Table data={galleries}>
-            <Table.Column width={70} align="center" fixed>
+export class GalleriesList extends React.PureComponent<Props, State>{
+    
+    render() { return <Table height={400} onRowClick={this.props.onSelect} data={this.props.galleries}>
+            <Table.Column align="center" fixed>
             <Table.HeaderCell>State</Table.HeaderCell>
             <Table.Cell dataKey="state">{(state: GalleryStates) =>
                     <Icon icon="info" />
@@ -82,22 +86,22 @@ export const GalleriesList = ({onSelect, galleries}: Props) => <Table data={gall
             </Table.Cell>
             </Table.Column>
 
-            <Table.Column width={120} align="center" fixed>
+            <Table.Column flexGrow={3} fixed>
             <Table.HeaderCell>Wedding</Table.HeaderCell>
             <Table.Cell dataKey="place" />
             </Table.Column>
 
-            <Table.Column width={120} align="center" fixed>
+            <Table.Column flexGrow={2} fixed>
             <Table.HeaderCell>Recent Visit</Table.HeaderCell>
             <Table.Cell dataKey="state" />
             </Table.Column>
 
-            <Table.Column width={120} align="center" fixed>
+            <Table.Column flexGrow={2} fixed>
             <Table.HeaderCell>Total Visits</Table.HeaderCell>
             <Table.Cell dataKey="state" />
             </Table.Column>
 
-            <Table.Column width={70} align="center" fixed>
+            <Table.Column fixed>
             <Table.HeaderCell>#</Table.HeaderCell>
             <Table.Cell dataKey="state" />
             </Table.Column>
@@ -106,5 +110,5 @@ export const GalleriesList = ({onSelect, galleries}: Props) => <Table data={gall
             {/* <Table.Body>
                 {galleries.map(({id, isSelected, state, place}) => <GalleryListItem key={id} id={id} onSelect={onSelect} isSelected={isSelected} state={state} place={place}></GalleryListItem>)}
             </Table.Body> */}
-        </Table>;
+    </Table>}};
 

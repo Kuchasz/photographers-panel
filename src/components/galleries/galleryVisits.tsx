@@ -32,10 +32,8 @@ const getData = (visits: VisitsSummary[]) => ({
 });
 
 export const GalleryVisits = ({isLoading, visits}: {isLoading: boolean, visits: VisitsSummary[]}) => <>
-    <div>
+    <div style={{height: '300px', position: 'relative'}}>
         { isLoading ? <Loader backdrop content="loading..." vertical />: null }
-    </div>
-    <div style={{height: '300px'}}>
         <Line options={chartOptions} data={getData(visits)}/>
     </div>
 </>

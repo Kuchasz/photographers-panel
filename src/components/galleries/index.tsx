@@ -24,6 +24,10 @@ const formatDate = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
+const galleryVisitsHeader = <h3>Visits</h3>;
+const galleriesHeader = <h3>Galleries</h3>;
+//const galleriesStyle = {display: 'flex', flexDirection: 'column', height: '100%'};
+
 export class Galleries extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -42,34 +46,34 @@ export class Galleries extends React.Component<Props, State> {
             });
     }
 
-    onGallerySelected = (selectedGallery: number) => {
+    onGallerySelected = (selectedGallery: Gallery) => {
         
         this.setState(state => ({
-            isLoading: true,
-            galleries: state.galleries.map(x => 
-                x.id === selectedGallery 
-                    ? ({...x, isSelected: true})
-                    : x.isSelected 
-                        ? ({...x, isSelected: false})
-                        : x
-                    )
+            isLoading: true//,
+            // galleries: state.galleries.map(x => 
+            //     x.id === selectedGallery 
+            //         ? ({...x, isSelected: true})
+            //         : x.isSelected 
+            //             ? ({...x, isSelected: false})
+            //             : x
+            //         )
         }));
 
         const endDate = new Date();
         const startDate = new Date();
         startDate.setMonth(startDate.getMonth() - 1);
 
-        fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
+        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery.id}`)
             .then(resp => resp.json())
-            .then((resp: GalleriesVistsRootObject) => this.setState({isLoading: false, visits: resp.dailyVisits}));
+            .then((resp: GalleriesVistsRootObject) => this.setState({isLoading: false, visits: resp.dailyVisits})), 1000);
     };
 
     render() {
-        return <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <Panel header={<h3>Gallery visits</h3>}>
+        return <div>
+            <Panel header={galleryVisitsHeader}>
                 <GalleryVisits isLoading={this.state.isLoading} visits={this.state.visits}></GalleryVisits>
             </Panel>
-            <Panel style={{willChange: 'transform', overflowY: 'auto'}} header={<h3>Galleries</h3>}>
+            <Panel header={galleriesHeader}>
                 <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected}/>
             </Panel>
         </div>
