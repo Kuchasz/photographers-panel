@@ -2,8 +2,7 @@ import * as React from 'react';
 import {GalleriesList} from "./galleriesList";
 import { GalleryVisits } from './galleryVisits';
 import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
-import { Segment } from 'semantic-ui-react';
-
+import { Panel } from "rsuite";
 
 
 interface Props {
@@ -67,12 +66,12 @@ export class Galleries extends React.Component<Props, State> {
 
     render() {
         return <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
-            <Segment>
+            <Panel header={<h3>Gallery visits</h3>}>
                 <GalleryVisits isLoading={this.state.isLoading} visits={this.state.visits}></GalleryVisits>
-            </Segment>
-            <Segment style={{willChange: 'transform', overflowY: 'auto'}}>
+            </Panel>
+            <Panel style={{willChange: 'transform', overflowY: 'auto'}} header={<h3>Galleries</h3>}>
                 <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected}/>
-            </Segment>
+            </Panel>
         </div>
     }
 }

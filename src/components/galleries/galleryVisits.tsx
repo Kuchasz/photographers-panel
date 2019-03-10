@@ -1,7 +1,7 @@
-import { Dimmer, Loader, Grid } from "semantic-ui-react";
 import { utc as moment } from "moment";
 import React from "react";
 import { Line } from "react-chartjs-2";
+import { Loader } from "rsuite";
 import { ChartOptions } from "chart.js";
 import { VisitsSummary } from "./state";
 
@@ -32,12 +32,10 @@ const getData = (visits: VisitsSummary[]) => ({
 });
 
 export const GalleryVisits = ({isLoading, visits}: {isLoading: boolean, visits: VisitsSummary[]}) => <>
-    <Dimmer active={isLoading} inverted>
-        <Loader size='medium'>Loading</Loader>
-    </Dimmer>
-    <Grid style={{height: '300px'}}>
-        <Grid.Row>
-            <Grid.Column><Line options={chartOptions} data={getData(visits)}/></Grid.Column>
-        </Grid.Row>
-    </Grid>
+    <div>
+        { isLoading ? <Loader backdrop content="loading..." vertical />: null }
+    </div>
+    <div style={{height: '300px'}}>
+        <Line options={chartOptions} data={getData(visits)}/>
+    </div>
 </>

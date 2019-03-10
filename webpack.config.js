@@ -28,7 +28,16 @@ module.exports = {
                             }
                         }, "sass-loader"]
                 })
-            },
+            }, {
+                test: /\.less$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        'css-loader',
+                        'less-loader?javascriptEnabled=true'
+                    ]
+                })
+            }
             // this rule handles images
             // {
             //     test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
