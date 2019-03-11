@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { GalleriesList } from "./galleriesList";
-import { GalleryVisits } from './galleryVisits';
+import { GalleriesList } from "./galleries-list";
 import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
-import { Panel, FlexboxGrid, Loader } from "rsuite";
-
+import { Panel, Loader } from "rsuite";
+import { GalleryStats } from './gallery-stats';
+import { GalleryVisits } from './gallery-visits';
 
 interface Props {
 
@@ -13,6 +13,7 @@ interface State {
     isLoading: boolean;
     visits: VisitsSummary[];
     galleries: Gallery[];
+    stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number}
 }
 
 //http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=189
@@ -24,8 +25,6 @@ const formatDate = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
-const galleriesHeader = <h3>Galleries</h3>;
-//const galleriesStyle = {display: 'flex', flexDirection: 'column', height: '100%'};
 
 export class Galleries extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -33,7 +32,8 @@ export class Galleries extends React.Component<Props, State> {
         this.state = {
             visits: [],
             isLoading: false,
-            galleries: []
+            galleries: [],
+            stats: undefined
         };
     }
 
@@ -47,16 +47,17 @@ export class Galleries extends React.Component<Props, State> {
 
     onGallerySelected = (selectedGallery: Gallery) => {
 
-        this.setState(state => ({
-            isLoading: true//,
-            // galleries: state.galleries.map(x => 
-            //     x.id === selectedGallery 
-            //         ? ({...x, isSelected: true})
-            //         : x.isSelected 
-            //             ? ({...x, isSelected: false})
-            //             : x
-            //         )
+        this.setState(_state => ({
+            isLoading: true
         }));
+
+        const randomStats = () =>({
+            today: Math.floor(Math.random()*300),
+            total: Math.floor(Math.random()*800),
+            bestDay: '10/02/2010',
+            days: 20 + Math.floor(Math.random()*11),
+            daysTotal: Math.floor(Math.random()*100)
+        });
 
         const endDate = new Date();
         const startDate = new Date();
@@ -64,20 +65,24 @@ export class Galleries extends React.Component<Props, State> {
 
         setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery.id}`)
             .then(resp => resp.json())
-            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, visits: resp.dailyVisits })), 1000);
+            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits })), 1000);
     };
 
     render() {
-        return <FlexboxGrid>
-            <FlexboxGrid.Item style={{height:'300px'}} colspan={24}>
-                <GalleryVisits visits={this.state.visits}></GalleryVisits>
+        return <>
+            <div style={{position: 'relative'}}>
+                    <Panel header={'Visits'}>
+                        <div>
+                            <GalleryVisits visits={this.state.visits}></GalleryVisits>
+                        </div>
+                        {this.state.stats ? <GalleryStats {...this.state.stats} /> : null }
+                    </Panel>
+                    
                 { this.state.isLoading ? <Loader backdrop content="loading..." vertical />: null }
-            </FlexboxGrid.Item>
-            <FlexboxGrid.Item colspan={24}>
-                <Panel header={galleriesHeader}>
+            </div>
+                <Panel header={'Galleries'}>
                     <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
                 </Panel>
-            </FlexboxGrid.Item>
-        </FlexboxGrid>
+        </>
     }
 }
