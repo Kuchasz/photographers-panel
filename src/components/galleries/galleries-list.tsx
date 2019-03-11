@@ -68,6 +68,17 @@ const tooltips = {
 
 //style={{color:{getColorFromGalleryState(state)}}}
 
+// id: number;
+//     date: string;
+//     place: string;
+//     bride: string;
+//     groom: string;
+//     lastname: string;
+//     state: GalleryStates;
+//     pass: string;
+//     dir: string;
+//     BlogEntryId: string;
+
 export class GalleriesList extends React.PureComponent<Props, State>{
     
     render() { return <Table height={400} onRowClick={this.props.onSelect} data={this.props.galleries}>
@@ -82,6 +93,16 @@ export class GalleriesList extends React.PureComponent<Props, State>{
             <Table.Column flexGrow={3} fixed>
             <Table.HeaderCell>Wedding</Table.HeaderCell>
             <Table.Cell dataKey="place" />
+            </Table.Column>
+
+            <Table.Column>
+            <Table.HeaderCell>Pass</Table.HeaderCell>
+            <Table.Cell dataKey="pass" />
+            </Table.Column>
+
+            <Table.Column flexGrow={3}>
+            <Table.HeaderCell>Direct path</Table.HeaderCell>
+            <Table.Cell dataKey="dir" />
             </Table.Column>
 
             <Table.Column flexGrow={2} fixed>

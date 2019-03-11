@@ -3,17 +3,21 @@ import {Route} from "react-router";
 import {Dashboard} from "../dashboard/index";
 import {Menu} from "../menu/index";
 import {Galleries} from "../galleries/index";
+import { NavBarInstance } from "../navbar";
 
 export class Root extends React.Component {
     render() {
         return (
-            <div id="layout">
-                <div>
-                    <Menu/>
-                </div>
-                <div id="content">
-                    <Route exact path='/' component={Dashboard}/>
-                    <Route exact path='/galleries' component={Galleries}/>
+            <div>
+                <NavBarInstance/>
+                <div id="layout">
+                    <div>
+                        <Menu/>
+                    </div>
+                    <div id="content">
+                        <Route exact path='/' component={Dashboard}/>
+                        <Route exact path='/galleries' component={Galleries}/>
+                    </div>
                 </div>
             </div>
         )

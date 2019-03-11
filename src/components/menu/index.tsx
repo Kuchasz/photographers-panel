@@ -10,14 +10,14 @@ const menuItems = [
     {route: 'emails', icon: "envelope-o", text: 'Emails'},
     {route: 'galleries', icon: "leaf", text: 'Galleries'},
     {route: 'blogs', icon: "flag", text: 'Blogs'},
-    {route: 'comments', icon: "comments", text: 'Comments'},
-    {route: 'logout', icon: "power-off", text: 'Logout'}
+    {route: 'comments', icon: "comments", text: 'Comments'}
 ];
 
 const styles = {
     width: 150,
     display: 'inline-table',
-    marginRight: 10
+    marginRight: 10,
+    height: '100%'
   };
 
 interface Props extends RouteComponentProps{
@@ -34,7 +34,7 @@ class MenuComponent extends React.Component<Props, State> {
         console.log(activeItem);
 
     return <div style={styles}>
-        <Sidenav onSelect={this.handleItemClick} activeKey={activeItem}>
+        <Sidenav style={{height:'100%'}} onSelect={this.handleItemClick} activeKey={activeItem}>
           <Sidenav.Body>
             <Nav>
                 {menuItems.map((mi,id) => <Nav.Item key={id} eventKey={mi.route} active={activeItem === mi.route} icon={<Icon icon={mi.icon}/>}>{mi.text}
