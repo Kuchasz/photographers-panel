@@ -3,7 +3,9 @@ import { GalleriesList } from "./galleries-list";
 import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
 import { Panel, Loader } from "rsuite";
 import { GalleryStats } from './gallery-stats';
-import { GalleryVisits } from './gallery-visits';
+import { GalleryChart } from './gallery-chart';
+import "./styles.less";
+
 
 interface Props {
 
@@ -13,6 +15,7 @@ interface State {
     isLoading: boolean;
     visits: VisitsSummary[];
     galleries: Gallery[];
+    selectedGallery?: number;
     stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number}
 }
 
@@ -33,7 +36,8 @@ export class Galleries extends React.Component<Props, State> {
             visits: [],
             isLoading: false,
             galleries: [],
-            stats: undefined
+            stats: undefined,
+            selectedGallery: undefined
         };
     }
 
@@ -41,11 +45,17 @@ export class Galleries extends React.Component<Props, State> {
         fetch('http://api.pyszstudio.pl/Galleries/Index')
             .then(resp => resp.json())
             .then((galleries: Gallery[]) => {
-                this.setState({ galleries: galleries.map(x => ({ ...x, isSelected: false })) })
+                const selectedGallery = galleries[0].id;
+                this.setState({ 
+                    galleries,
+                    selectedGallery
+                });
+
+                this.onGallerySelected(selectedGallery);
             });
     }
 
-    onGallerySelected = (selectedGallery: Gallery) => {
+    onGallerySelected = (selectedGallery: number) => {
 
         this.setState(_state => ({
             isLoading: true
@@ -63,21 +73,18 @@ export class Galleries extends React.Component<Props, State> {
         const startDate = new Date();
         startDate.setMonth(startDate.getMonth() - 1);
 
-        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery.id}`)
+        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
             .then(resp => resp.json())
             .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits })), 1000);
     };
 
     render() {
         return <>
-            <div style={{position: 'relative'}}>
+            <div className="visits">
                     <Panel header={'Visits'}>
-                        <div>
-                            <GalleryVisits visits={this.state.visits}></GalleryVisits>
-                        </div>
+                        <GalleryChart visits={this.state.visits}></GalleryChart>
                         {this.state.stats ? <GalleryStats {...this.state.stats} /> : null }
                     </Panel>
-                    
                 { this.state.isLoading ? <Loader backdrop content="loading..." vertical />: null }
             </div>
                 <Panel header={'Galleries'}>

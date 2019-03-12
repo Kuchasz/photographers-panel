@@ -9,10 +9,10 @@ interface Props {
 }
 
 export const GalleryStats = ({today, total, bestDay, days, daysTotal}: Props) => <>
-    <div style={{marginTop: '4px'}}>
+    <div className="stats">
         <span>Today visits:  <strong>{today}</strong></span>
-        <span style={{marginLeft: '32px'}}>Total visits:  <strong>{total}</strong></span>
-        <span style={{marginLeft: '32px'}}>Past {days} days visits:  <strong>{daysTotal}</strong></span>
-        <span style={{marginLeft: '32px'}}>Best day:  <strong>{bestDay}</strong></span>
+        <span>Total visits:  <strong>{total}</strong></span>
+        <span>Past {days} days visits:  <strong>{daysTotal}</strong></span>
+        <span>Best day:  <strong>{bestDay}</strong></span>
     </div>
 </>;

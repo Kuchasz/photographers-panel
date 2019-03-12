@@ -23,13 +23,11 @@ const chartOptions: ChartOptions = {
 
 const formatDateToDayAndMonth = (dateString: string) => moment(dateString, "DD-MM-YYYY").format("DD/MM");
 
-console.warn('Set color of graph basing of state of gallery');
-
 const getData = (visits: VisitsSummary[]) => ({
     labels: visits.map(visit => formatDateToDayAndMonth(visit.date)),
     datasets: [
-        {fill: '#34c3ff', borderColor: '#34c3ff', data: visits.map(visit => Number(visit.visits))}
+        { fill: '#34c3ff', borderColor: '#34c3ff', data: visits.map(visit => Number(visit.visits)) }
     ]
 });
 
-export const GalleryVisits = ({visits}: {visits: VisitsSummary[]}) => <Line options={chartOptions} data={getData(visits)}/>
+export const GalleryChart = ({ visits }: { visits: VisitsSummary[] }) => <div className="chart"><Line options={chartOptions} data={getData(visits)} /></div>;

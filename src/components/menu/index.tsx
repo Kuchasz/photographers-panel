@@ -31,20 +31,18 @@ class MenuComponent extends React.Component<Props, State> {
 
     render() {
         const activeItem = this.props.location.pathname.toLowerCase().substr(1);
-        console.log(activeItem);
 
-    return <div style={styles}>
-        <Sidenav style={{height:'100%'}} onSelect={this.handleItemClick} activeKey={activeItem}>
-          <Sidenav.Body>
-            <Nav>
-                {menuItems.map((mi,id) => <Nav.Item key={id} eventKey={mi.route} active={activeItem === mi.route} icon={<Icon icon={mi.icon}/>}>{mi.text}
-                        </Nav.Item>)}
-            </Nav>
-          </Sidenav.Body>
-        </Sidenav>
-      </div>
+        return <div style={styles}>
+            <Sidenav style={{height:'100%'}} onSelect={this.handleItemClick} activeKey={activeItem}>
+            <Sidenav.Body>
+                <Nav>
+                    {menuItems.map((mi,id) => <Nav.Item key={id} eventKey={mi.route} active={activeItem === mi.route} icon={<Icon icon={mi.icon}/>}>{mi.text}
+                            </Nav.Item>)}
+                </Nav>
+            </Sidenav.Body>
+            </Sidenav>
+        </div>
     }
-
 }
 
 export const Menu = withRouter(props => <MenuComponent {...props}/>);
