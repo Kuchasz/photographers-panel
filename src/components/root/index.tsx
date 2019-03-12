@@ -8,7 +8,7 @@ import { NavBarInstance } from "../navbar";
 export class Root extends React.Component {
     render() {
         return (
-            <div>
+            <div style={{height: '100%', display:'flex', flexDirection:'column'}}>
                 <NavBarInstance/>
                 <div id="layout">
                     <div>
