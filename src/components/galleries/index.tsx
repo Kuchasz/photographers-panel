@@ -5,6 +5,8 @@ import { Panel, Loader } from "rsuite";
 import { GalleryStats } from './gallery-stats';
 import { GalleryChart } from './gallery-chart';
 import "./styles.less";
+import { GalleryVisitRange } from './gallery-visit-range';
+import { addMonths } from '../../utils/date';
 
 
 interface Props {
@@ -16,7 +18,9 @@ interface State {
     visits: VisitsSummary[];
     galleries: Gallery[];
     selectedGallery?: number;
-    stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number}
+    stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number};
+    startDate: Date;
+    endDate: Date;
 }
 
 //http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=189
@@ -37,7 +41,9 @@ export class Galleries extends React.Component<Props, State> {
             isLoading: false,
             galleries: [],
             stats: undefined,
-            selectedGallery: undefined
+            selectedGallery: undefined,
+            startDate: addMonths(new Date(), -1),
+            endDate: new Date()
         };
     }
 
@@ -69,19 +75,21 @@ export class Galleries extends React.Component<Props, State> {
             daysTotal: Math.floor(Math.random()*100)
         });
 
-        const endDate = new Date();
-        const startDate = new Date();
-        startDate.setMonth(startDate.getMonth() - 1);
-
-        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
+        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(this.state.startDate)}&endDate=${formatDate(this.state.endDate)}&galleryId=${selectedGallery}`)
             .then(resp => resp.json())
             .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits })), 1000);
     };
+
+    onDateRangeChanged = (range: Date[]) => {
+        this.setState(() => ({startDate: range[0], endDate: range[1]}));
+        this.state.selectedGallery && this.onGallerySelected(this.state.selectedGallery);
+    }
 
     render() {
         return <>
             <div className="visits">
                     <Panel header={'Visits'}>
+                        <GalleryVisitRange startDate={this.state.startDate} endDate={this.state.endDate} onRangeChange={this.onDateRangeChanged}/>
                         <GalleryChart visits={this.state.visits}></GalleryChart>
                         {this.state.stats ? <GalleryStats {...this.state.stats} /> : null }
                     </Panel>
