@@ -29,6 +29,8 @@ const tooltips = {
     [GalleryStates.NotReady]: <Tooltip>Gallery is <i>not ready yet</i>.</Tooltip>,
 };
 
+const obfuscatePassword = (password: string) => password.slice(0, 1) + "******";
+
 export class GalleriesList extends React.PureComponent<Props, State>{
 
     render() {
@@ -53,7 +55,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
 
             <Table.Column>
                 <Table.HeaderCell>Pass</Table.HeaderCell>
-                <Table.Cell dataKey="pass" />
+                <Table.Cell dataKey="pass">{(gallery: Gallery)=>obfuscatePassword(gallery.pass)}</Table.Cell>
             </Table.Column>
 
             <Table.Column flexGrow={3}>
