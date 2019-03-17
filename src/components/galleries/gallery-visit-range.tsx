@@ -1,17 +1,18 @@
 import React from "react";
-import {Icon, DateRangePicker, Checkbox} from "rsuite";
+import { Icon, DateRangePicker } from "rsuite";
 
-interface Props{
+interface Props {
     onRangeChange: (ranges: Date[]) => void;
     startDate: Date;
     endDate: Date;
+    autoDisabled: boolean;
+    onAutoChanged: () => void;
 }
 
 export const GalleryVisitRange = (props: Props) => <div className="range">
     <span className="auto">
-        <Icon icon="magic"/>
-        <Checkbox/>
+        <Icon onClick={props.onAutoChanged} className={props.autoDisabled ? "disabled" : ""} icon="magic" />
     </span>
-    
-    <DateRangePicker appearance="subtle" value={[props.startDate, props.endDate]} cleanable={false} onChange={props.onRangeChange}/>
+
+    <DateRangePicker appearance="subtle" value={[props.startDate, props.endDate]} cleanable={false} onChange={props.onRangeChange} />
 </div>

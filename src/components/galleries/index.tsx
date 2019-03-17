@@ -21,6 +21,7 @@ interface State {
     stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number};
     startDate: Date;
     endDate: Date;
+    disableAutoDate: boolean;
 }
 
 //http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=189
@@ -43,7 +44,8 @@ export class Galleries extends React.Component<Props, State> {
             stats: undefined,
             selectedGallery: undefined,
             startDate: addMonths(new Date(), -1),
-            endDate: new Date()
+            endDate: new Date(),
+            disableAutoDate: false
         };
     }
 
@@ -63,8 +65,15 @@ export class Galleries extends React.Component<Props, State> {
 
     onGallerySelected = (selectedGallery: number) => {
 
+        const gallery = this.state.galleries.filter(x => x.id === selectedGallery)[0];
+
+        const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(gallery.date);
+        const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(gallery.date), 1);
+
         this.setState(_state => ({
-            isLoading: true
+            isLoading: true,
+            startDate,
+            endDate
         }));
 
         const randomStats = () =>({
@@ -75,7 +84,7 @@ export class Galleries extends React.Component<Props, State> {
             daysTotal: Math.floor(Math.random()*100)
         });
 
-        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(this.state.startDate)}&endDate=${formatDate(this.state.endDate)}&galleryId=${selectedGallery}`)
+        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
             .then(resp => resp.json())
             .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits })), 1000);
     };
@@ -85,11 +94,20 @@ export class Galleries extends React.Component<Props, State> {
         this.state.selectedGallery && this.onGallerySelected(this.state.selectedGallery);
     }
 
+    toggleRandom = () => {
+        this.setState(({disableAutoDate: autoDate}) => ({disableAutoDate: !autoDate}));
+    }
+
     render() {
         return <>
             <div className="visits">
                     <Panel header={'Visits'}>
-                        <GalleryVisitRange startDate={this.state.startDate} endDate={this.state.endDate} onRangeChange={this.onDateRangeChanged}/>
+                        <GalleryVisitRange 
+                            onAutoChanged={this.toggleRandom}
+                            autoDisabled={this.state.disableAutoDate} 
+                            startDate={this.state.startDate} 
+                            endDate={this.state.endDate} 
+                            onRangeChange={this.onDateRangeChanged}/>
                         <GalleryChart visits={this.state.visits}></GalleryChart>
                         {this.state.stats ? <GalleryStats {...this.state.stats} /> : null }
                     </Panel>
