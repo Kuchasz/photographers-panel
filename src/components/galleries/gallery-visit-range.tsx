@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, DateRangePicker } from "rsuite";
+import { Icon, DateRangePicker, Button } from "rsuite";
 
 interface Props {
     onRangeChange: (ranges: Date[]) => void;
@@ -10,9 +10,9 @@ interface Props {
 }
 
 export const GalleryVisitRange = (props: Props) => <div className="range">
-    <span className="auto">
-        <Icon onClick={props.onAutoChanged} className={props.autoDisabled ? "disabled" : ""} icon="magic" />
-    </span>
+    <Button onClick={props.onAutoChanged} className="auto">
+        <Icon className={props.autoDisabled ? "disabled" : ""} icon="magic" />
+    </Button>
 
     <DateRangePicker appearance="subtle" value={[props.startDate, props.endDate]} cleanable={false} onChange={props.onRangeChange} />
 </div>
