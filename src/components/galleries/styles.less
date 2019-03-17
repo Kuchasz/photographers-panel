@@ -53,11 +53,15 @@
 .list{
     .password{
         position: relative;
+        cursor: pointer;
+   display: block;
         .cover{
             position: absolute;
             width: 100%;
             left: 0px;
+            right: 0px;
             width: 100%;
+            top: 0px;
             text-align: center;
             opacity: 0;
         }
@@ -67,6 +71,19 @@
             }
             .text{
                 opacity: 0.25;
+            }
+        }
+        .text{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .rs-progress{
+                display: inline;
+                width: 15px;
+                height: 15px;
+                .rs-progress-circle-info{
+                    display: none;
+                }
             }
         }
     }

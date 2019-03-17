@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Gallery, GalleryStates } from './state';
-import { Tooltip, Table, Icon, Whisper } from "rsuite";
+import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
 import { range } from '../../utils/array';
 
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
 interface State {
 
 }
+
+console.log(Progress);
 
 const getColorFromGalleryState = (galleryState: GalleryStates): any => {
     switch (galleryState) {
@@ -34,18 +36,34 @@ const passHash = (password: string) => range(password.length - 1).map(x => "*").
 
 const obfuscatePassword = (password: string) => password.slice(0, 1) + passHash(password);
 
+let getRevealTime = () => 0;
+
 const Password = ({password}: {password: string}) => {
     const [passwordRevealed, revealPassword] = useState(false);
+    const [revealTime, setRevealTime] = useState(0);
+
+    getRevealTime = () => revealTime;
 
     const revealPass = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         e.stopPropagation();
         revealPassword(true);
-        setTimeout(() => revealPassword(false), 5000);
+        const interval = setInterval(() => {
+            if(getRevealTime() === 100) {
+                revealPassword(false);
+                clearInterval(interval);
+                setRevealTime(0);
+            }
+            setRevealTime(getRevealTime() + 5);
+        }, 250);
     }
 
     return <span className="password">
-        <span className="text">{passwordRevealed ? password : obfuscatePassword(password)}</span>
+        <span className="text">
+            {passwordRevealed ? password : obfuscatePassword(password)}
+            { passwordRevealed ? <Progress.Circle percent={revealTime}/> : null}
+        </span>
         {passwordRevealed ? null : <span onClick={revealPass} className="cover"><Icon icon="eye"/></span>}
+        
     </span>
 }
 
