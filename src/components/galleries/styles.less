@@ -11,6 +11,7 @@
             flex-direction: column;
             .chart {
                 flex-grow: 1;
+                margin-top: 4px;
             }
             .stats {
                 margin-top: 4px;
@@ -26,12 +27,17 @@
                 align-items: center;
                 .auto{
                     display: flex;
+                    background: transparent;
+                    transition: none;
                     align-items: center;
                     i{
                         color: #34c3ff;
                         &.disabled{
                             color: #575757;
                         }
+                    }
+                    &:hover{
+                        background: #f7f7fa;
                     }
                 }
                 .rs-picker-daterange{

@@ -13,8 +13,8 @@ const enabledTooltip = <Tooltip>Date <i>will</i> be set automatically</Tooltip>;
 const disabledTooltip = <Tooltip>Date <i>will not</i> be set automatically</Tooltip>;
 
 export const GalleryVisitRange = (props: Props) => <div className="range">
-    <Whisper trigger="hover" speaker={props.autoDisabled ? disabledTooltip : enabledTooltip}>
-        <Button onClick={props.onAutoChanged} className="auto">
+    <Whisper trigger="hover" placement="topLeft" speaker={props.autoDisabled ? disabledTooltip : enabledTooltip}>
+        <Button size="lg" onClick={props.onAutoChanged} className="auto">
             <Icon className={props.autoDisabled ? "disabled" : ""} icon="magic" />
         </Button>
     </Whisper>
