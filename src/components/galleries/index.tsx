@@ -113,9 +113,11 @@ export class Galleries extends React.Component<Props, State> {
                     </Panel>
                 { this.state.isLoading ? <Loader backdrop content="loading..." vertical />: null }
             </div>
+            <div className="list">
                 <Panel header={'Galleries'}>
                     <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
                 </Panel>
+            </div>
         </>
     }
 }

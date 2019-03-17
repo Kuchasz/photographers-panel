@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import { Gallery, GalleryStates } from './state';
 import { Tooltip, Table, Icon, Whisper } from "rsuite";
+import { range } from '../../utils/array';
 
 interface Props {
     onSelect: (item: any) => void;
@@ -29,7 +30,24 @@ const tooltips = {
     [GalleryStates.NotReady]: <Tooltip>Gallery is <i>not ready yet</i>.</Tooltip>,
 };
 
-const obfuscatePassword = (password: string) => password.slice(0, 1) + "******";
+const passHash = (password: string) => range(password.length - 1).map(x => "*").reduce((agg, cur) => agg + cur, "");
+
+const obfuscatePassword = (password: string) => password.slice(0, 1) + passHash(password);
+
+const Password = ({password}: {password: string}) => {
+    const [passwordRevealed, revealPassword] = useState(false);
+
+    const revealPass = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        e.stopPropagation();
+        revealPassword(true);
+        setTimeout(() => revealPassword(false), 5000);
+    }
+
+    return <span className="password">
+        <span className="text">{passwordRevealed ? password : obfuscatePassword(password)}</span>
+        {passwordRevealed ? null : <span onClick={revealPass} className="cover"><Icon icon="eye"/></span>}
+    </span>
+}
 
 export class GalleriesList extends React.PureComponent<Props, State>{
 
@@ -55,7 +73,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
 
             <Table.Column>
                 <Table.HeaderCell>Pass</Table.HeaderCell>
-                <Table.Cell dataKey="pass">{(gallery: Gallery)=>obfuscatePassword(gallery.pass)}</Table.Cell>
+                <Table.Cell dataKey="pass">{(gallery: Gallery)=><Password password={gallery.pass}/>}</Table.Cell>
             </Table.Column>
 
             <Table.Column flexGrow={3}>
