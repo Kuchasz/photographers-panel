@@ -26,11 +26,14 @@ const getColorFromGalleryState = (galleryState: GalleryStates): any => {
     }
 };
 
-const tooltips = {
+const getColorFromBlogEntry = (blogEntryId: string)=> blogEntryId ? '#4caf50' : '#f44336';
+
+const stateTooltips = {
     [GalleryStates.Available]: <Tooltip>Gallery is <i>available</i>.</Tooltip>,
     [GalleryStates.TurnedOff]: <Tooltip>Gallery is <i>turned off</i>.</Tooltip>,
     [GalleryStates.NotReady]: <Tooltip>Gallery is <i>not ready yet</i>.</Tooltip>,
 };
+
 
 const passHash = (password: string) => range(password.length - 1).map(x => "*").reduce((agg, cur) => agg + cur, "");
 
@@ -71,10 +74,18 @@ export class GalleriesList extends React.PureComponent<Props, State>{
 
     render() {
         return <Table height={400} onRowClick={(item: any) => this.props.onSelect(item.id)} data={this.props.galleries}>
-            <Table.Column align="center" fixed>
+            <Table.Column width={50} align="center" fixed>
                 <Table.HeaderCell>State</Table.HeaderCell>
                 <Table.Cell dataKey="state">{(gallery: Gallery) =>
-                    <Whisper trigger="hover" speaker={tooltips[gallery.state]}><Icon icon="info" style={{ color: getColorFromGalleryState(gallery.state) }} /></Whisper>
+                    <Whisper trigger="hover" speaker={stateTooltips[gallery.state]}><Icon icon="info" style={{ color: getColorFromGalleryState(gallery.state) }} /></Whisper>
+                }
+                </Table.Cell>
+            </Table.Column>
+
+            <Table.Column width={50} align="center" fixed>
+                <Table.HeaderCell>Blog</Table.HeaderCell>
+                <Table.Cell dataKey="blogEntryId">{(gallery: Gallery) =>
+                    <Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.BlogEntryId) }} />
                 }
                 </Table.Cell>
             </Table.Column>
