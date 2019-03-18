@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Gallery, GalleryStates } from './state';
 import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
 import { range } from '../../utils/array';
@@ -36,34 +36,34 @@ const passHash = (password: string) => range(password.length - 1).map(x => "*").
 
 const obfuscatePassword = (password: string) => password.slice(0, 1) + passHash(password);
 
-let getRevealTime = () => 0;
-
-const Password = ({password}: {password: string}) => {
+const Password = ({ password }: { password: string }) => {
     const [passwordRevealed, revealPassword] = useState(false);
     const [revealTime, setRevealTime] = useState(0);
 
-    getRevealTime = () => revealTime;
-
     const revealPass = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+        let rTime = 0;
+        setRevealTime(rTime);
         e.stopPropagation();
         revealPassword(true);
+
         const interval = setInterval(() => {
-            if(getRevealTime() === 100) {
+            if (rTime === 100) {
                 revealPassword(false);
                 clearInterval(interval);
                 setRevealTime(0);
             }
-            setRevealTime(getRevealTime() + 5);
+            rTime += 5;
+            setRevealTime(rTime);
         }, 250);
     }
 
     return <span className="password">
         <span className="text">
             {passwordRevealed ? password : obfuscatePassword(password)}
-            { passwordRevealed ? <Progress.Circle percent={revealTime}/> : null}
+            {passwordRevealed ? <Progress.Circle percent={revealTime} /> : null}
         </span>
-        {passwordRevealed ? null : <span onClick={revealPass} className="cover"><Icon icon="eye"/></span>}
-        
+        {passwordRevealed ? null : <span onClick={revealPass} className="cover"><Icon icon="eye" /></span>}
+
     </span>
 }
 
@@ -89,9 +89,9 @@ export class GalleriesList extends React.PureComponent<Props, State>{
                 <Table.Cell dataKey="date" />
             </Table.Column>
 
-            <Table.Column>
+            <Table.Column width={80}>
                 <Table.HeaderCell>Pass</Table.HeaderCell>
-                <Table.Cell dataKey="pass">{(gallery: Gallery)=><Password password={gallery.pass}/>}</Table.Cell>
+                <Table.Cell dataKey="pass">{(gallery: Gallery) => <Password password={gallery.pass} />}</Table.Cell>
             </Table.Column>
 
             <Table.Column flexGrow={3}>
