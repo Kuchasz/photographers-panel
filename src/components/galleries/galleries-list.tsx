@@ -60,7 +60,7 @@ const Password = ({ password }: { password: string }) => {
         }, 250);
     }
 
-    return <span className="password">
+    return <span className={"password " + (passwordRevealed ? 'revealed' : 'not-revealed')}>
         <span className="text">
             {passwordRevealed ? password : obfuscatePassword(password)}
             {passwordRevealed ? <Progress.Circle percent={revealTime} /> : null}

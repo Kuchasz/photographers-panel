@@ -18,7 +18,7 @@ interface State {
     visits: VisitsSummary[];
     galleries: Gallery[];
     selectedGallery?: number;
-    stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number};
+    stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number, emails: number};
     startDate: Date;
     endDate: Date;
     disableAutoDate: boolean;
@@ -81,7 +81,8 @@ export class Galleries extends React.Component<Props, State> {
             total: Math.floor(Math.random()*800),
             bestDay: '10/02/2010',
             days: 20 + Math.floor(Math.random()*11),
-            daysTotal: Math.floor(Math.random()*100)
+            daysTotal: Math.floor(Math.random()*100),
+            emails: Math.floor(Math.random()*20)
         });
 
         setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
