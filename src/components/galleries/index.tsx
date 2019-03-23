@@ -65,6 +65,9 @@ export class Galleries extends React.Component<Props, State> {
 
     onGallerySelected = (selectedGallery: number) => {
 
+        if(selectedGallery === this.state.selectedGallery)
+            return;
+
         const gallery = this.state.galleries.filter(x => x.id === selectedGallery)[0];
 
         const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(gallery.date);
@@ -73,7 +76,8 @@ export class Galleries extends React.Component<Props, State> {
         this.setState(_state => ({
             isLoading: true,
             startDate,
-            endDate
+            endDate,
+            selectedGallery
         }));
 
         const randomStats = () =>({
