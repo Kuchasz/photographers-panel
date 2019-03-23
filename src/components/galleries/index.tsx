@@ -4,9 +4,9 @@ import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
 import { Panel, Loader } from "rsuite";
 import { GalleryStats } from './gallery-stats';
 import { GalleryChart } from './gallery-chart';
-import "./styles.less";
 import { GalleryVisitRange } from './gallery-visit-range';
 import { addMonths } from '../../utils/date';
+import "./styles.less";
 
 
 interface Props {
@@ -89,9 +89,9 @@ export class Galleries extends React.Component<Props, State> {
             emails: Math.floor(Math.random()*20)
         });
 
-        setTimeout(() => fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
+        fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
             .then(resp => resp.json())
-            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits })), 1000);
+            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
     };
 
     onDateRangeChanged = (range: Date[]) => {
@@ -104,7 +104,7 @@ export class Galleries extends React.Component<Props, State> {
     }
 
     render() {
-        return <>
+        return <div className="galleries">
             <div className="visits">
                     <Panel header={'Visits'}>
                         <GalleryVisitRange 
@@ -123,6 +123,6 @@ export class Galleries extends React.Component<Props, State> {
                     <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
                 </Panel>
             </div>
-        </>
+        </div>
     }
 }

@@ -4,6 +4,7 @@ import {Dashboard} from "../dashboard/index";
 import {Menu} from "../menu/index";
 import {Galleries} from "../galleries/index";
 import { NavBarInstance } from "../navbar";
+import { Emails } from "../emails";
 
 export class Root extends React.Component {
     render() {
@@ -17,6 +18,7 @@ export class Root extends React.Component {
                     <div id="content">
                         <Route exact path='/' component={Dashboard}/>
                         <Route exact path='/galleries' component={Galleries}/>
+                        <Route exact path='/emails' component={Emails}/>
                     </div>
                 </div>
             </div>

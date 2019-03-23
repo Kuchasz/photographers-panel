@@ -11,8 +11,6 @@ interface State {
 
 }
 
-console.log(Progress);
-
 const getColorFromGalleryState = (galleryState: GalleryStates): any => {
     switch (galleryState) {
         case GalleryStates.Available:
