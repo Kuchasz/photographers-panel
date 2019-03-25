@@ -55,8 +55,7 @@ export class Galleries extends React.Component<Props, State> {
             .then((galleries: Gallery[]) => {
                 const selectedGallery = galleries[0].id;
                 this.setState({ 
-                    galleries,
-                    selectedGallery
+                    galleries
                 });
 
                 this.onGallerySelected(selectedGallery);

@@ -2,7 +2,6 @@ import * as React from "react";
 import {Sidenav, Nav, Icon} from "rsuite";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 
-//const colors: string[] = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
 
 const menuItems = [
     {route: '', icon: "home", text: 'Home'},
@@ -21,13 +20,17 @@ const styles = {
   };
 
 interface Props extends RouteComponentProps{
+
 }
-interface State{}
+
+interface State{
+
+}
 
 
 class MenuComponent extends React.Component<Props, State> {
 
-    handleItemClick = (route: string) => {console.log(route);this.props.history.push(route);}
+    handleItemClick = (route: string) => {this.props.history.push(route);}
 
     render() {
         const activeItem = this.props.location.pathname.toLowerCase().substr(1);
