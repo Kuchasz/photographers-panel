@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { GalleriesList } from "./galleries-list";
-import { VisitsSummary, Gallery, GalleriesVistsRootObject } from './state';
 import { Panel, Loader } from "rsuite";
 import { GalleryStats } from './gallery-stats';
 import { GalleryChart } from './gallery-chart';
 import { GalleryVisitRange } from './gallery-visit-range';
 import { addMonths } from '../../utils/date';
 import "./styles.less";
+import { getAll, VisitsSummary, Gallery, GalleriesVistsRootObject } from '../../api/gallery';
 
 
 interface Props {
@@ -50,8 +50,7 @@ export class Galleries extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch('http://api.pyszstudio.pl/Galleries/Index')
-            .then(resp => resp.json())
+        getAll()
             .then((galleries: Gallery[]) => {
                 const selectedGallery = galleries[0].id;
                 this.setState({ 

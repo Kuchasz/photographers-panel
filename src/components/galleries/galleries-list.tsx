@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Gallery, GalleryStates } from './state';
 import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
 import { range } from '../../utils/array';
+import { GalleryStates, Gallery } from '../../api/gallery';
 
 interface Props {
     onSelect: (item: any) => void;
