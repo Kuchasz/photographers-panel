@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
 import { range } from '../../utils/array';
-import { GalleryStates, Gallery } from '../../api/gallery';
+import { GalleryStates, Gallery } from '../../state/gallery';
 
 interface Props {
     onSelect: (item: any) => void;
@@ -83,7 +83,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
             <Table.Column width={50} align="center" fixed>
                 <Table.HeaderCell>Blog</Table.HeaderCell>
                 <Table.Cell dataKey="blogEntryId">{(gallery: Gallery) =>
-                    <Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.BlogEntryId) }} />
+                    <Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blog) }} />
                 }
                 </Table.Cell>
             </Table.Column>
@@ -100,7 +100,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
 
             <Table.Column width={80}>
                 <Table.HeaderCell>Pass</Table.HeaderCell>
-                <Table.Cell dataKey="pass">{(gallery: Gallery) => <Password password={gallery.pass} />}</Table.Cell>
+                <Table.Cell dataKey="pass">{(gallery: Gallery) => <Password password={gallery.password} />}</Table.Cell>
             </Table.Column>
 
             <Table.Column flexGrow={3}>

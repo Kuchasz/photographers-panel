@@ -10,7 +10,7 @@ export interface Gallery {
     state: GalleryStates;
     password: string;
     directoryName: string;
-    blog: number;
+    blog: string;
 }
 
 export interface GalleryStats{
@@ -22,4 +22,14 @@ export interface GalleryStats{
     numberOfEmails: number;
 }
 
-export interface GalleriesState{}
+export interface GalleriesState{
+    galleries: Gallery[];
+    selectedGallery: number;
+}
+
+export interface DailyVisits {
+    date: string;
+    visits: string;
+}
+
+export {GalleryStates} from "../api/gallery";

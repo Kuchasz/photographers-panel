@@ -6,7 +6,7 @@ import { GalleryChart } from './gallery-chart';
 import { GalleryVisitRange } from './gallery-visit-range';
 import { addMonths } from '../../utils/date';
 import "./styles.less";
-import { getAll, VisitsSummary, Gallery, GalleriesVistsRootObject } from '../../api/gallery';
+import { Gallery, DailyVisits } from '../../state/gallery';
 
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 
 interface State {
     isLoading: boolean;
-    visits: VisitsSummary[];
+    visits: DailyVisits[];
     galleries: Gallery[];
     selectedGallery?: number;
     stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number, emails: number};
@@ -26,12 +26,7 @@ interface State {
 
 //http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=189
 
-const formatDate = (date: Date) => {
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-};
+
 
 
 export class Galleries extends React.Component<Props, State> {
@@ -48,49 +43,6 @@ export class Galleries extends React.Component<Props, State> {
             disableAutoDate: false
         };
     }
-
-    componentDidMount() {
-        getAll()
-            .then((galleries: Gallery[]) => {
-                const selectedGallery = galleries[0].id;
-                this.setState({ 
-                    galleries
-                });
-
-                this.onGallerySelected(selectedGallery);
-            });
-    }
-
-    onGallerySelected = (selectedGallery: number) => {
-
-        if(selectedGallery === this.state.selectedGallery)
-            return;
-
-        const gallery = this.state.galleries.filter(x => x.id === selectedGallery)[0];
-
-        const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(gallery.date);
-        const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(gallery.date), 1);
-
-        this.setState(_state => ({
-            isLoading: true,
-            startDate,
-            endDate,
-            selectedGallery
-        }));
-
-        const randomStats = () =>({
-            today: Math.floor(Math.random()*300),
-            total: Math.floor(Math.random()*800),
-            bestDay: '10/02/2010',
-            days: 20 + Math.floor(Math.random()*11),
-            daysTotal: Math.floor(Math.random()*100),
-            emails: Math.floor(Math.random()*20)
-        });
-
-        fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${formatDate(startDate)}&endDate=${formatDate(endDate)}&galleryId=${selectedGallery}`)
-            .then(resp => resp.json())
-            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
-    };
 
     onDateRangeChanged = (range: Date[]) => {
         this.setState(() => ({startDate: range[0], endDate: range[1]}));
