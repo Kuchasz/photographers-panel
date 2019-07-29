@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, DateRangePicker, Button, Tooltip, Whisper } from "rsuite";
+import { Icon, DateRangePicker, Button, Tooltip, Whisper } from "rsuite/lib";
 
 interface Props {
     onRangeChange: (ranges: Date[]) => void;

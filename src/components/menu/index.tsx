@@ -1,9 +1,14 @@
 import * as React from "react";
-import {Sidenav, Nav, Icon} from "rsuite";
+import {Sidenav, Nav, Icon} from "rsuite/lib";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 
+interface MenuItem{
+    icon: any;
+    route: string;
+    text: string;
+}
 
-const menuItems = [
+const menuItems: MenuItem[] = [
     {route: '', icon: "home", text: 'Home'},
     {route: 'stats', icon: "signal", text: 'Stats'},
     {route: 'emails', icon: "envelope-o", text: 'Emails'},

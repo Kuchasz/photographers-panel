@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
+import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite/lib";
 import { range } from '../../utils/array';
 import { GalleryStates, Gallery } from '../../state/gallery';
 

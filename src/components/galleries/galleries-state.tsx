@@ -1,7 +1,19 @@
 import React from "react";
+import { getAll, Gallery, getVisits, GalleriesVistsRootObject } from "../../api/gallery";
+import { Gallery as StateGallery, VisitsSummary } from "./state";
+import { addMonths } from "../../utils/date";
 
 interface Props{}
-interface State{}
+interface State{
+    selectedGallery: number;
+    galleries: StateGallery[];
+    disableAutoDate: boolean;
+    isLoading: boolean;
+    startDate: Date;
+    endDate: Date;
+    stats: any;
+    visits: VisitsSummary[];
+}
 
 export class GalleriesState extends React.Component<Props, State>{
 

@@ -13,13 +13,13 @@ export interface Gallery {
     id: number;
     date: string;
     place: string;
-    bride: string;
-    groom: string;
-    lastname: string;
+    brideName: string;
+    groomName: string;
+    lastName: string;
     state: GalleryStates;
-    pass: string;
-    dir: string;
-    BlogEntryId: string;
+    password: string;
+    directoryName: string;
+    blog: string;
 }
 
 export interface GalleriesVistsRootObject {
