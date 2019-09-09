@@ -68,18 +68,35 @@ export class Galleries extends React.Component<Props, State> {
             });
     }
 
-    onDateRangeChanged = (range: Date[]) => {
-        this.setState(() => ({disableAutoDate: true, startDate: range[0], endDate: range[1]}));
-        this.state.selectedGallery && this.onGallerySelected(this.state.selectedGallery, true);
+    onDateRangeChanged = ([startDate, endDate]: [(Date | undefined)?, (Date | undefined)?]) => {
+        if (startDate === undefined || endDate === undefined) return;
+        this.setState(() => ({disableAutoDate: true, startDate, endDate}));
+        if (this.state.selectedGallery){
+            this.setState(_state => ({
+                isLoading: true            
+            }));
+
+            const randomStats = () =>({
+                today: Math.floor(Math.random()*300),
+                total: Math.floor(Math.random()*800),
+                bestDay: '10/02/2010',
+                days: 20 + Math.floor(Math.random()*11),
+                daysTotal: Math.floor(Math.random()*100),
+                emails: Math.floor(Math.random()*20)
+            });
+    
+            getVisits(startDate, endDate, this.state.selectedGallery)
+                .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
+        }
     }
 
     toggleRandom = () => {
         this.setState(({disableAutoDate: autoDate}) => ({disableAutoDate: !autoDate}));
     }
 
-    onGallerySelected = (selectedGallery: number, forceReload: boolean = false) => {
+    onGallerySelected = (selectedGallery: number) => {
 
-        if(!forceReload && selectedGallery === this.state.selectedGallery)
+        if(selectedGallery === this.state.selectedGallery)
             return;
 
         const gallery = this.state.galleries.filter(x => x.id === selectedGallery)[0];
