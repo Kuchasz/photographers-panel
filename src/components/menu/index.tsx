@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Sidenav, Nav, Icon} from "rsuite/lib";
+import {Sidenav, Nav, Icon} from "rsuite";
 import {withRouter, RouteComponentProps} from "react-router-dom";
 
 interface MenuItem{

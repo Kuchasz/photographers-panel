@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Icon, Panel } from "rsuite/lib";
+import { Icon, Panel } from "rsuite";
 
 const sections: {icon: any, value: number, label: string}[] = [
     {icon: 'image', value: 22, label: 'Galleries'},

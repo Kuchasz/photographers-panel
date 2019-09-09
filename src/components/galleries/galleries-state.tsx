@@ -1,6 +1,6 @@
 import React from "react";
 import { getAll, Gallery, getVisits, GalleriesVistsRootObject } from "../../api/gallery";
-import { Gallery as StateGallery, VisitsSummary } from "./state";
+import { Gallery as StateGallery, VisitsSummary, fromApiGallery } from "./state";
 import { addMonths } from "../../utils/date";
 
 interface Props{}
@@ -21,8 +21,11 @@ export class GalleriesState extends React.Component<Props, State>{
         getAll()
             .then((galleries: Gallery[]) => {
                 const selectedGallery = galleries[0].id;
+
+                const stateGalleries = galleries.map(fromApiGallery);
+
                 this.setState({ 
-                    galleries
+                    galleries: stateGalleries
                 });
 
                 this.onGallerySelected(selectedGallery);

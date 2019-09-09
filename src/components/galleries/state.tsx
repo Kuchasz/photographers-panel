@@ -1,3 +1,5 @@
+import {Gallery as ApiGallery} from "../../api/gallery";
+
 export interface VisitsSummary {
     date: string;
     visits: string;
@@ -19,7 +21,7 @@ export interface Gallery {
     state: GalleryStates;
     password: string;
     directoryName: string;
-    blog: string;
+    blog: number;
 }
 
 export interface GalleriesVistsRootObject {
@@ -28,3 +30,16 @@ export interface GalleriesVistsRootObject {
     sumOfVisits: number;
     rangeSumOfVisits?: number;
 }
+
+export const fromApiGallery = (gallery: ApiGallery): Gallery => ({
+    id: gallery.id,
+    date: gallery.date,
+    place: gallery.place,
+    brideName: gallery.bride,
+    groomName: gallery.groom,
+    lastName: gallery.lastname,
+    state: gallery.state,
+    password: gallery.pass,
+    directoryName: gallery.dir,
+    blog: Number(gallery.BlogEntryId)
+});

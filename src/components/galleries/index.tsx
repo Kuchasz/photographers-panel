@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GalleriesList } from "./galleries-list";
-import { Panel, Loader } from "rsuite/lib";
+import { Panel, Loader } from "rsuite";
 import { GalleryStats } from './gallery-stats';
 import { GalleryChart } from './gallery-chart';
 import { GalleryVisitRange } from './gallery-visit-range';
@@ -69,17 +69,17 @@ export class Galleries extends React.Component<Props, State> {
     }
 
     onDateRangeChanged = (range: Date[]) => {
-        this.setState(() => ({startDate: range[0], endDate: range[1]}));
-        this.state.selectedGallery && this.onGallerySelected(this.state.selectedGallery);
+        this.setState(() => ({disableAutoDate: true, startDate: range[0], endDate: range[1]}));
+        this.state.selectedGallery && this.onGallerySelected(this.state.selectedGallery, true);
     }
 
     toggleRandom = () => {
         this.setState(({disableAutoDate: autoDate}) => ({disableAutoDate: !autoDate}));
     }
 
-    onGallerySelected = (selectedGallery: number) => {
+    onGallerySelected = (selectedGallery: number, forceReload: boolean = false) => {
 
-        if(selectedGallery === this.state.selectedGallery)
+        if(!forceReload && selectedGallery === this.state.selectedGallery)
             return;
 
         const gallery = this.state.galleries.filter(x => x.id === selectedGallery)[0];

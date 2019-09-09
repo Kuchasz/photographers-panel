@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite/lib";
+import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
 import { range } from '../../utils/array';
 import { GalleryStates, Gallery } from '../../state/gallery';
 
@@ -31,6 +31,11 @@ const stateTooltips = {
     [GalleryStates.TurnedOff]: <Tooltip>Gallery is <i>turned off</i>.</Tooltip>,
     [GalleryStates.NotReady]: <Tooltip>Gallery is <i>not ready yet</i>.</Tooltip>,
 };
+
+const blogTooltips = {
+    Available: <Tooltip>Blog is <i>available</i>.</Tooltip>,
+    None: <Tooltip>There is <i>no blog</i>.</Tooltip>
+}
 
 
 const passHash = (password: string) => range(password.length - 1).map(x => "*").reduce((agg, cur) => agg + cur, "");
@@ -82,8 +87,8 @@ export class GalleriesList extends React.PureComponent<Props, State>{
 
             <Table.Column width={50} align="center" fixed>
                 <Table.HeaderCell>Blog</Table.HeaderCell>
-                <Table.Cell dataKey="blogEntryId">{(gallery: Gallery) =>
-                    <Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blog) }} />
+                <Table.Cell dataKey="blog">{(gallery: Gallery) =>
+                    <Whisper trigger="hover" speaker={gallery.blog ? blogTooltips.Available : blogTooltips.None}><Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blog) }} /></Whisper>
                 }
                 </Table.Cell>
             </Table.Column>
@@ -100,12 +105,12 @@ export class GalleriesList extends React.PureComponent<Props, State>{
 
             <Table.Column width={80}>
                 <Table.HeaderCell>Pass</Table.HeaderCell>
-                <Table.Cell dataKey="pass">{(gallery: Gallery) => <Password password={gallery.password} />}</Table.Cell>
+                <Table.Cell dataKey="password">{(gallery: Gallery) => <Password password={gallery.password} />}</Table.Cell>
             </Table.Column>
 
             <Table.Column flexGrow={3}>
                 <Table.HeaderCell>Direct path</Table.HeaderCell>
-                <Table.Cell dataKey="dir" />
+                <Table.Cell dataKey="directory" />
             </Table.Column>
 
             <Table.Column flexGrow={2} fixed>
