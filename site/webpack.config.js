@@ -71,12 +71,12 @@ module.exports = {
                         }
                     }
                 ]
-            }
+            },
             // this rule handles images
-            // {
-            //     test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
-            //     use: 'file-loader?name=[name].[ext]?[hash]'
-            // },
+            {
+                test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
+                use: 'file-loader?name=[name].[ext]?[hash]'
+            },
             //
             // // the following 3 rules handle font extraction
             // {
@@ -84,10 +84,10 @@ module.exports = {
             //     loader: 'url-loader?limit=10000&mimetype=application/font-woff'
             // },
             //
-            // {
-            //     test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            //     loader: 'file-loader'
-            // },
+            {
+                test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: 'file-loader'
+            },
             // {
             //     test: /\.otf(\?.*)?$/,
             //     use: 'file-loader?name=/fonts/[name].  [ext]&mimetype=application/font-otf'

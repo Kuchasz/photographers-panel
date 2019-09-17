@@ -1,11 +1,11 @@
 @font-face {
 	font-family: 'Century Gothic';
-	src: url(GOTHIC.TTF);
+	src: url(../fonts/GOTHIC.ttf);
 }
 
 @font-face {
 	font-family: 'Century Gothic Bold';
-	src: url(GOTHICB.TTF);
+	src: url(../fonts/GOTHICB.ttf);
 }
 
 article, aside, figure, footer, header, hgroup, menu, nav, section { display: block; }
