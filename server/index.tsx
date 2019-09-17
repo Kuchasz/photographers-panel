@@ -3,7 +3,7 @@ import express from "express";
 import {randomElement} from "utils/array";
 import {renderToString} from "react-dom/server";
 
-import Home from "../client/site/src/areas/home";
+import Home from "../site/src/areas/home";
 
 const elements = [1,2,3,4,5,6,7,8,9];
 
