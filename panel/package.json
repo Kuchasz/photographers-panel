@@ -11,9 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "util": "file:../../utils"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/chart.js": "^2.8.4",
     "@types/moment": "^2.13.0",

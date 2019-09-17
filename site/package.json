@@ -13,7 +13,6 @@
     "@types/react": "^16.9.2",
     "react": "^16.9.0",
     "react-localization": "^1.0.15",
-    "typescript": "^3.6.3",
-    "utils": "file:../../utils"
+    "typescript": "^3.6.3"
   }
 }
