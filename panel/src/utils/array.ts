@@ -1,1 +1,0 @@
-export const range = (itemsNumber: number) => Array.from(Array(itemsNumber));

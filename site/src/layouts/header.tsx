@@ -1,6 +1,6 @@
 import React from "react";
 import { strings } from "../resources";
-import { randomElement } from "../../../../utils/array";
+import { randomElement } from "../../../utils/array";
 
 const menuItem = "home";
 
@@ -9,7 +9,7 @@ const urlOf = (path: string) => `${baseUrl}/${path}`;
 
 const getHeaderBackgroundStyle = () => {
     const chosenPhoto = randomElement(strings.main.topPhotos);
-    const url = `base_url/media/images/top/${chosenPhoto}`;
+    const url = `/media/images/top/${chosenPhoto}`;
     return {
         backgroundImage: `url(${url})`
     };
@@ -28,7 +28,7 @@ export const Header = () => <header id={menuItem === "home" ? "subpage" : undefi
     </nav>
 
     <nav id="logo">
-        <img src="{$base_url}media/images/logo.png" alt="logo PyszStudio" />
+        <img src="/media/images/logo.png" alt="logo PyszStudio" />
     </nav>
 
     <nav id="menu_down">

@@ -9,6 +9,8 @@ const elements = [1,2,3,4,5,6,7,8,9];
 
 const app = express();
 
+app.use(express.static("../site"));
+
 app.get('/', (_req, res) => {
     res.send(`<strong>Control <i>smile:</i> ${randomElement(elements)}</strong>`);
 });

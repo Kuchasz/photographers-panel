@@ -1,7 +1,7 @@
 import React from "react";
 import { getAll, Gallery, getVisits, GalleriesVistsRootObject } from "../../api/gallery";
 import { Gallery as StateGallery, VisitsSummary, fromApiGallery } from "./state";
-import { addMonths } from "../../utils/date";
+import { addMonths } from "../../../../utils/date";
 
 interface Props{}
 interface State{

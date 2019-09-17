@@ -4,7 +4,7 @@ import { Panel, Loader } from "rsuite";
 import { GalleryStats } from './gallery-stats';
 import { GalleryChart } from './gallery-chart';
 import { GalleryVisitRange } from './gallery-visit-range';
-import { addMonths } from '../../utils/date';
+import { addMonths } from '../../../../utils/date';
 import "./styles.less";
 import { Gallery as GalleryState, DailyVisits } from '../../state/gallery';
 import { Gallery, getVisits, GalleriesVistsRootObject, getAll } from '../../api/gallery';
