@@ -12,10 +12,10 @@ export const pl = {
         offer: 'Oferta',
         gallery: 'Galeria',
         contact: 'Kontakt',
-        link: 'Link',
-        movie: 'Film',
+        links: 'Link',
+        movies: 'Film',
         blog: 'Blog',
-        privateGallery: "Galeria z wesela"
+        private: "Galeria z wesela"
     },
     slogan: {
         header: 'Fotografia to nasza pasja. Nie istotne czy to ślub, sesja mamy z dzieckiem, zdjęcia portretowe - po prostu lubimy to robić.',

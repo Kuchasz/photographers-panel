@@ -1,46 +1,46 @@
 import React from "react";
 import { strings } from "../resources";
 import { randomElement } from "../../../utils/array";
+import { Link, withRouter } from "react-router-dom";
+import { routes } from "../routes";
 
-const menuItem = "home";
-
-const baseUrl = "";
-const urlOf = (path: string) => `${baseUrl}/${path}`;
+const logo = require("../images/logo.png");
+const menuItem = "home";    
 
 const getHeaderBackgroundStyle = () => {
     const chosenPhoto = randomElement(strings.main.topPhotos);
-    const url = `/media/images/top/${chosenPhoto}`;
+    const url = require(`../images/top/${chosenPhoto}`);
     return {
         backgroundImage: `url(${url})`
     };
 }
 
-const selectedItem = (selectedMenuItem: string) => menuItem === selectedMenuItem ? "current" : undefined;
+const selectedItem = (selectedPath: string, path: string) => selectedPath === path ? "current" : undefined;
 
-export const Header = () => <header id={menuItem === "home" ? "subpage" : undefined} style={getHeaderBackgroundStyle()}>
+export const Header = withRouter(props => <header id={menuItem === "home" ? "subpage" : undefined} style={getHeaderBackgroundStyle()}>
     <nav>
         <ul>
-            <li><a href={urlOf("")} id={selectedItem('home')}>{strings.menu.home}</a ></li>
-            <li><a href={urlOf("oferta")} id={selectedItem("offer")}>{strings.menu.offer}</a ></li>
-            <li><a href={urlOf("blog")} id={selectedItem("blog")}>{strings.menu.blog}</a ></li>
-            <li><a href={urlOf("kontakt")} id={selectedItem("contact")}>{strings.menu.contact}</a ></li>
+            <li><Link to={routes.home.route} id={selectedItem(props.location.pathname, routes.home.route)}>{strings.menu.home}</Link></li>
+            <li><Link to={routes.offer.route} id={selectedItem(props.location.pathname, routes.offer.route)}>{strings.menu.offer}</Link></li>
+            <li><Link to={routes.blog.route} id={selectedItem(props.location.pathname, routes.blog.route)}>{strings.menu.blog}</Link ></li>
+            <li><Link to={routes.contact.route} id={selectedItem(props.location.pathname, routes.contact.route)}>{strings.menu.contact}</Link ></li>
         </ul>
     </nav>
 
     <nav id="logo">
-        <img src="/media/images/logo.png" alt="logo PyszStudio" />
+        <img src={logo} alt="logo PyszStudio" />
     </nav>
 
     <nav id="menu_down">
         <ul>
-            <li><a href={urlOf("galeria")} id={selectedItem('gallery')}>{strings.menu.gallery}</a ></li>
-            <li><a href={urlOf("link")} id={selectedItem('link')}>{strings.menu.link}</a ></li>
-            <li><a href={urlOf("filmy")} id={selectedItem('video')}>{strings.menu.movie}</a ></li>
+            <li><Link to={routes.gallery.route} id={selectedItem(props.location.pathname, routes.gallery.route)}>{strings.menu.gallery}</Link ></li>
+            <li><Link to={routes.links.route} id={selectedItem(props.location.pathname, routes.links.route)}>{strings.menu.links}</Link ></li>
+            <li><Link to={routes.movies.route} id={selectedItem(props.location.pathname, routes.movies.route)}>{strings.menu.movies}</Link ></li>
         </ul>
     </nav>
 
     <div id="gallery">
-        <a href={urlOf("prywatna")}>{strings.menu.privateGallery}</a>
+        <Link to={routes.private.route}>{strings.menu.private}</Link>
     </div>
 
-</header>
+</header>);

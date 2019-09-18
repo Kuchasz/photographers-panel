@@ -113,7 +113,7 @@ module.exports = {
     ],
     devServer: {
         port: 8080,
-        host: "localhost",
+        host: "192.168.56.102",
         historyApiFallback: true,
         watchOptions: {
             aggregateTimeout: 300,

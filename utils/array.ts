@@ -4,3 +4,10 @@ export const randomElement = <T>(arr: T[]) => {
 }
 
 export const range = (itemsNumber: number) => Array.from(Array(itemsNumber));
+
+export const zip = <T1, T2, T3>(left: T1[], right: T2[], map: (l: T1, r: T2) => T3): T3[] => {
+    if(left.length !== right.length)
+        throw new Error('Arrays length are not equal');
+    
+    return left.map((value, index) => map(value, right[index]));
+}
