@@ -1,11 +1,10 @@
 import React from "react";
 import { strings } from "../resources";
-import { randomElement } from "../../../utils/array";
+import { randomElement, first } from "../../../utils/array";
 import { Link, withRouter } from "react-router-dom";
-import { routes } from "../routes";
+import { routes, menuItems } from "../routes";
 
 const logo = require("../images/logo.png");
-const menuItem = "home";    
 
 const getHeaderBackgroundStyle = () => {
     const chosenPhoto = randomElement(strings.main.topPhotos);
@@ -17,7 +16,7 @@ const getHeaderBackgroundStyle = () => {
 
 const selectedItem = (selectedPath: string, path: string) => selectedPath === path ? "current" : undefined;
 
-export const Header = withRouter(props => <header id={menuItem === "home" ? "subpage" : undefined} style={getHeaderBackgroundStyle()}>
+export const Header = withRouter(props => <header id={first(menuItems, mi => mi.route === props.location.pathname).fullPage ? "home" : "subpage"} style={getHeaderBackgroundStyle()}>
     <nav>
         <ul>
             <li><Link to={routes.home.route} id={selectedItem(props.location.pathname, routes.home.route)}>{strings.menu.home}</Link></li>

@@ -5,19 +5,20 @@ import { Slogan } from "./layouts/slogan";
 import { Footer } from "./layouts/footer";
 import { Route } from "react-router";
 import { routes } from "./routes";
-    
+import { Home } from "./areas/home";
+
 export const Root = () => <>
     <Header />
     <Slogan />
     <span>
-        <Route exact path={routes.home.route} render={()=><h1>{routes.home.label}</h1>}/>
-        <Route exact path={routes.offer.route} render={()=><h1>{routes.offer.label}</h1>}/>
-        <Route exact path={routes.blog.route} render={()=><h1>{routes.blog.label}</h1>}/>
-        <Route exact path={routes.contact.route} render={()=><h1>{routes.contact.label}</h1>}/>
-        <Route exact path={routes.gallery.route} render={()=><h1>{routes.gallery.label}</h1>}/>
-        <Route exact path={routes.links.route} render={()=><h1>{routes.links.label}</h1>}/>
-        <Route exact path={routes.movies.route} render={()=><h1>{routes.movies.label}</h1>}/>
-        <Route exact path={routes.private.route} render={()=><h1>{routes.private.label}</h1>}/>
+        <Route exact path={routes.home.route} render={() => <Home blog={{ title: 'Lorem ipsum', alias: 'lorem-ipsum', content: 'Loreme ipsum polelum primo' }} />} />
+        <Route exact path={routes.offer.route} render={() => <h1>{routes.offer.label}</h1>} />
+        <Route exact path={routes.blog.route} render={() => <h1>{routes.blog.label}</h1>} />
+        <Route exact path={routes.contact.route} render={() => <h1>{routes.contact.label}</h1>} />
+        <Route exact path={routes.gallery.route} render={() => <h1>{routes.gallery.label}</h1>} />
+        <Route exact path={routes.links.route} render={() => <h1>{routes.links.label}</h1>} />
+        <Route exact path={routes.movies.route} render={() => <h1>{routes.movies.label}</h1>} />
+        <Route exact path={routes.private.route} render={() => <h1>{routes.private.label}</h1>} />
     </span>
     <Footer />
 </>;

@@ -11,3 +11,5 @@ export const zip = <T1, T2, T3>(left: T1[], right: T2[], map: (l: T1, r: T2) => 
     
     return left.map((value, index) => map(value, right[index]));
 }
+
+export const first = <T>(items: T[], predicate: (item: T) => boolean) => items.filter(predicate)[0];
