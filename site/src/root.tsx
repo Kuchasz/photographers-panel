@@ -6,13 +6,16 @@ import { Footer } from "./layouts/footer";
 import { Route } from "react-router";
 import { routes } from "./routes";
 import { Home } from "./areas/home";
+import { Offers } from "./areas/offers";
+import { Offer } from "./areas/offer";
 
 export const Root = () => <>
     <Header />
     <Slogan />
     <span>
         <Route exact path={routes.home.route} render={() => <Home blog={{ title: 'Lorem ipsum', alias: 'lorem-ipsum', content: 'Loreme ipsum polelum primo' }} />} />
-        <Route exact path={routes.offer.route} render={() => <h1>{routes.offer.label}</h1>} />
+        <Route exact path={routes.offer.route} component={Offers} />
+        <Route path={`${routes.offer.route}/:alias`} render={(x) => <Offer alias={x.match.params.alias}/>}/>
         <Route exact path={routes.blog.route} render={() => <h1>{routes.blog.label}</h1>} />
         <Route exact path={routes.contact.route} render={() => <h1>{routes.contact.label}</h1>} />
         <Route exact path={routes.gallery.route} render={() => <h1>{routes.gallery.label}</h1>} />

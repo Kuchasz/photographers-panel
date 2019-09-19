@@ -5,7 +5,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
     entry: path.resolve("./src/index.tsx"),
     output: {
-        filename: "bundle.js"
+        filename: "bundle.js",
+        publicPath: '/'
     },
     mode: "development",
     module: {
@@ -112,7 +113,7 @@ module.exports = {
         }),
     ],
     devServer: {
-        port: 8080,
+        port: 8081,
         host: "192.168.56.102",
         historyApiFallback: true,
         watchOptions: {

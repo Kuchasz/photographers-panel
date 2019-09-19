@@ -1,6 +1,7 @@
 import React from "react";
 import { strings } from "../resources";
 import { randomElement, first } from "../../../utils/array";
+import { firstSegment } from "../../../utils/url";
 import { Link, withRouter } from "react-router-dom";
 import { routes, menuItems } from "../routes";
 
@@ -14,9 +15,10 @@ const getHeaderBackgroundStyle = () => {
     };
 }
 
-const selectedItem = (selectedPath: string, path: string) => selectedPath === path ? "current" : undefined;
+const selectedItem = (selectedPath: string, path: string) => firstSegment(selectedPath) === path ? "current" : undefined;
 
-export const Header = withRouter(props => <header id={first(menuItems, mi => mi.route === props.location.pathname).fullPage ? "home" : "subpage"} style={getHeaderBackgroundStyle()}>
+export const Header = withRouter(props => {
+return <header id={first(menuItems, mi => firstSegment(props.location.pathname) === mi.route).fullPage ? "home" : "subpage"} style={getHeaderBackgroundStyle()}>
     <nav>
         <ul>
             <li><Link to={routes.home.route} id={selectedItem(props.location.pathname, routes.home.route)}>{strings.menu.home}</Link></li>
@@ -42,4 +44,4 @@ export const Header = withRouter(props => <header id={first(menuItems, mi => mi.
         <Link to={routes.private.route}>{strings.menu.private}</Link>
     </div>
 
-</header>);
+</header>});

@@ -4,9 +4,12 @@ import { routes } from "../routes";
 import { Link } from "react-router-dom";
 
 const mapImage = require("../images/map.png");
-type Blog = { alias: string, content: string, title: string };
+const photographerImage = require('../images/address_ph.png');
 
-export const Home = ({ blog }: { blog: Blog }) => <><div className="offer">
+type Blog = { alias: string, content: string, title: string };
+type HomeProps = {blog: Blog};
+
+export const Home = ({ blog }: HomeProps) => <><div className="offer">
     <section>
         <h1 dangerouslySetInnerHTML={{ __html: strings.offer.title }}></h1>
         <h2>{strings.offer.description}</h2>
@@ -15,7 +18,7 @@ export const Home = ({ blog }: { blog: Blog }) => <><div className="offer">
             <h1>{strings.offer.middle.title}</h1>
             <h2>{strings.offer.middle.description}</h2>
 
-            <a href="oferta" className="button">ZOBACZ PEŁNĄ OFERTĘ</a>
+            <Link to={routes.offer.route} className="button">{strings.offer.middle.more}</Link>
         </article>
 
         <hgroup>
@@ -40,7 +43,7 @@ export const Home = ({ blog }: { blog: Blog }) => <><div className="offer">
                     <h2>{blog.title.slice(0, 220)}...</h2>
                 </a>
 
-                <Link to={routes.blog.route} className="button">POZOSTAŁE WPISY Z BLOGA</Link>
+                <Link to={routes.blog.route} className="button">{strings.article.more}</Link>
             </article>
 
             <hgroup>
@@ -49,32 +52,27 @@ export const Home = ({ blog }: { blog: Blog }) => <><div className="offer">
         </section>
     </div>
 
-    {/* <div class="contact">
+    <div className="contact">
         <section>
             <div id="left">
-                <h1>SKONTAKTUJ SIĘ Z NAMI</h1>
-                <h2>ZAPYTAJ O WSZELKIE WĄTPLIWOŚCI</h2>
+                <h1>{strings.contact.slogan.title}</h1>
+                <h2>{strings.contact.slogan.description}</h2>
             </div>
 
             <div id="right">
-                <h1>{$maincontent['email']}</h1>
-                <h2>{$maincontent['phone']} - {$maincontent['phoneMobile']}</h2>
+                <h1>{strings.contact.email}</h1>
+                <h2>{strings.contact.phone}</h2>
             </div>
         </section>
     </div>
-
-    <div class="map">
+    <div className="map">
         <section>
             <address>
                 <ul>
-                    {$key = preg_split('/[;]/', $maincontent['address'])}
-                    {foreach $key as $value}
-					<li>{$value}</li>
-                    {/foreach}
-			</ul>
-
-                <img src="media/images/address_ph.png" alt="Adres siedziby PyszStudio - Andrychów" />
+                    {strings.contact.address.map(addr => <li key={addr}>{addr}</li>)}
+                </ul>
+                <img src={photographerImage} alt="Adres siedziby PyszStudio - Andrychów" />
             </address>
         </section>
-    </div> */}
+    </div>
 </>
