@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BlogListItem, getBlogsList } from "../../../api/get-blogs-list";
+import { Link } from "react-router-dom";
 
 type BlogsProps = { initialState?: BlogListItem[] };
 type BlogsState = { blogs?: BlogListItem[] };
@@ -21,12 +22,12 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
                         <article>
                             {this.state.blogs
                                 ? this.state.blogs.map(blog => (
-                                      <a key={blog.alias} href={"/blog/" + blog.alias}>
+                                      <Link key={blog.alias} to={"/blog/" + blog.alias}>
                                           <div style={{ backgroundImage: `url(${blog.photoUrl})` }}>
                                               <div className="hover-bg">{blog.title}</div>
                                               <div className="blog-date">{blog.date}</div>
                                           </div>
-                                      </a>
+                                      </Link>
                                   ))
                                 : null}
                         </article>
@@ -35,25 +36,4 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
             </>
         );
     }
-}
-
-{
-    /* <div class="blog">
-    <section>
-        <article>
-        {foreach $blog as $blo}
-        <a href="{$smarty.server.REQUEST_URI}/{$blo->alias}">
-        <div style="background-image: url('{$base_url}media/images/blog/{$blo->date}/{$blo->blogentryphoto->find()->photourl}')">
-          <div class="hover-bg">{$blo->title}</div>
-          <div class="blog-date">{$blo->date}</div>
-        </div>
-      </a>
-        <!--
-            <h1><sup><small>{$blo->date}</small></sup><br/>{$blo->title}</h1>
-            <h2>{$blo->content|truncate:140:"...":'UTF-8'}</h2>
-        </a> -->
-        {/foreach}
-        </article>
-    </section>
-</div> */
 }

@@ -2,16 +2,22 @@
     article {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
         width: 1000px;
+
         .blog-date {
             background-color: black;
             font-size: 12px;
             padding: 8px;
             position: absolute;
         }
+
+        img {
+            align-self: center;
+        }
     }
-    article > a > div {
+
+    article>a>div {
         background-position: center;
         background-size: cover;
         height: 200px;
@@ -19,6 +25,7 @@
         overflow: hidden;
         position: relative;
         width: 300px;
+
         &:hover {
             .hover-bg {
                 opacity: 1;
@@ -26,6 +33,7 @@
             }
         }
     }
+
     .hover-bg {
         align-items: center;
         background-color: rgba(0, 0, 0, 0.9);

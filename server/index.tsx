@@ -3,14 +3,14 @@ import express from "express";
 import { randomElement } from "../utils/array";
 import { renderToString } from "react-dom/server";
 import { matchPath, StaticRouter } from "react-router";
-import { getMostRecent, getList } from "./src/models/blog";
+import * as blogModel from "./src/models/blog";
 import Root from "../site/dist/bundle.js";
 import * as getLastBlog from "../api/get-last-blog";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
 import * as getBlogsList from "../api/get-blogs-list";
-import { Dictionary } from "express-serve-static-core";
+import * as getBlog from "../api/get-blog";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
@@ -31,27 +31,33 @@ const raiseErr = (err: Error, req: any, res: any) => {
 app.use(express.static("../site/dist", { index: false }));
 
 app.get(getLastBlog.route, async (_req, res) => {
-    const blog = await getMostRecent();
+    const blog = await blogModel.getMostRecent();
     res.json(blog);
 });
 
 app.get(getBlogsList.route, async (_req, res) => {
-    const blogs = await getList();
+    const blogs = await blogModel.getList();
     res.json(blogs);
+});
+
+app.get(getBlog.route, async (req, res) => {
+    const blog = await blogModel.get(req.params.alias);
+    res.json(blog);
 });
 
 app.get("*", async (req, res) => {
     //routes.home
 
-    console.log(req.path);
-
     let desiredRoute: { route: string };
     let initialState: any;
 
     try {
-        const found = Object.values(routes).filter(p => p.route === req.path)[0];
+        const found = Object.values(routes).filter(p => matchPath(req.path, { path: p.route, exact: true }))[0];
+        const match = matchPath(req.path, { path: found.route });
+
         desiredRoute = { route: found.route };
-        initialState = desiredRoute ? await found.getData() : undefined;
+        initialState = desiredRoute ? await found.getData(match ? (match.params as any).alias : null) : undefined;
+        console.log(match);
     } catch (err) {
         raiseErr(err, req, res);
         return;

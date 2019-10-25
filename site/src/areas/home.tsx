@@ -63,7 +63,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                 </a>
                             ) : null}
 
-                            <Link to={routes.blog.route} className="button">
+                            <Link to={routes.blogs.route} className="button">
                                 {strings.article.more}
                             </Link>
                         </article>

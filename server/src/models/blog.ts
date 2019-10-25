@@ -2,6 +2,7 @@ import { connection } from "../db";
 import { LastBlog } from "../../../api/get-last-blog";
 import { BlogListItem } from "../../../api/get-blogs-list";
 import { getDateString } from "../../../utils/date";
+import { BlogEntry } from "../../../api/get-blog";
 
 export const getMostRecent = (): Promise<LastBlog> => {
     return new Promise((resolve, reject) => {
@@ -17,8 +18,6 @@ export const getMostRecent = (): Promise<LastBlog> => {
         );
     });
 };
-
-///* <div style="background-image: url('{$base_url}media/images/blog/{$blo->date}/{$blo->blogentryphoto->find()->photourl}')"> */
 
 export const getList = (): Promise<BlogListItem[]> => {
     return new Promise((resolve, reject) => {
@@ -40,6 +39,35 @@ export const getList = (): Promise<BlogListItem[]> => {
                 }));
 
                 resolve(blogListItems);
+            }
+        );
+    });
+};
+
+export const get = (alias: string): Promise<BlogEntry> => {
+    return new Promise((resolve, reject) => {
+        connection.query(
+            `
+        SELECT be.title, be.date, be.content, bep.photourl, bep.alttext 
+        FROM blogentry be 
+        JOIN blogentryphoto bep ON be.id = bep.BlogEntryId 
+        WHERE be.alias LIKE '${alias}'
+        `,
+            (_err, blogEntryPhotos, _fields) => {
+                const [first] = blogEntryPhotos;
+                const blog = {
+                    title: first.title,
+                    date: getDateString(new Date(first.date)),
+                    content: first.content,
+                    photos: blogEntryPhotos.map((p: any) => ({
+                        photoUrl: `http://pyszstudio.pl/media/images/blog/${getDateString(new Date(first.date))}/${
+                            p.photourl
+                        }`,
+                        altText: p.alttext
+                    }))
+                };
+
+                resolve(blog);
             }
         );
     });

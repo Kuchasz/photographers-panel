@@ -2,13 +2,15 @@ import { strings } from "./resources";
 import { zip } from "../../utils/array";
 import { getLastBlog } from "../../api/get-last-blog";
 import { getBlogsList } from "../../api/get-blogs-list";
+import { getBlog } from "../../api/get-blog";
 
 const empty = () => Promise.resolve({});
 
 export const routes = {
     home: { fullPage: true, route: "/", label: "Home", getData: getLastBlog },
     offer: { fullPage: false, route: "/oferta", label: "Offer", getData: empty },
-    blog: { fullPage: false, route: "/blog", label: "Blog", getData: getBlogsList },
+    blogs: { fullPage: false, route: "/blog", label: "Blog", getData: getBlogsList },
+    blog: { fullPage: false, route: "/blog/:alias", label: "Blog", getData: getBlog },
     contact: { fullPage: false, route: "/kontakt", label: "Contact", getData: empty },
     gallery: { fullPage: false, route: "/galeria", label: "Gallery", getData: empty },
     movies: { fullPage: false, route: "/filmy", label: "Movies", getData: empty },
