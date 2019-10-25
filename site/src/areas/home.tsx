@@ -19,7 +19,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 
     render() {
-        console.log(this.state);
         return (
             <>
                 <div className="offer">
@@ -58,7 +57,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                         <article>
                             {this.state.lastBlog !== undefined ? (
-                                <a href="{$base_url}blog/{$blog->alias}">
+                                <a href={"/blog/" + this.state.lastBlog.alias}>
                                     <h1>{this.state.lastBlog.title}</h1>
                                     <h2>{this.state.lastBlog.content.slice(0, 220)}...</h2>
                                 </a>

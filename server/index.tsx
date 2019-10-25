@@ -8,74 +8,86 @@ import Root from "../site/dist/bundle.js";
 import * as getLastBlog from "../api/get-last-blog";
 import fs from "fs";
 import path from "path";
-import {routes} from "../site/src/routes";
+import { routes } from "../site/src/routes";
 import * as getBlogsList from "../api/get-blogs-list";
+import { Dictionary } from "express-serve-static-core";
 require("isomorphic-fetch");
-const Youch = require('youch');
-
+const Youch = require("youch");
 
 // import Home from "../site/src/areas/home";
 
 const app = express();
 
-app.use(express.static("../site/dist", {index: false}));
+const raiseErr = (err: Error, req: any, res: any) => {
+    const youch = new Youch(err, req);
+
+    youch.toHTML().then((html: string) => {
+        res.writeHead(200, { "content-type": "text/html" });
+        res.write(html);
+        res.end();
+    });
+};
+
+app.use(express.static("../site/dist", { index: false }));
 
 app.get(getLastBlog.route, async (_req, res) => {
-  const blog = await getMostRecent();
-  res.json(blog);
+    const blog = await getMostRecent();
+    res.json(blog);
 });
 
 app.get(getBlogsList.route, async (_req, res) => {
-  const blogs = await getList();
-  res.json(blogs);
+    const blogs = await getList();
+    res.json(blogs);
 });
 
 app.get("*", async (req, res) => {
-  
-  //routes.home
+    //routes.home
 
-  const desiredRoute = Object.values(routes).filter(p => p.route === req.path)[0];//
+    console.log(req.path);
 
-  const initialState = desiredRoute ? await desiredRoute.getData() : undefined;
+    let desiredRoute: { route: string };
+    let initialState: any;
 
-  fs.readFile(path.resolve("../site/dist/index.html"), "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("An error occurred");
+    try {
+        const found = Object.values(routes).filter(p => p.route === req.path)[0];
+        desiredRoute = { route: found.route };
+        initialState = desiredRoute ? await found.getData() : undefined;
+    } catch (err) {
+        raiseErr(err, req, res);
+        return;
     }
 
-    let siteContent = "";
-    const context = {};
+    fs.readFile(path.resolve("../site/dist/index.html"), "utf8", (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("An error occurred");
+        }
 
-    try{
-      siteContent = renderToString(
-        <Root.StaticRouter location={req.url} context={context}>
-          <Root.Root initialState={initialState} />
-        </Root.StaticRouter>
-      )
-    } catch (err){
-      const youch = new Youch(err, req);
+        let siteContent = "";
+        const context = {};
 
-      youch
-      .toHTML()
-      .then((html: string) => {
-        res.writeHead(200, {'content-type': 'text/html'})
-        res.write(html)
-        res.end()
-      })
+        try {
+            siteContent = renderToString(
+                <Root.StaticRouter location={req.url} context={context}>
+                    <Root.Root initialState={initialState} />
+                </Root.StaticRouter>
+            );
+        } catch (err) {
+            raiseErr(err, req, res);
+            return;
+        }
 
-      return;
-    }
-
-    return res.send(
-      data.replace(
-        '<div id="root"></div>',
-        `<div id="root">${siteContent}</div>`
-      ).replace('{initial_state}',  `<script type="text/javascript">window.___InitialState___=${JSON.stringify({[desiredRoute.route]: initialState})}</script>`)
-    );
-  });
+        return res.send(
+            data.replace('<div id="root"></div>', `<div id="root">${siteContent}</div>`).replace(
+                "{initial_state}",
+                `<script type="text/javascript">window.___InitialState___=${JSON.stringify({
+                    [desiredRoute.route]: initialState
+                })}</script>`
+            )
+        );
+    });
 });
 
 app.listen(8080, () => {
-  console.log("Photographers-panel server started");
+    console.log("Photographers-panel server started");
 });

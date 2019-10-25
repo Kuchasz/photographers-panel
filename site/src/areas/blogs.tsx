@@ -21,8 +21,8 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
                         <article>
                             {this.state.blogs
                                 ? this.state.blogs.map(blog => (
-                                      <a key={blog.alias} href={blog.alias}>
-                                          <div style={{backgroundImage: `url(${blog.photoUrl})`}}>
+                                      <a key={blog.alias} href={"/blog/" + blog.alias}>
+                                          <div style={{ backgroundImage: `url(${blog.photoUrl})` }}>
                                               <div className="hover-bg">{blog.title}</div>
                                               <div className="blog-date">{blog.date}</div>
                                           </div>

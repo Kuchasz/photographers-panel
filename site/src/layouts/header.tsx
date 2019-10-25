@@ -6,8 +6,9 @@ import { Link, withRouter } from "react-router-dom";
 import { routes, menuItems } from "../routes";
 import logo from "../images/logo.png";
 
+const chosenPhoto = randomElement(strings.main.topPhotos);
+
 const getHeaderBackgroundStyle = () => {
-    const chosenPhoto = randomElement(strings.main.topPhotos);
     const url = require(`../images/top/${chosenPhoto}`);
     return {
         backgroundImage: `url(${url})`
