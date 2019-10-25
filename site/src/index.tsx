@@ -11,6 +11,7 @@ import { StaticRouter } from "react-router";
 
 if (typeof document !== 'undefined') {
     const initialState: any = (window as any).___InitialState___;
+    delete (window as any).___InitialState___;
 
     hydrate(
         <BrowserRouter>

@@ -3,13 +3,13 @@ import express from "express";
 import { randomElement } from "../utils/array";
 import { renderToString } from "react-dom/server";
 import { matchPath, StaticRouter } from "react-router";
-import { getMostRecent } from "./src/models/blog";
+import { getMostRecent, getList } from "./src/models/blog";
 import Root from "../site/dist/bundle.js";
 import * as getLastBlog from "../api/get-last-blog";
-import * as getBlogsList from "../api/get-blogs-list";
 import fs from "fs";
 import path from "path";
 import {routes} from "../site/src/routes";
+import * as getBlogsList from "../api/get-blogs-list";
 require("isomorphic-fetch");
 const Youch = require('youch');
 
@@ -25,7 +25,10 @@ app.get(getLastBlog.route, async (_req, res) => {
   res.json(blog);
 });
 
-app.get(ge)
+app.get(getBlogsList.route, async (_req, res) => {
+  const blogs = await getList();
+  res.json(blogs);
+});
 
 app.get("*", async (req, res) => {
   
@@ -68,7 +71,7 @@ app.get("*", async (req, res) => {
       data.replace(
         '<div id="root"></div>',
         `<div id="root">${siteContent}</div>`
-      ).replace('{initial_state}',  `<script type="text/javascript">window.___InitialState___=${JSON.stringify(initialState)}</script>`)
+      ).replace('{initial_state}',  `<script type="text/javascript">window.___InitialState___=${JSON.stringify({[desiredRoute.route]: initialState})}</script>`)
     );
   });
 });

@@ -1,10 +1,11 @@
 import * as React from "react";
 import { BlogListItem, getBlogsList } from "../../../api/get-blogs-list";
 
-type BlogsProps = {};
-type BlogsState = { blogs: BlogListItem[] };
+type BlogsProps = { initialState?: BlogListItem[] };
+type BlogsState = { blogs?: BlogListItem[] };
 
 export class Blogs extends React.Component<BlogsProps, BlogsState> {
+    state = this.props.initialState !== undefined ? { blogs: this.props.initialState } : { blogs: undefined };
 
     componentDidMount() {
         if (this.state.blogs === undefined) {
@@ -18,15 +19,16 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
                 <div className="blog">
                     <section>
                         <article>
-                            {this.state.blogs.map(blog => (
-                                <a href="{$smarty.server.REQUEST_URI}/{$blo->alias}">
-                                    {/* <div style="background-image: url('{$base_url}media/images/blog/{$blo->date}/{$blo->blogentryphoto->find()->photourl}')"> */}
-                                    <div>
-                                        <div className="hover-bg">{blog.title}</div>
-                                        <div className="blog-date">{blog.date}</div>
-                                    </div>
-                                </a>
-                            ))}
+                            {this.state.blogs
+                                ? this.state.blogs.map(blog => (
+                                      <a key={blog.alias} href={blog.alias}>
+                                          <div style={{backgroundImage: `url(${blog.photoUrl})`}}>
+                                              <div className="hover-bg">{blog.title}</div>
+                                              <div className="blog-date">{blog.date}</div>
+                                          </div>
+                                      </a>
+                                  ))
+                                : null}
                         </article>
                     </section>
                 </div>

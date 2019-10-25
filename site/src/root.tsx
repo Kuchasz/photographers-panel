@@ -8,6 +8,7 @@ import { routes } from "./routes";
 import { Home } from "./areas/home";
 import { Offers } from "./areas/offers";
 import { Offer } from "./areas/offer";
+import { Blogs } from "./areas/blogs";
 
 export const Root = ({initialState}: {initialState?: any}) => (
     <>
@@ -15,10 +16,10 @@ export const Root = ({initialState}: {initialState?: any}) => (
         <Slogan />
         <span>
             <Switch>
-                <Route exact path={routes.home.route} render={() => <Home initialState={initialState} />} />
+                <Route exact path={routes.home.route} render={() => <Home initialState={initialState[routes.home.route]} />} />
                 <Route exact path={routes.offer.route} component={Offers} />
                 <Route path={`${routes.offer.route}/:alias`} render={x => <Offer alias={x.match.params.alias} />} />
-                <Route exact path={routes.blog.route} render={() => <h1>{routes.blog.label}</h1>} />
+                <Route exact path={routes.blog.route} render={() => <Blogs initialState={initialState[routes.blog.route]} />} />
                 <Route exact path={routes.contact.route} render={() => <h1>{routes.contact.label}</h1>} />
                 <Route exact path={routes.gallery.route} render={() => <h1>{routes.gallery.label}</h1>} />
                 <Route exact path={routes.links.route} render={() => <h1>{routes.links.label}</h1>} />

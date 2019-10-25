@@ -19,6 +19,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 
     render() {
+        console.log(this.state);
         return (
             <>
                 <div className="offer">
