@@ -4,8 +4,7 @@ import { randomElement, first } from "../../../utils/array";
 import { firstSegment } from "../../../utils/url";
 import { Link, withRouter } from "react-router-dom";
 import { routes, menuItems } from "../routes";
-
-const logo = require("../images/logo.png");
+import logo from "../images/logo.png";
 
 const getHeaderBackgroundStyle = () => {
     const chosenPhoto = randomElement(strings.main.topPhotos);

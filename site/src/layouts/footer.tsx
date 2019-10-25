@@ -1,6 +1,6 @@
 import React from "react";
 import { strings } from "../resources";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router";
 import { menuItems } from "../routes";
 
 export const Footer = () => <footer>
@@ -8,7 +8,7 @@ export const Footer = () => <footer>
         <div id="left">
             <h1>{strings.footer.copyrights}</h1>
             <ul>
-                {menuItems.map((mi, index) => <li key={mi.route}><Link to={mi.route}>{mi.label}</Link> {index < menuItems.length -1 ? ' / ' : undefined }</li>)}
+                {/* {menuItems.map((mi, index) => <li key={mi.route}><Link to={mi.route}>{mi.label}</Link> {index < menuItems.length -1 ? ' / ' : undefined }</li>)} */}
             </ul>
         </div>
         <div id="right">

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:development": "webpack --mode development",
+    "build:development": "rimraf ./dist | webpack --mode development",
+    "watch:development": "rimraf ./dist | webpack --mode development --watch",
     "build:production": "webpack --mode production",
     "start": "webpack-dev-server"
   },
@@ -14,15 +15,14 @@
   "dependencies": {
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
-    "@types/react-router-dom": "^4.3.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-localization": "^1.0.15",
-    "react-router-dom": "^5.0.1",
     "typescript": "^3.6.3",
     "webpack": "^4.40.2"
   },
   "devDependencies": {
+    "@types/react-router-dom": "^5.1.0",
     "autoprefixer": "^9.6.1",
     "css-loader": "^3.2.0",
     "extract-text-webpack-plugin": "^3.0.2",
@@ -33,6 +33,7 @@
     "mini-create-react-context": "^0.3.2",
     "mini-css-extract-plugin": "^0.8.0",
     "postcss-loader": "^3.0.0",
+    "react-router-dom": "^5.1.2",
     "resolve-url-loader": "^3.1.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",

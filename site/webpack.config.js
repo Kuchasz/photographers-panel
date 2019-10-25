@@ -6,7 +6,10 @@ module.exports = {
     entry: path.resolve("./src/index.tsx"),
     output: {
         filename: "bundle.js",
-        publicPath: '/'
+        publicPath: '/',
+        library: 'Root',
+        libraryTarget: 'umd',
+        globalObject: 'this'
     },
     mode: "development",
     module: {
