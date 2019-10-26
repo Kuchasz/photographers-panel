@@ -38,10 +38,11 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                         ></div>
                         <br />
                         <br />
-
-                        {this.state.blog.photos.map(p => (
-                            <img key={p.photoUrl} src={p.photoUrl} alt={p.altText} />
-                        ))}
+                        <div className="photos">
+                            {this.state.blog.photos.map(p => (
+                                <img key={p.photoUrl} src={p.photoUrl} alt={p.altText} />
+                            ))}
+                        </div>
                     </article>
                 </section>
                 <div id="fb-root"></div>

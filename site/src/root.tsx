@@ -10,6 +10,8 @@ import { Offers } from "./areas/offers";
 import { Offer } from "./areas/offer";
 import { Blogs } from "./areas/blogs";
 import { Blog } from "./areas/blog";
+import { Contact } from "./areas/contact";
+import {Links} from "./areas/links";
 
 export const Root = ({ initialState }: { initialState?: any }) => (
     <>
@@ -34,9 +36,9 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     path={routes.blog.route}
                     render={x => <Blog alias={x.match.params.alias} initialState={initialState[routes.blog.route]} />}
                 />
-                <Route exact path={routes.contact.route} render={() => <h1>{routes.contact.label}</h1>} />
+                <Route exact path={routes.contact.route} render={() => <Contact/>} />
                 <Route exact path={routes.gallery.route} render={() => <h1>{routes.gallery.label}</h1>} />
-                <Route exact path={routes.links.route} render={() => <h1>{routes.links.label}</h1>} />
+                <Route exact path={routes.links.route} render={() => <Links/>} />
                 <Route exact path={routes.movies.route} render={() => <h1>{routes.movies.label}</h1>} />
                 <Route exact path={routes.private.route} render={() => <h1>{routes.private.label}</h1>} />
             </Switch>
