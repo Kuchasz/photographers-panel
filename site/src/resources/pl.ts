@@ -25,7 +25,6 @@ export const pl = {
         form: {
             name: "podaj imię i nazwisko",
             email: "podaj swój adres e-mail",
-            subject: "podaj temat wiadomości",
             content: "wpisz treść wiadomości",
             submit: "WYŚLIJ WIADOMOŚĆ"
         },

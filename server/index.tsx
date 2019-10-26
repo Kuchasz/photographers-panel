@@ -4,6 +4,7 @@ import { randomElement } from "../utils/array";
 import { renderToString } from "react-dom/server";
 import { matchPath, StaticRouter } from "react-router";
 import * as blogModel from "./src/models/blog";
+import * as messageModel from "./src/models/message";
 import Root from "../site/dist/bundle.js";
 import * as getLastBlog from "../api/get-last-blog";
 import fs from "fs";
@@ -11,12 +12,14 @@ import path from "path";
 import { routes } from "../site/src/routes";
 import * as getBlogsList from "../api/get-blogs-list";
 import * as getBlog from "../api/get-blog";
+import * as sendMessage from "../api/send-message";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
 // import Home from "../site/src/areas/home";
 
 const app = express();
+app.use(express.json());
 
 const raiseErr = (err: Error, req: any, res: any) => {
     const youch = new Youch(err, req);
@@ -43,6 +46,15 @@ app.get(getBlogsList.route, async (_req, res) => {
 app.get(getBlog.route, async (req, res) => {
     const blog = await blogModel.get(req.params.alias);
     res.json(blog);
+});
+
+app.post(sendMessage.route, async (req, res) => {
+    const error = messageModel.validate(req.body);
+    const result: sendMessage.MessageSendResult = error
+        ? { type: sendMessage.MessageSendResultType.Error, error }
+        : { type: sendMessage.MessageSendResultType.Success };
+        
+    res.json(result);
 });
 
 app.get("*", async (req, res) => {
