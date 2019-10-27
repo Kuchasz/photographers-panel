@@ -1,10 +1,10 @@
 import * as React from "react";
-import { strings } from "../resources";
-import { routes } from "../routes";
-import { Link } from "react-router-dom";
-import { getLastBlog, LastBlog } from "../../../api/get-last-blog";
 import mapImage from "../images/map.png";
 import photographerImage from "../images/address_ph.png";
+import { getLastBlog, LastBlog } from "../../../api/get-last-blog";
+import { Link } from "react-router-dom";
+import { routes } from "../routes";
+import { strings } from "../resources";
 
 type HomeProps = { initialState?: LastBlog };
 type HomeState = { lastBlog?: LastBlog };
@@ -56,12 +56,14 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         <h2>{strings.article.description}</h2>
 
                         <article>
-                            {this.state.lastBlog !== undefined ? (
-                                <a href={"/blog/" + this.state.lastBlog.alias}>
-                                    <h1>{this.state.lastBlog.title}</h1>
-                                    <h2>{this.state.lastBlog.content.slice(0, 220)}...</h2>
-                                </a>
-                            ) : null}
+                            <span>
+                                {this.state.lastBlog !== undefined ? (
+                                    <Link to={`/blog/${this.state.lastBlog.alias}`}>
+                                        <h1>{this.state.lastBlog.title}</h1>
+                                        <h2>{this.state.lastBlog.content.slice(0, 220)}...</h2>
+                                    </Link>
+                                ) : null}
+                            </span>
 
                             <Link to={routes.blogs.route} className="button">
                                 {strings.article.more}

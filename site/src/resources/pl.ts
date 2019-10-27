@@ -64,6 +64,23 @@ export const pl = {
             { label: "Zespół Reda", url: "www.zespolreda.pl" }
         ]
     },
+    privateGallery: {
+        title: "Galeria zdjęć",
+        description:
+            "Jeśli byłeś uczestnikiem wesela i chciałbyś zobaczyć galerię zdjęć przygotowaną przez naszą firmę, wpisz poniżej otrzymane na uroczystości hasło.",
+        closed: {
+            title: "Galeria wyłączona!",
+            description:
+                "Przepraszamy, ale galeria z Państwa wesela nie jest już dostępna za pośrednictwem internetowej galerii."
+        },
+        soon: {
+            title: "Galeria już wkrótce...",
+            description:
+                "Galeria z Państwa wesela jeszcze nie została udostępniona, niemniej jednak pojawi się już niedługo. Tymczasem zachęcamy do pozostawienia swojego adresu e-mail w celu wysłania powiadomienia, gdy galeria będzie już dostępna."
+        },
+        password: "podaj hasło",
+        enter: "WEJDŹ DO GALERII"
+    },
     offer: {
         title: "Co <span>możemy</span> Ci <span>zaoferować</span>?",
         positions: [
