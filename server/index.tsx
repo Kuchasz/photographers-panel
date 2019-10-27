@@ -53,8 +53,10 @@ app.post(sendMessage.route, async (req, res) => {
     const result: sendMessage.MessageSendResult = error
         ? { type: sendMessage.MessageSendResultType.Error, error }
         : { type: sendMessage.MessageSendResultType.Success };
-        
-    res.json(result);
+
+    setTimeout(() => {
+        res.json(result);
+    }, 500);
 });
 
 app.get("*", async (req, res) => {

@@ -36,9 +36,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
 
     sendMessage() {
         this.setState({ isLoading: true }, () => {
-            setTimeout(() => {
-                sendMessage(this.state).then(result => this.setState({ result, isLoading: false }));
-            }, 300);
+            sendMessage(this.state).then(result => this.setState({ result, isLoading: false }));
         });
     }
 
@@ -67,7 +65,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
                         </h2>
 
                         <div className="form">
-                            {this.state.isLoading ? <div className="cover"></div> : null}
+                            {this.state.isLoading ? <div className="cover">Sending an message...</div> : null}
                             <form acceptCharset="utf-8">
                                 {this.state.result ? (
                                     <div>
