@@ -1,7 +1,7 @@
 import * as React from "react";
-import { strings } from "../resources";
-
 import linkPhoto from "../images/link_foto.png";
+import { Link } from "react-router-dom";
+import { strings } from "../resources";
 
 type LinksProps = {};
 type LinksState = {};
@@ -15,9 +15,9 @@ export class Links extends React.Component<LinksProps, LinksState> {
                         <h1>{strings.link.title}</h1>
                         <h2>{strings.link.description}</h2>
 
-                        <a href="kontakt" className="button">
-                        {strings.link.contactNow}
-                        </a>
+                        <Link to="/kontakt" className="button">
+                            {strings.link.contactNow}
+                        </Link>
 
                         <h3>{strings.link.linksHeader}</h3>
 

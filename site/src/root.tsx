@@ -1,17 +1,18 @@
 import * as React from "react";
+import { Blog } from "./areas/blog";
+import { Blogs } from "./areas/blogs";
+import { Contact } from "./areas/contact";
+import { Footer } from "./layouts/footer";
 import { Head } from "./layouts/head";
 import { Header } from "./layouts/header";
-import { Slogan } from "./layouts/slogan";
-import { Footer } from "./layouts/footer";
+import { Home } from "./areas/home";
+import { Links } from "./areas/links";
+import { Offer } from "./areas/offer";
+import { Offers } from "./areas/offers";
+import { PrivateGallery } from "./areas/privateGallery";
 import { Route, Switch } from "react-router-dom";
 import { routes } from "./routes";
-import { Home } from "./areas/home";
-import { Offers } from "./areas/offers";
-import { Offer } from "./areas/offer";
-import { Blogs } from "./areas/blogs";
-import { Blog } from "./areas/blog";
-import { Contact } from "./areas/contact";
-import {Links} from "./areas/links";
+import { Slogan } from "./layouts/slogan";
 
 export const Root = ({ initialState }: { initialState?: any }) => (
     <>
@@ -36,11 +37,11 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     path={routes.blog.route}
                     render={x => <Blog alias={x.match.params.alias} initialState={initialState[routes.blog.route]} />}
                 />
-                <Route exact path={routes.contact.route} render={() => <Contact/>} />
+                <Route exact path={routes.contact.route} render={() => <Contact />} />
                 <Route exact path={routes.gallery.route} render={() => <h1>{routes.gallery.label}</h1>} />
-                <Route exact path={routes.links.route} render={() => <Links/>} />
+                <Route exact path={routes.links.route} render={() => <Links />} />
                 <Route exact path={routes.movies.route} render={() => <h1>{routes.movies.label}</h1>} />
-                <Route exact path={routes.private.route} render={() => <h1>{routes.private.label}</h1>} />
+                <Route exact path={routes.private.route} render={() => <PrivateGallery />} />
             </Switch>
         </span>
         <Footer />
