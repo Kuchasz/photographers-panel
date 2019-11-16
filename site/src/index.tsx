@@ -10,7 +10,7 @@ import { BrowserRouter } from "react-router-dom";
 import { StaticRouter } from "react-router";
 
 if (typeof document !== 'undefined') {
-    const initialState: any = (window as any).___InitialState___;
+    let initialState: any = (window as any).___InitialState___;
     delete (window as any).___InitialState___;
 
     hydrate(
@@ -19,6 +19,8 @@ if (typeof document !== 'undefined') {
         </BrowserRouter>,
         document.querySelector("#root")
     );
+
+    initialState = undefined;
 } else {
     module.exports = {
         Root,
