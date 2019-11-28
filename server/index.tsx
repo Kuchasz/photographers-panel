@@ -5,6 +5,7 @@ import { renderToString } from "react-dom/server";
 import { matchPath, StaticRouter } from "react-router";
 import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
+import * as privateGalleryModel from "./src/models/private-gallery";
 import Root from "../site/dist/bundle.js";
 import * as getLastBlog from "../api/get-last-blog";
 import fs from "fs";
@@ -13,6 +14,7 @@ import { routes } from "../site/src/routes";
 import * as getBlogsList from "../api/get-blogs-list";
 import * as getBlog from "../api/get-blog";
 import * as sendMessage from "../api/send-message";
+import * as getPrivateGalleryUrl from "../api/get-private-gallery-url";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
@@ -57,6 +59,12 @@ app.post(sendMessage.route, async (req, res) => {
     setTimeout(() => {
         res.json(result);
     }, 500);
+});
+
+app.get(getPrivateGalleryUrl.route, async (req, res) => {
+    const gallery = await privateGalleryModel.getUrl(req.params.password);
+
+    res.json(gallery);
 });
 
 app.get("*", async (req, res) => {

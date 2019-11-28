@@ -34,7 +34,7 @@ export const Header = withRouter(props => {
                         </Link>
                     </li>
                     <li>
-                        <Link to={routes.offer.route} id={selectedItem(props.location.pathname, routes.offer.route)}>
+                        <Link to={routes.offers.route} id={selectedItem(props.location.pathname, routes.offers.route)}>
                             {strings.menu.offer}
                         </Link>
                     </li>

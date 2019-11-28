@@ -1,11 +1,11 @@
 @font-face {
     font-family: "Century Gothic";
-    src: url(../fonts/GOTHIC.ttf);
+    src: url(../fonts/MYRIADPRO-REGULAR.woff);
 }
 
 @font-face {
     font-family: "Century Gothic Bold";
-    src: url(../fonts/GOTHICB.ttf);
+    src: url(../fonts/MYRIADPRO-BOLD.woff);
 }
 
 article,

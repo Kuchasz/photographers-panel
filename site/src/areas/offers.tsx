@@ -5,7 +5,7 @@ import { routes } from "../routes";
 
 const offers = strings.offer.positions;
 const getOfferImage = (imageFileName: string) => require(`../images/offers/${imageFileName}`);
-const getOfferUrl = (alias: string) => `${routes.offer.route}/${alias}`;
+const getOfferUrl = (alias: string) => `${routes.offers.route}/${alias}`;
 
 export const Offers = () => <div className="offers">
     <section>

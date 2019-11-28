@@ -66,7 +66,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
 
                         <div className="form">
                             {this.state.isLoading ? <div className="cover">Sending an message...</div> : null}
-                            <form acceptCharset="utf-8">
+                            <div>
                                 {this.state.result ? (
                                     <div>
                                         {this.state.result.type === MessageSendResultType.Success ? "Sent" : "Not sent"}
@@ -100,7 +100,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
                                         {strings.contact.form.submit}
                                     </a>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                         <br />
                         <br />

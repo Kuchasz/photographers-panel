@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node index.tsx"
+    "start": "ts-node index.tsx",
+    "watch": "nodemon --watch ../site/dist --watch src --exec \"ts-node\" index.tsx"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "isomorphic-fetch": "^2.2.1",
+    "nodemon": "^2.0.1",
     "youch": "^2.0.10"
   }
 }

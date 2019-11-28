@@ -8,7 +8,7 @@ const empty = () => Promise.resolve({});
 
 export const routes = {
     home: { fullPage: true, route: "/", label: "Home", getData: getLastBlog },
-    offer: { fullPage: false, route: "/oferta", label: "Offer", getData: empty },
+    offers: { fullPage: false, route: "/oferta", label: "Offer", getData: empty },
     blogs: { fullPage: false, route: "/blog", label: "Blog", getData: getBlogsList },
     blog: { fullPage: false, route: "/blog/:alias", label: "Blog", getData: getBlog },
     contact: { fullPage: false, route: "/kontakt", label: "Contact", getData: empty },
@@ -23,5 +23,6 @@ type MenuItems = keyof typeof strings.menu;
 const mapToMenuItem = (v: { route: string; fullPage: boolean }, k: MenuItems): MenuItem => {
     return { route: v.route, fullPage: v.fullPage, label: strings.menu[k] };
 };
+
 
 export const menuItems = zip(Object.values(routes), Object.keys(routes) as MenuItems[], mapToMenuItem);

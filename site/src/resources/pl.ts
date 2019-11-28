@@ -67,16 +67,24 @@ export const pl = {
     privateGallery: {
         title: "Galeria zdjęć",
         description:
-            "Jeśli byłeś uczestnikiem wesela i chciałbyś zobaczyć galerię zdjęć przygotowaną przez naszą firmę, wpisz poniżej otrzymane na uroczystości hasło.",
-        closed: {
-            title: "Galeria wyłączona!",
-            description:
-                "Przepraszamy, ale galeria z Państwa wesela nie jest już dostępna za pośrednictwem internetowej galerii."
+            "Jeśli byłeś uczestnikiem wesela i chciałbyś zobaczyć zdjęcia wpisz poniżej otrzymane na uroczystości hasło.",
+        notExists: {
+            title: "Galeria nie istnieje",
+            description: "Nie istnieje galeria pod takim hasłem, spróbuj wpisać je ponownie."
         },
-        soon: {
-            title: "Galeria już wkrótce...",
+        available: {
+            title: "Galeria :bride i :groom",
+            description: "Galeria jest już gotowa, kliknij przycisk poniżej aby obejrzeć zdjęcia."    
+        },
+        turnedOff: {
+            title: "Galeria :bride i :groom wyłączona!",
             description:
-                "Galeria z Państwa wesela jeszcze nie została udostępniona, niemniej jednak pojawi się już niedługo. Tymczasem zachęcamy do pozostawienia swojego adresu e-mail w celu wysłania powiadomienia, gdy galeria będzie już dostępna."
+                "Przepraszamy, ale ta galeria nie jest już dostępna."
+        },
+        notReady: {
+            title: "Galeria :bride i :groom już wkrótce...",
+            description:
+                "Galeria z wesela jeszcze nie została udostępniona, pojawi się już niedługo. Pozostaw adres e-mail a powiadomimy Cię gdy galeria będzie już dostępna."
         },
         password: "podaj hasło",
         enter: "WEJDŹ DO GALERII"

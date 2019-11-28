@@ -30,7 +30,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                             <h1>{strings.offer.middle.title}</h1>
                             <h2>{strings.offer.middle.description}</h2>
 
-                            <Link to={routes.offer.route} className="button">
+                            <Link to={routes.offers.route} className="button">
                                 {strings.offer.middle.more}
                             </Link>
                         </article>

@@ -9,7 +9,7 @@ import { Home } from "./areas/home";
 import { Links } from "./areas/links";
 import { Offer } from "./areas/offer";
 import { Offers } from "./areas/offers";
-import { PrivateGallery } from "./areas/privateGallery";
+import { PrivateGallery } from "./areas/private-gallery";
 import { Route, Switch } from "react-router-dom";
 import { routes } from "./routes";
 import { Slogan } from "./layouts/slogan";
@@ -25,8 +25,8 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     path={routes.home.route}
                     render={() => <Home initialState={initialState[routes.home.route]} />}
                 />
-                <Route exact path={routes.offer.route} component={Offers} />
-                <Route path={`${routes.offer.route}/:alias`} render={x => <Offer alias={x.match.params.alias} />} />
+                <Route exact path={routes.offers.route} component={Offers} />
+                <Route path={routes.offers.route} render={x => <Offer alias={x.match.params.alias} />} />
                 <Route
                     exact
                     path={routes.blogs.route}
