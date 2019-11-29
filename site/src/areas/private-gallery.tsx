@@ -51,6 +51,7 @@ const getContent = (
 type PrivateGalleryProps = {};
 type PrivateGalleryState = {
     password: string;
+    email: string;
     isLoading?: boolean;
     result?: getPrivateGalleryUrl.PrivateGalleryUrlCheckResult;
 };
@@ -58,6 +59,7 @@ type PrivateGalleryState = {
 export class PrivateGallery extends React.Component<PrivateGalleryProps, PrivateGalleryState> {
     state = {
         password: "",
+        email: "",
         result: undefined,
         isLoading: undefined
     } as PrivateGalleryState;
@@ -66,17 +68,27 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
         this.setState({ password });
     }
 
+    onEmailChange(email: string) {
+        this.setState({ email });
+    }
+
     getPrivateGalleryUrl() {
         if (this.state.password) {
             this.setState({ isLoading: true });
             getPrivateGalleryUrl.getGalleryUrl(this.state.password).then(result => {
-                this.setState({ result, isLoading: false });
+                const passwordReset = result.gallery === undefined;
+                this.setState(state => ({ result, isLoading: false, password: passwordReset ? "" : state.password }));
             });
         }
     }
 
+    subscribeForNotification(){
+        
+    }
+
     render() {
         const content = getContent(this.state.isLoading, this.state.result);
+        const result = this.state.result;
         return (
             <div className="contact_form">
                 <section>
@@ -84,22 +96,56 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                         <h1>{content.title}</h1>
                         <h2>{content.description}</h2>
 
-                        <div>
-                            {/* {$info} */}
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder={strings.privateGallery.password}
-                                onChange={e => this.onPasswordChange(e.target.value)}
-                                value={this.state.password}
-                                required
-                            ></input>
+                        {!result || !result.gallery ? (
                             <div>
-                                <a onClick={e => this.getPrivateGalleryUrl()} className="button">
-                                    {strings.privateGallery.enter}
-                                </a>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    placeholder={strings.privateGallery.password}
+                                    onChange={e => this.onPasswordChange(e.target.value)}
+                                    value={this.state.password}
+                                    required
+                                ></input>
+                                <div>
+                                    <a onClick={e => this.getPrivateGalleryUrl()} className="button">
+                                        {strings.privateGallery.check}
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        ) : null}
+                        {result &&
+                        result.gallery &&
+                        result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.NotReady ? (
+                            <div>
+                                <input 
+                                    onChange={e => this.onEmailChange(e.target.value)} value={this.state.email} type="email" name="email" placeholder={strings.privateGallery.email} required />
+                                <input onClick={e => this.subscribeForNotification()} type="submit" name="submit" value={strings.privateGallery.subscribe} />
+                            </div>
+                        ) : null}
+                        {result && result.gallery ? (
+                            <div>
+                                {result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.Available ? (
+                                    <Link to={result.gallery.url} className="button">
+                                        {strings.privateGallery.enterGallery}
+                                    </Link>
+                                ) : result.blog ? (
+                                    <div>
+                                        <span>
+                                            {strings.privateGallery.blogAvailable.replace(":title", result.blog.title)}
+                                        </span>
+                                        <br />
+                                        <br />
+                                        <Link
+                                            className="button"
+                                            key={result.blog.alias}
+                                            to={"/blog/" + result.blog.alias}
+                                        >
+                                            {strings.privateGallery.enterBlog}
+                                        </Link>
+                                    </div>
+                                ) : null}
+                            </div>
+                        ) : null}
                     </article>
 
                     <hgroup>

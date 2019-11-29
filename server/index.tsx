@@ -7,14 +7,13 @@ import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
 import * as privateGalleryModel from "./src/models/private-gallery";
 import Root from "../site/dist/bundle.js";
-import * as getLastBlog from "../api/get-last-blog";
+import * as blog from "../api/blog";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
-import * as getBlogsList from "../api/get-blogs-list";
-import * as getBlog from "../api/get-blog";
 import * as sendMessage from "../api/send-message";
 import * as getPrivateGalleryUrl from "../api/get-private-gallery-url";
+import { ResultType } from "../api/common";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
@@ -35,17 +34,17 @@ const raiseErr = (err: Error, req: any, res: any) => {
 
 app.use(express.static("../site/dist", { index: false }));
 
-app.get(getLastBlog.route, async (_req, res) => {
+app.get(blog.getLastBlog.route, async (_req, res) => {
     const blog = await blogModel.getMostRecent();
     res.json(blog);
 });
 
-app.get(getBlogsList.route, async (_req, res) => {
+app.get(blog.getBlogsList.route, async (_req, res) => {
     const blogs = await blogModel.getList();
     res.json(blogs);
 });
 
-app.get(getBlog.route, async (req, res) => {
+app.get(blog.getBlog.route, async (req, res) => {
     const blog = await blogModel.get(req.params.alias);
     res.json(blog);
 });
@@ -53,8 +52,8 @@ app.get(getBlog.route, async (req, res) => {
 app.post(sendMessage.route, async (req, res) => {
     const error = messageModel.validate(req.body);
     const result: sendMessage.MessageSendResult = error
-        ? { type: sendMessage.MessageSendResultType.Error, error }
-        : { type: sendMessage.MessageSendResultType.Success };
+        ? { type: ResultType.Error, error }
+        : { type: ResultType.Success };
 
     setTimeout(() => {
         res.json(result);

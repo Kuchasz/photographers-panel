@@ -1,6 +1,7 @@
 import * as React from "react";
 import { strings } from "../resources";
-import { sendMessage, MessageSendResult, MessageSendResultType } from "../../../api/send-message";
+import { sendMessage, MessageSendResult } from "../../../api/send-message";
+import { ResultType } from "../../../api/common";
 
 import contactPhoto from "../images/contact_foto.png";
 
@@ -68,9 +69,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
                             {this.state.isLoading ? <div className="cover">Sending an message...</div> : null}
                             <div>
                                 {this.state.result ? (
-                                    <div>
-                                        {this.state.result.type === MessageSendResultType.Success ? "Sent" : "Not sent"}
-                                    </div>
+                                    <div>{this.state.result.type === ResultType.Success ? "Sent" : "Not sent"}</div>
                                 ) : null}
                                 <input
                                     type="text"

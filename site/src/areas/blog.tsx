@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BlogEntry, getBlog } from "../../../api/get-blog";
+import { BlogEntry, getBlog } from "../../../api/blog";
 
 type BlogProps = { initialState?: BlogEntry; alias: string };
 type BlogState = { blog?: BlogEntry };

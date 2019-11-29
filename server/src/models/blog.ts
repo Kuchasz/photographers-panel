@@ -2,10 +2,10 @@ import { connection } from "../db";
 import { LastBlog } from "../../../api/get-last-blog";
 import { BlogListItem } from "../../../api/get-blogs-list";
 import { getDateString } from "../../../utils/date";
-import { BlogEntry } from "../../../api/get-blog";
+import { BlogEntry } from "../../../api/blog";
 
-export const getMostRecent = (): Promise<LastBlog> => {
-    return new Promise((resolve, reject) => {
+export const getMostRecent = (): Promise<LastBlog> =>
+    new Promise((resolve, reject) => {
         connection.query(
             `
       SELECT alias, content, title FROM blogentry 
@@ -17,10 +17,9 @@ export const getMostRecent = (): Promise<LastBlog> => {
             }
         );
     });
-};
 
-export const getList = (): Promise<BlogListItem[]> => {
-    return new Promise((resolve, reject) => {
+export const getList = (): Promise<BlogListItem[]> =>
+    new Promise((resolve, reject) => {
         connection.query(
             `
       SELECT be.title, be.date, be.alias, bep.photourl, bep.alttext FROM blogentry be 
@@ -42,10 +41,9 @@ export const getList = (): Promise<BlogListItem[]> => {
             }
         );
     });
-};
 
-export const get = (alias: string): Promise<BlogEntry> => {
-    return new Promise((resolve, reject) => {
+export const get = (alias: string): Promise<BlogEntry> =>
+    new Promise((resolve, reject) => {
         connection.query(
             `
         SELECT be.title, be.date, be.content, bep.photourl, bep.alttext 
@@ -71,4 +69,3 @@ export const get = (alias: string): Promise<BlogEntry> => {
             }
         );
     });
-};

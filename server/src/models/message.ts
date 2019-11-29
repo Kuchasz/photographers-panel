@@ -1,8 +1,9 @@
 import { Message, MessageValidationError } from "../../../api/send-message";
+import * as email from "./email";
 
 const validateName = (message: Message) => message.name.length > 0;
 const validateEmail = (message: Message) =>
-    /^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/.test(message.email);
+    email.validate(message.email);
 const validateContent = (message: Message) => message.content.length > 0;
 
 const assert = (message: Message, validator: (message: Message) => boolean, errorMessage: MessageValidationError) =>

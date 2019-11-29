@@ -1,8 +1,6 @@
 import { strings } from "./resources";
 import { zip } from "../../utils/array";
-import { getLastBlog } from "../../api/get-last-blog";
-import { getBlogsList } from "../../api/get-blogs-list";
-import { getBlog } from "../../api/get-blog";
+import { getBlog, getBlogsList, getLastBlog } from "../../api/blog";
 
 const empty = () => Promise.resolve({});
 

@@ -1,3 +1,5 @@
+import { Result } from "./common";
+
 export interface Message {
     name: string;
     email: string;
@@ -6,15 +8,7 @@ export interface Message {
 
 export type MessageValidationError = "NameTooShort" | "ContentTooShort" | "EmailInvalid";
 
-export enum MessageSendResultType {
-    Success,
-    Error
-}
-
-type Success = { type: MessageSendResultType.Success };
-type Error = { type: MessageSendResultType.Error; error: MessageValidationError };
-
-export type MessageSendResult = Success | Error;
+export type MessageSendResult = Result<MessageValidationError>;
 
 export const route = "/api/send-message";
 

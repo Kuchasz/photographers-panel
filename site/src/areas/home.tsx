@@ -1,7 +1,7 @@
 import * as React from "react";
 import mapImage from "../images/map.png";
 import photographerImage from "../images/address_ph.png";
-import { getLastBlog, LastBlog } from "../../../api/get-last-blog";
+import { getLastBlog, LastBlog } from "../../../api/blog";
 import { Link } from "react-router-dom";
 import { routes } from "../routes";
 import { strings } from "../resources";

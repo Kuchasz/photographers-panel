@@ -77,17 +77,22 @@ export const pl = {
             description: "Galeria jest już gotowa, kliknij przycisk poniżej aby obejrzeć zdjęcia."    
         },
         turnedOff: {
-            title: "Galeria :bride i :groom wyłączona!",
+            title: "Galeria :bride i :groom nie jest już dostępna",
             description:
                 "Przepraszamy, ale ta galeria nie jest już dostępna."
         },
         notReady: {
             title: "Galeria :bride i :groom już wkrótce...",
             description:
-                "Galeria z wesela jeszcze nie została udostępniona, pojawi się już niedługo. Pozostaw adres e-mail a powiadomimy Cię gdy galeria będzie już dostępna."
+                "Galeria qnie jest jeszcze dostępna. Zostaw nam swój adres email lub polub nas na facebooku a poinformujemy Cię kiedy galeria będzie gotowa."
         },
         password: "podaj hasło",
-        enter: "WEJDŹ DO GALERII"
+        check: "SPRAWDŹ",
+        enterGallery: "WEJDŹ DO GALERII",
+        enterBlog: "WEJDŹ NA BLOG",
+        blogAvailable: "Dostępny jest wpis na blogu  \":title\" dotyczący tego wesela, zapraszamy do oglądania.",
+        email: "podaj adres email",
+        subscribe: "ZAPISZ POWIADOMIENIE"
     },
     offer: {
         title: "Co <span>możemy</span> Ci <span>zaoferować</span>?",
@@ -146,8 +151,8 @@ export const pl = {
             facebook: "FACEBOOK",
             youtube: "YOUTUBE",
             url: {
-                facebook: "facebook-url",
-                youtube: "youtube-url"
+                facebook: "https://pl-pl.facebook.com/pyszstudio",
+                youtube: "https://www.youtube.com/channel/UCANjnytGkPi04eBXuInRtBQ"
             }
         }
     }
