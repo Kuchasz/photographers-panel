@@ -1,5 +1,5 @@
 export interface Subscription {
-    privateGalleryId: string;
+    privateGalleryId: number;
     email: string;
 }
 

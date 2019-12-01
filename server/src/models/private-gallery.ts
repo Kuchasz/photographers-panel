@@ -34,3 +34,10 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
             }
         );
     });
+
+export const exists = (id: number) =>
+    new Promise((resolve, reject) =>
+        connection.query(`SELECT TOP1 FROM privategallery AS p WHERE p.id = ${id}`, (_err, rows, _fields) => {
+            resolve(rows.length === 1);
+        })
+    );

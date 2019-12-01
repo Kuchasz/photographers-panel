@@ -12,6 +12,7 @@ import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
 import * as sendMessage from "../api/send-message";
+import * as subscribeForNotification from "../api/subscribe-for-notification";
 import * as getPrivateGalleryUrl from "../api/get-private-gallery-url";
 import { ResultType } from "../api/common";
 require("isomorphic-fetch");
@@ -64,6 +65,12 @@ app.get(getPrivateGalleryUrl.route, async (req, res) => {
     const gallery = await privateGalleryModel.getUrl(req.params.password);
 
     res.json(gallery);
+});
+
+app.post(subscribeForNotification.route, async (req, res) => {
+
+    const foo = privateGalleryModel.exists(req.body.id);
+
 });
 
 app.get("*", async (req, res) => {

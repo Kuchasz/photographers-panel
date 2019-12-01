@@ -1,8 +1,6 @@
 import { connection } from "../db";
-import { LastBlog } from "../../../api/get-last-blog";
-import { BlogListItem } from "../../../api/get-blogs-list";
 import { getDateString } from "../../../utils/date";
-import { BlogEntry } from "../../../api/blog";
+import { LastBlog, BlogListItem, BlogEntry } from "../../../api/blog";
 
 export const getMostRecent = (): Promise<LastBlog> =>
     new Promise((resolve, reject) => {
