@@ -1,4 +1,4 @@
-import { Message, MessageValidationError } from "../../../api/send-message";
+import { Message, MessageValidationError } from "../../../api/message";
 import * as email from "./email";
 
 const validateName = (message: Message) => message.name.length > 0;

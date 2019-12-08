@@ -3,7 +3,8 @@ import galleryPhoto from "../images/gallery_foto.png";
 import linkPhoto from "../images/link_foto.png";
 import { Link } from "react-router-dom";
 import { strings } from "../resources";
-import * as getPrivateGalleryUrl from "../../../api/get-private-gallery-url";
+import * as getPrivateGalleryUrl from "../../../api/private-gallery";
+import * as notification from "../../../api/notification";
 
 const getContent = (
     isLoading?: boolean,
@@ -54,6 +55,7 @@ type PrivateGalleryState = {
     email: string;
     isLoading?: boolean;
     result?: getPrivateGalleryUrl.PrivateGalleryUrlCheckResult;
+    notificationResult?: notification.SubscribtionResult;
 };
 
 export class PrivateGallery extends React.Component<PrivateGalleryProps, PrivateGalleryState> {
@@ -82,8 +84,11 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
         }
     }
 
-    subscribeForNotification(){
-        
+    async subscribeForNotification() {
+        if(this.state.result !== undefined && this.state.result.gallery !== undefined){
+            const result = await notification.subscribeForNotification({ privateGalleryId: this.state.result.gallery.id, email: this.state.email });
+            this.setState({notificationResult: result});
+        }
     }
 
     render() {
@@ -117,9 +122,20 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                         result.gallery &&
                         result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.NotReady ? (
                             <div>
-                                <input 
-                                    onChange={e => this.onEmailChange(e.target.value)} value={this.state.email} type="email" name="email" placeholder={strings.privateGallery.email} required />
-                                <input onClick={e => this.subscribeForNotification()} type="submit" name="submit" value={strings.privateGallery.subscribe} />
+                                <input
+                                    onChange={e => this.onEmailChange(e.target.value)}
+                                    value={this.state.email}
+                                    type="email"
+                                    name="email"
+                                    placeholder={strings.privateGallery.email}
+                                    required
+                                />
+                                <input
+                                    onClick={e => this.subscribeForNotification()}
+                                    type="submit"
+                                    name="submit"
+                                    value={strings.privateGallery.subscribe}
+                                />
                             </div>
                         ) : null}
                         {result && result.gallery ? (

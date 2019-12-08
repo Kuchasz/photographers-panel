@@ -10,11 +10,10 @@ export type MessageValidationError = "NameTooShort" | "ContentTooShort" | "Email
 
 export type MessageSendResult = Result<MessageValidationError>;
 
-export const route = "/api/send-message";
-
-export const sendMessage = (message: Message) =>
+export const sendRoute = "/api/send-message";
+export const send = (message: Message) =>
     new Promise<MessageSendResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + route, {
+        fetch("http://192.168.56.102:8080" + sendRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -25,3 +24,4 @@ export const sendMessage = (message: Message) =>
             .then(result => result.json())
             .then(resolve);
     });
+send.route = sendRoute;

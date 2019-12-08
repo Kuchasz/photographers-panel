@@ -1,12 +1,12 @@
 import { connection } from "../db";
-import { PrivateGalleryUrlCheckResult } from "../../../api/get-private-gallery-url";
+import { PrivateGalleryUrlCheckResult } from "../../../api/private-gallery";
 import { getDateString } from "../../../utils/date";
 
 export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-        SELECT p.state, p.bride, p.groom, p.place, p.lastname, p.dir, p.date, be.title, be.alias FROM privategallery AS p 
+        SELECT p.id, p.state, p.bride, p.groom, p.place, p.lastname, p.dir, p.date, be.title, be.alias FROM privategallery AS p 
         LEFT OUTER JOIN blogentry be ON be.id = p.BlogEntryId
         WHERE p.pass = '${password}'
         `,
@@ -16,6 +16,7 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
                         ? { gallery, blog: undefined }
                         : {
                               gallery: {
+                                  id: gallery.id,
                                   state: gallery.state,
                                   bride: gallery.bride,
                                   groom: gallery.groom,
@@ -35,9 +36,9 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
         );
     });
 
-export const exists = (id: number) =>
+export const exists = (id: number): Promise<boolean> =>
     new Promise((resolve, reject) =>
-        connection.query(`SELECT TOP1 FROM privategallery AS p WHERE p.id = ${id}`, (_err, rows, _fields) => {
-            resolve(rows.length === 1);
+        connection.query(`SELECT id FROM privategallery AS p WHERE p.id = ${id}`, (_err, rows, _fields) => {
+            resolve(rows.length !== 0);
         })
     );

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { strings } from "../resources";
-import { sendMessage, MessageSendResult } from "../../../api/send-message";
+import { send, MessageSendResult } from "../../../api/message";
 import { ResultType } from "../../../api/common";
 
 import contactPhoto from "../images/contact_foto.png";
@@ -37,7 +37,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
 
     sendMessage() {
         this.setState({ isLoading: true }, () => {
-            sendMessage(this.state).then(result => this.setState({ result, isLoading: false }));
+            send(this.state).then(result => this.setState({ result, isLoading: false }));
         });
     }
 

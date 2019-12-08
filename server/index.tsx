@@ -6,14 +6,16 @@ import { matchPath, StaticRouter } from "react-router";
 import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
 import * as privateGalleryModel from "./src/models/private-gallery";
+import * as emailModel from "./src/models/email";
+import * as notificationModel from "./src/models/notification";
 import Root from "../site/dist/bundle.js";
 import * as blog from "../api/blog";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
-import * as sendMessage from "../api/send-message";
-import * as subscribeForNotification from "../api/subscribe-for-notification";
-import * as getPrivateGalleryUrl from "../api/get-private-gallery-url";
+import * as message from "../api/message";
+import * as subscribeForNotification from "../api/notification";
+import * as getPrivateGalleryUrl from "../api/private-gallery";
 import { ResultType } from "../api/common";
 require("isomorphic-fetch");
 const Youch = require("youch");
@@ -50,15 +52,13 @@ app.get(blog.getBlog.route, async (req, res) => {
     res.json(blog);
 });
 
-app.post(sendMessage.route, async (req, res) => {
+app.post(message.send.route, async (req, res) => {
     const error = messageModel.validate(req.body);
-    const result: sendMessage.MessageSendResult = error
-        ? { type: ResultType.Error, error }
-        : { type: ResultType.Success };
+    const result: message.MessageSendResult = error ? { type: ResultType.Error, error } : { type: ResultType.Success };
 
     setTimeout(() => {
         res.json(result);
-    }, 500);
+    }, 1500);
 });
 
 app.get(getPrivateGalleryUrl.route, async (req, res) => {
@@ -68,9 +68,22 @@ app.get(getPrivateGalleryUrl.route, async (req, res) => {
 });
 
 app.post(subscribeForNotification.route, async (req, res) => {
+    let result: subscribeForNotification.SubscribtionResult | undefined = undefined;
 
-    const foo = privateGalleryModel.exists(req.body.id);
+    var emailIsValid = emailModel.validate(req.body.email);
+    if (!emailIsValid) result = { type: ResultType.Error, error: "EmailInvalid" };
 
+    const galleryExists = await privateGalleryModel.exists(req.body.privateGalleryId);
+    if (galleryExists === false) result = { type: ResultType.Error, error: "GalleryDoesNotExists" };
+
+    const subscribtionExists = await notificationModel.alreadySubscribed(req.body);
+    if (subscribtionExists === true) result = { type: ResultType.Error, error: "AlreadySubscribed" };
+
+    await notificationModel.subscribe(req.body);
+
+    if (result === undefined) result = { type: ResultType.Success };
+
+    res.json(result);
 });
 
 app.get("*", async (req, res) => {
