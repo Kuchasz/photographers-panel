@@ -26,7 +26,15 @@ export const pl = {
             name: "podaj imię i nazwisko",
             email: "podaj swój adres e-mail",
             content: "wpisz treść wiadomości",
-            submit: "WYŚLIJ WIADOMOŚĆ"
+            submit: "WYŚLIJ WIADOMOŚĆ",
+            sendingMessage: "Wysyłam wiadomość...",
+            messageSent: "Wysłano",
+            messsageNotSent: "Nie wysłano",
+            errors: {
+                NameTooShort: "Imie jest zbyt krótkie.",
+                ContentTooShort: "Treść jest zbyt krótka.",
+                EmailInvalid: "Nieprawidłowy adres email."
+            }
         },
         email: "biuro@pyszstudio.pl",
         emailLabel: "Adres e-mail:",
@@ -74,12 +82,11 @@ export const pl = {
         },
         available: {
             title: "Galeria :bride i :groom",
-            description: "Galeria jest już gotowa, kliknij przycisk poniżej aby obejrzeć zdjęcia."    
+            description: "Galeria jest już gotowa, kliknij przycisk poniżej aby obejrzeć zdjęcia."
         },
         turnedOff: {
             title: "Galeria :bride i :groom nie jest już dostępna",
-            description:
-                "Przepraszamy, ale ta galeria nie jest już dostępna."
+            description: "Przepraszamy, ale ta galeria nie jest już dostępna."
         },
         notReady: {
             title: "Galeria :bride i :groom już wkrótce...",
@@ -90,9 +97,18 @@ export const pl = {
         check: "SPRAWDŹ",
         enterGallery: "WEJDŹ DO GALERII",
         enterBlog: "WEJDŹ NA BLOG",
-        blogAvailable: "Dostępny jest wpis na blogu  \":title\" dotyczący tego wesela, zapraszamy do oglądania.",
-        email: "podaj adres email",
-        subscribe: "ZAPISZ POWIADOMIENIE"
+        blogAvailable: 'Dostępny jest wpis na blogu  ":title" dotyczący tego wesela, zapraszamy do oglądania.',
+        notification: {
+            subscribe: "ZAPISZ POWIADOMIENIE",
+            email: "podaj adres email",
+            subscribing: "Zapisuję na powiadomienie...",
+            subscribedSuccessfully: "Zapisano powiadomienie.",
+            errors: {
+                GalleryDoesNotExists: "Taka galeria nie istnieje",
+                AlreadySubscribed: "Już zapisano na powiadomienie",
+                EmailInvalid: "Nieprawidłowy adres email"
+            }
+        }
     },
     offer: {
         title: "Co <span>możemy</span> Ci <span>zaoferować</span>?",

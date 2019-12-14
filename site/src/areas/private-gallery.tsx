@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { strings } from "../resources";
 import * as getPrivateGalleryUrl from "../../../api/private-gallery";
 import * as notification from "../../../api/notification";
+import { ResultType } from "../../../api/common";
 
 const getContent = (
     isLoading?: boolean,
@@ -54,6 +55,7 @@ type PrivateGalleryState = {
     password: string;
     email: string;
     isLoading?: boolean;
+    isLoadingNotification?: boolean;
     result?: getPrivateGalleryUrl.PrivateGalleryUrlCheckResult;
     notificationResult?: notification.SubscribtionResult;
 };
@@ -63,7 +65,8 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
         password: "",
         email: "",
         result: undefined,
-        isLoading: undefined
+        isLoading: undefined,
+        isLoadingNotification: undefined
     } as PrivateGalleryState;
 
     onPasswordChange(password: string) {
@@ -85,9 +88,13 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
     }
 
     async subscribeForNotification() {
-        if(this.state.result !== undefined && this.state.result.gallery !== undefined){
-            const result = await notification.subscribeForNotification({ privateGalleryId: this.state.result.gallery.id, email: this.state.email });
-            this.setState({notificationResult: result});
+        if (this.state.result?.gallery !== undefined) {
+            this.setState({ isLoadingNotification: true });
+            const result = await notification.subscribeForNotification({
+                privateGalleryId: this.state.result.gallery.id,
+                email: this.state.email
+            });
+            this.setState({ notificationResult: result, isLoadingNotification: false });
         }
     }
 
@@ -118,27 +125,32 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                                 </div>
                             </div>
                         ) : null}
-                        {result &&
-                        result.gallery &&
-                        result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.NotReady ? (
-                            <div>
+                        {result?.gallery?.state === getPrivateGalleryUrl.PrivateGalleryState.NotReady ? (
+                            <div className="form">
+                                {this.state.isLoadingNotification ? (
+                                    <div className="cover">{strings.privateGallery.notification.subscribing}</div>
+                                ) : null}
+                                {this.state.notificationResult?.type === ResultType.Success ? (
+                                    <div className="cover">
+                                        {strings.privateGallery.notification.subscribedSuccessfully}
+                                    </div>
+                                ) : null}
+                                {this.state.notificationResult?.type === ResultType.Error ? <div>{strings.privateGallery.notification.errors[this.state.notificationResult.error]}</div> : null}
                                 <input
                                     onChange={e => this.onEmailChange(e.target.value)}
                                     value={this.state.email}
                                     type="email"
                                     name="email"
-                                    placeholder={strings.privateGallery.email}
+                                    placeholder={strings.privateGallery.notification.email}
                                     required
                                 />
-                                <input
-                                    onClick={e => this.subscribeForNotification()}
-                                    type="submit"
-                                    name="submit"
-                                    value={strings.privateGallery.subscribe}
-                                />
+                                <a className="button" onClick={() => this.subscribeForNotification()}>
+                                    {strings.privateGallery.notification.subscribe}
+                                </a>
+                                <br/><br/><br/><br/>
                             </div>
                         ) : null}
-                        {result && result.gallery ? (
+                        {result?.gallery ? (
                             <div>
                                 {result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.Available ? (
                                     <Link to={result.gallery.url} className="button">

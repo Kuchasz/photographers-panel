@@ -79,11 +79,14 @@ app.post(subscribeForNotification.route, async (req, res) => {
     const subscribtionExists = await notificationModel.alreadySubscribed(req.body);
     if (subscribtionExists === true) result = { type: ResultType.Error, error: "AlreadySubscribed" };
 
-    await notificationModel.subscribe(req.body);
-
-    if (result === undefined) result = { type: ResultType.Success };
-
-    res.json(result);
+    if (result == undefined) {
+        await notificationModel.subscribe(req.body);
+        result = { type: ResultType.Success };
+    }
+    
+    setTimeout(() => {
+        res.json(result);
+    }, 1500);
 });
 
 app.get("*", async (req, res) => {
