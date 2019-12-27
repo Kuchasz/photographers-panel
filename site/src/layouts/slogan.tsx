@@ -7,7 +7,6 @@ const Statistics = () => <ul>
 
 export const Slogan = () => <div className="slogan">
     <section>
-        <h1>{strings.slogan.header}</h1>
         <Statistics />
     </section>
 </div>;

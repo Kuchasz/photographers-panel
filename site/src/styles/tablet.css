@@ -1,7 +1,7 @@
 @media screen and (min-width: 700px) and (max-width: 795px) {
 	.slogan section  {
 		width: 620px;
-		height: 139px;
+		height: 42px;
 		margin: 0 auto;
 	}
 
@@ -266,7 +266,7 @@
 @media only screen and (min-width: 799px) and (max-width: 945px) {
 	.slogan section  {
 		width: 700px;
-		height: 139px;
+		height: 42px;
 		margin: 0 auto;
 	}
 

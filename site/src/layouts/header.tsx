@@ -5,6 +5,7 @@ import { firstSegment } from "../../../utils/url";
 import { Link, withRouter } from "react-router-dom";
 import { routes, menuItems } from "../routes";
 import logo from "../images/logo.png";
+import logoWatermark from "../images/logoWatermark.png";
 
 const chosenPhoto = randomElement(strings.main.topPhotos);
 
@@ -53,11 +54,8 @@ export const Header = withRouter(props => {
                     </li>
                 </ul>
             </nav>
-
             <nav id="logo">
-                <img src={logo} alt="logo PyszStudio" />
             </nav>
-
             <nav id="menu_down">
                 <ul>
                     <li>
@@ -80,7 +78,6 @@ export const Header = withRouter(props => {
                     </li>
                 </ul>
             </nav>
-
             <div id="gallery">
                 <Link to={routes.private.route}>{strings.menu.private}</Link>
             </div>

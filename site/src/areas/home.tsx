@@ -23,26 +23,26 @@ export class Home extends React.Component<HomeProps, HomeState> {
             <>
                 <div className="offer">
                     <section>
-                        <h1 dangerouslySetInnerHTML={{ __html: strings.offer.title }}></h1>
-                        <h2>{strings.offer.description}</h2>
+                        <h1 dangerouslySetInnerHTML={{ __html: strings.offer.slogan.title }}></h1>
+                        <h2>{strings.offer.slogan.description}</h2>
 
                         <article>
-                            <h1>{strings.offer.middle.title}</h1>
-                            <h2>{strings.offer.middle.description}</h2>
+                            <h1>{strings.offer.slogan.middle.title}</h1>
+                            <h2>{strings.offer.slogan.middle.description}</h2>
 
                             <Link to={routes.offers.route} className="button">
-                                {strings.offer.middle.more}
+                                {strings.offer.slogan.middle.more}
                             </Link>
                         </article>
 
                         <hgroup>
                             <ul id="left">
-                                {strings.offer.advantages.slice(0, 4).map(adv => (
+                                {strings.offer.slogan.advantages.slice(0, 4).map(adv => (
                                     <li key={adv}>{adv}</li>
                                 ))}
                             </ul>
                             <ul id="right">
-                                {strings.offer.advantages.slice(4).map(adv => (
+                                {strings.offer.slogan.advantages.slice(4).map(adv => (
                                     <li key={adv}>{adv}</li>
                                 ))}
                             </ul>

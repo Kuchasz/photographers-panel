@@ -38,7 +38,10 @@ export class Contact extends React.Component<ContactProps, ContactState> {
     sendMessage() {
         this.setState({ isLoading: true }, async () => {
             const result = await send(this.state);
-            this.setState({ result, isLoading: false });
+
+            const content = result.type === ResultType.Success ? "" : this.state.content;
+
+            this.setState({ result, isLoading: false, content: content });
         });
     }
 
@@ -67,10 +70,18 @@ export class Contact extends React.Component<ContactProps, ContactState> {
                         </h2>
 
                         <div className="form">
-                            {this.state.isLoading ? <div className="cover">{strings.contact.form.sendingMessage}</div> : null}
+                            {this.state.isLoading ? (
+                                <div className="cover">{strings.contact.form.sendingMessage}</div>
+                            ) : null}
                             <div>
                                 {this.state.result ? (
-                                    <div>{this.state.result.type === ResultType.Success ? strings.contact.form.messageSent : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[this.state.result.error]}`}</div>
+                                    <div>
+                                        {this.state.result.type === ResultType.Success
+                                            ? strings.contact.form.messageSent
+                                            : `${strings.contact.form.messsageNotSent}, ${
+                                                  strings.contact.form.errors[this.state.result.error]
+                                              }`}
+                                    </div>
                                 ) : null}
                                 <input
                                     type="text"

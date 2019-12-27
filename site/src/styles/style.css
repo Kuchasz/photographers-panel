@@ -43,7 +43,7 @@ small {
 
 header {
     width: 100%;
-    height: 620px;
+    height: 415px;
     margin: 0;
     padding: 0;
     background-repeat: repeat-x;
@@ -56,16 +56,16 @@ header {
 }
 
 nav {
-    width: 500px;
-    height: 75px;
-    margin: 70px 0 0 0;
+    width: 481px;
+    height: 55px;
+    margin: 50px 0 0 0;
     background: url("../images/header_white.png") no-repeat;
     float: right;
 }
 
 #menu_down {
-    width: 300px;
-    height: 75px;
+    width: 330px;
+    height: 55px;
     margin: 15px 0 0 0;
     background: url("../images/header_white.png") no-repeat;
     float: right;
@@ -75,7 +75,7 @@ nav {
 #logo {
     width: 77px;
     height: 77px;
-    margin: 70px 20px 0 30px;
+    margin: 28px 20px 0 30px;
     background: url("../images/logo.png") no-repeat;
     float: right;
 }
@@ -96,8 +96,9 @@ nav li a {
     font-size: 17px;
     height: 48px;
     margin-right: 29px;
-    padding-top: 28px;
+    padding-top: 18px;
     text-transform: uppercase;
+    transition: linear 0.25s color;
 }
 
 nav li a:hover {
@@ -111,7 +112,7 @@ nav li #current {
 
 #gallery {
     width: 228px;
-    height: 75px;
+    height: 55px;
     margin: 15px 0 0 0;
     padding-right: 10px;
     background: url("../images/header_red.png") no-repeat;
@@ -126,7 +127,7 @@ nav li #current {
     font-family: "Century Gothic Bold";
     font-size: 17px;
     margin-right: 22px;
-    padding-top: 28px;
+    padding-top: 18px;
     text-transform: uppercase;
 }
 
@@ -143,7 +144,7 @@ nav li #current {
 
 .slogan section {
     width: 1000px;
-    height: 139px;
+    height: 42px;
     margin: 0 auto;
 }
 
@@ -212,6 +213,7 @@ nav li #current {
 .blog {
     width: 100%;
     float: left;
+    min-height: 500px;
     background: #0f415a url("../images/gallery_bg.jpg") top center repeat-x;
     color: #fff;
     padding-top: 80px;
@@ -236,8 +238,7 @@ nav li #current {
 
 @media only screen and (min-width: 1800px) {
 
-    .gallery section,
-    .offers section {
+    .gallery section{
         width: 1645px;
         margin: 0 auto;
     }
@@ -334,7 +335,8 @@ nav li #current {
 }
 
 .link article,
-.contact_form article {
+.contact_form article,
+.offers article {
     width: 530px;
     float: left;
 }
@@ -354,21 +356,20 @@ nav li #current {
 }
 
 .link hgroup,
-.contact_form hgroup {
+.contact_form hgroup,
+.offers hgroup {
     float: right;
     margin: 40px 0 40px 0;
 }
 
-.gallery ul,
-.offers ul {
+.gallery ul {
     width: 100%;
     margin: 0;
     padding: 0;
     margin-left: 20px;
 }
 
-.gallery li,
-.offers li {
+.gallery li {
     width: 305px;
     list-style-type: none;
     float: left;
@@ -378,11 +379,6 @@ nav li #current {
 .gallery li {
     height: 380px;
     margin-bottom: 25px;
-}
-
-.offers li {
-    height: 500px;
-    margin-bottom: 30px;
 }
 
 .article article {
@@ -400,6 +396,7 @@ nav li #current {
 }
 
 .offer article h1,
+.offers article h1,
 .article article h1,
 .link article h1,
 .contact_form article h1,
@@ -421,6 +418,7 @@ nav li #current {
 .link article h1,
 .contact_form article h1,
 .gallery_sub article h1,
+.offers article h1,
 .blog article h1,
 .sub_sub article h1 {
     margin: 0;
@@ -450,8 +448,7 @@ nav li #current {
     margin-top: 7px;
 }
 
-.gallery li h1,
-.offers li h1 {
+.gallery li h1 {
     color: #fff;
     font-size: 21px;
     font-weight: normal;
@@ -469,14 +466,7 @@ nav li #current {
     padding: 10px 0 0 15px;
 }
 
-.offers li h1 {
-    padding-left: 20px;
-    padding-right: 20px;
-    text-align: left;
-}
-
-.gallery li h2,
-.offers li h2 {
+.gallery li h2 {
     color: #fff;
     font-size: 13px;
     font-weight: normal;
@@ -486,16 +476,6 @@ nav li #current {
     padding-left: 15px;
     padding-right: 15px;
     margin: 0;
-    line-height: 23px;
-}
-
-.offers li h2 {
-    color: #62becc;
-    font-size: 15px;
-    text-align: left;
-    padding-top: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
     line-height: 23px;
 }
 
@@ -513,6 +493,7 @@ nav li #current {
 }
 
 .offer article h2,
+.offers article h2,
 .article article h2,
 .link article h2,
 .contact_form article h2,
@@ -531,6 +512,7 @@ nav li #current {
 .contact_form article h2,
 .gallery_sub article h2,
 .blog article h2,
+.offers article,
 .sub_sub article h2 {
     margin-top: 15px;
     margin-bottom: 40px;
@@ -541,6 +523,7 @@ nav li #current {
 .contact_form article h2,
 .gallery_sub article h2,
 .blog article h2,
+.offers article h2,
 .sub_sub article h2 {
     margin-bottom: 50px;
 }
@@ -694,6 +677,8 @@ nav li #current {
 
 .offer #left li,
 .offer #right li {
+    display: flex;
+    align-items: center;
     width: 200px;
     height: 50px;
     list-style-type: none;
@@ -728,7 +713,7 @@ nav li #current {
         margin: 30px 10px 50px 40px;
     }
 
-    .offer article h2,
+    .offer article  ,
     .article article h2 {
         margin-bottom: 40px;
     }
