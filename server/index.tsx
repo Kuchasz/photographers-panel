@@ -1,7 +1,7 @@
-import React from "react";
+//import React from "react";
 import express from "express";
 import { randomElement } from "../utils/array";
-import { renderToString } from "react-dom/server";
+//import { renderToString } from "react-dom/server";
 import { matchPath, StaticRouter } from "react-router";
 import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
@@ -10,6 +10,8 @@ import * as emailModel from "./src/models/email";
 import * as notificationModel from "./src/models/notification";
 import Root from "../site/dist/bundle.js";
 import * as blog from "../api/blog";
+import * as offer from "../api/offer";
+import * as offerModel from "./src/models/offer";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
@@ -89,6 +91,11 @@ app.post(subscribeForNotification.route, async (req, res) => {
     }, 1500);
 });
 
+app.get(offer.getOffersList.route, async (_req, res) => {
+    const offers = await offerModel.getList();
+    res.json(offers);
+});
+
 app.get("*", async (req, res) => {
     //routes.home
 
@@ -116,12 +123,10 @@ app.get("*", async (req, res) => {
         let siteContent = "";
         const context = {};
 
+        const app = Root.createElement(Root.StaticRouter, {location: req.url, context}, Root.createElement(Root.Root, {initialState}, null));
+
         try {
-            siteContent = renderToString(
-                <Root.StaticRouter location={req.url} context={context}>
-                    <Root.Root initialState={initialState} />
-                </Root.StaticRouter>
-            );
+            siteContent = Root.renderToString(app);
         } catch (err) {
             raiseErr(err, req, res);
             return;

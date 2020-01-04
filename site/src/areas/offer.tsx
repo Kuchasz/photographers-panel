@@ -6,7 +6,7 @@ type Offer = {title: string, photos: string[], description: string};
 type OfferProps = {alias: string};
 
 export const Offer = ({alias}: OfferProps) => {
-    //const offer = first(strings.offer.tariffs, item => item.alias === alias);
+    // const offer = first(strings.offer.tariffs, item => item.alias === alias);
 
     return <div className="sub_sub">
     <section>

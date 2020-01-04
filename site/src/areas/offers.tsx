@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { strings } from "../resources";
 import { routes } from "../routes";
 import { includesAll, distinctBy, includesAny } from "../../../utils/array";
+import { OfferListItem, getOffersList } from "../../../api/offer";
 import linkPhoto from "../images/link_foto.png";
 
 const getOfferImage = (imageFileName: string) => require(`../images/offers/${imageFileName}`);
@@ -49,7 +50,7 @@ const updateTariffs = (
     switch (action.type) {
         case "Select":
             return [...selectedTariffs, action.tariff];
-        case "Deselect":{
+        case "Deselect": {
             const tariffs = selectedTariffs.filter(t => t !== action.tariff);
             return tariffs.filter(t => available(tariffs)(tariffPositions.filter(tt => tt.type === t)[0]));
         }
@@ -77,19 +78,41 @@ const calculatePrice = (selectedTariffs: TariffPositions[], selectedYear: Tariff
 const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
     includesAny(selectedTariffs, tariff.requires);
 
-export const Offers = () => {
+export const Offers = ({ initialState }: { initialState?: OfferListItem[] }) => {
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
     const [selectedTariffs, changeTariffs] = React.useReducer(updateTariffs, [
         "WeddingPhotography",
         "WeddingVideo",
         "WeddingSession"
     ]);
+    const [offers, setOffers] = React.useState(initialState ?? []);
+
+    const fetchData = async () => {
+        const offers = await getOffersList();
+        setOffers(offers);
+    };
+
+    if (!offers)
+        React.useEffect(() => {
+            fetchData();
+        }, []);
 
     const price = calculatePrice(selectedTariffs, selectedYear);
 
     return (
         <div className="offers">
             <section>
+                <ul>
+                    {offers.map(o => (
+                        <Link to={getOfferUrl(o.alias)} key={o.alias}>
+                            <li className="category">
+                                <img src={o.photoUrl} alt={o.title} />
+                                <h1>{o.title}</h1>
+                                <h2>{o.summary}</h2>
+                            </li>
+                        </Link>
+                    ))}
+                </ul>
                 <article>
                     <h1>{strings.offer.calculator.title}</h1>
                     <h2>{strings.offer.calculator.description}</h2>
@@ -107,7 +130,10 @@ export const Offers = () => {
                         </div>
                         <div className="rules">
                             {tariffPositions.map(t => (
-                                <label className={`rule ${available(selectedTariffs)(t) ? '' : 'disabled'}`} key={t.type}>
+                                <label
+                                    className={`rule ${available(selectedTariffs)(t) ? "" : "disabled"}`}
+                                    key={t.type}
+                                >
                                     <input
                                         type="checkbox"
                                         checked={selectedTariffs.includes(t.type)}
@@ -154,12 +180,12 @@ export const Offers = () => {
 
 // <section>
 
-//         {/* <ul>
-//             {offers.map(o => <Link to={getOfferUrl(o.alias)} key={o.alias}>
-//                 <li className="category">
-//                     <img src={getOfferImage(o.photo)} alt={o.title} />
-//                     <h1>{o.title}</h1>
-//                     <h2>{o.short}</h2>
-//                 </li></Link>)}
-//         </ul> */}
+// {/* <ul>
+//     {offers.map(o => <Link to={getOfferUrl(o.alias)} key={o.alias}>
+//         <li className="category">
+//             <img src={getOfferImage(o.photo)} alt={o.title} />
+//             <h1>{o.title}</h1>
+//             <h2>{o.short}</h2>
+//         </li></Link>)}
+// </ul> */}
 //     </section>

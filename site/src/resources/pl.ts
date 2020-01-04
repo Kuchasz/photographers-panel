@@ -19,8 +19,8 @@ export const pl = {
     },
     contact: {
         slogan: {
-            title: "SKONTAKTUJ SIĘ Z NAMI",
-            description: "ZAPYTAJ O WSZELKIE WĄTPLIWOŚCI"
+            title: "Skontaktuj się z nami!",
+            description: "Zapytaj o wszelkie wątpliwości drogą elektroniczną lub telefonicznie"
         },
         form: {
             name: "podaj imię i nazwisko",

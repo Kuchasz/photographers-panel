@@ -220,10 +220,6 @@ nav li #current {
     padding-bottom: 10px;
 }
 
-.offers {
-    padding-top: 60px;
-}
-
 .offer section,
 .article section,
 .gallery section,
@@ -448,7 +444,7 @@ nav li #current {
     margin-top: 7px;
 }
 
-.gallery li h1 {
+.gallery li h1, .offers li h1 {
     color: #fff;
     font-size: 21px;
     font-weight: normal;
@@ -458,7 +454,7 @@ nav li #current {
     margin: 0;
 }
 
-.gallery li h3 {
+.gallery li h3, .offers li h3 {
     color: #62becc;
     font-size: 12px;
     font-weight: normal;
@@ -466,7 +462,7 @@ nav li #current {
     padding: 10px 0 0 15px;
 }
 
-.gallery li h2 {
+.gallery li h2, .offers li h2 {
     color: #fff;
     font-size: 13px;
     font-weight: normal;
