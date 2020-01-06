@@ -87,32 +87,15 @@ export const Offers = ({ initialState }: { initialState?: OfferListItem[] }) => 
     ]);
     const [offers, setOffers] = React.useState(initialState ?? []);
 
-    const fetchData = async () => {
-        const offers = await getOffersList();
-        setOffers(offers);
-    };
-
-    if (!offers)
-        React.useEffect(() => {
-            fetchData();
-        }, []);
+    React.useEffect(() => {
+        if (offers.length === 0) getOffersList().then(setOffers);
+    }, []);
 
     const price = calculatePrice(selectedTariffs, selectedYear);
 
     return (
         <div className="offers">
             <section>
-                <ul>
-                    {offers.map(o => (
-                        <Link to={getOfferUrl(o.alias)} key={o.alias}>
-                            <li className="category">
-                                <img src={o.photoUrl} alt={o.title} />
-                                <h1>{o.title}</h1>
-                                <h2>{o.summary}</h2>
-                            </li>
-                        </Link>
-                    ))}
-                </ul>
                 <article>
                     <h1>{strings.offer.calculator.title}</h1>
                     <h2>{strings.offer.calculator.description}</h2>
@@ -173,6 +156,23 @@ export const Offers = ({ initialState }: { initialState?: OfferListItem[] }) => 
                 <hgroup>
                     <img src={linkPhoto} alt="" />
                 </hgroup>
+                <br />
+                <br />
+                <article>
+                    <h1>{strings.offer.title}</h1>
+                    <h2>{strings.offer.description}</h2>
+                    {offers.map(o => (
+                        <Link to={getOfferUrl(o.alias)} key={o.alias}>
+                            <li className="category">
+                                <img src={o.photoUrl} alt={o.title} />
+                                <div className="details">
+                                    <h1>{o.title}</h1>
+                                    <h2>{o.summary}</h2>
+                                </div>
+                            </li>
+                        </Link>
+                    ))}
+                </article>
             </section>
         </div>
     );

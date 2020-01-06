@@ -32,7 +32,6 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
     color: #333;
 }
 
@@ -43,9 +42,10 @@ small {
 
 header {
     width: 100%;
-    height: 415px;
+    height: 800px;
     margin: 0;
     padding: 0;
+    background-size: cover;
     background-repeat: repeat-x;
     background-position: center center;
     float: left;
@@ -233,8 +233,7 @@ nav li #current {
 }
 
 @media only screen and (min-width: 1800px) {
-
-    .gallery section{
+    .gallery section {
         width: 1645px;
         margin: 0 auto;
     }
@@ -245,7 +244,7 @@ nav li #current {
     }
 }
 
-.blog>section {
+.blog > section {
     width: 960px;
     margin: 0 auto;
 }
@@ -334,6 +333,10 @@ nav li #current {
 .contact_form article,
 .offers article {
     width: 530px;
+    float: left;
+}
+.offers article:nth-of-type(2) {
+    width: 100%;
     float: left;
 }
 
@@ -444,7 +447,8 @@ nav li #current {
     margin-top: 7px;
 }
 
-.gallery li h1, .offers li h1 {
+.gallery li h1,
+.offers li h1 {
     color: #fff;
     font-size: 21px;
     font-weight: normal;
@@ -454,7 +458,14 @@ nav li #current {
     margin: 0;
 }
 
-.gallery li h3, .offers li h3 {
+.offers li h1 {
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: left;
+}
+
+.gallery li h3,
+.offers li h3 {
     color: #62becc;
     font-size: 12px;
     font-weight: normal;
@@ -462,7 +473,8 @@ nav li #current {
     padding: 10px 0 0 15px;
 }
 
-.gallery li h2, .offers li h2 {
+.gallery li h2,
+.offers li h2 {
     color: #fff;
     font-size: 13px;
     font-weight: normal;
@@ -476,15 +488,26 @@ nav li #current {
 }
 
 .category {
-    -webkit-transition: all 1s ease;
-    -moz-transition: all 1s ease;
-    -o-transition: all 1s ease;
-    -ms-transition: all 1s ease;
-    transition: all 1s ease;
+    margin: 24px 0px;
+    display: flex;
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    -ms-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
+.category .details {
+    display: flex;
+    flex-direction: column;
+}
+
+.category img {
+    height: 125px;
 }
 
 .category:hover {
-    -webkit-filter: grayscale(50%);
+    /* -webkit-filter: grayscale(50%); */
     background-color: #1f698e;
 }
 
@@ -524,6 +547,18 @@ nav li #current {
     margin-bottom: 50px;
 }
 
+.offers li h2 {
+    color: #62becc;
+    font-size: 15px;
+    text-align: left;
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    line-height: 23px;
+}
+
 .blog article h2 {
     padding: 7px 0 0 0;
     margin-top: 0px;
@@ -541,7 +576,7 @@ nav li #current {
 
 .offer article a.button,
 .link article a.button,
-.contact_form article a.button  {
+.contact_form article a.button {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
@@ -684,7 +719,6 @@ nav li #current {
 }
 
 @media only screen and (min-width: 950px) and (max-width: 1030px) {
-
     .offer section,
     .article section {
         width: 920px;
@@ -709,7 +743,7 @@ nav li #current {
         margin: 30px 10px 50px 40px;
     }
 
-    .offer article  ,
+    .offer article,
     .article article h2 {
         margin-bottom: 40px;
     }

@@ -96,6 +96,11 @@ app.get(offer.getOffersList.route, async (_req, res) => {
     res.json(offers);
 });
 
+app.get(offer.getOffer.route, async (req, res) => {
+    const offer = await offerModel.get(req.params.alias);
+    res.json(offer);
+});
+
 app.get("*", async (req, res) => {
     //routes.home
 

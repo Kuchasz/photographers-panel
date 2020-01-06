@@ -1,6 +1,6 @@
 import { connection } from "../db";
 import { getDateString } from "../../../utils/date";
-import { OfferListItem } from "../../../api/offer";
+import { OfferListItem, OfferEntry } from "../../../api/offer";
 
 export const getList = (): Promise<OfferListItem[]> =>
     new Promise((resolve, reject) => {
@@ -20,6 +20,26 @@ export const getList = (): Promise<OfferListItem[]> =>
                 }));
 
                 resolve(offerListItems);
+            }
+        );
+    });
+
+export const get = (alias: string): Promise<OfferEntry> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+    SELECT o.title, o.desc 
+    FROM offer o 
+    WHERE o.alias LIKE '${alias}'
+    `,
+            (_err, [first], _fields) => {
+                
+                const offer = {
+                    title: first.title,
+                    description: first.desc
+                };
+
+                resolve(offer);
             }
         );
     });

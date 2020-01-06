@@ -7,14 +7,16 @@ export const pl = {
     },
     main: {
         topPhotos: [
-            "obraczki-slubne.jpg",
-            "portret-slubny.jpg",
-            "sesja-slubna-na-wietrze.jpg",
-            "sesja-slubna-portret.jpg",
-            "sesja-slubna-w-wodzie.jpg",
-            "sesja-slubna-zboze.jpg",
-            "spacer-po-parku-pszczyna.jpg",
-            "spacer-po-wodzie-slub.jpg"
+            "james-bond.jpg",
+            "mloda-para-strobist-przytulanie.jpg",
+            "moczenie-nog-w-wodospadzie.jpg",
+            "pocalunek-na-lace.jpg",
+            "pocalunek-na-lozku.jpg",
+            "przytulanie-przy-fontannie.jpg",
+            "spacer-po-lace.jpg",
+            "spacer-po-parku.jpg",
+            "spacer-po-podescie-w-zakrzowku.jpg",
+            "zabawy-w-zborzu.jpg"
         ]
     },
     contact: {
@@ -111,6 +113,8 @@ export const pl = {
         }
     },
     offer: {
+        title: "Usługi",
+        description: "Usługi, które świadczymy najczęściej.",
         calculator: {
             title: "Kalkulator ceny",
             description: "Kalkulator uwzględnia tylko najczęściej wykonywane przez nas usługi, o cenę pozostałych proszę pytać mailowo lub telefonicznie."
@@ -146,7 +150,7 @@ export const pl = {
     },
     slogan: {
         statistics: [
-            { title: "17LAT", text: "DOŚWIADCZENIA" },
+            { title: "20LAT", text: "DOŚWIADCZENIA" },
             { title: "100%", text: "PROFESJONALIZMU" },
             { title: "ZDJĘCIA I", text: "FILM" }
         ]
