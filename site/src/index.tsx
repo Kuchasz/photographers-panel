@@ -8,9 +8,9 @@ import "./styles/mobile.css";
 import "./index.less";
 import { BrowserRouter } from "react-router-dom";
 import { StaticRouter } from "react-router";
-import {renderToString} from "react-dom/server";
+import { renderToString } from "react-dom/server";
 
-if (typeof document !== 'undefined') {
+if (typeof document !== "undefined") {
     let initialState: any = (window as any).___InitialState___;
     delete (window as any).___InitialState___;
 

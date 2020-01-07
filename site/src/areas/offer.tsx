@@ -3,6 +3,12 @@ import { strings } from "../resources";
 import { first } from "../../../utils/array";
 import { OfferEntry, getOffer } from "../../../api/offer";
 
+const getImageBackgroundStyle = (url: string) => {
+    return {
+        backgroundImage: `url(${url})`
+    };
+};
+
 type Offer = { title: string; photos: string[]; description: string };
 type OfferProps = { alias: string };
 
@@ -13,21 +19,24 @@ export const Offer = ({ alias }: OfferProps) => {
 
     React.useEffect(() => {
         getOffer(alias).then(setOffer);
-    });
+    }, []);
 
     return (
-        <div className="sub_sub">
+        <div className="sub_sub offer">
             <section>
                 <article>
                     <h1>{offer.title}</h1>
 
-                    <div id="slides" style={{ margin: "40px 0 40px 0" }}>
-                        {/* {foreach $offer->offerphoto->find_all() as $photo} */}
-                        {/* <img src="{$base_url}media/images/offers/photo/{$photo->photourl}" alt="{$photo->alttext}"> */}
-                        {/* {/foreach} */}
-                    </div>
+                    {offer.photos?.length > 0 ? (
+                        <div className="slides">
+                            {offer.photos.map(p => (
+                                <div className="slide" key={p.url} style={getImageBackgroundStyle(p.url)}></div>
+                                // <img key={p.url} src={p.url} alt={p.altText}></img>
+                            ))}
+                        </div>
+                    ) : null}
 
-                    <h2 dangerouslySetInnerHTML={{__html: offer.description}}></h2>
+                    <h2 dangerouslySetInnerHTML={{ __html: offer.description }}></h2>
                 </article>
             </section>
         </div>

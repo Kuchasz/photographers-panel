@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: path.resolve("./src/index.tsx"),
@@ -114,6 +115,9 @@ module.exports = {
             chunkFilename: '[id].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
+        new CopyPlugin([{
+            from: "src/images", to: "media/images"
+        }])
     ],
     devServer: {
         port: 8081,

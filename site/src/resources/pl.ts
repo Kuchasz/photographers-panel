@@ -10,13 +10,14 @@ export const pl = {
             "james-bond.jpg",
             "mloda-para-strobist-przytulanie.jpg",
             "moczenie-nog-w-wodospadzie.jpg",
-            "pocalunek-na-lace.jpg",
-            "pocalunek-na-lozku.jpg",
-            "przytulanie-przy-fontannie.jpg",
-            "spacer-po-lace.jpg",
-            "spacer-po-parku.jpg",
-            "spacer-po-podescie-w-zakrzowku.jpg",
-            "zabawy-w-zborzu.jpg"
+            // "pocalunek-na-lace.jpg",
+            // "pocalunek-na-lozku.jpg",
+            // "przytulanie-przy-fontannie.jpg",
+            // "spacer-po-lace.jpg",
+            // "spacer-po-parku.jpg",
+            // "spacer-po-podescie-w-zakrzowku.jpg",
+            // "zabawy-w-zborzu.jpg",
+            // "o-zachodzie-slonca.jpg"
         ]
     },
     contact: {

@@ -5,9 +5,15 @@ export interface OfferListItem {
     photoUrl: string;
 }
 
+export interface OfferPhoto{
+    url: string;
+    altText: string;
+}
+
 export interface OfferEntry {
     title: string;
     description: string;
+    photos: OfferPhoto[];
 }
 
 const getOffersListRoute = "/api/offers-list";

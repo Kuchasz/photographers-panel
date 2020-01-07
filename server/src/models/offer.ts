@@ -15,7 +15,7 @@ export const getList = (): Promise<OfferListItem[]> =>
                 const offerListItems = offers.map((o: any) => ({
                     title: o.title,
                     alias: o.alias,
-                    photoUrl: `http://pyszstudio.pl/media/images/offers/photo/${o.photourl}`,
+                    photoUrl: `/media/images/offer/${o.photourl}`,
                     summary: o.descshort
                 }));
 
@@ -28,15 +28,21 @@ export const get = (alias: string): Promise<OfferEntry> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-    SELECT o.title, o.desc 
+    SELECT o.title, o.desc, op.photourl, op.alttext
     FROM offer o 
+    JOIN offerphoto op ON o.Id = op.OfferId
     WHERE o.alias LIKE '${alias}'
     `,
-            (_err, [first], _fields) => {
-                
-                const offer = {
+            (_err, offerPhotos, _fields) => {
+                const [first] = offerPhotos;
+
+                const offer: OfferEntry = {
                     title: first.title,
-                    description: first.desc
+                    description: first.desc,
+                    photos: offerPhotos.map((p: any) => ({
+                        url: `/media/images/offer/${p.photourl}`,
+                        altText: p.alttext
+                    }))
                 };
 
                 resolve(offer);
