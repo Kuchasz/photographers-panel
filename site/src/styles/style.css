@@ -46,6 +46,7 @@ header {
     box-shadow: inset 0 0 100px black;
     width: 100%;
     height: calc(100vh - 54px);
+    transition: all 1s ease-in-out;
     margin: 0;
     padding: 0;
     background-size: cover;
@@ -67,6 +68,7 @@ header .background div {
     width: 100%;
     background-size: cover;
     background-position: center;
+    position: absolute;
 }
 
 #subpage {

@@ -11,7 +11,9 @@ import * as notificationModel from "./src/models/notification";
 import Root from "../site/dist/bundle.js";
 import * as blog from "../api/blog";
 import * as offer from "../api/offer";
+import * as video from "../api/video";
 import * as offerModel from "./src/models/offer";
+import * as videoModel from "./src/models/video";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
@@ -99,6 +101,11 @@ app.get(offer.getOffersList.route, async (_req, res) => {
 app.get(offer.getOffer.route, async (req, res) => {
     const offer = await offerModel.get(req.params.alias);
     res.json(offer);
+});
+
+app.get(video.getVideosList.route, async (req, res) => {
+    const videos = await videoModel.getList();
+    res.json(videos);
 });
 
 app.get("*", async (req, res) => {

@@ -19,6 +19,7 @@ const selectedItem = (selectedPath: string, path: string) =>
 
 export const Header = withRouter(props => {
     //const [chosenPhoto, setChosenPhoto] = React.useState(strings.main.topPhotos[0]); //randomElement(strings.main.topPhotos);
+    const [currentAdvantage, setCurrentAdvantage] = React.useState(strings.offer.slogan.advantages[0]);
 
     return (
         <header
@@ -82,10 +83,10 @@ export const Header = withRouter(props => {
                         </li>
                         <li>
                             <Link
-                                to={routes.movies.route}
-                                id={selectedItem(props.location.pathname, routes.movies.route)}
+                                to={routes.videos.route}
+                                id={selectedItem(props.location.pathname, routes.videos.route)}
                             >
-                                {strings.menu.movies}
+                                {strings.menu.videos}
                             </Link>
                         </li>
                     </ul>
@@ -100,6 +101,12 @@ export const Header = withRouter(props => {
                     <span>STUDIO</span>
                 </div>
                 <div className="bottom">FOTOGRAFIA I FILM</div>
+
+                <span className="advantages">
+                    {strings.offer.slogan.advantages.map(adv => (
+                        <span className={`advantage ${adv === currentAdvantage ? "current" : ""}`}>{adv}</span>
+                    ))}
+                </span>
             </div>
         </header>
     );
