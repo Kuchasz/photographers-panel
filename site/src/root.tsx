@@ -12,13 +12,11 @@ import { Offers } from "./areas/offers";
 import { PrivateGallery } from "./areas/private-gallery";
 import { Route, Switch } from "react-router-dom";
 import { routes } from "./routes";
-import { Slogan } from "./layouts/slogan";
 import { Videos } from "./areas/videos";
 
 export const Root = ({ initialState }: { initialState?: any }) => (
     <>
-        <Header />
-        <Slogan />
+        <Header/>
         <span>
             <Switch>
                 <Route
@@ -26,7 +24,11 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     path={routes.home.route}
                     render={() => <Home initialState={initialState[routes.home.route]} />}
                 />
-                <Route exact path={routes.offers.route} render={()=><Offers initialState={initialState[routes.offers.route]}/>} />
+                <Route
+                    exact
+                    path={routes.offers.route}
+                    render={() => <Offers initialState={initialState[routes.offers.route]} />}
+                />
                 <Route path={routes.offer.route} render={x => <Offer alias={x.match.params.alias} />} />
                 <Route
                     exact
@@ -41,7 +43,7 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                 <Route exact path={routes.contact.route} render={() => <Contact />} />
                 <Route exact path={routes.gallery.route} render={() => <h1>{routes.gallery.label}</h1>} />
                 <Route exact path={routes.links.route} render={() => <Links />} />
-                <Route exact path={routes.videos.route} render={() => <Videos/>} />
+                <Route exact path={routes.videos.route} render={() => <Videos />} />
                 <Route exact path={routes.private.route} render={() => <PrivateGallery />} />
             </Switch>
         </span>

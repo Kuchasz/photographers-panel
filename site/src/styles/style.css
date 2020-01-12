@@ -50,7 +50,7 @@ header {
     flex-flow: row-reverse;
     box-shadow: inset 0 0 100px black;
     width: 100%;
-    height: calc(100vh - 54px);
+    height: 100vh;
     transition: all 1s ease-in-out;
     margin: 0;
     padding: 0;
@@ -243,7 +243,12 @@ nav li #current {
     width: 100%;
     float: left;
     min-height: 500px;
-    background: #0f415a url("../images/gallery_bg.jpg") top center repeat-x;
+
+    background: linear-gradient(to bottom, #071e29, #0c3448 5px);
+
+    /* #071e29 */
+    /* background: #0c3448; */
+    /* background: #0f415a url("../images/gallery_bg.jpg") top center repeat-x; */
     color: #fff;
     padding-top: 80px;
     padding-bottom: 10px;

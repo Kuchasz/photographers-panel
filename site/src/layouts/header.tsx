@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { strings } from "../resources";
-import { randomElement, first, nextElement } from "../../../utils/array";
+import { randomElement, first, nextElement, last } from "../../../utils/array";
 import { firstSegment } from "../../../utils/url";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import { routes, menuItems } from "../routes";
 import logo from "../images/logo.png";
 import logoWatermark from "../images/logoWatermark.png";
@@ -18,13 +18,19 @@ const selectedItem = (selectedPath: string, path: string) =>
     firstSegment(selectedPath) === path ? "current" : undefined;
 
 export const Header = withRouter(props => {
-    //const [chosenPhoto, setChosenPhoto] = React.useState(strings.main.topPhotos[0]); //randomElement(strings.main.topPhotos);
+    const [{ currentPhoto, prevPhoto }, setCurrentPhoto] = React.useState({
+        prevPhoto: last(strings.main.topPhotos),
+        currentPhoto: first(strings.main.topPhotos)
+    }); //randomElement(strings.main.topPhotos);
     const [currentAdvantage, setCurrentAdvantage] = React.useState(strings.offer.slogan.advantages[0]);
 
     React.useEffect(() => {
         setTimeout(() => {
             const nextAdvantage = nextElement(strings.offer.slogan.advantages, currentAdvantage);
             setCurrentAdvantage(nextAdvantage);
+
+            const nextPhoto = nextElement(strings.main.topPhotos, currentPhoto);
+            setCurrentPhoto({ currentPhoto: nextPhoto, prevPhoto: currentPhoto });
         }, 5000);
     }, [currentAdvantage]);
 
@@ -36,9 +42,11 @@ export const Header = withRouter(props => {
             // style={getHeaderBackgroundStyle(chosenPhoto)}
         >
             <div className="background">
-                {strings.main.topPhotos.map(p => (
+                <div className="previous" style={getHeaderBackgroundStyle(prevPhoto)}></div>
+                <div key={currentPhoto} className="current" style={getHeaderBackgroundStyle(currentPhoto)}></div>
+                {/* {strings.main.topPhotos.map(p => (
                     <div key={p} style={getHeaderBackgroundStyle(p)}></div>
-                ))}
+                ))} */}
             </div>
 
             <span className="advantages">

@@ -149,13 +149,6 @@ export const pl = {
             Afters: "Obsługa imprezy poprawinowej"
         }
     },
-    slogan: {
-        statistics: [
-            { title: "20LAT", text: "DOŚWIADCZENIA" },
-            { title: "100%", text: "PROFESJONALIZMU" },
-            { title: "ZDJĘCIA I", text: "FILM" }
-        ]
-    },
     footer: {
         copyrights: "© 2019 PyszStudio. All rights reserved.",
         socialMedia: {

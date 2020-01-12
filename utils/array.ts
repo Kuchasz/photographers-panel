@@ -16,7 +16,9 @@ export const zip = <T1, T2, T3>(left: T1[], right: T2[], map: (l: T1, r: T2) => 
     return left.map((value, index) => map(value, right[index]));
 };
 
-export const first = <T>(items: T[], predicate: (item: T) => boolean) => items.filter(predicate)[0];
+export const first = <T>(items: T[], predicate: (item: T) => boolean = () => true) => items.filter(predicate)[0];
+
+export const last = <T>(items: T[], predicate: (item: T) => boolean = () => true) => items.filter(predicate).reverse()[0];
 
 export const includesAny = <T>(left: T[], right: T[]): boolean =>
     right.length === 0 ? true : right.some(r => left.includes(r));
