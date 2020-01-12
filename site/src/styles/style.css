@@ -8,6 +8,11 @@
     src: url(../fonts/MYRIADPRO-BOLD.woff);
 }
 
+@font-face {
+    font-family: "Century Gothic Light";
+    src: url(../fonts/MyriadPro-Light.woff);
+}
+
 article,
 aside,
 figure,
