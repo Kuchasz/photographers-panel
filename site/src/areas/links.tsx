@@ -1,5 +1,5 @@
 import * as React from "react";
-import linkPhoto from "../images/link_foto.png";
+import linkPhoto from "../images/page_links_photo.png";
 import { Link } from "react-router-dom";
 import { strings } from "../resources";
 

@@ -2,11 +2,14 @@ import React from "react";
 import { strings } from "../resources";
 // import { Link } from "react-router";
 import { menuItems } from "../routes";
+import {getYear} from "../../../utils/date";
+
+const year = getYear(new Date());
 
 export const Footer = () => <footer>
     <section>
         <div id="left">
-            <h1>{strings.footer.copyrights}</h1>
+            <h1>© {year} {strings.footer.copyrights}</h1>
             <ul>
                 {/* {menuItems.map((mi, index) => <li key={mi.route}><Link to={mi.route}>{mi.label}</Link> {index < menuItems.length -1 ? ' / ' : undefined }</li>)} */}
             </ul>

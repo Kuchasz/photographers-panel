@@ -3,7 +3,7 @@ import { strings } from "../resources";
 import { send, MessageSendResult } from "../../../api/message";
 import { ResultType } from "../../../api/common";
 
-import contactPhoto from "../images/contact_foto.png";
+import contactPhoto from "../images/page_contact_photo.png";
 
 type ContactProps = {};
 type ContactState = {

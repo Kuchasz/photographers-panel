@@ -41,7 +41,6 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     render={x => <Blog alias={x.match.params.alias} initialState={initialState[routes.blog.route]} />}
                 />
                 <Route exact path={routes.contact.route} render={() => <Contact />} />
-                <Route exact path={routes.gallery.route} render={() => <h1>{routes.gallery.label}</h1>} />
                 <Route exact path={routes.links.route} render={() => <Links />} />
                 <Route exact path={routes.videos.route} render={() => <Videos />} />
                 <Route exact path={routes.private.route} render={() => <PrivateGallery />} />

@@ -36,7 +36,7 @@ export const Offer = ({ alias }: OfferProps) => {
                         </div>
                     ) : null}
 
-                    <h2 dangerouslySetInnerHTML={{ __html: offer.description }}></h2>
+                    <div className="content" dangerouslySetInnerHTML={{ __html: offer.description }}></div>
                 </article>
             </section>
         </div>

@@ -4,8 +4,6 @@ import { randomElement, first, nextElement, last } from "../../../utils/array";
 import { firstSegment } from "../../../utils/url";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import { routes, menuItems } from "../routes";
-import logo from "../images/logo.png";
-import logoWatermark from "../images/logoWatermark.png";
 
 const getHeaderBackgroundStyle = (photo: string) => {
     const url = require(`../images/top/${photo}`);
@@ -86,14 +84,6 @@ export const Header = withRouter(props => {
                                 id={selectedItem(props.location.pathname, routes.contact.route)}
                             >
                                 {strings.menu.contact}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={routes.gallery.route}
-                                id={selectedItem(props.location.pathname, routes.gallery.route)}
-                            >
-                                {strings.menu.gallery}
                             </Link>
                         </li>
                         <li>

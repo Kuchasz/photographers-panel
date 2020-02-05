@@ -13,3 +13,5 @@ export const getDateString = (date: Date) => {
     const year = date.getFullYear();
     return `${year}-${month}-${day}`;
 };
+
+export const getYear = (date: Date) => date.getFullYear();

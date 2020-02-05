@@ -16,10 +16,14 @@ export class Videos extends React.Component<BlogsProps, BlogsState> {
 
     render() {
         return (
-            <div className="gallery">
+            <div className="videos">
                 <section>
-                    <ul>
-                        {this.state.videos?.map(v => (
+                    {this.state.videos?.map(v => (
+                        <div key={v.videoUrl} className="video">
+                            {/* <div className="ripple">
+                                <div></div>
+                                <div></div>
+                            </div> */}
                             <iframe
                                 key={v.videoUrl}
                                 width="560"
@@ -29,8 +33,8 @@ export class Videos extends React.Component<BlogsProps, BlogsState> {
                                 allow="autoplay; encrypted-media;"
                                 allowFullScreen
                             ></iframe>
-                        ))}
-                    </ul>
+                        </div>
+                    ))}
                 </section>
             </div>
         );

@@ -41,7 +41,7 @@ a:hover {
 }
 
 small {
-    font-size: 12px;
+    font-size: 16px;
     color: #62becc;
 }
 
@@ -81,7 +81,7 @@ header .background div {
 }
 
 nav {
-    width: 757px;
+    width: 642px;
     height: 55px;
     margin: 50px 0 0 0;
     float: right;
@@ -236,6 +236,7 @@ nav li #current {
 .gallery,
 .offers,
 .link,
+.videos,
 .contact_form,
 .gallery_sub,
 .sub_sub,
@@ -257,6 +258,7 @@ nav li #current {
 .offer section,
 .article section,
 .gallery section,
+.videos section,
 .offers section,
 .link section,
 .contact_form section,
@@ -620,6 +622,7 @@ nav li #current {
     box-shadow: 0 0 7px 3px rgba(252, 252, 252, 0.1);
     font-size: 16px;
     font-family: "Century Gothic Bold";
+    cursor: pointer;
     text-align: center;
     padding: 15px 25px 16px 25px;
     box-sizing: border-box;
@@ -824,7 +827,11 @@ nav li #current {
 }
 
 .contact #left {
-    width: 260px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
     float: left;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -836,12 +843,13 @@ nav li #current {
     font-size: 22px;
     float: left;
     margin: 0;
-    padding: 25px 0 4px 0;
 }
 
 .contact #left h2 {
     font-size: 14px;
     font-weight: normal;
+    margin-bottom: 0px;
+    margin-top: 4px;
 }
 
 .contact #right {

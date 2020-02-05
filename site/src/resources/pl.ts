@@ -54,7 +54,6 @@ export const pl = {
     menu: {
         home: "Strona główna",
         offer: "Oferta",
-        gallery: "Galeria",
         contact: "Kontakt",
         links: "Polecamy",
         videos: "Film",
@@ -118,7 +117,7 @@ export const pl = {
         description: "Usługi, które świadczymy najczęściej.",
         calculator: {
             title: "Kalkulator ceny",
-            description: "Kalkulator uwzględnia tylko najczęściej wykonywane przez nas usługi, o cenę pozostałych proszę pytać mailowo lub telefonicznie."
+            description: "Cena umówiona z klientem jest wiążąca, nie ulegnie zmianie wraz ze zmianą cennika. O cenę pozostałych usług proszę pytać przez facebook, mailowo lub telefonicznie."
         },
         slogan: {
             title: "Co <span>możemy</span> Ci <span>zaoferować</span>?",
@@ -150,7 +149,7 @@ export const pl = {
         }
     },
     footer: {
-        copyrights: "© 2019 PyszStudio. All rights reserved.",
+        copyrights: "PyszStudio. All rights reserved.",
         socialMedia: {
             header: "ZNAJDZIESZ NAS RÓWNIEŻ",
             facebook: "FACEBOOK",

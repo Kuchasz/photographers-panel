@@ -31,6 +31,10 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                             Świetnie bawiłeś się na tym weselu? Znasz Młodą Parę? Lub może po prostu podobają Ci się
                             zdjęcia, kliknij:
                         </span>
+                        <div className="fb-share-button"
+                            data-href="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
+                            data-layout="button_count">
+                        </div>
                         <div
                             className="fb-share-button"
                             data-href="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"

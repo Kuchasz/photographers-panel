@@ -4,7 +4,7 @@ import { strings } from "../resources";
 import { routes } from "../routes";
 import { includesAll, distinctBy, includesAny } from "../../../utils/array";
 import { OfferListItem, getOffersList } from "../../../api/offer";
-import linkPhoto from "../images/link_foto.png";
+import linkPhoto from "../images/page_offer_photo.png";
 
 const getOfferImage = (imageFileName: string) => require(`../images/offers/${imageFileName}`);
 const getOfferUrl = (alias: string) => `${routes.offers.route}/${alias}`;

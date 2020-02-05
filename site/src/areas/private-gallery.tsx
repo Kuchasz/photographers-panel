@@ -1,6 +1,5 @@
 import * as React from "react";
-import galleryPhoto from "../images/gallery_foto.png";
-import linkPhoto from "../images/link_foto.png";
+import galleryPhoto from "../images/page_private_photo.png";
 import { Link } from "react-router-dom";
 import { strings } from "../resources";
 import * as getPrivateGalleryUrl from "../../../api/private-gallery";

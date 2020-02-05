@@ -13,7 +13,6 @@ export const routes = {
     blogs: { fullPage: false, route: "/blog", label: "Blog", getData: getBlogsList },
     blog: { fullPage: false, route: "/blog/:alias", label: "Blog", getData: getBlog },
     contact: { fullPage: false, route: "/kontakt", label: "Contact", getData: empty },
-    gallery: { fullPage: false, route: "/galeria", label: "Gallery", getData: empty },
     videos: { fullPage: false, route: "/filmy", label: "Videos", getData: getVideosList },
     links: { fullPage: false, route: "/linki", label: "Links", getData: empty },
     private: { fullPage: false, route: "/prywatna", label: "Private", getData: empty }
