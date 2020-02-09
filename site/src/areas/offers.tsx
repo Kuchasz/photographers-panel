@@ -78,17 +78,17 @@ const calculatePrice = (selectedTariffs: TariffPositions[], selectedYear: Tariff
 const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
     includesAny(selectedTariffs, tariff.requires);
 
-export const Offers = ({ initialState }: { initialState?: OfferListItem[] }) => {
+export const Offers = () => {
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
     const [selectedTariffs, changeTariffs] = React.useReducer(updateTariffs, [
         "WeddingPhotography",
         "WeddingVideo",
         "WeddingSession"
     ]);
-    const [offers, setOffers] = React.useState(initialState ?? []);
+    const [offers, setOffers] = React.useState([] as OfferListItem[]);
 
     React.useEffect(() => {
-        if (offers.length === 0) getOffersList().then(setOffers);
+        getOffersList().then(setOffers);
     }, []);
 
     const price = calculatePrice(selectedTariffs, selectedYear);

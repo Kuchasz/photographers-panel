@@ -27,7 +27,7 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                 <Route
                     exact
                     path={routes.offers.route}
-                    render={() => <Offers initialState={initialState[routes.offers.route]} />}
+                    render={() => <Offers />}
                 />
                 <Route path={routes.offer.route} render={x => <Offer alias={x.match.params.alias} />} />
                 <Route
