@@ -36,7 +36,8 @@ export const pl = {
             errors: {
                 NameTooShort: "Imie jest zbyt krótkie.",
                 ContentTooShort: "Treść jest zbyt krótka.",
-                EmailInvalid: "Nieprawidłowy adres email."
+                EmailInvalid: "Nieprawidłowy adres email.",
+                InternalError: "Wewnętrzny błąd. Usługa tymczasowo nie działa.",
             }
         },
         email: "biuro@pyszstudio.pl",

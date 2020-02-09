@@ -7,7 +7,7 @@ import "./styles/tablet.css";
 import "./styles/mobile.css";
 import "./index.less";
 import { BrowserRouter } from "react-router-dom";
-import { StaticRouter } from "react-router";
+import { StaticRouter, matchPath } from "react-router";
 import { renderToString } from "react-dom/server";
 
 if (typeof document !== "undefined") {
@@ -29,6 +29,7 @@ if (typeof document !== "undefined") {
         Root,
         createElement: React.createElement,
         StaticRouter,
-        renderToString
+        renderToString,
+        matchPath
     };
 }

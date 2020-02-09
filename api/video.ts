@@ -1,12 +1,74 @@
+const videos = [
+    {
+        id: "1",
+        title: "Kwintet blaszany z Andrychowa",
+        alias: "rudolf-czerwononosy-renifer-orkiestra-andrychow",
+        desc:
+            "Członkowie zespołu poprosili nas o nagranie kilku utworów świątecznych w ich wykonaniu. Oto jeden z nich",
+        descshort:
+            "Członkowie zespołu poprosili nas o nagranie kilku utworów świątecznych w ich wykonaniu. Oto jeden z nich",
+        videourl: "http://www.youtube.com/embed/l7zMLDB-Eac",
+        photo: "kwintet-blaszany-trabka-andrychow.jpg",
+        tags: "orkiestra dęta andrychów, rudolf czerwononosy, występ, na żywo, 5d mk iii, ex1r"
+    },
+    {
+        id: "2",
+        title: "TBD",
+        alias: "TBD",
+        desc: "TBD",
+        descshort: "TBD",
+        videourl: "https://www.youtube.com/embed/U5jF2EBx09s",
+        photo: "TBD",
+        tags: "TBD"
+    },
+    {
+        id: "3",
+        title: "TBD",
+        alias: "TBD",
+        desc: "TBD",
+        descshort: "TBD",
+        videourl: "https://www.youtube.com/embed/ZzyEDE85Kfk",
+        photo: "TBD",
+        tags: "TBD"
+    },
+    {
+        id: "4",
+        title: "TBD",
+        alias: "TBD",
+        desc: "TBD",
+        descshort: "TBD",
+        videourl: "https://www.youtube.com/embed/fue25CrION8",
+        photo: "TBD",
+        tags: "TBD"
+    },
+    {
+        id: "5",
+        title: "TBD",
+        alias: "TBD",
+        desc: "TBD",
+        descshort: "TBD",
+        videourl: "https://www.youtube.com/embed/SFBNPUSLqvk",
+        photo: "TBD",
+        tags: "TBD"
+    },
+    {
+        id: "6",
+        title: "TBD",
+        alias: "TBD",
+        desc: "TBD",
+        descshort: "TBD",
+        videourl: "https://www.youtube.com/embed/ltdE302azjk",
+        photo: "TBD",
+        tags: "TBD"
+    }
+];
+
 export interface VideoListItem {
-    videoUrl: string;        
+    videoUrl: string;
 }
 
-const getVideosListRoute = "/api/videos-list";
 export const getVideosList = () =>
     new Promise<VideoListItem[]>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + getVideosListRoute)
-            .then(result => result.json())
-            .then(resolve);
+        const desiredVideos = videos.map(v => ({ videoUrl: v.videourl }));
+        resolve(desiredVideos);
     });
-getVideosList.route = getVideosListRoute;

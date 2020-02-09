@@ -1,8 +1,8 @@
-//import React from "react";
+// import React from "react";
 import express from "express";
 import { randomElement } from "../utils/array";
 //import { renderToString } from "react-dom/server";
-import { matchPath, StaticRouter } from "react-router";
+// import { matchPath, StaticRouter } from "react-router";
 import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
 import * as privateGalleryModel from "./src/models/private-gallery";
@@ -12,8 +12,6 @@ import Root from "../site/dist/bundle.js";
 import * as blog from "../api/blog";
 import * as offer from "../api/offer";
 import * as video from "../api/video";
-import * as offerModel from "./src/models/offer";
-import * as videoModel from "./src/models/video";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
@@ -21,10 +19,13 @@ import * as message from "../api/message";
 import * as subscribeForNotification from "../api/notification";
 import * as getPrivateGalleryUrl from "../api/private-gallery";
 import { ResultType } from "../api/common";
+import { sendEmail } from "./src/messages";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
 // import Home from "../site/src/areas/home";
+
+// mail.send(msg);
 
 const app = express();
 app.use(express.json());
@@ -57,12 +58,21 @@ app.get(blog.getBlog.route, async (req, res) => {
 });
 
 app.post(message.send.route, async (req, res) => {
-    const error = messageModel.validate(req.body);
-    const result: message.MessageSendResult = error ? { type: ResultType.Error, error } : { type: ResultType.Success };
+    const mesg = req.body as message.Message;
 
-    setTimeout(() => {
-        res.json(result);
-    }, 1500);
+    const error = messageModel.validate(mesg);
+
+    if (error) {
+        res.json({ type: ResultType.Error, error: error });
+        return;
+    }
+
+    try {
+        await sendEmail(mesg.name, mesg.email, mesg.content);
+        res.json({ type: ResultType.Success });
+    } catch {
+        res.json({ type: ResultType.Error, error: "InternalError" });
+    }
 });
 
 app.get(getPrivateGalleryUrl.route, async (req, res) => {
@@ -87,25 +97,10 @@ app.post(subscribeForNotification.route, async (req, res) => {
         await notificationModel.subscribe(req.body);
         result = { type: ResultType.Success };
     }
-    
+
     setTimeout(() => {
         res.json(result);
     }, 1500);
-});
-
-app.get(offer.getOffersList.route, async (_req, res) => {
-    const offers = await offerModel.getList();
-    res.json(offers);
-});
-
-app.get(offer.getOffer.route, async (req, res) => {
-    const offer = await offerModel.get(req.params.alias);
-    res.json(offer);
-});
-
-app.get(video.getVideosList.route, async (req, res) => {
-    const videos = await videoModel.getList();
-    res.json(videos);
 });
 
 app.get("*", async (req, res) => {
@@ -115,8 +110,8 @@ app.get("*", async (req, res) => {
     let initialState: any;
 
     try {
-        const found = Object.values(routes).filter(p => matchPath(req.path, { path: p.route, exact: true }))[0];
-        const match = matchPath(req.path, { path: found.route });
+        const found = Object.values(routes).filter(p => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
+        const match = Root.matchPath(req.path, { path: found.route });
 
         desiredRoute = { route: found.route };
         initialState = desiredRoute ? await found.getData(match ? (match.params as any).alias : null) : undefined;
@@ -135,7 +130,11 @@ app.get("*", async (req, res) => {
         let siteContent = "";
         const context = {};
 
-        const app = Root.createElement(Root.StaticRouter, {location: req.url, context}, Root.createElement(Root.Root, {initialState}, null));
+        const app = Root.createElement(
+            Root.StaticRouter,
+            { location: req.url, context },
+            Root.createElement(Root.Root, { initialState }, null)
+        );
 
         try {
             siteContent = Root.renderToString(app);

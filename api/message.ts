@@ -6,7 +6,7 @@ export interface Message {
     content: string;
 }
 
-export type MessageValidationError = "NameTooShort" | "ContentTooShort" | "EmailInvalid";
+export type MessageValidationError = "NameTooShort" | "ContentTooShort" | "EmailInvalid" | "InternalError";
 
 export type MessageSendResult = Result<MessageValidationError>;
 

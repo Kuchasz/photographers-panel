@@ -27,6 +27,7 @@
     "typescript": "^3.7.3"
   },
   "devDependencies": {
+    "@sendgrid/mail": "^6.5.2",
     "isomorphic-fetch": "^2.2.1",
     "nodemon": "^2.0.2",
     "youch": "^2.0.10"
