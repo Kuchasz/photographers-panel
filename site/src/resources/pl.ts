@@ -1,23 +1,22 @@
 export const pl = {
     article: {
-        title: "Szeroki <span>obszar</span> działalności <span>firmy</span>",
+        title: "Gdzie <span>działamy</span>?",
         description:
-            "Wykonujemy zdjęcia i filmy nie tylko na terenie Andrychowa. Mamy za sobą wiele sesji zdjęciowych w Kętach, Wadowicach, Bielsku czy Krakowie.",
+            "Wykonujemy zdjęcia i filmy nie tylko na terenie Andrychowa. Mamy za sobą wiele realizacji w Kętach, Wadowicach, Bielsku-Białej czy Krakowie. Pojedziemy wszędzie gdzie nas zaprosicie.",
         more: "POZOSTAŁE WPISY Z BLOGA"
     },
     main: {
         topPhotos: [
-            "james-bond.jpg",
-            "mloda-para-strobist-przytulanie.jpg",
-            "moczenie-nog-w-wodospadzie.jpg",
-            "pocalunek-na-lace.jpg",
             "pocalunek-na-lozku.jpg",
-            "przytulanie-przy-fontannie.jpg",
-            "spacer-po-lace.jpg",
             "spacer-po-parku.jpg",
-            "spacer-po-podescie-w-zakrzowku.jpg",
-            "zabawy-w-zborzu.jpg",
-            "o-zachodzie-slonca.jpg"
+            "przytulanie-przy-fontannie.jpg",
+            "mloda-para-strobist-przytulanie.jpg",
+            "o-zachodzie-slonca.jpg",
+            "piknik-nad-rzeka.jpg",
+            "james-bond.jpg",
+            "spacer-po-lace.jpg",
+            "przytulanie-w-sadzie.jpg",
+            "pocalunek-na-lozku.jpg"
         ]
     },
     contact: {
@@ -94,7 +93,7 @@ export const pl = {
         notReady: {
             title: "Galeria :bride i :groom już wkrótce...",
             description:
-                "Galeria qnie jest jeszcze dostępna. Zostaw nam swój adres email lub polub nas na facebooku a poinformujemy Cię kiedy galeria będzie gotowa."
+                "Galeria nie jest jeszcze dostępna. Zostaw nam swój adres email lub polub nas na facebooku a poinformujemy Cię kiedy galeria będzie gotowa."
         },
         password: "podaj hasło",
         check: "SPRAWDŹ",
@@ -115,28 +114,28 @@ export const pl = {
     },
     offer: {
         title: "Usługi",
-        description: "Usługi, które świadczymy najczęściej.",
+        description: "Jeżeli czegoś nie ma w ofercie to zapraszamy do kontaktu.",
         calculator: {
             title: "Kalkulator ceny",
             description: "Cena umówiona z klientem jest wiążąca, nie ulegnie zmianie wraz ze zmianą cennika. O cenę pozostałych usług proszę pytać przez facebook, mailowo lub telefonicznie."
         },
         slogan: {
-            title: "Co <span>możemy</span> Ci <span>zaoferować</span>?",
+            title: "Co <span>nas wyróżnia</span>?",
             description:
-                "Lubimy wyzwania, nie ograniczamy się wyłącznie do fotografii ślubnej. Jeżeli poszukujesz czegoś, czego niema w naszej ofercie - napisz. Na pewno coś poradzimy.",
+                "Nie mamimy cudzymi zdjęciami czy pozornie atrakcyjną ceną. Większość klientów trafia do nas z polecenia przez ich znajomych. To o czymś świadczy.",
             middle: {
-                title: "Gwarancja jakości",
+                title: "Odkrywamy karty",
                 description:
-                    "Nasza firma funkcjonuje na rynku już od kilkunastu lat i od samego początku stawia na jakość oraz zadowolenie klientów, aby Ci czuli, że wykonana fotografia wygląda właśnie tak jak tego chcieli.",
+                    "Zapraszamy do zapoznania się z ofertą, cennikiem oraz naszymi realizacjami a następnie do kontaktu przez email, telefon lub facebooka.",
                 more: "ZOBACZ PEŁNĄ OFERTĘ"
             },
             advantages: [
+                "Pierwsze zdjęcia w dzień po weselu",
                 "Bezkonkurencyjna cena",
                 "Internetowa galeria zdjęć pod hasłem",
                 "Plener w dniu wesela gratis",
                 "Krótki czas realizacji",
                 "Bogaty pakiet podstawowy",
-                "Pierwsze zdjęcia w dzień po weselu",
                 "Aparat i kamera w pakiecie",
                 "Film w FullHD na pendrive"
             ]

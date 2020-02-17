@@ -490,7 +490,6 @@ nav li #current {
     font-weight: normal;
     padding-left: 15px;
     text-align: left;
-    padding-top: 30px;
     margin: 0;
 }
 
@@ -536,10 +535,11 @@ nav li #current {
 .category .details {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .category img {
-    height: 125px;
+    height: 200px;
 }
 
 .category:hover {
