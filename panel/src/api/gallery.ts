@@ -1,4 +1,4 @@
-import { getDateString } from "../utils/date";
+import { getDateString } from "../../../utils/date";
 
 export interface VisitsSummary {
     date: string;

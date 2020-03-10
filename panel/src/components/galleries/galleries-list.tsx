@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
-import { range } from '../../utils/array';
+import { range } from '../../../../utils/array';
 import { GalleryStates, Gallery } from '../../state/gallery';
 
 interface Props {
