@@ -8,13 +8,13 @@ const year = getYear(new Date());
 
 export const Footer = () => <footer>
     <section>
-        <div id="left">
+        <div className="left">
             <h1>© {year} {strings.footer.copyrights}</h1>
             <ul>
                 {/* {menuItems.map((mi, index) => <li key={mi.route}><Link to={mi.route}>{mi.label}</Link> {index < menuItems.length -1 ? ' / ' : undefined }</li>)} */}
             </ul>
         </div>
-        <div id="right">
+        <div className="right">
             <h1>{strings.footer.socialMedia.header}</h1>
             <ul>
                 <li><a href={strings.footer.socialMedia.url.facebook} target="_blank">{strings.footer.socialMedia.facebook}</a> /</li>

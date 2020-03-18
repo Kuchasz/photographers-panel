@@ -67,8 +67,4 @@ export interface VideoListItem {
     videoUrl: string;
 }
 
-export const getVideosList = () =>
-    new Promise<VideoListItem[]>((resolve, _) => {
-        const desiredVideos = videos.map(v => ({ videoUrl: v.videourl }));
-        resolve(desiredVideos);
-    });
+export const getVideosList = () => Promise.resolve(videos.map(v => <VideoListItem>({ videoUrl: v.videourl })));

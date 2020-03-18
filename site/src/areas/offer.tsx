@@ -10,10 +10,10 @@ const getImageBackgroundStyle = (url: string) => {
 };
 
 type Offer = { title: string; photos: string[]; description: string };
-type OfferProps = { alias: string };
+type OfferProps = { alias: string, initialState: OfferEntry };
 
-export const Offer = ({ alias }: OfferProps) => {
-    const [offer, setOffer] = React.useState({} as OfferEntry);
+export const Offer = ({ alias, initialState }: OfferProps) => {
+    const [offer, setOffer] = React.useState(initialState);
 
     React.useEffect(() => {
         getOffer(alias).then(setOffer);
@@ -40,20 +40,3 @@ export const Offer = ({ alias }: OfferProps) => {
         </div>
     );
 };
-
-{
-    /* <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="{$base_url}media/js/jquery.slides.min.js"></script>
-<script>
-    $(function() {
-      $('#slides').slidesjs({
-        play: {
-          active: true,
-          auto: true,
-          interval: 10000,
-          swap: true
-        }
-      });
-    });
-  </script> */
-}

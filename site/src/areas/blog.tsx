@@ -5,6 +5,7 @@ type BlogProps = { initialState?: BlogEntry; alias: string };
 type BlogState = { blog?: BlogEntry };
 
 export class Blog extends React.Component<BlogProps, BlogState> {
+
     state = this.props.initialState !== undefined ? { blog: this.props.initialState } : { blog: undefined };
 
     componentDidMount() {

@@ -36,12 +36,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </article>
 
                         <hgroup>
-                            <ul id="left">
+                            <ul className="left">
                                 {strings.offer.slogan.advantages.slice(0, 4).map(adv => (
                                     <li key={adv}>{adv}</li>
                                 ))}
                             </ul>
-                            <ul id="right">
+                            <ul className="right">
                                 {strings.offer.slogan.advantages.slice(4).map(adv => (
                                     <li key={adv}>{adv}</li>
                                 ))}
@@ -78,12 +78,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                 <div className="contact">
                     <section>
-                        <div id="left">
+                        <div className="left">
                             <h1>{strings.contact.slogan.title}</h1>
                             <h2>{strings.contact.slogan.description}</h2>
                         </div>
 
-                        <div id="right">
+                        <div className="right">
                             <h1>{strings.contact.email}</h1>
                             <h2>{strings.contact.phone}</h2>
                         </div>

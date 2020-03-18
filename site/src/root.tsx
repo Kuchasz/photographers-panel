@@ -27,9 +27,9 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                 <Route
                     exact
                     path={routes.offers.route}
-                    render={() => <Offers />}
+                    render={() => <Offers initialState={initialState[routes.offers.route]}/>}
                 />
-                <Route path={routes.offer.route} render={x => <Offer alias={x.match.params.alias} />} />
+                <Route path={routes.offer.route} render={x => <Offer alias={x.match.params.alias} initialState={initialState[routes.offer.route]}/>} />
                 <Route
                     exact
                     path={routes.blogs.route}
@@ -42,7 +42,7 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                 />
                 <Route exact path={routes.contact.route} render={() => <Contact />} />
                 <Route exact path={routes.links.route} render={() => <Links />} />
-                <Route exact path={routes.videos.route} render={() => <Videos />} />
+                <Route exact path={routes.videos.route} render={() => <Videos initialState={initialState[routes.videos.route]}/>} />
                 <Route exact path={routes.private.route} render={() => <PrivateGallery />} />
             </Switch>
         </span>

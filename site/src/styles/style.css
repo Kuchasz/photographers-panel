@@ -1,16 +1,19 @@
 @font-face {
     font-family: "Century Gothic";
     src: url(../fonts/MYRIADPRO-REGULAR.woff);
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Century Gothic Bold";
     src: url(../fonts/MYRIADPRO-BOLD.woff);
+    font-display: swap;
 }
 
 @font-face {
     font-family: "Century Gothic Light";
     src: url(../fonts/MyriadPro-Light.woff);
+    font-display: swap;
 }
 
 article,
@@ -66,6 +69,7 @@ header .background {
     height: 100%;
     width: 100%;
     z-index: -1;
+    background: #100c08;
 }
 
 header .background div {
@@ -733,18 +737,18 @@ nav li #current {
     margin-left: 60px;
 }
 
-.offer #left {
+.offer .left {
     width: 245px;
     float: left;
 }
 
-.offer #right {
+.offer .right {
     width: 245px;
     float: right;
 }
 
-.offer #left li,
-.offer #right li {
+.offer .left li,
+.offer .right li {
     display: flex;
     align-items: center;
     width: 200px;
@@ -792,18 +796,18 @@ nav li #current {
         font-size: 16px;
     }
 
-    .offer #left {
+    .offer .left {
         width: 225px;
         float: left;
     }
 
-    .offer #right {
+    .offer .right {
         width: 225px;
         float: right;
     }
 
-    .offer #left li,
-    .offer #right li {
+    .offer .left li,
+    .offer .right li {
         width: 150px;
         height: 50px;
         list-style-type: none;
@@ -826,7 +830,7 @@ nav li #current {
     margin: 0 auto;
 }
 
-.contact #left {
+.contact .left {
     width: 280px;
     display: flex;
     flex-direction: column;
@@ -838,21 +842,21 @@ nav li #current {
     margin-left: 20px;
 }
 
-.contact #left h1 {
+.contact .left h1 {
     font-family: "Century Gothic Bold";
     font-size: 22px;
     float: left;
     margin: 0;
 }
 
-.contact #left h2 {
+.contact .left h2 {
     font-size: 14px;
     font-weight: normal;
     margin-bottom: 0px;
     margin-top: 4px;
 }
 
-.contact #right {
+.contact .right {
     width: 450px;
     float: right;
     margin-top: 0px;
@@ -862,14 +866,14 @@ nav li #current {
     color: #fff;
 }
 
-.contact #right h1 {
+.contact .right h1 {
     font-family: "Century Gothic Bold";
     font-size: 22px;
     margin: 0;
     padding: 20px 0 4px 0;
 }
 
-.contact #right h2 {
+.contact .right h2 {
     font-size: 22px;
     font-family: "Century Gothic Bold";
     margin: 0;
@@ -882,7 +886,7 @@ nav li #current {
         margin: 0 auto;
     }
 
-    .contact #right {
+    .contact .right {
         margin-right: 20px;
     }
 }
@@ -953,7 +957,7 @@ footer section {
     margin: 0 auto;
 }
 
-footer #left {
+footer .left {
     width: 500px;
     float: left;
     margin-top: 0px;
@@ -961,8 +965,8 @@ footer #left {
     margin-left: 20px;
 }
 
-footer #left h1,
-footer #right h1 {
+footer .left h1,
+footer .right h1 {
     width: 220px;
     font-family: "Century Gothic Bold";
     font-size: 12px;
@@ -970,16 +974,16 @@ footer #right h1 {
     padding: 30px 0 4px 0;
 }
 
-footer #left ul,
-footer #right ul {
+footer .left ul,
+footer .right ul {
     margin: 0;
     padding: 0;
 }
 
-footer #left li,
-footer #right li,
-footer #left li a,
-footer #right li a {
+footer .left li,
+footer .right li,
+footer .left li a,
+footer .right li a {
     list-style-type: none;
     display: inline;
     font-size: 12px;
@@ -988,7 +992,7 @@ footer #right li a {
     color: #035682;
 }
 
-footer #right {
+footer .right {
     width: 220px;
     float: right;
     margin-top: 0px;
@@ -1004,7 +1008,7 @@ footer #right {
         margin: 0 auto;
     }
 
-    footer #right {
+    footer .right {
         margin-right: 20px;
     }
 }

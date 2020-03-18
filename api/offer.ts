@@ -151,24 +151,24 @@ export interface OfferEntry {
 }
 
 export const getOffersList = () =>
-    new Promise<OfferListItem[]>((resolve, _) => {
-        resolve(
-            offers.map(o => ({
-                title: o.title,
-                alias: o.alias,
-                summary: o.descshort,
-                photoUrl: `/media/images/offer/${offerPhotos.filter(op => op.OfferId === o.id)[0].photourl}`
-            }))
-        );
-    });
+    Promise.resolve(
+        offers.map(
+            o =>
+                <OfferListItem>{
+                    title: o.title,
+                    alias: o.alias,
+                    summary: o.descshort,
+                    photoUrl: `/media/images/offer/${offerPhotos.filter(op => op.OfferId === o.id)[0].photourl}`
+                }
+        )
+    );
 
-export const getOffer = (alias: string) =>
-    new Promise<OfferEntry>((resolve, _) => {
-        const offer = offers.filter(o => o.alias === alias)[0];
-        const photos = offerPhotos
-            .filter(op => op.OfferId === offer.id)
-            .map(p => ({ url: `/media/images/offer/${p.photourl}`, altText: p.alttext }));
+export const getOffer = (alias: string) => {
+    const offer = offers.filter(o => o.alias === alias)[0];
+    const photos = offerPhotos
+        .filter(op => op.OfferId === offer.id)
+        .map(p => ({ url: `/media/images/offer/${p.photourl}`, altText: p.alttext }));
 
-        const result = { title: offer.title, description: offer.desc, photos };
-        resolve(result);
-    });
+    const result: OfferEntry = { title: offer.title, description: offer.desc, photos };
+    return Promise.resolve(result);
+};

@@ -1,5 +1,7 @@
 // import React from "react";
 import express from "express";
+import compression from 'compression';
+
 import { randomElement } from "../utils/array";
 //import { renderToString } from "react-dom/server";
 // import { matchPath, StaticRouter } from "react-router";
@@ -29,6 +31,7 @@ const Youch = require("youch");
 
 const app = express();
 app.use(express.json());
+app.use(compression());
 
 const raiseErr = (err: Error, req: any, res: any) => {
     const youch = new Youch(err, req);
@@ -103,6 +106,11 @@ app.post(subscribeForNotification.route, async (req, res) => {
     }, 1500);
 });
 
+app.get('/robots.txt', function (req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nAllow: /");
+});
+
 app.get("*", async (req, res) => {
     //routes.home
 
@@ -114,7 +122,8 @@ app.get("*", async (req, res) => {
         const match = Root.matchPath(req.path, { path: found.route });
 
         desiredRoute = { route: found.route };
-        initialState = desiredRoute ? await found.getData(match ? (match.params as any).alias : null) : undefined;
+        initialState = found ? await found.getData(match ? (match.params as any).alias : null) : undefined;
+
         console.log(match);
     } catch (err) {
         raiseErr(err, req, res);
@@ -133,7 +142,7 @@ app.get("*", async (req, res) => {
         const app = Root.createElement(
             Root.StaticRouter,
             { location: req.url, context },
-            Root.createElement(Root.Root, { initialState }, null)
+            Root.createElement(Root.Root, { initialState: { [desiredRoute.route]: initialState } }, null)
         );
 
         try {

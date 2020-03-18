@@ -1,11 +1,13 @@
 @font-face {
 	font-family: 'Century Gothic';
 	src: url(../fonts/GOTHIC.ttf);
+	font-display: swap;
 }
 
 @font-face {
 	font-family: 'Century Gothic Bold';
 	src: url(../fonts/GOTHICB.ttf);
+	font-display: swap;
 }
 
 article, aside, figure, footer, header, hgroup, menu, nav, section { display: block; }
@@ -579,17 +581,17 @@ nav li #current {
 	margin-left: 60px;
 }
 
-.offer #left {
+.offer .left {
 	width: 245px;
 	float: left;
 }
 
-.offer #right {
+.offer .right {
 	width: 245px;
 	float: right;
 }
 
-.offer #left li, .offer #right li {
+.offer .left li, .offer .right li {
 	width: 200px; height: 50px;
 	list-style-type: none;
 	padding: 3px 0 0 70px; 
@@ -630,17 +632,17 @@ nav li #current {
 			font-size: 16px;
 		}
 
-		.offer #left {
+		.offer .left {
 			width: 225px;
 			float: left;
 		}
 
-		.offer #right {
+		.offer .right {
 			width: 225px;
 			float: right;
 		}
 
-		.offer #left li, .offer #right li {
+		.offer .left li, .offer .right li {
 			width: 150px; height: 50px;
 			list-style-type: none;
 			padding: 3px 0 0 70px; 
@@ -670,7 +672,7 @@ nav li #current {
 	margin: 0 auto;
 }
 
-.contact #left {
+.contact .left {
 	width: 260px;
 	float: left;
 	margin-top: 0px;
@@ -678,7 +680,7 @@ nav li #current {
 	margin-left: 20px;
 }
 
-.contact #left h1 {
+.contact .left h1 {
 	font-family: 'Century Gothic Bold';
 	font-size: 22px;
 	float: left;
@@ -686,12 +688,12 @@ nav li #current {
 	padding: 25px 0 4px 0;
 }
 
-.contact #left h2 {
+.contact .left h2 {
 	font-size: 14px;
 	font-weight: normal;
 }
 
-.contact #right {
+.contact .right {
 	width: 450px;
 	float: right;
 	margin-top: 0px;
@@ -701,21 +703,21 @@ nav li #current {
 	color: #fff;
 }
 
-.contact #right h1 {
+.contact .right h1 {
 	font-family: 'Century Gothic Bold';
 	font-size: 22px;
 	margin: 0; 
 	padding: 20px 0 4px 0;
 }
 
-.contact #right h2 {
+.contact .right h2 {
 	font-size: 22px;
 	font-family: 'Century Gothic Bold';
 	margin: 0;
 }
 
 	@media only screen and (min-width: 950px) and (max-width: 1030px) {
-		.contact #right {
+		.contact .right {
 			margin-right: 20px;
 		}
 	}
@@ -791,7 +793,7 @@ footer section {
 	margin: 0 auto;
 }
 
-footer #left {
+footer .left {
 	width: 400px;
 	float: left;
 	margin-top: 0px;
@@ -799,7 +801,7 @@ footer #left {
 	margin-left: 20px;
 }
 
-footer #left h1, footer #right h1 {
+footer .left h1, footer .right h1 {
 	width: 220px;
 	font-family: 'Century Gothic Bold';
 	font-size: 12px;
@@ -807,11 +809,11 @@ footer #left h1, footer #right h1 {
 	padding: 30px 0 4px 0;
 }
 
-footer #left ul, footer #right ul {
+footer .left ul, footer .right ul {
 	margin: 0; padding: 0;
 }
 
-footer #left li, footer #right li, footer #left li a, footer #right li a {
+footer .left li, footer .right li, footer .left li a, footer .right li a {
 	list-style-type: none;
 	display: inline;
 	font-size: 12px;
@@ -820,7 +822,7 @@ footer #left li, footer #right li, footer #left li a, footer #right li a {
 	color: #035682;
 }
 
-footer #right {
+footer .right {
 	width: 220px;
 	float: right;
 	margin-top: 0px;
@@ -830,7 +832,7 @@ footer #right {
 }
 
 	@media only screen and (min-width: 950px) and (max-width: 1030px) {
-		footer #right {
+		footer .right {
 			margin-right: 20px;
 		}
 	}
