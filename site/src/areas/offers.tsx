@@ -85,7 +85,7 @@ export const Offers = ({ initialState }: { initialState: OfferListItem[] }) => {
         "WeddingVideo",
         "WeddingSession"
     ]);
-    const [offers, setOffers] = React.useState(initialState);
+    const [offers, setOffers] = React.useState(initialState ?? []);
 
     React.useEffect(() => {
         getOffersList().then(setOffers);

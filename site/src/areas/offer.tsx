@@ -13,7 +13,7 @@ type Offer = { title: string; photos: string[]; description: string };
 type OfferProps = { alias: string, initialState: OfferEntry };
 
 export const Offer = ({ alias, initialState }: OfferProps) => {
-    const [offer, setOffer] = React.useState(initialState);
+    const [offer, setOffer] = React.useState(initialState ?? {});
 
     React.useEffect(() => {
         getOffer(alias).then(setOffer);
