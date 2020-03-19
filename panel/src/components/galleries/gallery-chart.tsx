@@ -2,7 +2,7 @@ import { utc as moment } from "moment";
 import React from "react";
 import { Line } from "react-chartjs-2";
 import { ChartOptions } from "chart.js";
-import { VisitsSummary } from "./state";
+import { VisitsSummary } from "../../../../api/panel/private-gallery";
 
 const chartOptions: ChartOptions = {
     maintainAspectRatio: false,

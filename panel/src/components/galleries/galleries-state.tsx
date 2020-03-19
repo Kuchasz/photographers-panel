@@ -1,12 +1,13 @@
 import React from "react";
-import { getAll, Gallery, getVisits, GalleriesVistsRootObject } from "../../api/gallery";
-import { Gallery as StateGallery, VisitsSummary, fromApiGallery } from "./state";
+
+import { getGalleriesList, getGalleryVisits, Gallery, VisitsSummary } from "../../../../api/panel/private-gallery";
+
 import { addMonths } from "../../../../utils/date";
 
 interface Props{}
 interface State{
     selectedGallery: number;
-    galleries: StateGallery[];
+    galleries: Gallery[];
     disableAutoDate: boolean;
     isLoading: boolean;
     startDate: Date;
@@ -18,14 +19,12 @@ interface State{
 export class GalleriesState extends React.Component<Props, State>{
 
     componentDidMount() {
-        getAll()
-            .then((galleries: Gallery[]) => {
+        getGalleriesList()
+            .then(galleries => {
                 const selectedGallery = galleries[0].id;
 
-                const stateGalleries = galleries.map(fromApiGallery);
-
                 this.setState({ 
-                    galleries: stateGalleries
+                    galleries
                 });
 
                 this.onGallerySelected(selectedGallery);
@@ -58,8 +57,8 @@ export class GalleriesState extends React.Component<Props, State>{
             emails: Math.floor(Math.random()*20)
         });
 
-        getVisits(startDate, endDate, selectedGallery)
-            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
+        getGalleryVisits(startDate, endDate, selectedGallery)
+            .then(resp => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
     };
 
 }

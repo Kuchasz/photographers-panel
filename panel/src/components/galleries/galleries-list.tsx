@@ -1,35 +1,35 @@
 import React, { useState } from 'react';
 import { Tooltip, Table, Icon, Whisper, Progress } from "rsuite";
 import { range } from '../../../../utils/array';
-import { GalleryStates, Gallery } from '../../state/gallery';
+import { Gallery } from '../../../../api/panel/private-gallery';
+import { PrivateGalleryState } from '../../../../api/private-gallery';
 
 interface Props {
     onSelect: (item: any) => void;
     galleries: Gallery[];
 }
 interface State {
-
 }
 
-const getColorFromGalleryState = (galleryState: GalleryStates): any => {
+const getColorFromGalleryState = (galleryState: PrivateGalleryState): any => {
     switch (galleryState) {
-        case GalleryStates.Available:
+        case PrivateGalleryState.Available:
             return '#4CAF50';
-        case GalleryStates.TurnedOff:
+        case PrivateGalleryState.TurnedOff:
             return '#F44336';
-        case GalleryStates.NotReady:
+        case PrivateGalleryState.NotReady:
             return '#FFC107';
         default:
             throw new Error('Not handled GalleryState!');
     }
 };
 
-const getColorFromBlogEntry = (blogEntryId: string)=> blogEntryId ? '#4caf50' : '#f44336';
+const getColorFromBlogEntry = (blogId: string)=> blogId ? '#4caf50' : '#f44336';
 
 const stateTooltips = {
-    [GalleryStates.Available]: <Tooltip>Gallery is <i>available</i>.</Tooltip>,
-    [GalleryStates.TurnedOff]: <Tooltip>Gallery is <i>turned off</i>.</Tooltip>,
-    [GalleryStates.NotReady]: <Tooltip>Gallery is <i>not ready yet</i>.</Tooltip>,
+    [PrivateGalleryState.Available]: <Tooltip>Gallery is <i>available</i>.</Tooltip>,
+    [PrivateGalleryState.TurnedOff]: <Tooltip>Gallery is <i>turned off</i>.</Tooltip>,
+    [PrivateGalleryState.NotReady]: <Tooltip>Gallery is <i>not ready yet</i>.</Tooltip>,
 };
 
 const blogTooltips = {
@@ -88,7 +88,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
             <Table.Column width={50} align="center" fixed>
                 <Table.HeaderCell>Blog</Table.HeaderCell>
                 <Table.Cell dataKey="blog">{(gallery: Gallery) =>
-                    <Whisper trigger="hover" speaker={gallery.blog ? blogTooltips.Available : blogTooltips.None}><Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blog) }} /></Whisper>
+                    <Whisper trigger="hover" speaker={gallery.blogId ? blogTooltips.Available : blogTooltips.None}><Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blogId) }} /></Whisper>
                 }
                 </Table.Cell>
             </Table.Column>

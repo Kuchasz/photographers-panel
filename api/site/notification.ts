@@ -5,15 +5,14 @@ export interface Subscription {
     email: string;
 }
 
-export const route = "/api/subscribe-for-notification";
-
 export type SubscribtionValidationError = "GalleryDoesNotExists" | "AlreadySubscribed" | "EmailInvalid";
 
 export type SubscribtionResult = Result<SubscribtionValidationError>;
 
+export const subscribeForNotificationRoute = "/api/subscribe-for-notification";
 export const subscribeForNotification = (subscription: Subscription) =>
     new Promise<SubscribtionResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + route, {
+        fetch("http://192.168.56.102:8080" + subscribeForNotificationRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",

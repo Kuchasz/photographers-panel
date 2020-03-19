@@ -6,8 +6,7 @@ import { GalleryChart } from './gallery-chart';
 import { GalleryVisitRange } from './gallery-visit-range';
 import { addMonths } from '../../../../utils/date';
 import "./styles.less";
-import { Gallery as GalleryState, DailyVisits } from '../../state/gallery';
-import { Gallery, getVisits, GalleriesVistsRootObject, getAll } from '../../api/gallery';
+import { Gallery, getGalleryVisits, VisitsSummary, getGalleriesList } from '../../../../api/panel/private-gallery';
 
 
 interface Props {
@@ -16,8 +15,8 @@ interface Props {
 
 interface State {
     isLoading: boolean;
-    visits: DailyVisits[];
-    galleries: GalleryState[];
+    visits: VisitsSummary[];
+    galleries: Gallery[];
     selectedGallery?: number;
     stats?: {today: number, total: number, bestDay: string, days: number, daysTotal: number, emails: number};
     startDate: Date;
@@ -25,10 +24,7 @@ interface State {
     disableAutoDate: boolean;
 }
 
-//http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=189
-
-
-
+//http://api.pyszstudio.pl/Galleries/Visits?startDate=2017-09-09&endDate=2017-10-09&galleryId=18
 
 export class Galleries extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -46,22 +42,11 @@ export class Galleries extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        getAll()
-            .then((galleries: Gallery[]) => {
+        getGalleriesList()
+            .then(galleries => {
                 const selectedGallery = galleries[0].id;
                 this.setState({ 
-                    galleries: galleries.map(x => ({
-                        brideName: x.bride,
-                        groomName: x.groom,
-                        password: x.pass,
-                        lastName: x.lastname,
-                        id: x.id,
-                        date: x.date,
-                        place: x.place,
-                        state: x.state,
-                        directoryName: x.dir,
-                        blog: x.BlogEntryId
-                    }))
+                    galleries
                 });
 
                 this.onGallerySelected(selectedGallery);
@@ -85,8 +70,8 @@ export class Galleries extends React.Component<Props, State> {
                 emails: Math.floor(Math.random()*20)
             });
     
-            getVisits(startDate, endDate, this.state.selectedGallery)
-                .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
+            getGalleryVisits(startDate, endDate, this.state.selectedGallery)
+                .then((resp) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
         }
     }
 
@@ -120,8 +105,8 @@ export class Galleries extends React.Component<Props, State> {
             emails: Math.floor(Math.random()*20)
         });
 
-        getVisits(startDate, endDate, selectedGallery)
-            .then((resp: GalleriesVistsRootObject) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
+        getGalleryVisits(startDate, endDate, selectedGallery)
+            .then((resp) => this.setState({ isLoading: false, stats: randomStats(), visits: resp.dailyVisits }));
     };
 
     render() {
