@@ -29,11 +29,24 @@ export interface Gallery {
     visits: number;
 }
 
+// {
+//     todayVisits: number;
+//     totalVisits: number;
+//     bestDay: string;
+//     bestDayVisits: number;
+//     rangeDays: number;
+//     rangeVisits: number;
+//     emails: number;
+// },
+
 export interface GetGalleryVisitsResult {
+    todayVisits: number;
+    totalVisits: number;
+    rangeDays: number;
+    rangeVisits: number;
     bestDay: VisitsSummary;
     dailyVisits: VisitsSummary[];
-    sumOfVisits: number;
-    rangeSumOfVisits?: number;
+    emails: number;
 }
 
 const getGalleriesListRoute = "/api/panel/galleries-list";

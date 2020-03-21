@@ -48,7 +48,8 @@ export const exists = (id: number): Promise<boolean> =>
 
 export const getList = (): Promise<Gallery[]> =>
     new Promise((resolve, reject) => {
-        connection.query(`
+        connection.query(
+            `
             SELECT p.id, p.date, p.place, p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.BlogEntryId, SUM(d.count) as visits 
             FROM privategallery p
             LEFT JOIN daily d ON p.id = d.PrivateGalleryId
@@ -74,22 +75,21 @@ export const getList = (): Promise<Gallery[]> =>
         );
     });
 
-// export interface VisitsSummary {
-//     date: string;
-//     visits: string;
-// }
-
-// bestDay: VisitsSummary;
-// dailyVisits: VisitsSummary[];
-// sumOfVisits: number;
-// rangeSumOfVisits?: number;
 export const getStats = async (galleryId: number, startDate: Date, endDate: Date): Promise<GetGalleryVisitsResult> => {
-    const dailies = await new Promise<VisitsSummary[]>((resolve, reject) => {
+    const days = getDateRange(startDate, endDate);
+    const today = getDateString(new Date());
+
+    const dailyVisits = await new Promise<VisitsSummary[]>((resolve, reject) => {
         connection.query(
-            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = '${galleryId}' AND d.date BETWEEN '${getDateString(startDate)}' AND '${getDateString(endDate)}'`,
+            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = '${galleryId}' AND d.date BETWEEN '${getDateString(
+                startDate
+            )}' AND '${getDateString(endDate)}'`,
             (_err, visists: any[], _fields) => {
-                const dayVisits = visists.reduce((prv, cur) => ({ [getDateString(cur.date)]: Number.parseInt(cur.count), ...prv }), {});
-                const dailies = getDateRange(startDate, endDate).map(getDateString).map(x => ({ date: x, visits: dayVisits[x] ?? 0 }));
+                const dayVisits = visists.reduce(
+                    (prv, cur) => ({ [getDateString(cur.date)]: Number.parseInt(cur.count), ...prv }),
+                    {}
+                );
+                const dailies = days.map(getDateString).map(x => ({ date: x, visits: dayVisits[x] ?? 0 }));
 
                 resolve(dailies);
             }
@@ -98,22 +98,24 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const bestDay = await new Promise<VisitsSummary>((resolve, reject) => {
         connection.query(
-            `SELECT d.count, d.date, FROM daily d WHERE d.PrivateGalleryId = '${galleryId}'`,
+            `SELECT MAX(d.count) as count, d.date FROM daily d WHERE d.PrivateGalleryId = '${galleryId}'
+            GROUP BY d.PrivateGalleryId`,
             (_err, visits, _fields) => {
-                if (visits) {
+                if (visits && visits.length > 0) {
                     const [visit] = visits;
-                    resolve({ date: visit.date, visits: visit.count });
+                    resolve({ date: getDateString(visit.date), visits: visit.count });
                 }
-                resolve(undefined);
+                resolve({ date: "", visits: 0 });
             }
         );
     });
 
-    const sumOfVisits = await new Promise<number>((resolve, reject) => {
+    const totalVisits = await new Promise<number>((resolve, reject) => {
         connection.query(
-            `SELECT SUM(d.count) as [visits] FROM daily d WHERE d.PrivateGalleryId = '${galleryId}'`,
+            `SELECT SUM(d.count) as visits FROM daily d WHERE d.PrivateGalleryId = '${galleryId}'
+            GROUP BY d.PrivateGalleryId`,
             (_err, result, _fields) => {
-                if (result) {
+                if (result && result.length > 0) {
                     const [visit] = result;
                     resolve(visit.visits);
                 }
@@ -122,12 +124,42 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         );
     });
 
-    const rangeSumOfVisits = sum(dailies, d => d.visits);
+    const emails = await new Promise<number>((resolve, reject) => {
+        connection.query(
+            `SELECT COUNT(d.id) as emails FROM email d WHERE d.PrivateGalleryId = '${galleryId}'
+            GROUP BY d.PrivateGalleryId`,
+            (_err, result, _fields) => {
+                if (result && result.length > 0) {
+                    const [email] = result;
+                    resolve(email.emails);
+                }
+                resolve(0);
+            }
+        );
+    });
+
+    const todayVisits = await new Promise<number>((resolve, reject) => {
+        connection.query(
+            `SELECT d.count FROM daily d WHERE d.PrivateGalleryId = '${galleryId}' AND date = ${today}`,
+            (_err, result, _fields) => {
+                if (result && result.length > 0) {
+                    const [daily] = result;
+                    resolve(daily.count);
+                }
+                resolve(0);
+            }
+        );
+    });
+
+    const rangeVisits = sum(dailyVisits, d => d.visits);
 
     return {
-        bestDay: bestDay,
-        dailyVisits: dailies,
-        sumOfVisits,
-        rangeSumOfVisits
+        bestDay,
+        dailyVisits,
+        totalVisits,
+        rangeDays: days.length,
+        rangeVisits,
+        emails,
+        todayVisits
     };
 };

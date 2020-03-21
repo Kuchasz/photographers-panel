@@ -1,20 +1,21 @@
 import React from 'react';
 
 interface Props {
-    today: number;
-    total: number;
+    todayVisits: number;
+    totalVisits: number;
     bestDay: string;
-    days: number;
-    daysTotal: number;
+    bestDayVisits: number;
+    rangeDays: number;
+    rangeVisits: number;
     emails: number;
 }
 
-export const GalleryStats = ({today, total, bestDay, days, daysTotal, emails}: Props) => <>
+export const GalleryStats = ({todayVisits, totalVisits, bestDay, bestDayVisits, rangeDays, rangeVisits, emails}: Props) => <>
     <div className="stats">
-        <span>Today visits:  <strong>{today}</strong></span>
-        <span>Total visits:  <strong>{total}</strong></span>
-        <span>Past {days} days visits:  <strong>{daysTotal}</strong></span>
-        <span>Best day:  <strong>{bestDay}</strong></span>
+        <span>Today visits:  <strong>{todayVisits}</strong></span>
+        <span>Total visits:  <strong>{totalVisits}</strong></span>
+        <span>Over {rangeDays} days visits:  <strong>{rangeVisits}</strong></span>
+        <span>Best day:  <strong>{bestDay}</strong> ({bestDayVisits})</span>
         <span>Emails:  <strong>{emails}</strong></span>
     </div>
 </>;

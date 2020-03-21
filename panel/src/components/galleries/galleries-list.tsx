@@ -93,35 +93,47 @@ export class GalleriesList extends React.PureComponent<Props, State>{
                 </Table.Cell>
             </Table.Column>
 
-            <Table.Column width={200}>
+            <Table.Column flexGrow={1}>
                 <Table.HeaderCell>Wedding</Table.HeaderCell>
                 <Table.Cell dataKey="place" />
             </Table.Column>
 
-            <Table.Column width={100}>
+            <Table.Column width={100} align="center">
                 <Table.HeaderCell>Date</Table.HeaderCell>
                 <Table.Cell dataKey="date" />
             </Table.Column>
 
-            <Table.Column width={75}>
+            <Table.Column width={100} align="center">
                 <Table.HeaderCell>Pass</Table.HeaderCell>
                 <Table.Cell dataKey="password">{(gallery: Gallery) => <Password password={gallery.password} />}</Table.Cell>
             </Table.Column>
 
-            <Table.Column width={350}>
+            <Table.Column flexGrow={2} width={350}>
                 <Table.HeaderCell>Direct path</Table.HeaderCell>
                 <Table.Cell dataKey="url" />
             </Table.Column>
 
-            <Table.Column width={100}>
+            <Table.Column width={100} align="center">
                 <Table.HeaderCell>Total Visits</Table.HeaderCell>
                 <Table.Cell dataKey="visits" />
             </Table.Column>
+            <Table.Column width={120} fixed="right">
+            <Table.HeaderCell>Action</Table.HeaderCell>
 
-            <Table.Column width={100}>
-                <Table.HeaderCell>#</Table.HeaderCell>
-                <Table.Cell dataKey="state" />
-            </Table.Column>
+            <Table.Cell>
+              {(gallery: Gallery) => {
+                function handleAction() {
+                  alert(`id:${gallery.id}`);
+                }
+                return (
+                  <span>
+                    <a onClick={handleAction}> Edit </a> |{' '}
+                    <a onClick={handleAction}> Remove </a>
+                  </span>
+                );
+              }}
+            </Table.Cell>
+          </Table.Column>
         </Table>
     }
 };
