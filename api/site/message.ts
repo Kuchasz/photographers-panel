@@ -24,3 +24,4 @@ export const send = (message: Message) =>
             .then(result => result.json())
             .then(resolve);
     });
+send.route = sendRoute;

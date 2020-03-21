@@ -1,4 +1,4 @@
-import { PrivateGalleryState } from "../private-gallery";
+import { PrivateGalleryState as privateGallery } from "../private-gallery";
 
 export interface PrivateGalleryUrlCheckResult {
     gallery?: PrivateGalleryDetails;
@@ -7,7 +7,7 @@ export interface PrivateGalleryUrlCheckResult {
 
 export interface PrivateGalleryDetails {
     id: number;
-    state: PrivateGalleryState;
+    state: privateGallery;
     bride: string;
     groom: string;
     place: string;
@@ -28,3 +28,4 @@ export const getGalleryUrl = (password: string) =>
             .then(result => result.json())
             .then(resolve);
     });
+getGalleryUrl.route = getGalleryUrlRoute;

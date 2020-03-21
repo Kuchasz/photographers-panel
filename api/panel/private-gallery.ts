@@ -12,7 +12,7 @@ export interface GalleryStats {
 
 export interface VisitsSummary {
     date: string;
-    visits: string;
+    visits: number;
 }
 
 export interface Gallery {
@@ -26,6 +26,7 @@ export interface Gallery {
     password: string;
     url: string;
     blogId: string;
+    visits: number;
 }
 
 export interface GetGalleryVisitsResult {
@@ -35,10 +36,17 @@ export interface GetGalleryVisitsResult {
     rangeSumOfVisits?: number;
 }
 
+const getGalleriesListRoute = "/api/panel/galleries-list";
 export const getGalleriesList = () => 
-    fetch('http://api.pyszstudio.pl/Galleries/Index')
+    fetch("http://192.168.56.102:8080" + getGalleriesListRoute)
     .then(resp => resp.json() as Promise<Gallery[]>);
+getGalleriesList.route = getGalleriesListRoute;
 
+const getGalleryVisitsRoute = "/api/panel/gallery-stats/:start/:end/:galleryId";
 export const getGalleryVisits = (startDate: Date, endDate: Date, selectedGallery: number): Promise<GetGalleryVisitsResult> => 
-    fetch(`http://api.pyszstudio.pl/Galleries/Visits?startDate=${getDateString(startDate)}&endDate=${getDateString(endDate)}&galleryId=${selectedGallery}`)
-    .then(resp => resp.json())
+    fetch("http://192.168.56.102:8080" + getGalleryVisitsRoute
+        .replace(":start", getDateString(startDate))
+        .replace(":end", getDateString(endDate))
+        .replace(":galleryId", selectedGallery.toString()))
+    .then(resp => resp.json());
+getGalleryVisits.route = getGalleryVisitsRoute;

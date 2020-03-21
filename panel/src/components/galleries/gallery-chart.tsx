@@ -21,7 +21,7 @@ const chartOptions: ChartOptions = {
     }
 };
 
-const formatDateToDayAndMonth = (dateString: string) => moment(dateString, "DD-MM-YYYY").format("DD/MM");
+const formatDateToDayAndMonth = (dateString: string) => moment(dateString, "YYYY-MM-DD").format("DD/MM");
 
 const getData = (visits: VisitsSummary[]) => ({
     labels: visits.map(visit => formatDateToDayAndMonth(visit.date)),

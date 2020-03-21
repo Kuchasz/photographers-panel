@@ -1,5 +1,5 @@
 import { connection } from "../db";
-import { Subscription } from "../../../api/notification";
+import { Subscription } from "../../../api/site/notification";
 
 export const subscribe = (subscribtion: Subscription): Promise<void> =>
     new Promise((resolve, reject) => {

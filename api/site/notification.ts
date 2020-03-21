@@ -1,4 +1,4 @@
-import { Result } from "./common";
+import { Result } from "../common";
 
 export interface Subscription {
     privateGalleryId: number;
@@ -23,3 +23,4 @@ export const subscribeForNotification = (subscription: Subscription) =>
             .then(result => result.json())
             .then(resolve);
     });
+subscribeForNotification.route = subscribeForNotificationRoute;

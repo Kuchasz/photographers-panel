@@ -76,8 +76,8 @@ const Password = ({ password }: { password: string }) => {
 export class GalleriesList extends React.PureComponent<Props, State>{
 
     render() {
-        return <Table height={400} onRowClick={(item: any) => this.props.onSelect(item.id)} data={this.props.galleries}>
-            <Table.Column width={50} align="center" fixed>
+        return <Table rowHeight={50} virtualized={true} height={400} onRowClick={(item: any) => this.props.onSelect(item.id)} data={this.props.galleries}>
+            <Table.Column width={50} align="center">
                 <Table.HeaderCell>State</Table.HeaderCell>
                 <Table.Cell dataKey="state">{(gallery: Gallery) =>
                     <Whisper trigger="hover" speaker={stateTooltips[gallery.state]}><Icon icon="info" style={{ color: getColorFromGalleryState(gallery.state) }} /></Whisper>
@@ -85,7 +85,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
                 </Table.Cell>
             </Table.Column>
 
-            <Table.Column width={50} align="center" fixed>
+            <Table.Column width={50} align="center">
                 <Table.HeaderCell>Blog</Table.HeaderCell>
                 <Table.Cell dataKey="blog">{(gallery: Gallery) =>
                     <Whisper trigger="hover" speaker={gallery.blogId ? blogTooltips.Available : blogTooltips.None}><Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blogId) }} /></Whisper>
@@ -93,37 +93,32 @@ export class GalleriesList extends React.PureComponent<Props, State>{
                 </Table.Cell>
             </Table.Column>
 
-            <Table.Column flexGrow={3} fixed>
+            <Table.Column width={200}>
                 <Table.HeaderCell>Wedding</Table.HeaderCell>
                 <Table.Cell dataKey="place" />
             </Table.Column>
 
-            <Table.Column>
+            <Table.Column width={100}>
                 <Table.HeaderCell>Date</Table.HeaderCell>
                 <Table.Cell dataKey="date" />
             </Table.Column>
 
-            <Table.Column width={80}>
+            <Table.Column width={75}>
                 <Table.HeaderCell>Pass</Table.HeaderCell>
                 <Table.Cell dataKey="password">{(gallery: Gallery) => <Password password={gallery.password} />}</Table.Cell>
             </Table.Column>
 
-            <Table.Column flexGrow={3}>
+            <Table.Column width={350}>
                 <Table.HeaderCell>Direct path</Table.HeaderCell>
-                <Table.Cell dataKey="directory" />
+                <Table.Cell dataKey="url" />
             </Table.Column>
 
-            <Table.Column flexGrow={2} fixed>
-                <Table.HeaderCell>Recent Visit</Table.HeaderCell>
-                <Table.Cell dataKey="state" />
-            </Table.Column>
-
-            <Table.Column flexGrow={2} fixed>
+            <Table.Column width={100}>
                 <Table.HeaderCell>Total Visits</Table.HeaderCell>
-                <Table.Cell dataKey="state" />
+                <Table.Cell dataKey="visits" />
             </Table.Column>
 
-            <Table.Column fixed>
+            <Table.Column width={100}>
                 <Table.HeaderCell>#</Table.HeaderCell>
                 <Table.Cell dataKey="state" />
             </Table.Column>

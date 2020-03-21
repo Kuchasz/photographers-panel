@@ -30,6 +30,7 @@ export const getBlog = (alias: string) =>
             .then(result => result.json())
             .then(resolve);
     });
+getBlog.route = getBlogRoute;
 
 const getBlogsListRoute = "/api/blogs-list";
 export const getBlogsList = () =>
@@ -38,9 +39,11 @@ export const getBlogsList = () =>
             .then(result => result.json())
             .then(resolve);
     });
+getBlogsList.route = getBlogsListRoute;
 
 const getLastBlogRoute = "/api/last-blog";
 export const getLastBlog = () =>
     new Promise<LastBlog>((resolve, _) => {
         fetch("http://192.168.56.102:8080" + getLastBlogRoute).then(result => result.json().then(resolve));
     });
+getLastBlog.route = getLastBlogRoute;

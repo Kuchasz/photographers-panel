@@ -11,17 +11,19 @@ import * as privateGalleryModel from "./src/models/private-gallery";
 import * as emailModel from "./src/models/email";
 import * as notificationModel from "./src/models/notification";
 import Root from "../site/dist/bundle.js";
-import * as blog from "../api/blog";
-import * as offer from "../api/offer";
-import * as video from "../api/video";
+import * as blog from "../api/site/blog";
+import * as offer from "../api/site/offer";
+import * as video from "../api/site/video";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
-import * as message from "../api/message";
-import * as subscribeForNotification from "../api/notification";
-import * as getPrivateGalleryUrl from "../api/private-gallery";
+import * as message from "../api/site/message";
+import * as notification from "../api/site/notification";
+import * as privateGallery from "../api/site/private-gallery";
+import * as privateGalleryPanel from "../api/panel/private-gallery";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
+import { allowCrossDomain } from "./src/core";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
@@ -29,9 +31,13 @@ const Youch = require("youch");
 
 // mail.send(msg);
 
+
+
+
 const app = express();
 app.use(express.json());
 app.use(compression());
+app.use(allowCrossDomain);
 
 const raiseErr = (err: Error, req: any, res: any) => {
     const youch = new Youch(err, req);
@@ -78,14 +84,24 @@ app.post(message.send.route, async (req, res) => {
     }
 });
 
-app.get(getPrivateGalleryUrl.route, async (req, res) => {
+app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
     const gallery = await privateGalleryModel.getUrl(req.params.password);
 
     res.json(gallery);
 });
 
-app.post(subscribeForNotification.route, async (req, res) => {
-    let result: subscribeForNotification.SubscribtionResult | undefined = undefined;
+app.get(privateGalleryPanel.getGalleriesList.route, async (req, res) => {
+    const galleries = await privateGalleryModel.getList();
+    res.json(galleries);
+});
+
+app.get(privateGalleryPanel.getGalleryVisits.route, async (req, res) => {
+    const galleries = await privateGalleryModel.getStats(Number.parseInt(req.params.galleryId), new Date(req.params.start), new Date(req.params.end));
+    res.json(galleries);
+});
+
+app.post(notification.subscribeForNotification.route, async (req, res) => {
+    let result: notification.SubscribtionResult | undefined = undefined;
 
     var emailIsValid = emailModel.validate(req.body.email);
     if (!emailIsValid) result = { type: ResultType.Error, error: "EmailInvalid" };

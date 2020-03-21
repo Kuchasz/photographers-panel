@@ -1,8 +1,8 @@
 import { strings } from "./resources";
 import { zip } from "../../utils/array";
-import { getBlog, getBlogsList, getLastBlog } from "../../api/blog";
-import { getVideosList } from "../../api/video";
-import { getOffersList, getOffer } from "../../api/offer";
+import { getBlog, getBlogsList, getLastBlog } from "../../api/site/blog";
+import { getVideosList } from "../../api/site/video";
+import { getOffersList, getOffer } from "../../api/site/offer";
 
 const empty = () => Promise.resolve({});
 
