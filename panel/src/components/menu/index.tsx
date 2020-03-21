@@ -18,7 +18,6 @@ const menuItems: MenuItem[] = [
 ];
 
 const styles = {
-    width: 150,
     display: 'inline-table',
     marginRight: 10,
     height: '100%'
@@ -41,7 +40,7 @@ class MenuComponent extends React.Component<Props, State> {
         const activeItem = this.props.location.pathname.toLowerCase().substr(1);
 
         return <div style={styles}>
-            <Sidenav style={{height:'100%'}} onSelect={this.handleItemClick} activeKey={activeItem}>
+            <Sidenav style={{height:'100%'}} onSelect={this.handleItemClick} activeKey={activeItem} expanded={false}>
             <Sidenav.Body>
                 <Nav>
                     {menuItems.map((mi,id) => <Nav.Item key={id} eventKey={mi.route} active={activeItem === mi.route} icon={<Icon icon={mi.icon}/>}>{mi.text}
