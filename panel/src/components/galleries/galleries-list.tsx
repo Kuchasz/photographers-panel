@@ -95,7 +95,12 @@ export class GalleriesList extends React.PureComponent<Props, State>{
 
             <Table.Column flexGrow={1}>
                 <Table.HeaderCell>Wedding</Table.HeaderCell>
-                <Table.Cell dataKey="place" />
+                <Table.Cell dataKey="place"/>
+            </Table.Column>
+
+            <Table.Column flexGrow={0.5}>
+                <Table.HeaderCell>LastName</Table.HeaderCell>
+                <Table.Cell dataKey="lastName"/>
             </Table.Column>
 
             <Table.Column width={100} align="center">
