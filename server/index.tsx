@@ -1,6 +1,6 @@
 // import React from "react";
 import express from "express";
-import compression from 'compression';
+import compression from "compression";
 
 import { randomElement } from "../utils/array";
 //import { renderToString } from "react-dom/server";
@@ -27,13 +27,6 @@ import { sendEmail } from "./src/messages";
 import { allowCrossDomain } from "./src/core";
 require("isomorphic-fetch");
 const Youch = require("youch");
-
-// import Home from "../site/src/areas/home";
-
-// mail.send(msg);
-
-
-
 
 const app = express();
 app.use(express.json());
@@ -78,7 +71,7 @@ app.post(message.send.route, async (req, res) => {
     const error = messageModel.validate(mesg);
 
     if (error) {
-        res.json({ type: ResultType.Error, error: error });
+        res.json({ type: ResultType.Error, error });
         return;
     }
 
@@ -102,13 +95,31 @@ app.get(privateGalleryPanel.getGalleriesList.route, async (req, res) => {
 });
 
 app.get(privateGalleryPanel.getGalleryVisits.route, async (req, res) => {
-    const galleries = await privateGalleryModel.getStats(Number.parseInt(req.params.galleryId), new Date(req.params.start), new Date(req.params.end));
+    const galleries = await privateGalleryModel.getStats(
+        Number.parseInt(req.params.galleryId),
+        new Date(req.params.start),
+        new Date(req.params.end)
+    );
     res.json(galleries);
 });
 
 app.get(privateGalleryPanel.checkPasswordIsUnique.route, async (req, res) => {
     const passwordUnique = await privateGalleryModel.checkPasswordIsUnique(req.params.password);
     res.json(passwordUnique);
+});
+
+app.post(privateGalleryPanel.createGallery.route, async (req, res) => {
+    let result: privateGalleryPanel.CreateGalleryResult | undefined = undefined;
+
+    try {
+        await privateGalleryModel.createGallery(req.body as privateGalleryPanel.GalleryPayload);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingGallery" };
+    }
+
+    res.json(result);
 });
 
 app.post(notification.subscribeForNotification.route, async (req, res) => {
@@ -128,13 +139,11 @@ app.post(notification.subscribeForNotification.route, async (req, res) => {
         result = { type: ResultType.Success };
     }
 
-    setTimeout(() => {
-        res.json(result);
-    }, 1500);
+    res.json(result);
 });
 
-app.get('/robots.txt', function (req, res) {
-    res.type('text/plain');
+app.get("/robots.txt", function(req, res) {
+    res.type("text/plain");
     res.send("User-agent: *\nAllow: /");
 });
 

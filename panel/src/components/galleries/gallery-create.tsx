@@ -13,24 +13,25 @@ import {
 } from "rsuite";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 import { BlogSelectItem, getBlogSelectList } from "../../../../api/panel/blog";
-import { checkPasswordIsUnique } from "../../../../api/panel/private-gallery";
+import { checkPasswordIsUnique, GalleryPayload, createGallery } from "../../../../api/panel/private-gallery";
+import { FormInstance } from "rsuite/lib/Form/Form";
 
 interface Props {
     showCreateForm: boolean;
     closeCreateForm: () => void;
 }
 
-interface FormState {
-    place: string;
-    date: Date;
-    bride: string;
-    groom: string;
-    lastName: string;
-    state: PrivateGalleryState;
-    password: string;
-    directPath: string;
-    blog: number;
-}
+export const emptyGalleryPayload = (): GalleryPayload => ({
+    place: "",
+    date: "",
+    bride: "",
+    groom: "",
+    lastName: "",
+    state: PrivateGalleryState.NotReady,
+    password: "",
+    directPath: "",
+    blog: undefined
+});
 
 const states = [
     { label: PrivateGalleryState[PrivateGalleryState.Available], value: PrivateGalleryState.Available },
@@ -70,23 +71,39 @@ var galleryCreateSchema = Schema.Model({
 });
 
 export const GalleryCreate = ({ showCreateForm, closeCreateForm }: Props) => {
-    const [formState, setFormState] = React.useState<FormState>();
+    const [formState, setFormState] = React.useState<GalleryPayload>(emptyGalleryPayload());
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
+    const formRef = React.useRef<FormInstance>();
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         getBlogSelectList().then(setBlogs);
     }, []);
 
+    const submitCreateGallery = () => {
+        if (formRef.current) {
+            if (formRef.current.check()) {
+                createGallery(formState).then(result => {
+                    console.log(result);
+                });
+            }
+        }
+    };
+
     return (
-        <Drawer size="xs" placement="right" show={showCreateForm} onHide={closeCreateForm} onChange={setFormState}>
+        <Drawer size="xs" placement="right" show={showCreateForm} onHide={closeCreateForm}>
             <Drawer.Header>
                 <Drawer.Title>Create new gallery</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
-                <Form model={galleryCreateSchema} formValue={formState}>
+                <Form
+                    ref={formRef}
+                    model={galleryCreateSchema}
+                    formValue={formState}
+                    onChange={x => setFormState(x as GalleryPayload)}
+                >
                     <FormGroup>
                         <ControlLabel>Place</ControlLabel>
-                        <FormControl name="place"/>
+                        <FormControl name="place" />
                         <HelpBlock tooltip>Place of the wedding</HelpBlock>
                     </FormGroup>
                     <FormGroup>
@@ -96,17 +113,17 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm }: Props) => {
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Bride</ControlLabel>
-                        <FormControl name="bride"/>
+                        <FormControl name="bride" />
                         <HelpBlock tooltip>Bride name</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Groom</ControlLabel>
-                        <FormControl name="groom"/>
+                        <FormControl name="groom" />
                         <HelpBlock tooltip>Groom name</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Last Name</ControlLabel>
-                        <FormControl name="lastName"/>
+                        <FormControl name="lastName" />
                         <HelpBlock tooltip>Last name</HelpBlock>
                     </FormGroup>
                     <FormGroup>
@@ -122,14 +139,14 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm }: Props) => {
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Password</ControlLabel>
-                        <FormControl name="password" type="password" checkAsync/>
+                        <FormControl name="password" type="password" checkAsync />
                         <HelpBlock tooltip>
                             Password must be min 8 characters with numbers, upper and lowercases
                         </HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Direct path</ControlLabel>
-                        <FormControl name="directPath"/>
+                        <FormControl name="directPath" />
                         <HelpBlock tooltip>Direct path to the gallery</HelpBlock>
                     </FormGroup>
                     <FormGroup>
@@ -146,8 +163,18 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm }: Props) => {
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
-                            <Button appearance="primary">Submit</Button>
-                            <Button appearance="default">Cancel</Button>
+                            <Button onClick={submitCreateGallery} appearance="primary">
+                                Submit
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setFormState(emptyGalleryPayload());
+                                    closeCreateForm();
+                                }}
+                                appearance="default"
+                            >
+                                Cancel
+                            </Button>
                         </ButtonToolbar>
                     </FormGroup>
                 </Form>

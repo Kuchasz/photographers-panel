@@ -1,5 +1,7 @@
 import { getDateString } from "../../utils/date";
 import { PrivateGalleryState } from "../private-gallery";
+import { Result } from "../common";
+
 
 export interface GalleryStats {
     todayVisits: number;
@@ -29,16 +31,6 @@ export interface Gallery {
     visits: number;
 }
 
-// {
-//     todayVisits: number;
-//     totalVisits: number;
-//     bestDay: string;
-//     bestDayVisits: number;
-//     rangeDays: number;
-//     rangeVisits: number;
-//     emails: number;
-// },
-
 export interface GetGalleryVisitsResult {
     todayVisits: number;
     totalVisits: number;
@@ -48,6 +40,22 @@ export interface GetGalleryVisitsResult {
     dailyVisits: VisitsSummary[];
     emails: number;
 }
+
+export interface GalleryPayload {
+    place: string;
+    date: string;
+    bride: string;
+    groom: string;
+    lastName: string;
+    state: PrivateGalleryState;
+    password: string;
+    directPath: string;
+    blog?: number;
+}
+
+export type CreateGalleryError = "ErrorOccuredWhileCreatingGallery";
+
+export type CreateGalleryResult = Result<CreateGalleryError>;
 
 const getGalleriesListRoute = "/api/panel/galleries-list";
 export const getGalleriesList = () => 
@@ -70,3 +78,19 @@ export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
         .replace(":password", password))
         .then(resp => resp.json());
 checkPasswordIsUnique.route = checkPasswordIsUniqueRoute;
+
+const createGalleryRoute = "/api/panel/create-gallery";
+export const createGallery = (gallery: GalleryPayload) =>
+    new Promise<CreateGalleryResult>((resolve, _) => {
+        fetch("http://192.168.56.102:8080" + createGalleryRoute, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(gallery)
+        })
+            .then(result => result.json())
+            .then(resolve);
+    });
+createGallery.route = createGalleryRoute;

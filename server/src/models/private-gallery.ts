@@ -1,7 +1,7 @@
 import { connection } from "../db";
 import { PrivateGalleryUrlCheckResult } from "../../../api/site/private-gallery";
 import { getDateString, getDateRange } from "../../../utils/date";
-import { Gallery, GetGalleryVisitsResult, VisitsSummary } from "../../../api/panel/private-gallery";
+import { Gallery, GetGalleryVisitsResult, VisitsSummary, GalleryPayload } from "../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../api/private-gallery";
 import { sum } from "../../../utils/array";
 
@@ -11,8 +11,9 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
             `
         SELECT p.id, p.state, p.bride, p.groom, p.place, p.lastname, p.dir, p.date, be.title, be.alias FROM privategallery AS p 
         LEFT OUTER JOIN blogentry be ON be.id = p.BlogEntryId
-        WHERE p.pass = '${password}'
+        WHERE p.pass = ?
         `,
+            [password],
             (_err, [gallery], _fields) => {
                 const result: PrivateGalleryUrlCheckResult =
                     gallery == undefined
@@ -41,7 +42,7 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
 
 export const exists = (id: number): Promise<boolean> =>
     new Promise((resolve, reject) =>
-        connection.query(`SELECT id FROM privategallery AS p WHERE p.id = ${id}`, (_err, rows, _fields) => {
+        connection.query(`SELECT id FROM privategallery AS p WHERE p.id = ?`, [id], (_err, rows, _fields) => {
             resolve(rows.length !== 0);
         })
     );
@@ -81,9 +82,8 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const dailyVisits = await new Promise<VisitsSummary[]>((resolve, reject) => {
         connection.query(
-            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = '${galleryId}' AND d.date BETWEEN '${getDateString(
-                startDate
-            )}' AND '${getDateString(endDate)}'`,
+            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ? AND d.date BETWEEN ? AND ?`,
+            [galleryId, getDateString(startDate), getDateString(endDate)],
             (_err, visists: any[], _fields) => {
                 const dayVisits = visists.reduce(
                     (prv, cur) => ({ [getDateString(cur.date)]: Number.parseInt(cur.count), ...prv }),
@@ -98,9 +98,10 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const bestDay = await new Promise<VisitsSummary>((resolve, reject) => {
         connection.query(
-            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ${galleryId}
+            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ?
             ORDER BY d.count DESC
             LIMIT 1`,
+            [galleryId],
             (_err, visits, _fields) => {
                 if (visits && visits.length > 0) {
                     const [visit] = visits;
@@ -113,8 +114,9 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const totalVisits = await new Promise<number>((resolve, reject) => {
         connection.query(
-            `SELECT SUM(d.count) as visits FROM daily d WHERE d.PrivateGalleryId = '${galleryId}'
+            `SELECT SUM(d.count) as visits FROM daily d WHERE d.PrivateGalleryId = ?
             GROUP BY d.PrivateGalleryId`,
+            [galleryId],
             (_err, result, _fields) => {
                 if (result && result.length > 0) {
                     const [visit] = result;
@@ -127,8 +129,9 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const emails = await new Promise<number>((resolve, reject) => {
         connection.query(
-            `SELECT COUNT(d.id) as emails FROM email d WHERE d.PrivateGalleryId = '${galleryId}'
+            `SELECT COUNT(d.id) as emails FROM email d WHERE d.PrivateGalleryId = ?
             GROUP BY d.PrivateGalleryId`,
+            [galleryId],
             (_err, result, _fields) => {
                 if (result && result.length > 0) {
                     const [email] = result;
@@ -141,7 +144,8 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const todayVisits = await new Promise<number>((resolve, reject) => {
         connection.query(
-            `SELECT d.count FROM daily d WHERE d.PrivateGalleryId = '${galleryId}' AND date = ${today}`,
+            `SELECT d.count FROM daily d WHERE d.PrivateGalleryId = ? AND date = ?`,
+            [galleryId, today],
             (_err, result, _fields) => {
                 if (result && result.length > 0) {
                     const [daily] = result;
@@ -171,9 +175,45 @@ export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
             `
             SELECT p.id 
             FROM privategallery p
-            WHERE p.pass = '${password}'`,
+            WHERE p.pass = ?`,
+            [password],
             (_err, galleries, _fields) => {
                 resolve(galleries.length === 0);
             }
         );
+    });
+
+export const createGallery = (gallery: GalleryPayload) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `INSERT INTO privategallery(
+                    date, 
+                    place, 
+                    bride, 
+                    groom, 
+                    lastname, 
+                    state, 
+                    pass, 
+                    dir, 
+                    BlogEntryId) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    gallery.date,
+                    gallery.place,
+                    gallery.bride,
+                    gallery.groom,
+                    gallery.lastName,
+                    gallery.state,
+                    gallery.password,
+                    gallery.directPath,
+                    gallery.blog
+                ],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
     });
