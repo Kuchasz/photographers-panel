@@ -1,6 +1,7 @@
 import * as React from "react";
 import { GalleriesList } from "./galleries-list";
-import { Panel, Loader, Icon, IconButton, Drawer, Button } from "rsuite";
+import { GalleryCreate } from "./gallery-create";
+import { Panel, Loader, Icon, IconButton } from "rsuite";
 import { GalleryStats } from "./gallery-stats";
 import { GalleryChart } from "./gallery-chart";
 import { GalleryVisitRange } from "./gallery-visit-range";
@@ -123,16 +124,18 @@ export class Galleries extends React.Component<Props, State> {
         return (
             <div className="galleries">
                 <div className="visits">
-                    <Panel header={"Visits"}>
-                        <GalleryVisitRange
-                            onAutoChanged={this.toggleRandom}
-                            autoDisabled={this.state.disableAutoDate}
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
-                            onRangeChange={this.onDateRangeChanged}
-                        />
+                    <Panel>
+                        <header>
+                            <GalleryVisitRange
+                                onAutoChanged={this.toggleRandom}
+                                autoDisabled={this.state.disableAutoDate}
+                                startDate={this.state.startDate}
+                                endDate={this.state.endDate}
+                                onRangeChange={this.onDateRangeChanged}
+                            />
+                            {this.state.stats != null ? <GalleryStats {...this.state.stats} /> : null}
+                        </header>
                         <GalleryChart visits={this.state.visits}></GalleryChart>
-                        {this.state.stats ? <GalleryStats {...this.state.stats} /> : null}
                     </Panel>
                     {this.state.isLoading ? <Loader backdrop content="loading..." vertical /> : null}
                 </div>
@@ -140,29 +143,15 @@ export class Galleries extends React.Component<Props, State> {
                     <Panel
                         header={
                             <span>
-                                Galleries <IconButton onClick={this.showCreateForm} icon={<Icon icon="plus" />} color="green" />
+                                Galleries{" "}
+                                <IconButton onClick={this.showCreateForm} icon={<Icon icon="plus" />} color="green" />
                             </span>
                         }
                     >
                         <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
                     </Panel>
                 </div>
-                <Drawer size="md" placement="right" show={this.state.showCreateForm} onHide={this.closeCreateForm}>
-                    <Drawer.Header>
-                        <Drawer.Title>Create new gallery</Drawer.Title>
-                    </Drawer.Header>
-                    <Drawer.Body>
-                        
-                    </Drawer.Body>
-                    <Drawer.Footer>
-                        <Button onClick={this.closeCreateForm} appearance="primary">
-                            Confirm
-                        </Button>
-                        <Button onClick={this.closeCreateForm} appearance="subtle">
-                            Cancel
-                        </Button>
-                    </Drawer.Footer>
-                </Drawer>
+                <GalleryCreate showCreateForm={this.state.showCreateForm} closeCreateForm={this.closeCreateForm} />
             </div>
         );
     }

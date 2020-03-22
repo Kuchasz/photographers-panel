@@ -2,6 +2,7 @@
     .visits {
         position: relative;
         height: 350px;
+
         .rs-panel {
             display: flex;
             flex-direction: column;
@@ -10,12 +11,23 @@
                 flex-grow: 1;
                 display: flex;
                 flex-direction: column;
+
+                header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
                 .chart {
                     flex-grow: 1;
                     margin-top: 4px;
                 }
                 .stats {
-                    margin-top: 4px;
+                    display: flex;
+                    height: 36px;
+                    margin-top: 0px;
+                    align-items: center;
+                    margin-right: 18px;
                     span {
                         &:first-child {
                             margin-left: 0px;
@@ -50,7 +62,7 @@
             }
         }
     }
-    
+
     .list {
         .password {
             position: relative;
@@ -82,6 +94,7 @@
                 align-items: center;
                 justify-content: center;
                 .rs-progress {
+                    margin-left: 8px;
                     display: inline;
                     width: 15px;
                     height: 15px;

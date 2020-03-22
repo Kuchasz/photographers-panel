@@ -98,8 +98,9 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const bestDay = await new Promise<VisitsSummary>((resolve, reject) => {
         connection.query(
-            `SELECT MAX(d.count) as count, d.date FROM daily d WHERE d.PrivateGalleryId = '${galleryId}'
-            GROUP BY d.PrivateGalleryId`,
+            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ${galleryId}
+            ORDER BY d.count DESC
+            LIMIT 1`,
             (_err, visits, _fields) => {
                 if (visits && visits.length > 0) {
                     const [visit] = visits;

@@ -25,9 +25,11 @@ const formatDateToDayAndMonth = (dateString: string) => moment(dateString, "YYYY
 
 const getData = (visits: VisitsSummary[]) => ({
     labels: visits.map(visit => formatDateToDayAndMonth(visit.date)),
-    datasets: [
-        { fill: '#34c3ff', borderColor: '#34c3ff', data: visits.map(visit => Number(visit.visits)) }
-    ]
+    datasets: [{ fill: "#34c3ff", borderColor: "#34c3ff", data: visits.map(visit => Number(visit.visits)) }]
 });
 
-export const GalleryChart = ({ visits }: { visits: VisitsSummary[] }) => <div className="chart"><Line options={chartOptions} data={getData(visits)} /></div>;
+export const GalleryChart = ({ visits }: { visits: VisitsSummary[] }) => (
+    <div className="chart">
+        <Line options={chartOptions} data={getData(visits)} />
+    </div>
+);
