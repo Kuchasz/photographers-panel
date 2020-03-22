@@ -9,16 +9,19 @@ import {
     HelpBlock,
     ButtonToolbar,
     SelectPicker,
-    Schema
+    Schema,
+    Alert
 } from "rsuite";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 import { BlogSelectItem, getBlogSelectList } from "../../../../api/panel/blog";
 import { checkPasswordIsUnique, GalleryPayload, createGallery } from "../../../../api/panel/private-gallery";
 import { FormInstance } from "rsuite/lib/Form/Form";
+import { ResultType } from "../../../../api/common";
 
 interface Props {
     showCreateForm: boolean;
     closeCreateForm: () => void;
+    onAdded: () => void;
 }
 
 export const emptyGalleryPayload = (): GalleryPayload => ({
@@ -70,8 +73,9 @@ var galleryCreateSchema = Schema.Model({
     blog: Schema.Types.NumberType()
 });
 
-export const GalleryCreate = ({ showCreateForm, closeCreateForm }: Props) => {
+export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) => {
     const [formState, setFormState] = React.useState<GalleryPayload>(emptyGalleryPayload());
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
     const formRef = React.useRef<FormInstance>();
 
@@ -82,8 +86,16 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm }: Props) => {
     const submitCreateGallery = () => {
         if (formRef.current) {
             if (formRef.current.check()) {
+                setIsLoading(true);
                 createGallery(formState).then(result => {
-                    console.log(result);
+                    if (result.type === ResultType.Success) {
+                        Alert.success("Gallery successfully added.");
+                        setFormState(emptyGalleryPayload());
+                        onAdded();
+                    } else {
+                        Alert.error("An error occured while adding gallery.");
+                    }
+                    setIsLoading(false);
                 });
             }
         }
@@ -163,7 +175,7 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm }: Props) => {
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
-                            <Button onClick={submitCreateGallery} appearance="primary">
+                            <Button onClick={submitCreateGallery} appearance="primary" loading={isLoading}>
                                 Submit
                             </Button>
                             <Button

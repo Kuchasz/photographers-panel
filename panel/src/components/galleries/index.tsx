@@ -64,6 +64,10 @@ export class Galleries extends React.Component<Props, State> {
     }
 
     componentDidMount() {
+        this.fetchGalleries();
+    }
+
+    fetchGalleries = () => {
         getGalleriesList().then(galleries => {
             const selectedGallery = galleries[0].id;
             this.setState({
@@ -72,7 +76,7 @@ export class Galleries extends React.Component<Props, State> {
 
             this.onGallerySelected(selectedGallery);
         });
-    }
+    };
 
     onDateRangeChanged = ([startDate, endDate]: [(Date | undefined)?, (Date | undefined)?]) => {
         if (startDate === undefined || endDate === undefined) return;
@@ -151,7 +155,11 @@ export class Galleries extends React.Component<Props, State> {
                         <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
                     </Panel>
                 </div>
-                <GalleryCreate showCreateForm={this.state.showCreateForm} closeCreateForm={this.closeCreateForm} />
+                <GalleryCreate
+                    onAdded={this.fetchGalleries}
+                    showCreateForm={this.state.showCreateForm}
+                    closeCreateForm={this.closeCreateForm}
+                />
             </div>
         );
     }
