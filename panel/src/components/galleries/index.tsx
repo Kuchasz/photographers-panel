@@ -1,13 +1,18 @@
 import * as React from "react";
 import { GalleriesList } from "./galleries-list";
-import { Panel, Loader } from "rsuite";
+import { Panel, Loader, Icon, IconButton, Drawer, Button } from "rsuite";
 import { GalleryStats } from "./gallery-stats";
 import { GalleryChart } from "./gallery-chart";
 import { GalleryVisitRange } from "./gallery-visit-range";
 import { addMonths } from "../../../../utils/date";
 import "./styles.less";
-import { Gallery, getGalleryVisits, VisitsSummary, getGalleriesList, GetGalleryVisitsResult } from "../../../../api/panel/private-gallery";
-
+import {
+    Gallery,
+    getGalleryVisits,
+    VisitsSummary,
+    getGalleriesList,
+    GetGalleryVisitsResult
+} from "../../../../api/panel/private-gallery";
 
 const getStats = (x: GetGalleryVisitsResult) => ({
     todayVisits: x.todayVisits,
@@ -34,10 +39,11 @@ interface State {
         rangeDays: number;
         rangeVisits: number;
         emails: number;
-    },
+    };
     startDate: Date;
     endDate: Date;
     disableAutoDate: boolean;
+    showCreateForm: boolean;
 }
 
 export class Galleries extends React.Component<Props, State> {
@@ -51,7 +57,8 @@ export class Galleries extends React.Component<Props, State> {
             selectedGallery: undefined,
             startDate: addMonths(new Date(), -1),
             endDate: new Date(),
-            disableAutoDate: false
+            disableAutoDate: false,
+            showCreateForm: false
         };
     }
 
@@ -104,6 +111,14 @@ export class Galleries extends React.Component<Props, State> {
         );
     };
 
+    closeCreateForm = () => {
+        this.setState({ showCreateForm: false });
+    };
+
+    showCreateForm = () => {
+        this.setState({ showCreateForm: true });
+    };
+
     render() {
         return (
             <div className="galleries">
@@ -122,10 +137,32 @@ export class Galleries extends React.Component<Props, State> {
                     {this.state.isLoading ? <Loader backdrop content="loading..." vertical /> : null}
                 </div>
                 <div className="list">
-                    <Panel header={"Galleries"}>
+                    <Panel
+                        header={
+                            <span>
+                                Galleries <IconButton onClick={this.showCreateForm} icon={<Icon icon="plus" />} color="green" />
+                            </span>
+                        }
+                    >
                         <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
                     </Panel>
                 </div>
+                <Drawer size="md" placement="right" show={this.state.showCreateForm} onHide={this.closeCreateForm}>
+                    <Drawer.Header>
+                        <Drawer.Title>Create new gallery</Drawer.Title>
+                    </Drawer.Header>
+                    <Drawer.Body>
+                        
+                    </Drawer.Body>
+                    <Drawer.Footer>
+                        <Button onClick={this.closeCreateForm} appearance="primary">
+                            Confirm
+                        </Button>
+                        <Button onClick={this.closeCreateForm} appearance="subtle">
+                            Cancel
+                        </Button>
+                    </Drawer.Footer>
+                </Drawer>
             </div>
         );
     }
