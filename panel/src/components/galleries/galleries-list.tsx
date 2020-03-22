@@ -99,7 +99,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
             </Table.Column>
 
             <Table.Column flexGrow={0.5}>
-                <Table.HeaderCell>LastName</Table.HeaderCell>
+                <Table.HeaderCell>Last Name</Table.HeaderCell>
                 <Table.Cell dataKey="lastName"/>
             </Table.Column>
 
@@ -108,8 +108,8 @@ export class GalleriesList extends React.PureComponent<Props, State>{
                 <Table.Cell dataKey="date" />
             </Table.Column>
 
-            <Table.Column width={100} align="center">
-                <Table.HeaderCell>Pass</Table.HeaderCell>
+            <Table.Column width={120} align="center">
+                <Table.HeaderCell>Password</Table.HeaderCell>
                 <Table.Cell dataKey="password">{(gallery: Gallery) => <Password password={gallery.password} />}</Table.Cell>
             </Table.Column>
 

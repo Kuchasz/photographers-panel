@@ -63,3 +63,10 @@ export const getGalleryVisits = (startDate: Date, endDate: Date, selectedGallery
         .replace(":galleryId", selectedGallery.toString()))
     .then(resp => resp.json());
 getGalleryVisits.route = getGalleryVisitsRoute;
+
+const checkPasswordIsUniqueRoute = "/api/panel/gallery-password-unique/:password";
+export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
+    fetch("http://192.168.56.102:8080" + checkPasswordIsUniqueRoute
+        .replace(":password", password))
+        .then(resp => resp.json());
+checkPasswordIsUnique.route = checkPasswordIsUniqueRoute;

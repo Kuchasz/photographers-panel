@@ -1,6 +1,7 @@
 import { connection } from "../db";
 import { getDateString } from "../../../utils/date";
 import { LastBlog, BlogListItem, BlogEntry } from "../../../api/site/blog";
+import { BlogSelectItem } from "../../../api/panel/blog";
 
 export const getMostRecent = (): Promise<LastBlog> =>
     new Promise((resolve, reject) => {
@@ -64,6 +65,23 @@ export const get = (alias: string): Promise<BlogEntry> =>
                 };
 
                 resolve(blog);
+            }
+        );
+    });
+
+export const getSelectList = (): Promise<BlogSelectItem[]> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+      SELECT be.title, be.date, be.id FROM blogentry be 
+      ORDER BY be.date DESC`,
+            (_err, blogs, _fields) => {
+                const blogSelectListItems = blogs.map((b: any) => ({
+                    label: `${b.title} (${getDateString(b.date)})`,
+                    value: b.id
+                }));
+
+                resolve(blogSelectListItems);
             }
         );
     });

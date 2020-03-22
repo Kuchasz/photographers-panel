@@ -164,3 +164,16 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         todayVisits
     };
 };
+
+export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+            SELECT p.id 
+            FROM privategallery p
+            WHERE p.pass = '${password}'`,
+            (_err, galleries, _fields) => {
+                resolve(galleries.length === 0);
+            }
+        );
+    });

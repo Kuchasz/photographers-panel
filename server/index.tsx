@@ -12,6 +12,7 @@ import * as emailModel from "./src/models/email";
 import * as notificationModel from "./src/models/notification";
 import Root from "../site/dist/bundle.js";
 import * as blog from "../api/site/blog";
+import * as blogPanel from "../api/panel/blog";
 import * as offer from "../api/site/offer";
 import * as video from "../api/site/video";
 import fs from "fs";
@@ -66,6 +67,11 @@ app.get(blog.getBlog.route, async (req, res) => {
     res.json(blog);
 });
 
+app.get(blogPanel.getBlogSelectList.route, async (req, res) => {
+    const blogs = await blogModel.getSelectList();
+    res.json(blogs);
+});
+
 app.post(message.send.route, async (req, res) => {
     const mesg = req.body as message.Message;
 
@@ -98,6 +104,11 @@ app.get(privateGalleryPanel.getGalleriesList.route, async (req, res) => {
 app.get(privateGalleryPanel.getGalleryVisits.route, async (req, res) => {
     const galleries = await privateGalleryModel.getStats(Number.parseInt(req.params.galleryId), new Date(req.params.start), new Date(req.params.end));
     res.json(galleries);
+});
+
+app.get(privateGalleryPanel.checkPasswordIsUnique.route, async (req, res) => {
+    const passwordUnique = await privateGalleryModel.checkPasswordIsUnique(req.params.password);
+    res.json(passwordUnique);
 });
 
 app.post(notification.subscribeForNotification.route, async (req, res) => {
