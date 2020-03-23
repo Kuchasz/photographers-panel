@@ -58,6 +58,9 @@ export type CreateGalleryResult = Result<CreateGalleryError>;
 export type EditGalleryError = "ErrorOccuredWhileEditingGallery";
 export type EditGalleryResult = Result<EditGalleryError>;
 
+export type DeleteGalleryError = "ErrorOccuredWhileDeletingGallery";
+export type DeleteGalleryResult = Result<DeleteGalleryError>;
+
 const getGalleriesListRoute = "/api/panel/galleries-list";
 export const getGalleriesList = () =>
     fetch("http://192.168.56.102:8080" + getGalleriesListRoute).then(resp => resp.json() as Promise<Gallery[]>);
@@ -110,7 +113,7 @@ getGalleryForEdit.route = getGalleryForEditRoute;
 
 const editGalleryRoute = "/api/panel/edit-gallery";
 export const editGallery = (id: number, gallery: GalleryPayload) =>
-    new Promise<CreateGalleryResult>((resolve, _) => {
+    new Promise<EditGalleryResult>((resolve, _) => {
         fetch("http://192.168.56.102:8080" + editGalleryRoute, {
             method: "POST",
             headers: {
@@ -123,3 +126,19 @@ export const editGallery = (id: number, gallery: GalleryPayload) =>
             .then(resolve);
     });
 editGallery.route = editGalleryRoute;
+
+const deleteGalleryRoute = "/api/panel/remove-gallery";
+export const deleteGallery = (id: number) =>
+    new Promise<DeleteGalleryResult>((resolve, _) => {
+        fetch("http://192.168.56.102:8080" + deleteGalleryRoute, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id })
+        })
+            .then(result => result.json())
+            .then(resolve);
+    });
+deleteGallery.route = deleteGalleryRoute;

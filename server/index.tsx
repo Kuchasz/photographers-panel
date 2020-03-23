@@ -143,6 +143,22 @@ app.post(privateGalleryPanel.editGallery.route, async (req, res) => {
     res.json(result);
 });
 
+app.post(privateGalleryPanel.deleteGallery.route, async (req, res) => {
+    let result: privateGalleryPanel.DeleteGalleryResult | undefined = undefined;
+
+    var { id }: { id: number } = req.body;
+
+    try {
+        await privateGalleryModel.deleteGallery(id);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingGallery" };
+    }
+
+    res.json(result);
+});
+
 app.post(notification.subscribeForNotification.route, async (req, res) => {
     let result: notification.SubscribtionResult | undefined = undefined;
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { GalleriesList } from "./galleries-list";
 import { GalleryCreate } from "./gallery-create";
-import { Panel, Icon, IconButton } from "rsuite";
+import { Panel, Icon, IconButton, Alert } from "rsuite";
 import { GalleryStats } from "./gallery-stats";
 import { GalleryChart } from "./gallery-chart";
 import { GalleryVisitRange } from "./gallery-visit-range";
@@ -12,9 +12,12 @@ import {
     getGalleryVisits,
     VisitsSummary,
     getGalleriesList,
-    GetGalleryVisitsResult
+    GetGalleryVisitsResult,
+    deleteGallery
 } from "../../../../api/panel/private-gallery";
 import { GalleryEdit } from "./gallery-edit";
+import { confirm } from "../common/confirmation";
+import { ResultType } from "../../../../api/common";
 
 const getStats = (x: GetGalleryVisitsResult) => ({
     todayVisits: x.todayVisits,
@@ -127,9 +130,18 @@ export class Galleries extends React.Component<Props, State> {
             showEditForm: true
         });
     };
-    
-    onGalleryDelete = (selectedGallery: number) => {
-        console.log('Delete: ', selectedGallery);
+
+    onGalleryDelete = async (selectedGallery: number) => {
+        const confirmed = await confirm("You are sure you want to remove the gallery?", "Removing of gallery");
+        if (confirmed) {
+            const result = await deleteGallery(selectedGallery);
+            if (result.type === ResultType.Success) {
+                Alert.success("Gallery deleted.");
+                this.fetchGalleries();
+            } else {
+                Alert.error("Gallery not deleted.");
+            }
+        }
     };
 
     closeCreateForm = () => {

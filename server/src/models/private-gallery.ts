@@ -278,3 +278,19 @@ export const editGallery = (id: number, gallery: GalleryPayload) =>
             );
         });
     });
+
+export const deleteGallery = (id: number) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `DELETE FROM privategallery
+                WHERE id = ?`,
+                [id],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
+    });
