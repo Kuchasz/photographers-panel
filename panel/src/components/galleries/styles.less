@@ -28,6 +28,12 @@
                     margin-top: 0px;
                     align-items: center;
                     margin-right: 18px;
+                    .rs-loader-wrapper {
+                        transition: opacity 0.5s linear;
+                        &.collapsed {
+                            opacity: 0;
+                        }
+                    }
                     span {
                         &:first-child {
                             margin-left: 0px;

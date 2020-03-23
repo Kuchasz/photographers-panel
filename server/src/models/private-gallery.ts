@@ -183,6 +183,30 @@ export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
         );
     });
 
+export const getForEdit = (galleryId: number): Promise<GalleryPayload> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+            SELECT p.place, p.date,  p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.BlogEntryId
+            FROM privategallery p
+            WHERE p.id = ?`,
+            [galleryId],
+            (_err, [gallery], _fields) => {
+                resolve({
+                    place: gallery.place,
+                    date: getDateString(gallery.date),
+                    bride: gallery.bride,
+                    groom: gallery.groom,
+                    lastName: gallery.lastname,
+                    state: Number(gallery.state),
+                    password: gallery.pass,
+                    directPath: gallery.dir,
+                    blog: Number(gallery.BlogEntryId)
+                });
+            }
+        );
+    });
+
 export const createGallery = (gallery: GalleryPayload) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
@@ -208,6 +232,43 @@ export const createGallery = (gallery: GalleryPayload) =>
                     gallery.password,
                     gallery.directPath,
                     gallery.blog
+                ],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
+    });
+
+export const editGallery = (id: number, gallery: GalleryPayload) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `UPDATE privategallery
+                SET
+                    date = ?, 
+                    place = ?, 
+                    bride = ?, 
+                    groom = ?, 
+                    lastname = ?, 
+                    state = ?, 
+                    pass = ?, 
+                    dir = ?, 
+                    BlogEntryId = ?
+                WHERE id = ?`,
+                [
+                    gallery.date,
+                    gallery.place,
+                    gallery.bride,
+                    gallery.groom,
+                    gallery.lastName,
+                    gallery.state,
+                    gallery.password,
+                    gallery.directPath,
+                    gallery.blog,
+                    id
                 ],
                 (err, _, _fields) => {
                     if (err) connection.rollback();

@@ -1,6 +1,8 @@
 import React from 'react';
+import { Loader } from 'rsuite';
 
 interface Props {
+    isLoading: boolean;
     todayVisits: number;
     totalVisits: number;
     bestDay: string;
@@ -10,8 +12,9 @@ interface Props {
     emails: number;
 }
 
-export const GalleryStats = ({todayVisits, totalVisits, bestDay, bestDayVisits, rangeDays, rangeVisits, emails}: Props) => <>
+export const GalleryStats = ({isLoading, todayVisits, totalVisits, bestDay, bestDayVisits, rangeDays, rangeVisits, emails}: Props) => <>
     <div className="stats">
+        <Loader className={isLoading ? 'visible' : 'collapsed'}/>
         <span>Today visits:  <strong>{todayVisits}</strong></span>
         <span>Total visits:  <strong>{totalVisits}</strong></span>
         <span>Over {rangeDays} days visits:  <strong>{rangeVisits}</strong></span>

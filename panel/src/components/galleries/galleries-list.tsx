@@ -6,6 +6,7 @@ import { PrivateGalleryState } from '../../../../api/private-gallery';
 
 interface Props {
     onSelect: (item: any) => void;
+    onEdit: (item: any) => void;
     galleries: Gallery[];
 }
 interface State {
@@ -132,7 +133,7 @@ export class GalleriesList extends React.PureComponent<Props, State>{
                 }
                 return (
                   <span>
-                    <a onClick={handleAction}> Edit </a> |{' '}
+                    <a onClick={() => this.props.onEdit(gallery.id)}> Edit </a> |{' '}
                     <a onClick={handleAction}> Remove </a>
                   </span>
                 );

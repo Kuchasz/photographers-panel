@@ -1,7 +1,7 @@
 import * as React from "react";
 import { GalleriesList } from "./galleries-list";
 import { GalleryCreate } from "./gallery-create";
-import { Panel, Loader, Icon, IconButton } from "rsuite";
+import { Panel, Icon, IconButton } from "rsuite";
 import { GalleryStats } from "./gallery-stats";
 import { GalleryChart } from "./gallery-chart";
 import { GalleryVisitRange } from "./gallery-visit-range";
@@ -14,6 +14,7 @@ import {
     getGalleriesList,
     GetGalleryVisitsResult
 } from "../../../../api/panel/private-gallery";
+import { GalleryEdit } from "./gallery-edit";
 
 const getStats = (x: GetGalleryVisitsResult) => ({
     todayVisits: x.todayVisits,
@@ -45,6 +46,8 @@ interface State {
     endDate: Date;
     disableAutoDate: boolean;
     showCreateForm: boolean;
+    showEditForm: boolean;
+    galleryToEditId?: number;
 }
 
 export class Galleries extends React.Component<Props, State> {
@@ -59,7 +62,9 @@ export class Galleries extends React.Component<Props, State> {
             startDate: addMonths(new Date(), -1),
             endDate: new Date(),
             disableAutoDate: false,
-            showCreateForm: false
+            showCreateForm: false,
+            showEditForm: false,
+            galleryToEditId: undefined
         };
     }
 
@@ -116,12 +121,27 @@ export class Galleries extends React.Component<Props, State> {
         );
     };
 
+    onGalleryEdit = (selectedGallery: number) => {
+        this.setState({
+            galleryToEditId: selectedGallery,
+            showEditForm: true
+        });
+    };
+
     closeCreateForm = () => {
         this.setState({ showCreateForm: false });
     };
 
     showCreateForm = () => {
         this.setState({ showCreateForm: true });
+    };
+
+    closeEditForm = () => {
+        this.setState({ showEditForm: false });
+    };
+
+    showEditForm = () => {
+        this.setState({ showEditForm: true });
     };
 
     render() {
@@ -137,11 +157,14 @@ export class Galleries extends React.Component<Props, State> {
                                 endDate={this.state.endDate}
                                 onRangeChange={this.onDateRangeChanged}
                             />
-                            {this.state.stats != null ? <GalleryStats {...this.state.stats} /> : null}
+                            <span>
+                                {this.state.stats != null ? (
+                                    <GalleryStats isLoading={this.state.isLoading} {...this.state.stats} />
+                                ) : null}
+                            </span>
                         </header>
                         <GalleryChart visits={this.state.visits}></GalleryChart>
                     </Panel>
-                    {this.state.isLoading ? <Loader backdrop content="loading..." vertical /> : null}
                 </div>
                 <div className="list">
                     <Panel
@@ -152,7 +175,11 @@ export class Galleries extends React.Component<Props, State> {
                             </span>
                         }
                     >
-                        <GalleriesList galleries={this.state.galleries} onSelect={this.onGallerySelected} />
+                        <GalleriesList
+                            galleries={this.state.galleries}
+                            onSelect={this.onGallerySelected}
+                            onEdit={this.onGalleryEdit}
+                        />
                     </Panel>
                 </div>
                 <GalleryCreate
@@ -160,6 +187,14 @@ export class Galleries extends React.Component<Props, State> {
                     showCreateForm={this.state.showCreateForm}
                     closeCreateForm={this.closeCreateForm}
                 />
+                {this.state.galleryToEditId ? (
+                    <GalleryEdit
+                        onSaved={this.fetchGalleries}
+                        showEditForm={this.state.showEditForm}
+                        closeEditForm={this.closeEditForm}
+                        id={this.state.galleryToEditId}
+                    />
+                ) : null}
             </div>
         );
     }

@@ -108,6 +108,11 @@ app.get(privateGalleryPanel.checkPasswordIsUnique.route, async (req, res) => {
     res.json(passwordUnique);
 });
 
+app.get(privateGalleryPanel.getGalleryForEdit.route, async (req, res) => {
+    const gallery = await privateGalleryModel.getForEdit(Number(req.params.galleryId));
+    res.json(gallery);
+});
+
 app.post(privateGalleryPanel.createGallery.route, async (req, res) => {
     let result: privateGalleryPanel.CreateGalleryResult | undefined = undefined;
 
@@ -117,6 +122,22 @@ app.post(privateGalleryPanel.createGallery.route, async (req, res) => {
     } catch (err) {
         console.log(err);
         result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingGallery" };
+    }
+
+    res.json(result);
+});
+
+app.post(privateGalleryPanel.editGallery.route, async (req, res) => {
+    let result: privateGalleryPanel.EditGalleryResult | undefined = undefined;
+
+    var { id, gallery }: { id: number; gallery: privateGalleryPanel.GalleryPayload } = req.body;
+
+    try {
+        await privateGalleryModel.editGallery(id, gallery);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingGallery" };
     }
 
     res.json(result);

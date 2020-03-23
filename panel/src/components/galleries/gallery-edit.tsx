@@ -13,15 +13,16 @@ import {
 } from "rsuite";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 import { BlogSelectItem, getBlogSelectList } from "../../../../api/panel/blog";
-import { GalleryPayload, createGallery } from "../../../../api/panel/private-gallery";
+import { GalleryPayload, editGallery, getGalleryForEdit } from "../../../../api/panel/private-gallery";
 import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
 import { galleryModel } from "./gallery-model";
 
 interface Props {
-    showCreateForm: boolean;
-    closeCreateForm: () => void;
-    onAdded: () => void;
+    id: number;
+    showEditForm: boolean;
+    closeEditForm: () => void;
+    onSaved: () => void;
 }
 
 export const emptyGalleryPayload = (): GalleryPayload => ({
@@ -42,7 +43,7 @@ const states = [
     { label: PrivateGalleryState[PrivateGalleryState.TurnedOff], value: PrivateGalleryState.TurnedOff }
 ];
 
-export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) => {
+export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) => {
     const [formState, setFormState] = React.useState<GalleryPayload>(emptyGalleryPayload());
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
@@ -52,18 +53,22 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
         getBlogSelectList().then(setBlogs);
     }, []);
 
-    const submitCreateGallery = () => {
+    React.useEffect(() => {
+        getGalleryForEdit(id).then(setFormState);
+    }, [id]);
+
+    const submitEditGallery = () => {
         if (formRef.current) {
             if (formRef.current.check()) {
                 setIsLoading(true);
-                createGallery(formState).then(result => {
+                editGallery(id, formState).then(result => {
                     if (result.type === ResultType.Success) {
-                        Alert.success("Gallery successfully added.");
+                        Alert.success("Gallery successfully edited.");
                         setFormState(emptyGalleryPayload());
-                        closeCreateForm();
-                        onAdded();
+                        closeEditForm();
+                        onSaved();
                     } else {
-                        Alert.error("An error occured while adding gallery.");
+                        Alert.error("An error occured while editing gallery.");
                     }
                     setIsLoading(false);
                 });
@@ -72,9 +77,9 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
     };
 
     return (
-        <Drawer size="xs" placement="right" show={showCreateForm} onHide={closeCreateForm}>
+        <Drawer size="xs" placement="right" show={showEditForm} onHide={closeEditForm}>
             <Drawer.Header>
-                <Drawer.Title>Create new gallery</Drawer.Title>
+                <Drawer.Title>Edit gallery</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
                 <Form
@@ -145,13 +150,13 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
-                            <Button onClick={submitCreateGallery} appearance="primary" loading={isLoading}>
-                                Create
+                            <Button onClick={submitEditGallery} appearance="primary" loading={isLoading}>
+                                Save
                             </Button>
                             <Button
                                 onClick={() => {
                                     setFormState(emptyGalleryPayload());
-                                    closeCreateForm();
+                                    closeEditForm();
                                 }}
                                 appearance="default"
                             >
