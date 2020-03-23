@@ -64,7 +64,6 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                 editGallery(id, formState).then(result => {
                     if (result.type === ResultType.Success) {
                         Alert.success("Gallery successfully edited.");
-                        setFormState(emptyGalleryPayload());
                         closeEditForm();
                         onSaved();
                     } else {
@@ -154,10 +153,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                                 Save
                             </Button>
                             <Button
-                                onClick={() => {
-                                    setFormState(emptyGalleryPayload());
-                                    closeEditForm();
-                                }}
+                                onClick={closeEditForm}
                                 appearance="default"
                             >
                                 Cancel

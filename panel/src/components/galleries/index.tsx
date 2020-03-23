@@ -127,6 +127,10 @@ export class Galleries extends React.Component<Props, State> {
             showEditForm: true
         });
     };
+    
+    onGalleryDelete = (selectedGallery: number) => {
+        console.log('Delete: ', selectedGallery);
+    };
 
     closeCreateForm = () => {
         this.setState({ showCreateForm: false });
@@ -179,6 +183,7 @@ export class Galleries extends React.Component<Props, State> {
                             galleries={this.state.galleries}
                             onSelect={this.onGallerySelected}
                             onEdit={this.onGalleryEdit}
+                            onDelete={this.onGalleryDelete}
                         />
                     </Panel>
                 </div>
