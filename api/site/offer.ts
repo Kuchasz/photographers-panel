@@ -1,5 +1,3 @@
-import { isObject } from "util";
-
 const offers = [
     {
         id: "1",

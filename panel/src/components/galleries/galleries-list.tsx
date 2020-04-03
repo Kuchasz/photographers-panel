@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tooltip, Table, Icon, Whisper, Progress, Button } from "rsuite";
+import { Tooltip, Table, Icon, Whisper, Progress, Button, ButtonToolbar } from "rsuite";
 import { range } from "../../../../utils/array";
 import { Gallery } from "../../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
@@ -9,6 +9,7 @@ interface Props {
     onEdit: (item: any) => void;
     onDelete: (item: any) => void;
     galleries: Gallery[];
+    loadingGalleries: boolean;
 }
 interface State {}
 
@@ -107,6 +108,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
             <Table
                 rowHeight={50}
                 virtualized={true}
+                loading={this.props.loadingGalleries}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item.id)}
                 data={this.props.galleries}
@@ -168,18 +170,18 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.Cell dataKey="visits" />
                 </Table.Column>
                 <Table.Column width={150} fixed="right">
-                    <Table.HeaderCell/>
+                    <Table.HeaderCell />
 
                     <Table.Cell>
                         {(gallery: Gallery) => (
-                            <>
+                            <ButtonToolbar>
                                 <Button size="xs" onClick={() => this.props.onEdit(gallery.id)}>
                                     <Icon icon="edit2" /> Edit
                                 </Button>
                                 <Button size="xs" onClick={() => this.props.onDelete(gallery.id)}>
                                     <Icon icon="trash2" /> Delete
                                 </Button>
-                            </>
+                            </ButtonToolbar>
                         )}
                     </Table.Cell>
                 </Table.Column>

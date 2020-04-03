@@ -33,6 +33,7 @@ interface Props {}
 
 interface State {
     isLoading: boolean;
+    isLoadingGalleries: boolean;
     visits: VisitsSummary[];
     galleries: Gallery[];
     selectedGallery?: number;
@@ -59,6 +60,7 @@ export class Galleries extends React.Component<Props, State> {
         this.state = {
             visits: [],
             isLoading: false,
+            isLoadingGalleries: false,
             galleries: [],
             stats: undefined,
             selectedGallery: undefined,
@@ -76,14 +78,20 @@ export class Galleries extends React.Component<Props, State> {
     }
 
     fetchGalleries = () => {
-        getGalleriesList().then(galleries => {
-            const selectedGallery = galleries[0].id;
-            this.setState({
-                galleries
-            });
+        this.setState(
+            () => ({ isLoadingGalleries: true }),
+            () => {
+                getGalleriesList().then(galleries => {
+                    const selectedGallery = galleries[0].id;
+                    this.setState({
+                        galleries,
+                        isLoadingGalleries: false
+                    });
 
-            this.onGallerySelected(selectedGallery);
-        });
+                    this.onGallerySelected(selectedGallery);
+                });
+            }
+        );
     };
 
     onDateRangeChanged = ([startDate, endDate]: [(Date | undefined)?, (Date | undefined)?]) => {
@@ -193,6 +201,7 @@ export class Galleries extends React.Component<Props, State> {
                     >
                         <GalleriesList
                             galleries={this.state.galleries}
+                            loadingGalleries={this.state.isLoadingGalleries}
                             onSelect={this.onGallerySelected}
                             onEdit={this.onGalleryEdit}
                             onDelete={this.onGalleryDelete}

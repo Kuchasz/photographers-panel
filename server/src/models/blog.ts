@@ -1,9 +1,9 @@
 import { connection } from "../db";
 import { getDateString } from "../../../utils/date";
-import { LastBlog, BlogListItem, BlogEntry } from "../../../api/site/blog";
-import { BlogSelectItem } from "../../../api/panel/blog";
+import * as site from "../../../api/site/blog";
+import * as panel from "../../../api/panel/blog";
 
-export const getMostRecent = (): Promise<LastBlog> =>
+export const getMostRecent = (): Promise<site.LastBlog> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
@@ -17,7 +17,7 @@ export const getMostRecent = (): Promise<LastBlog> =>
         );
     });
 
-export const getList = (): Promise<BlogListItem[]> =>
+export const getList = (): Promise<site.BlogListItem[]> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
@@ -41,7 +41,7 @@ export const getList = (): Promise<BlogListItem[]> =>
         );
     });
 
-export const get = (alias: string): Promise<BlogEntry> =>
+export const get = (alias: string): Promise<site.BlogEntry> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
@@ -69,7 +69,7 @@ export const get = (alias: string): Promise<BlogEntry> =>
         );
     });
 
-export const getSelectList = (): Promise<BlogSelectItem[]> =>
+export const getSelectList = (): Promise<panel.BlogSelectItem[]> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
@@ -82,6 +82,41 @@ export const getSelectList = (): Promise<BlogSelectItem[]> =>
                 }));
 
                 resolve(blogSelectListItems);
+            }
+        );
+    });
+
+export const getListForPanel = (): Promise<panel.BlogListItem[]> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+            SELECT be.id, be.date, be.title, SUBSTRING(be.content, 1, 50) as content, be.isHidden, COALESCE( bv.count, 0 ) AS visits, COALESCE( bc.count, 0 ) AS comments FROM blogentry be 
+            LEFT JOIN 
+            (SELECT BlogEntryId, COUNT(*) AS count 
+             FROM blogvisit
+             GROUP BY BlogEntryId) bv
+            ON be.id = bv.BlogEntryId
+            LEFT JOIN 
+            (SELECT blogEntry_id, COUNT(*) AS count 
+             FROM blogcomment
+             GROUP BY blogEntry_id) bc
+            ON be.id = bc.blogEntry_id
+            ORDER BY be.date DESC`,
+            (_err, blogs, _fields) => {
+                const blogListItems = blogs.map(
+                    (b: any) =>
+                        <panel.BlogListItem>{
+                            id: b.id,
+                            date: getDateString(new Date(b.date)),
+                            title: b.title,
+                            content: `${b.content}...`,
+                            visits: b.visits,
+                            comments: b.comments,
+                            visible: !b.isHidden
+                        }
+                );
+
+                resolve(blogListItems);
             }
         );
     });

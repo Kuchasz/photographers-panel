@@ -284,8 +284,14 @@ export const deleteGallery = (id: number) =>
         connection.beginTransaction(() => {
             connection.query(
                 `DELETE FROM privategallery
-                WHERE id = ?`,
-                [id],
+                WHERE id = ?;
+                
+                DELETE FROM email
+                WHERE PrivateGalleryId = ?;
+                
+                DELETE FROM daily
+                WHERE PrivateGalleryId = ?;`,
+                [id, id, id],
                 (err, _, _fields) => {
                     if (err) connection.rollback();
 

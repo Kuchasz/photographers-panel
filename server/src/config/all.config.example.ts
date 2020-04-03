@@ -2,7 +2,8 @@ export const db = {
     host: "IP_ADDRESS",
     user: "USER_NAME",
     password: "PASSWORD",
-    database: "DATABASE_NAME"
+    database: "DATABASE_NAME",
+    multipleStatements: true
 };
 
 export const notifications = {

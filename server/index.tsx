@@ -2,7 +2,6 @@
 import express from "express";
 import compression from "compression";
 
-import { randomElement } from "../utils/array";
 //import { renderToString } from "react-dom/server";
 // import { matchPath, StaticRouter } from "react-router";
 import * as blogModel from "./src/models/blog";
@@ -13,8 +12,6 @@ import * as notificationModel from "./src/models/notification";
 import Root from "../site/dist/bundle.js";
 import * as blog from "../api/site/blog";
 import * as blogPanel from "../api/panel/blog";
-import * as offer from "../api/site/offer";
-import * as video from "../api/site/video";
 import fs from "fs";
 import path from "path";
 import { routes } from "../site/src/routes";
@@ -62,6 +59,11 @@ app.get(blog.getBlog.route, async (req, res) => {
 
 app.get(blogPanel.getBlogSelectList.route, async (req, res) => {
     const blogs = await blogModel.getSelectList();
+    res.json(blogs);
+});
+
+app.get(blogPanel.getBlogsList.route, async (req, res) => {
+    const blogs = await blogModel.getListForPanel();
     res.json(blogs);
 });
 
