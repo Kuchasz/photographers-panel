@@ -118,6 +118,10 @@ export class Blogs extends React.Component<Props, State> {
         });
     };
 
+    onAssignAssets = (selectedBlog: number) => {
+        Alert.info(selectedBlog.toString());
+    };
+
     onBlogDelete = async (selectedBlog: number) => {
         const confirmed = await confirm("You are sure you want to remove the blog?", "Removing of blog");
         if (confirmed) {
@@ -183,6 +187,7 @@ export class Blogs extends React.Component<Props, State> {
                             loadingBlogs={this.state.isLoadingBlogs}
                             onSelect={this.onBlogSelected}
                             onEdit={this.onBlogEdit}
+                            onAssignAssets={this.onAssignAssets}
                             onDelete={this.onBlogDelete}
                         />
                     </Panel>

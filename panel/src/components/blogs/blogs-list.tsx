@@ -3,9 +3,10 @@ import { BlogListItem, changeBlogVisibility } from "../../../../api/panel/blog";
 import { Table, Whisper, Icon, IconButton, ButtonToolbar, Tooltip } from "rsuite";
 
 interface Props {
-    onSelect: (item: any) => void;
-    onEdit: (item: any) => void;
-    onDelete: (item: any) => void;
+    onSelect: (id: number) => void;
+    onEdit: (id: number) => void;
+    onAssignAssets: (id: number) => void;
+    onDelete: (id: number) => void;
     blogs: BlogListItem[];
     loadingBlogs: boolean;
 }
@@ -105,6 +106,10 @@ export class BlogsList extends React.Component<Props, State> {
                                 <IconButton
                                     icon={<Icon icon="trash2" />}
                                     onClick={() => this.props.onDelete(blog.id)}
+                                />
+                                <IconButton
+                                    icon={<Icon icon="th-large" />}
+                                    onClick={() => this.props.onAssignAssets(blog.id)}
                                 />
                             </ButtonToolbar>
                         )}
