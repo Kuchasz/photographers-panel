@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BlogListItem, changeBlogVisibility } from "../../../../api/panel/blog";
-import { Table, Whisper, Icon, IconButton, ButtonToolbar, Tooltip } from "rsuite";
+import { Table, Whisper, Icon, IconButton, ButtonToolbar, Tooltip, Divider } from "rsuite";
 
 interface Props {
     onSelect: (id: number) => void;
@@ -97,16 +97,18 @@ export class BlogsList extends React.Component<Props, State> {
                     <Table.Cell dataKey="content" />
                 </Table.Column>
 
-                <Table.Column width={150} fixed="right">
+                <Table.Column width={200} align="center" fixed="right">
                     <Table.HeaderCell>Actions</Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
                                 <IconButton icon={<Icon icon="edit2" />} onClick={() => this.props.onEdit(blog.id)} />
+                                <Divider vertical />
                                 <IconButton
                                     icon={<Icon icon="trash2" />}
                                     onClick={() => this.props.onDelete(blog.id)}
                                 />
+                                <Divider vertical />
                                 <IconButton
                                     icon={<Icon icon="th-large" />}
                                     onClick={() => this.props.onAssignAssets(blog.id)}
