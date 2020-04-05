@@ -25,7 +25,7 @@ interface Props {
     onSaved: () => void;
 }
 
-export const emptyGalleryPayload = (): GalleryEditDto => ({
+export const emptyGallery = (): GalleryEditDto => ({
     place: "",
     date: "",
     bride: "",
@@ -44,7 +44,7 @@ const states = [
 ];
 
 export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) => {
-    const [formState, setFormState] = React.useState<GalleryEditDto>(emptyGalleryPayload());
+    const [formState, setFormState] = React.useState<GalleryEditDto>(emptyGallery());
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
     const formRef = React.useRef<FormInstance>();

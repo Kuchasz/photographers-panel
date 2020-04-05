@@ -20,7 +20,7 @@ export interface BlogVisibilityDto {
     shouldBeVisible: boolean;
 }
 
-export interface BlogCreateDto {
+export interface BlogEditDto {
     title: string;
     alias: string;
     date: string;
@@ -32,6 +32,9 @@ export type CreateBlogResult = Result<CreateBlogError>;
 
 export type ChangeBlogVisibilityError = "ErrorOccuredWhileChangingBlogVisibility";
 export type ChangeBlogVisibilityResult = Result<ChangeBlogVisibilityError>;
+
+export type BlogEditError = "ErrorOccuredWhileEditingBlog";
+export type BlogEditResult = Result<BlogEditError>;
 
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
@@ -52,7 +55,7 @@ export const getBlogsList = () =>
 getBlogsList.route = getBlogsListRoute;
 
 const createBlogRoute = "/api/panel/create-blog";
-export const createBlog = (blog: BlogCreateDto) =>
+export const createBlog = (blog: BlogEditDto) =>
     new Promise<CreateBlogResult>((resolve, _) => {
         fetch("http://192.168.56.102:8080" + createBlogRoute, {
             method: "POST",
@@ -87,3 +90,26 @@ export const changeBlogVisibility = (blogVisibility: BlogVisibilityDto) =>
             .then(resolve);
     });
 changeBlogVisibility.route = changeBlogVisibilityRoute;
+
+const getBlogForEditRoute = "/api/panel/blog-for-edit/:blogId";
+export const getBlogForEdit = (id: number) =>
+    fetch("http://192.168.56.102:8080" + getBlogForEditRoute.replace(":blogId", id.toString())).then(
+        resp => resp.json() as Promise<BlogEditDto>
+    );
+getBlogForEdit.route = getBlogForEditRoute;
+
+const editBlogRoute = "/api/panel/edit-blog";
+export const editBlog = (id: number, blog: BlogEditDto) =>
+    new Promise<BlogEditResult>((resolve, _) => {
+        fetch("http://192.168.56.102:8080" + editBlogRoute, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id, blog })
+        })
+            .then(result => result.json())
+            .then(resolve);
+    });
+editBlog.route = editBlogRoute;

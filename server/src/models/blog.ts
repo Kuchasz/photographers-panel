@@ -121,7 +121,7 @@ export const getListForPanel = (): Promise<panel.BlogListItem[]> =>
         );
     });
 
-export const createBlog = (blog: panel.BlogCreateDto) =>
+export const createBlog = (blog: panel.BlogEditDto) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
             connection.query(
@@ -173,4 +173,45 @@ export const changeVisibility = (blogVisibility: panel.BlogVisibilityDto) =>
                 }
             );
         });
+    });
+
+export const editBlog = (id: number, blog: panel.BlogEditDto) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `
+                UPDATE blogentry
+                SET
+                    date = ?, 
+                    title = ?, 
+                    alias = ?, 
+                    content = ?
+                WHERE id = ?`,
+                [blog.date, blog.title, blog.alias, blog.content, id],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
+    });
+
+export const getForEdit = (blogId: number): Promise<panel.BlogEditDto> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+            SELECT be.title, be.alias,  be.date, be.content
+            FROM blogentry be
+            WHERE be.id = ?`,
+            [blogId],
+            (_err, [blog], _fields) => {
+                resolve({
+                    title: blog.title,
+                    alias: blog.alias,
+                    date: getDateString(blog.date),
+                    content: blog.content
+                });
+            }
+        );
     });

@@ -71,7 +71,7 @@ app.post(blogPanel.createBlog.route, async (req, res) => {
     let result: blogPanel.CreateBlogResult | undefined = undefined;
 
     try {
-        await blogModel.createBlog(req.body as blogPanel.BlogCreateDto);
+        await blogModel.createBlog(req.body as blogPanel.BlogEditDto);
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
@@ -99,6 +99,27 @@ app.post(blogPanel.changeBlogVisibility.route, async (req, res) => {
     }
 
     res.json(result);
+});
+
+app.post(blogPanel.editBlog.route, async (req, res) => {
+    let result: blogPanel.BlogEditResult | undefined = undefined;
+
+    var { id, blog }: { id: number; blog: blogPanel.BlogEditDto } = req.body;
+
+    try {
+        await blogModel.editBlog(id, blog);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingBlog" };
+    }
+
+    res.json(result);
+});
+
+app.get(blogPanel.getBlogForEdit.route, async (req, res) => {
+    const blog = await blogModel.getForEdit(Number(req.params.blogId));
+    res.json(blog);
 });
 
 app.post(message.send.route, async (req, res) => {

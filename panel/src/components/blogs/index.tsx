@@ -6,6 +6,7 @@ import { confirm } from "../common/confirmation";
 import { getBlogsList, BlogListItem } from "../../../../api/panel/blog";
 import { BlogsList } from "./blogs-list";
 import { BlogCreate } from "./blog-create";
+import { BlogEdit } from "./blog-edit";
 
 interface Props {}
 
@@ -191,14 +192,14 @@ export class Blogs extends React.Component<Props, State> {
                     showCreateForm={this.state.showCreateForm}
                     closeCreateForm={this.closeCreateForm}
                 />
-                {/* {this.state.blogToEditId ? (
-                    <GalleryEdit
+                {this.state.blogToEditId ? (
+                    <BlogEdit
                         onSaved={this.fetchBlogs}
                         showEditForm={this.state.showEditForm}
                         closeEditForm={this.closeEditForm}
                         id={this.state.blogToEditId}
                     />
-                ) : null} */}
+                ) : null}
             </div>
         );
     }

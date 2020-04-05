@@ -42,20 +42,6 @@ const BlogIcon = ({ id, initialVisibility }: BlogIconProps) => {
     );
 };
 
-// const HiddenBlogIcon = ({ id, onClick, isLoading }: BlogIconProps) => (
-//     <Whisper
-//         onClick={() => onClick(id, true)}
-//         trigger="hover"
-//         speaker={
-//             <Tooltip>
-//                 Blog is <i>hidden</i>.
-//             </Tooltip>
-//         }
-//     >
-//         <IconButton style={{ color: "#F44336" }} loading={isLoading} appearance="subtle" icon={<Icon icon="eye-slash" />} />
-//     </Whisper>
-// );
-
 export class BlogsList extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
