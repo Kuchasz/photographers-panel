@@ -36,8 +36,14 @@ const BlogIcon = ({ id, initialVisibility }: BlogIconProps) => {
                 <Tooltip>
                     Blog is <i>{visible ? "visible" : "hidden"}</i>
                 </Tooltip>
-            }>
-            <IconButton style={{ color: visible ? "#4CAF50" : "#F44336" }} loading={isLoading} appearance="subtle" icon={<Icon icon="eye" />} />
+            }
+        >
+            <IconButton
+                style={{ color: visible ? "#4CAF50" : "#F44336" }}
+                loading={isLoading}
+                appearance="subtle"
+                icon={<Icon icon={visible ? "eye" : "eye-slash"} />}
+            />
         </Whisper>
     );
 };

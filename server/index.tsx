@@ -122,6 +122,21 @@ app.get(blogPanel.getBlogForEdit.route, async (req, res) => {
     res.json(blog);
 });
 
+app.post(blogPanel.deleteBlog.route, async (req, res) => {
+    let result: blogPanel.DeleteBlogResult | undefined = undefined;
+
+    var { id }: { id: number } = req.body;
+
+    try {
+        await blogModel.deleteBlog(id);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlog" };
+    }
+
+    res.json(result);
+});
+
 app.post(message.send.route, async (req, res) => {
     const mesg = req.body as message.Message;
 

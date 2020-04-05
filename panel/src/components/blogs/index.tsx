@@ -3,10 +3,11 @@ import { Panel, Icon, IconButton, Alert } from "rsuite";
 import { addMonths } from "../../../../utils/date";
 import "./styles.less";
 import { confirm } from "../common/confirmation";
-import { getBlogsList, BlogListItem } from "../../../../api/panel/blog";
+import { getBlogsList, BlogListItem, deleteBlog } from "../../../../api/panel/blog";
 import { BlogsList } from "./blogs-list";
 import { BlogCreate } from "./blog-create";
 import { BlogEdit } from "./blog-edit";
+import { ResultType } from "../../../../api/common";
 
 interface Props {}
 
@@ -61,7 +62,6 @@ export class Blogs extends React.Component<Props, State> {
             () => ({ isLoadingBlogs: true }),
             () => {
                 getBlogsList().then(blogs => {
-
                     const selectedBlog = blogs[0].id;
                     this.setState({
                         blogs,
@@ -118,16 +118,16 @@ export class Blogs extends React.Component<Props, State> {
         });
     };
 
-    onBlogDelete = async (selectedGallery: number) => {
+    onBlogDelete = async (selectedBlog: number) => {
         const confirmed = await confirm("You are sure you want to remove the blog?", "Removing of blog");
         if (confirmed) {
-            // const result = await deleteGallery(selectedGallery);
-            // if (result.type === ResultType.Success) {
-            Alert.success("Blog deleted.");
-            //     this.fetchBlogs();
-            // } else {
-            //     Alert.error("Blog not deleted.");
-            // }
+            const result = await deleteBlog(selectedBlog);
+            if (result.type === ResultType.Success) {
+                Alert.success("Blog deleted.");
+                this.fetchBlogs();
+            } else {
+                Alert.error("Blog not deleted.");
+            }
         }
     };
 

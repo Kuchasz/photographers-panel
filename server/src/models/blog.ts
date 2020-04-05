@@ -215,3 +215,30 @@ export const getForEdit = (blogId: number): Promise<panel.BlogEditDto> =>
             }
         );
     });
+
+    
+export const deleteBlog = (id: number) =>
+new Promise((resolve, reject) => {
+    connection.beginTransaction(() => {
+        connection.query(
+            `
+            DELETE FROM blogentry
+            WHERE id = ?;
+            
+            DELETE FROM blogentryphoto
+            WHERE BlogEntryId = ?;
+            
+            DELETE FROM blogcomment
+            WHERE blogEntry_id = ?;
+
+            DELETE FROM blogvisit
+            WHERE BlogEntryId = ?;`,
+            [id, id, id, id],
+            (err, _, _fields) => {
+                if (err) connection.rollback();
+
+                err == null ? resolve() : reject(err);
+            }
+        );
+    });
+});

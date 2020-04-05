@@ -36,6 +36,9 @@ export type ChangeBlogVisibilityResult = Result<ChangeBlogVisibilityError>;
 export type BlogEditError = "ErrorOccuredWhileEditingBlog";
 export type BlogEditResult = Result<BlogEditError>;
 
+export type DeleteBlogError = "ErrorOccuredWhileDeletingBlog";
+export type DeleteBlogResult = Result<DeleteBlogError>;
+
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
     new Promise<BlogSelectItem[]>((resolve, _) => {
@@ -113,3 +116,19 @@ export const editBlog = (id: number, blog: BlogEditDto) =>
             .then(resolve);
     });
 editBlog.route = editBlogRoute;
+
+const deleteBlogRoute = "/api/panel/remove-blog";
+export const deleteBlog = (id: number) =>
+    new Promise<DeleteBlogResult>((resolve, _) => {
+        fetch("http://192.168.56.102:8080" + deleteBlogRoute, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id })
+        })
+            .then(result => result.json())
+            .then(resolve);
+    });
+deleteBlog.route = deleteBlogRoute;
