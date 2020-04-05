@@ -13,7 +13,7 @@ import {
 } from "rsuite";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 import { BlogSelectItem, getBlogSelectList } from "../../../../api/panel/blog";
-import { GalleryPayload, createGallery } from "../../../../api/panel/private-gallery";
+import { GalleryEditDto, createGallery } from "../../../../api/panel/private-gallery";
 import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
 import { galleryModel } from "./gallery-model";
@@ -24,7 +24,7 @@ interface Props {
     onAdded: () => void;
 }
 
-export const emptyGalleryPayload = (): GalleryPayload => ({
+export const emptyGallery = (): GalleryEditDto => ({
     place: "",
     date: "",
     bride: "",
@@ -43,7 +43,7 @@ const states = [
 ];
 
 export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) => {
-    const [formState, setFormState] = React.useState<GalleryPayload>(emptyGalleryPayload());
+    const [formState, setFormState] = React.useState<GalleryEditDto>(emptyGallery());
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
     const formRef = React.useRef<FormInstance>();
@@ -59,7 +59,7 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                 createGallery(formState).then(result => {
                     if (result.type === ResultType.Success) {
                         Alert.success("Gallery successfully added.");
-                        setFormState(emptyGalleryPayload());
+                        setFormState(emptyGallery());
                         closeCreateForm();
                         onAdded();
                     } else {
@@ -81,7 +81,7 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                     ref={formRef}
                     model={galleryModel}
                     formValue={formState}
-                    onChange={x => setFormState(x as GalleryPayload)}
+                    onChange={x => setFormState(x as GalleryEditDto)}
                 >
                     <FormGroup>
                         <ControlLabel>Place</ControlLabel>
@@ -150,7 +150,8 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                             </Button>
                             <Button
                                 onClick={() => {
-                                    setFormState(emptyGalleryPayload());
+                                    setFormState(emptyGallery());
+                                    setIsLoading(false);
                                     closeCreateForm();
                                 }}
                                 appearance="default"

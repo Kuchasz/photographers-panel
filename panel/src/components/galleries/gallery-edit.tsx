@@ -13,7 +13,7 @@ import {
 } from "rsuite";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 import { BlogSelectItem, getBlogSelectList } from "../../../../api/panel/blog";
-import { GalleryPayload, editGallery, getGalleryForEdit } from "../../../../api/panel/private-gallery";
+import { GalleryEditDto, editGallery, getGalleryForEdit } from "../../../../api/panel/private-gallery";
 import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
 import { galleryModel } from "./gallery-model";
@@ -25,7 +25,7 @@ interface Props {
     onSaved: () => void;
 }
 
-export const emptyGalleryPayload = (): GalleryPayload => ({
+export const emptyGalleryPayload = (): GalleryEditDto => ({
     place: "",
     date: "",
     bride: "",
@@ -44,7 +44,7 @@ const states = [
 ];
 
 export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) => {
-    const [formState, setFormState] = React.useState<GalleryPayload>(emptyGalleryPayload());
+    const [formState, setFormState] = React.useState<GalleryEditDto>(emptyGalleryPayload());
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
     const formRef = React.useRef<FormInstance>();
@@ -85,7 +85,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                     ref={formRef}
                     model={galleryModel}
                     formValue={formState}
-                    onChange={x => setFormState(x as GalleryPayload)}
+                    onChange={x => setFormState(x as GalleryEditDto)}
                 >
                     <FormGroup>
                         <ControlLabel>Place</ControlLabel>
@@ -153,7 +153,10 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                                 Save
                             </Button>
                             <Button
-                                onClick={closeEditForm}
+                                onClick={() => {
+                                    setIsLoading(false);
+                                    closeEditForm();
+                                }}
                                 appearance="default"
                             >
                                 Cancel

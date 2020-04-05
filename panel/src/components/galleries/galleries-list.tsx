@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Tooltip, Table, Icon, Whisper, Progress, Button, ButtonToolbar } from "rsuite";
 import { range } from "../../../../utils/array";
-import { Gallery } from "../../../../api/panel/private-gallery";
+import { GalleryDto } from "../../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 
 interface Props {
     onSelect: (item: any) => void;
     onEdit: (item: any) => void;
     onDelete: (item: any) => void;
-    galleries: Gallery[];
+    galleries: GalleryDto[];
     loadingGalleries: boolean;
 }
 interface State {}
@@ -116,7 +116,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 <Table.Column width={50} align="center">
                     <Table.HeaderCell>State</Table.HeaderCell>
                     <Table.Cell dataKey="state">
-                        {(gallery: Gallery) => (
+                        {(gallery: GalleryDto) => (
                             <Whisper trigger="hover" speaker={stateTooltips[gallery.state]}>
                                 <Icon icon="info" style={{ color: getColorFromGalleryState(gallery.state) }} />
                             </Whisper>
@@ -127,7 +127,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 <Table.Column width={50} align="center">
                     <Table.HeaderCell>Blog</Table.HeaderCell>
                     <Table.Cell dataKey="blog">
-                        {(gallery: Gallery) => (
+                        {(gallery: GalleryDto) => (
                             <Whisper
                                 trigger="hover"
                                 speaker={gallery.blogId ? blogTooltips.Available : blogTooltips.None}
@@ -156,7 +156,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 <Table.Column width={120} align="center">
                     <Table.HeaderCell>Password</Table.HeaderCell>
                     <Table.Cell dataKey="password">
-                        {(gallery: Gallery) => <Password password={gallery.password} />}
+                        {(gallery: GalleryDto) => <Password password={gallery.password} />}
                     </Table.Cell>
                 </Table.Column>
 
@@ -173,7 +173,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.HeaderCell />
 
                     <Table.Cell>
-                        {(gallery: Gallery) => (
+                        {(gallery: GalleryDto) => (
                             <ButtonToolbar>
                                 <Button size="xs" onClick={() => this.props.onEdit(gallery.id)}>
                                     <Icon icon="edit2" /> Edit

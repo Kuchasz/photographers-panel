@@ -1,6 +1,6 @@
-import React from "react";
-import { BlogListItem } from "../../../../api/panel/blog";
-import { Table, Whisper, Icon, ButtonToolbar, Button, Tooltip } from "rsuite";
+import React, { useState } from "react";
+import { BlogListItem, changeBlogVisibility } from "../../../../api/panel/blog";
+import { Table, Whisper, Icon, IconButton, ButtonToolbar, Tooltip } from "rsuite";
 
 interface Props {
     onSelect: (item: any) => void;
@@ -9,35 +9,59 @@ interface Props {
     blogs: BlogListItem[];
     loadingBlogs: boolean;
 }
-interface State {}
 
-const VisibleBlogIcon = () => (
-    <Whisper
-        trigger="hover"
-        speaker={
-            <Tooltip>
-                Blog is <i>visible</i>.
-            </Tooltip>
-        }
-    >
-        <Icon icon="eye" style={{ color: "#4CAF50" }} />
-    </Whisper>
-);
+interface State {
+    isChangingVisibility: boolean;
+}
 
-const HiddenBlogIcon = () => (
-    <Whisper
-        trigger="hover"
-        speaker={
-            <Tooltip>
-                Blog is <i>hidden</i>.
-            </Tooltip>
-        }
-    >
-        <Icon icon="eye-slash" style={{ color: "#F44336" }} />
-    </Whisper>
-);
+type BlogIconProps = { id: number; initialVisibility: boolean };
 
-export class BlogsList extends React.PureComponent<Props, State> {
+const BlogIcon = ({ id, initialVisibility }: BlogIconProps) => {
+    const [visible, setVisible] = useState(initialVisibility);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const onChangeBlogVisibility = () => {
+        setIsLoading(true);
+        changeBlogVisibility({ id, shouldBeVisible: !visible }).then(result => {
+            setVisible(!visible);
+            setIsLoading(false);
+        });
+    };
+
+    return (
+        <Whisper
+            onClick={onChangeBlogVisibility}
+            trigger="hover"
+            speaker={
+                <Tooltip>
+                    Blog is <i>{visible ? "visible" : "hidden"}</i>
+                </Tooltip>
+            }>
+            <IconButton style={{ color: visible ? "#4CAF50" : "#F44336" }} loading={isLoading} appearance="subtle" icon={<Icon icon="eye" />} />
+        </Whisper>
+    );
+};
+
+// const HiddenBlogIcon = ({ id, onClick, isLoading }: BlogIconProps) => (
+//     <Whisper
+//         onClick={() => onClick(id, true)}
+//         trigger="hover"
+//         speaker={
+//             <Tooltip>
+//                 Blog is <i>hidden</i>.
+//             </Tooltip>
+//         }
+//     >
+//         <IconButton style={{ color: "#F44336" }} loading={isLoading} appearance="subtle" icon={<Icon icon="eye-slash" />} />
+//     </Whisper>
+// );
+
+export class BlogsList extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = { isChangingVisibility: false };
+    }
+
     render() {
         return (
             <Table
@@ -50,8 +74,8 @@ export class BlogsList extends React.PureComponent<Props, State> {
             >
                 <Table.Column width={100} align="center">
                     <Table.HeaderCell>Visibility</Table.HeaderCell>
-                    <Table.Cell dataKey="visible">
-                        {(blog: BlogListItem) => (blog.visible ? <VisibleBlogIcon /> : <HiddenBlogIcon />)}
+                    <Table.Cell dataKey="visible" className="link-group">
+                        {(blog: BlogListItem) => <BlogIcon id={blog.id} initialVisibility={blog.visible} />}
                     </Table.Cell>
                 </Table.Column>
 
@@ -81,16 +105,15 @@ export class BlogsList extends React.PureComponent<Props, State> {
                 </Table.Column>
 
                 <Table.Column width={150} fixed="right">
-                    <Table.HeaderCell />
-                    <Table.Cell>
+                    <Table.HeaderCell>Actions</Table.HeaderCell>
+                    <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
-                                <Button size="xs" onClick={() => this.props.onEdit(blog.id)}>
-                                    <Icon icon="edit2" /> Edit
-                                </Button>
-                                <Button size="xs" onClick={() => this.props.onDelete(blog.id)}>
-                                    <Icon icon="trash2" /> Delete
-                                </Button>
+                                <IconButton icon={<Icon icon="edit2" />} onClick={() => this.props.onEdit(blog.id)} />
+                                <IconButton
+                                    icon={<Icon icon="trash2" />}
+                                    onClick={() => this.props.onDelete(blog.id)}
+                                />
                             </ButtonToolbar>
                         )}
                     </Table.Cell>

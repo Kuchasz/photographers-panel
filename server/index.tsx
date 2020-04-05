@@ -67,6 +67,40 @@ app.get(blogPanel.getBlogsList.route, async (req, res) => {
     res.json(blogs);
 });
 
+app.post(blogPanel.createBlog.route, async (req, res) => {
+    let result: blogPanel.CreateBlogResult | undefined = undefined;
+
+    try {
+        await blogModel.createBlog(req.body as blogPanel.BlogCreateDto);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileBlogGallery" };
+    }
+
+    res.json(result);
+});
+
+app.get(blogPanel.checkAliasIsUnique.route, async (req, res) => {
+    const aliasUnique = await blogModel.checkAliasIsUnique(req.params.alias);
+    res.json(aliasUnique);
+});
+
+app.post(blogPanel.changeBlogVisibility.route, async (req, res) => {
+    let result: blogPanel.ChangeBlogVisibilityResult | undefined = undefined;
+
+    try {
+        console.log(req.body);
+        await blogModel.changeVisibility(req.body as blogPanel.BlogVisibilityDto);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogVisibility" };
+    }
+
+    res.json(result);
+});
+
 app.post(message.send.route, async (req, res) => {
     const mesg = req.body as message.Message;
 
@@ -119,10 +153,9 @@ app.post(privateGalleryPanel.createGallery.route, async (req, res) => {
     let result: privateGalleryPanel.CreateGalleryResult | undefined = undefined;
 
     try {
-        await privateGalleryModel.createGallery(req.body as privateGalleryPanel.GalleryPayload);
+        await privateGalleryModel.createGallery(req.body as privateGalleryPanel.GalleryEditDto);
         result = { type: ResultType.Success };
     } catch (err) {
-        console.log(err);
         result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingGallery" };
     }
 
@@ -132,13 +165,12 @@ app.post(privateGalleryPanel.createGallery.route, async (req, res) => {
 app.post(privateGalleryPanel.editGallery.route, async (req, res) => {
     let result: privateGalleryPanel.EditGalleryResult | undefined = undefined;
 
-    var { id, gallery }: { id: number; gallery: privateGalleryPanel.GalleryPayload } = req.body;
+    var { id, gallery }: { id: number; gallery: privateGalleryPanel.GalleryEditDto } = req.body;
 
     try {
         await privateGalleryModel.editGallery(id, gallery);
         result = { type: ResultType.Success };
     } catch (err) {
-        console.log(err);
         result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingGallery" };
     }
 
@@ -154,7 +186,6 @@ app.post(privateGalleryPanel.deleteGallery.route, async (req, res) => {
         await privateGalleryModel.deleteGallery(id);
         result = { type: ResultType.Success };
     } catch (err) {
-        console.log(err);
         result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingGallery" };
     }
 

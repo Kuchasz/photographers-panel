@@ -5,6 +5,7 @@ import "./styles.less";
 import { confirm } from "../common/confirmation";
 import { getBlogsList, BlogListItem } from "../../../../api/panel/blog";
 import { BlogsList } from "./blogs-list";
+import { BlogCreate } from "./blog-create";
 
 interface Props {}
 
@@ -59,6 +60,7 @@ export class Blogs extends React.Component<Props, State> {
             () => ({ isLoadingBlogs: true }),
             () => {
                 getBlogsList().then(blogs => {
+
                     const selectedBlog = blogs[0].id;
                     this.setState({
                         blogs,
@@ -184,12 +186,12 @@ export class Blogs extends React.Component<Props, State> {
                         />
                     </Panel>
                 </div>
-                {/* <GalleryCreate
+                <BlogCreate
                     onAdded={this.fetchBlogs}
                     showCreateForm={this.state.showCreateForm}
                     closeCreateForm={this.closeCreateForm}
                 />
-                {this.state.blogToEditId ? (
+                {/* {this.state.blogToEditId ? (
                     <GalleryEdit
                         onSaved={this.fetchBlogs}
                         showEditForm={this.state.showEditForm}

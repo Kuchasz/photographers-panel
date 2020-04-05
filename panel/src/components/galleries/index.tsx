@@ -8,18 +8,18 @@ import { GalleryVisitRange } from "./gallery-visit-range";
 import { addMonths } from "../../../../utils/date";
 import "./styles.less";
 import {
-    Gallery,
+    GalleryDto,
     getGalleryVisits,
-    VisitsSummary,
+    VisitsSummaryDto,
     getGalleriesList,
-    GetGalleryVisitsResult,
+    GalleryVisitsDto,
     deleteGallery
 } from "../../../../api/panel/private-gallery";
 import { GalleryEdit } from "./gallery-edit";
 import { confirm } from "../common/confirmation";
 import { ResultType } from "../../../../api/common";
 
-const getStats = (x: GetGalleryVisitsResult) => ({
+const getStats = (x: GalleryVisitsDto) => ({
     todayVisits: x.todayVisits,
     totalVisits: x.totalVisits,
     bestDay: x.bestDay.date,
@@ -34,8 +34,8 @@ interface Props {}
 interface State {
     isLoading: boolean;
     isLoadingGalleries: boolean;
-    visits: VisitsSummary[];
-    galleries: Gallery[];
+    visits: VisitsSummaryDto[];
+    galleries: GalleryDto[];
     selectedGallery?: number;
     stats?: {
         todayVisits: number;

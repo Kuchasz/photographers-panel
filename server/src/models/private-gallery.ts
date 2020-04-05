@@ -1,7 +1,7 @@
 import { connection } from "../db";
 import { PrivateGalleryUrlCheckResult } from "../../../api/site/private-gallery";
 import { getDateString, getDateRange } from "../../../utils/date";
-import { Gallery, GetGalleryVisitsResult, VisitsSummary, GalleryPayload } from "../../../api/panel/private-gallery";
+import { GalleryEditDto, GalleryDto, GalleryVisitsDto, VisitsSummaryDto } from "../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../api/private-gallery";
 import { sum } from "../../../utils/array";
 
@@ -47,7 +47,7 @@ export const exists = (id: number): Promise<boolean> =>
         })
     );
 
-export const getList = (): Promise<Gallery[]> =>
+export const getList = (): Promise<GalleryDto[]> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
@@ -76,11 +76,11 @@ export const getList = (): Promise<Gallery[]> =>
         );
     });
 
-export const getStats = async (galleryId: number, startDate: Date, endDate: Date): Promise<GetGalleryVisitsResult> => {
+export const getStats = async (galleryId: number, startDate: Date, endDate: Date): Promise<GalleryVisitsDto> => {
     const days = getDateRange(startDate, endDate);
     const today = getDateString(new Date());
 
-    const dailyVisits = await new Promise<VisitsSummary[]>((resolve, reject) => {
+    const dailyVisits = await new Promise<VisitsSummaryDto[]>((resolve, reject) => {
         connection.query(
             `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ? AND d.date BETWEEN ? AND ?`,
             [galleryId, getDateString(startDate), getDateString(endDate)],
@@ -96,7 +96,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         );
     });
 
-    const bestDay = await new Promise<VisitsSummary>((resolve, reject) => {
+    const bestDay = await new Promise<VisitsSummaryDto>((resolve, reject) => {
         connection.query(
             `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ?
             ORDER BY d.count DESC
@@ -183,7 +183,7 @@ export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
         );
     });
 
-export const getForEdit = (galleryId: number): Promise<GalleryPayload> =>
+export const getForEdit = (galleryId: number): Promise<GalleryEditDto> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
@@ -207,7 +207,7 @@ export const getForEdit = (galleryId: number): Promise<GalleryPayload> =>
         );
     });
 
-export const createGallery = (gallery: GalleryPayload) =>
+export const createGallery = (gallery: GalleryEditDto) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
             connection.query(
@@ -242,7 +242,7 @@ export const createGallery = (gallery: GalleryPayload) =>
         });
     });
 
-export const editGallery = (id: number, gallery: GalleryPayload) =>
+export const editGallery = (id: number, gallery: GalleryEditDto) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
             connection.query(

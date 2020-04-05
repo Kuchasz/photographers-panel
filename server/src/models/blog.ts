@@ -120,3 +120,57 @@ export const getListForPanel = (): Promise<panel.BlogListItem[]> =>
             }
         );
     });
+
+export const createBlog = (blog: panel.BlogCreateDto) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `
+                INSERT INTO blogentry(
+                    date, 
+                    title, 
+                    alias, 
+                    content, 
+                    isHidden) 
+                VALUES (?, ?, ?, ?, ?)`,
+                [blog.date, blog.title, blog.alias, blog.content, true],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
+    });
+
+export const checkAliasIsUnique = (alias: string): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+            SELECT be.id 
+            FROM blogentry be
+            WHERE be.alias = ?`,
+            [alias],
+            (_err, blogs, _fields) => {
+                resolve(blogs.length === 0);
+            }
+        );
+    });
+
+export const changeVisibility = (blogVisibility: panel.BlogVisibilityDto) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `
+            UPDATE blogentry
+            SET isHidden = ?
+            WHERE id = ?`,
+                [!blogVisibility.shouldBeVisible, blogVisibility.id],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
+    });
