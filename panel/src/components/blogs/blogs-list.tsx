@@ -59,7 +59,7 @@ export class BlogsList extends React.Component<Props, State> {
         return (
             <Table
                 rowHeight={50}
-                virtualized={true}
+                // virtualized={true}
                 loading={this.props.loadingBlogs}
                 height={700}
                 onRowClick={(item: any) => this.props.onSelect(item.id)}
@@ -102,14 +102,20 @@ export class BlogsList extends React.Component<Props, State> {
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
-                                <IconButton icon={<Icon icon="edit2" />} onClick={() => this.props.onEdit(blog.id)} />
+                                <IconButton
+                                    appearance="subtle"
+                                    icon={<Icon icon="edit2" />}
+                                    onClick={() => this.props.onEdit(blog.id)}
+                                />
                                 <Divider vertical />
                                 <IconButton
+                                    appearance="subtle"
                                     icon={<Icon icon="trash2" />}
                                     onClick={() => this.props.onDelete(blog.id)}
                                 />
                                 <Divider vertical />
                                 <IconButton
+                                    appearance="subtle"
                                     icon={<Icon icon="th-large" />}
                                     onClick={() => this.props.onAssignAssets(blog.id)}
                                 />
