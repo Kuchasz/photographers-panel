@@ -27,6 +27,11 @@ export interface BlogEditDto {
     content: string;
 }
 
+export interface BlogAssetsListItemDto{
+    id: number;
+    url: string;
+}
+
 export type CreateBlogError = "ErrorOccuredWhileBlogGallery";
 export type CreateBlogResult = Result<CreateBlogError>;
 

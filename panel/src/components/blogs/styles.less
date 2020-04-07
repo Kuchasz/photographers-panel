@@ -84,3 +84,52 @@
         }
     }
 }
+
+.blog-assign-assets {
+    .assets-list {
+        display: flex;
+        flex-wrap: wrap;
+        .item {
+            margin: 5px;
+            width: 66px;
+            height: 66px;
+            border-radius: 6px;
+            &.add-btn {
+                border: 2px dotted #e5e5ea;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                button {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+            input[type="file"] {
+                position: absolute !important;
+                clip: rect(1px 1px 1px 1px);
+            }
+            &.thumb {
+                position: relative;
+                overflow: hidden;
+                button {
+                    position: absolute;
+                    margin: 4px;
+                    right: 0px;
+                    opacity: 0;
+                    transition: opacity linear 0.25s;
+                }
+                &:hover {
+                    button {
+                        opacity: 1;
+                    }
+                }
+                img {
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                }
+            }
+        }
+    }
+}

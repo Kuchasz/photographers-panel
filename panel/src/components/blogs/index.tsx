@@ -8,6 +8,7 @@ import { BlogsList } from "./blogs-list";
 import { BlogCreate } from "./blog-create";
 import { BlogEdit } from "./blog-edit";
 import { ResultType } from "../../../../api/common";
+import { BlogAssignAssets } from "./blog-assign-assets";
 
 interface Props {}
 
@@ -31,6 +32,7 @@ interface State {
     disableAutoDate: boolean;
     showCreateForm: boolean;
     showEditForm: boolean;
+    showAssignAssets: boolean;
     blogToEditId?: number;
 }
 
@@ -49,6 +51,7 @@ export class Blogs extends React.Component<Props, State> {
             disableAutoDate: false,
             showCreateForm: false,
             showEditForm: false,
+            showAssignAssets: false,
             blogToEditId: undefined
         };
     }
@@ -61,7 +64,7 @@ export class Blogs extends React.Component<Props, State> {
         this.setState(
             () => ({ isLoadingBlogs: true }),
             () => {
-                getBlogsList().then(blogs => {
+                getBlogsList().then((blogs) => {
                     const selectedBlog = blogs[0].id;
                     this.setState({
                         blogs,
@@ -77,7 +80,7 @@ export class Blogs extends React.Component<Props, State> {
         if (startDate === undefined || endDate === undefined) return;
         this.setState(() => ({ disableAutoDate: true, startDate, endDate }));
         if (this.state.selectedBlog) {
-            this.setState(_state => ({
+            this.setState((_state) => ({
                 isLoading: true
             }));
 
@@ -94,12 +97,12 @@ export class Blogs extends React.Component<Props, State> {
     onBlogSelected = (selectedBlog: number) => {
         if (selectedBlog === this.state.selectedBlog) return;
 
-        const blog = this.state.blogs.filter(x => x.id === selectedBlog)[0];
+        const blog = this.state.blogs.filter((x) => x.id === selectedBlog)[0];
 
         const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(blog.date);
         const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(blog.date), 1);
 
-        this.setState(_state => ({
+        this.setState((_state) => ({
             isLoading: true,
             startDate,
             endDate,
@@ -119,7 +122,10 @@ export class Blogs extends React.Component<Props, State> {
     };
 
     onAssignAssets = (selectedBlog: number) => {
-        Alert.info(selectedBlog.toString());
+        this.setState({
+            blogToEditId: selectedBlog,
+            showAssignAssets: true
+        });
     };
 
     onBlogDelete = async (selectedBlog: number) => {
@@ -147,8 +153,8 @@ export class Blogs extends React.Component<Props, State> {
         this.setState({ showEditForm: false });
     };
 
-    showEditForm = () => {
-        this.setState({ showEditForm: true });
+    closeAssignAssets = () => {
+        this.setState({ showAssignAssets: false });
     };
 
     render() {
@@ -202,6 +208,14 @@ export class Blogs extends React.Component<Props, State> {
                         onSaved={this.fetchBlogs}
                         showEditForm={this.state.showEditForm}
                         closeEditForm={this.closeEditForm}
+                        id={this.state.blogToEditId}
+                    />
+                ) : null}
+                {this.state.blogToEditId ? (
+                    <BlogAssignAssets
+                        // onSaved={this.fetchBlogs}
+                        showBlogAssignAssets={this.state.showAssignAssets}
+                        closeAssignAssets={this.closeAssignAssets}
                         id={this.state.blogToEditId}
                     />
                 ) : null}
