@@ -1,6 +1,8 @@
 import React from "react";
-import { Modal, Button, Icon, IconButton } from "rsuite";
+import { Modal, Button, Icon, IconButton, Loader } from "rsuite";
 import { BlogAssetsListItemDto } from "../../../../api/panel/blog";
+
+type BlogAssetsListItem = BlogAssetsListItemDto & { uploadProgress?: number; processing?: boolean };
 
 interface Props {
     id: number;
@@ -9,10 +11,11 @@ interface Props {
 }
 interface State {}
 
-const BlogAssetThumb = (item: BlogAssetsListItemDto) => (
+const BlogAssetThumb = (item: BlogAssetsListItem) => (
     <AssetsListItem className="thumb">
-        <IconButton icon={<Icon icon="close" />} circle size="xs" />
+        {item.processing || <IconButton icon={<Icon icon="close" />} circle size="xs" />}
         <img src={item.url}></img>
+        {item.processing && <Loader backdrop center />}
     </AssetsListItem>
 );
 
@@ -38,7 +41,7 @@ const AssetsListItem: React.FC<{ className: string }> = ({ children, className }
     <div className={`item ${className}`}>{children}</div>
 );
 
-const AssetsList = ({ items }: { items: BlogAssetsListItemDto[] }) => (
+const AssetsList = ({ items }: { items: BlogAssetsListItem[] }) => (
     <div className="assets-list">
         {items.map((item) => (
             <BlogAssetThumb {...item} key={item.id} />
@@ -52,18 +55,18 @@ const items = [
     { id: 7, url: "https://picsum.photos/100" },
     { id: 6, url: "https://picsum.photos/100/300" },
     { id: 5, url: "https://picsum.photos/100" },
-    { id: 4, url: "https://picsum.photos/100/200" },
+    { id: 4, url: "https://picsum.photos/100/200", processing: true },
     { id: 3, url: "https://picsum.photos/100/150" },
     { id: 2, url: "https://picsum.photos/100" },
     { id: 1, url: "https://picsum.photos/100" },
-    { id: 8, url: "https://picsum.photos/100" },
-    { id: 9, url: "https://picsum.photos/100" },
+    { id: 8, url: "https://picsum.photos/100", processing: true },
+    { id: 9, url: "https://picsum.photos/100", processing: true },
     { id: 10, url: "https://picsum.photos/100" },
     { id: 11, url: "https://picsum.photos/100" },
     { id: 12, url: "https://picsum.photos/100" },
     { id: 13, url: "https://picsum.photos/100" },
-    { id: 14, url: "https://picsum.photos/100" },
-    { id: 15, url: "https://picsum.photos/100" },
+    { id: 14, url: "https://picsum.photos/100", processing: true },
+    { id: 15, url: "https://picsum.photos/100", processing: true },
     { id: 16, url: "https://picsum.photos/100" },
     { id: 17, url: "https://picsum.photos/100" },
     { id: 18, url: "https://picsum.photos/100" }
