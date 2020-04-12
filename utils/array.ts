@@ -8,7 +8,7 @@ export const nextElement = <T>(arr: T[], current: T) => {
     return index === arr.length - 1 ? arr[0] : arr[index + 1];
 };
 
-export const range = (itemsNumber: number) => Array.from(Array(itemsNumber));
+export const range = (itemsNumber: number) => Array.from(Array(itemsNumber), (_, k) => k);
 
 export const zip = <T1, T2, T3>(left: T1[], right: T2[], map: (l: T1, r: T2) => T3): T3[] => {
     if (left.length !== right.length) throw new Error("Arrays length are not equal");
