@@ -1,6 +1,9 @@
 // import React from "react";
 import express from "express";
 import compression from "compression";
+import multer from "multer";
+
+const upload = multer();
 
 //import { renderToString } from "react-dom/server";
 // import { matchPath, StaticRouter } from "react-router";
@@ -22,6 +25,7 @@ import * as privateGalleryPanel from "../api/panel/private-gallery";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
 import { allowCrossDomain } from "./src/core";
+import sharp from "sharp";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
@@ -137,11 +141,19 @@ app.post(blogPanel.deleteBlog.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(blogPanel.uploadBlogAsset.route, async (req, res) => {
-    // let result: blogPanel.DeleteBlogResult | undefined = undefined;
+app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Express.Request, res) => {
+    let result: blogPanel.UploadBlogAssetResult | undefined = undefined;
 
-    // var { id }: { id: number } = req.body;
+    //var { blogId }: { blogId: number } = req.body;
 
+    sharp(req.file.buffer)
+        .resize({ width: 900 })
+        .toFile(`./images/${req.file.originalname}`, (_err, _info) => {
+            console.log(_err, _info);
+        });
+
+    // console.log(result, blogId, req.body);
+    console.log(req.file);
     // try {
     //     await blogModel.deleteBlog(id);
     //     result = { type: ResultType.Success };

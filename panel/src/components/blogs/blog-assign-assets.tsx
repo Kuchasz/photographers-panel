@@ -108,7 +108,7 @@ const AssetsList = ({
 }) => (
     <div className="assets-list">
         {items.map((item) =>
-            item.id ? (
+            item.id !== undefined ? (
                 <BlogAssetThumb {...item} key={item.id} />
             ) : (
                 <BlogAssetUploadThumb
@@ -124,7 +124,7 @@ const AssetsList = ({
 );
 
 const items = [
-    { id: 0, url: "https://picsum.photos/122/200" },
+    { id: 3, url: "https://picsum.photos/122/200" },
     { id: 7, url: "https://picsum.photos/100" },
     { id: 6, url: "https://picsum.photos/100/350" },
     { id: 5, url: "https://picsum.photos/100/150" },
