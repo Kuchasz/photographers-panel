@@ -1,9 +1,10 @@
-export const readUrl = (file: File): Promise<string> => {
-    return new Promise<string>((res, rej) => {
+type ReadResult = { url: string; file: File };
+export const read = (file: File): Promise<ReadResult> => {
+    return new Promise<ReadResult>((res, rej) => {
         const reader = new FileReader();
 
         reader.onload = (ev) => {
-            res(reader.result as string);
+            res({ url: reader.result as string, file });
         };
 
         reader.onerror = (ev) => {

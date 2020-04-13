@@ -27,6 +27,8 @@ export const includesAny = <T>(left: T[], right: T[]): boolean =>
 
 export const includesAll = <T>(left: T[], right: T[]): boolean => right.every(l => left.includes(l));
 
+export const union = <T>(left: T[], right: T[]): T[] => [...new Set<T>([...left, ...right])];
+
 export const distinctBy = <T, U>(items: T[], by: (item: T) => U) => {
     const uniqKeys = new Set<U>();
     const result = [] as T[];

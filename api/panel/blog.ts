@@ -27,7 +27,7 @@ export interface BlogEditDto {
     content: string;
 }
 
-export interface BlogAssetsListItemDto{
+export interface BlogAssetsListItemDto {
     id: number;
     url: string;
 }
@@ -44,11 +44,14 @@ export type BlogEditResult = Result<BlogEditError>;
 export type DeleteBlogError = "ErrorOccuredWhileDeletingBlog";
 export type DeleteBlogResult = Result<DeleteBlogError>;
 
+export type UploadBlogAssetError = "ErrorOccuredWhileUploadingBlogAsset";
+export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number }>;
+
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
     new Promise<BlogSelectItem[]>((resolve, _) => {
         fetch("http://192.168.56.102:8080" + getBlogSelectListRoute)
-            .then(result => result.json())
+            .then((result) => result.json())
             .then(resolve);
     });
 getBlogSelectList.route = getBlogSelectListRoute;
@@ -57,7 +60,7 @@ const getBlogsListRoute = "/api/panel/blogs-list";
 export const getBlogsList = () =>
     new Promise<BlogListItem[]>((resolve, _) => {
         fetch("http://192.168.56.102:8080" + getBlogsListRoute)
-            .then(result => result.json())
+            .then((result) => result.json())
             .then(resolve);
     });
 getBlogsList.route = getBlogsListRoute;
@@ -73,14 +76,14 @@ export const createBlog = (blog: BlogEditDto) =>
             },
             body: JSON.stringify(blog)
         })
-            .then(result => result.json())
+            .then((result) => result.json())
             .then(resolve);
     });
 createBlog.route = createBlogRoute;
 
 const checkAliasIsUniqueRoute = "/api/panel/blog-alias-unique/:alias";
 export const checkAliasIsUnique = (alias: string): Promise<boolean> =>
-    fetch("http://192.168.56.102:8080" + checkAliasIsUniqueRoute.replace(":alias", alias)).then(resp => resp.json());
+    fetch("http://192.168.56.102:8080" + checkAliasIsUniqueRoute.replace(":alias", alias)).then((resp) => resp.json());
 checkAliasIsUnique.route = checkAliasIsUniqueRoute;
 
 const changeBlogVisibilityRoute = "/api/panel/blog-change-visibility";
@@ -94,7 +97,7 @@ export const changeBlogVisibility = (blogVisibility: BlogVisibilityDto) =>
             },
             body: JSON.stringify(blogVisibility)
         })
-            .then(result => result.json())
+            .then((result) => result.json())
             .then(resolve);
     });
 changeBlogVisibility.route = changeBlogVisibilityRoute;
@@ -102,7 +105,7 @@ changeBlogVisibility.route = changeBlogVisibilityRoute;
 const getBlogForEditRoute = "/api/panel/blog-for-edit/:blogId";
 export const getBlogForEdit = (id: number) =>
     fetch("http://192.168.56.102:8080" + getBlogForEditRoute.replace(":blogId", id.toString())).then(
-        resp => resp.json() as Promise<BlogEditDto>
+        (resp) => resp.json() as Promise<BlogEditDto>
     );
 getBlogForEdit.route = getBlogForEditRoute;
 
@@ -117,7 +120,7 @@ export const editBlog = (id: number, blog: BlogEditDto) =>
             },
             body: JSON.stringify({ id, blog })
         })
-            .then(result => result.json())
+            .then((result) => result.json())
             .then(resolve);
     });
 editBlog.route = editBlogRoute;
@@ -133,7 +136,49 @@ export const deleteBlog = (id: number) =>
             },
             body: JSON.stringify({ id })
         })
-            .then(result => result.json())
+            .then((result) => result.json())
             .then(resolve);
     });
 deleteBlog.route = deleteBlogRoute;
+
+const uploadBlogAssetRoute = "/api/panel/upload-blog-asset";
+export const uploadBlogAsset = (
+    id: number,
+    asset: File,
+    onProgress: (progress: number) => void,
+    onUploadEnd: () => void,
+    onEnd: (result: UploadBlogAssetResult) => void
+) => {
+    const request = new XMLHttpRequest();
+
+    // request.upload.onprogress = (event: ProgressEvent) => onProgress((event.loaded / event.total) * 100);
+    // request.upload.onloadend = () => onUploadEnd();
+    // request.onloadend = () => onEnd(request.response);
+
+    // request.upload.onloadstart = () => onProgress(0);
+    request.upload.onloadend = () => {
+        onProgress(100);
+        onUploadEnd();
+    };
+    // request.onload = () => console.log(":onload");
+    request.upload.onprogress = (event: ProgressEvent) => {
+        let percent = 0;
+        if (event.lengthComputable) {
+            percent = (event.loaded / event.total) * 100;
+        }
+        onProgress(percent);
+    };
+    request.upload.onloadstart = () => onProgress(0);
+    request.onloadend = () => onEnd(request.response);
+    request.onload = () => console.log(":onload");
+    request.onprogress = () => console.log(":onprogress");
+
+    const payload = new FormData();
+    payload.append("asset", asset);
+    payload.append("blogId", id.toString());
+
+    request.open("POST", "http://192.168.56.102:8080" + uploadBlogAssetRoute, true);
+
+    request.send(payload);
+};
+uploadBlogAsset.route = uploadBlogAssetRoute;

@@ -3,7 +3,7 @@ export enum ResultType {
     Error
 }
 
-type Success = { type: ResultType.Success };
+type Success<U> = { type: ResultType.Success, result?: U };
 type Error<T> = { type: ResultType.Error; error: T };
 
-export type Result<T> = Success | Error<T>;
+export type Result<T, U = null> = Success<U> | Error<T>;

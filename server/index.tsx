@@ -137,6 +137,22 @@ app.post(blogPanel.deleteBlog.route, async (req, res) => {
     res.json(result);
 });
 
+app.post(blogPanel.uploadBlogAsset.route, async (req, res) => {
+    // let result: blogPanel.DeleteBlogResult | undefined = undefined;
+
+    // var { id }: { id: number } = req.body;
+
+    // try {
+    //     await blogModel.deleteBlog(id);
+    //     result = { type: ResultType.Success };
+    // } catch (err) {
+    //     result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlog" };
+    // }
+    setTimeout(() => {
+        res.json("result");
+    }, 3000);
+});
+
 app.post(message.send.route, async (req, res) => {
     const mesg = req.body as message.Message;
 
@@ -248,7 +264,7 @@ app.post(notification.subscribeForNotification.route, async (req, res) => {
     res.json(result);
 });
 
-app.get("/robots.txt", function(req, res) {
+app.get("/robots.txt", function (req, res) {
     res.type("text/plain");
     res.send("User-agent: *\nAllow: /");
 });
@@ -260,7 +276,7 @@ app.get("*", async (req, res) => {
     let initialState: any;
 
     try {
-        const found = Object.values(routes).filter(p => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
+        const found = Object.values(routes).filter((p) => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
         const match = Root.matchPath(req.path, { path: found.route });
 
         desiredRoute = { route: found.route };
