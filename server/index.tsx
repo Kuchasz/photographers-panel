@@ -24,7 +24,7 @@ import * as privateGallery from "../api/site/private-gallery";
 import * as privateGalleryPanel from "../api/panel/private-gallery";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
-import { allowCrossDomain } from "./src/core";
+import { allowCrossDomain, processImage } from "./src/core";
 import sharp from "sharp";
 require("isomorphic-fetch");
 const Youch = require("youch");
@@ -146,14 +146,13 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
 
     //var { blogId }: { blogId: number } = req.body;
 
-    sharp(req.file.buffer)
-        .resize({ width: 900 })
+    processImage(req.file.buffer)
         .toFile(`./images/${req.file.originalname}`, (_err, _info) => {
             console.log(_err, _info);
         });
 
     // console.log(result, blogId, req.body);
-    console.log(req.file);
+    // console.log(req.file);
     // try {
     //     await blogModel.deleteBlog(id);
     //     result = { type: ResultType.Success };
