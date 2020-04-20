@@ -33,7 +33,7 @@ const BlogAssetUploadThumb = ({
 }: {
     item: BlogAssetsListItem;
     blogId: number;
-    onUpload(id: number): void;
+    onUpload(id: number, url: string, oldURL: string): void;
 }) => {
     const [processing, setProcessing] = React.useState<boolean>(false);
     const [uploadProgress, setUploadProgress] = React.useState<number>(0);
@@ -46,14 +46,15 @@ const BlogAssetUploadThumb = ({
             () => setProcessing(true),
             (res) => {
                 setProcessing(false);
-                res.type === ResultType.Success && onUpload(res.result!.id);
+                console.log(res);
+                res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
             }
         );
     }, []);
 
     return (
         <AssetsListItem className="thumb">
-            <img src={item.url}></img>
+            {/* <img src={item.url}></img> */}
             {processing && <Loader inverse backdrop center />}
             {inRange(0, 100, uploadProgress) && (
                 <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={uploadProgress} />
@@ -104,7 +105,7 @@ const AssetsList = ({
     blogId: number;
     items: BlogAssetsListItem[];
     onAssetsChosen: (assets: { url: string; file: File }[]) => void;
-    onUploaded: (id: number, url: string) => void;
+    onUploaded: (id: number, url: string, oldURL: string) => void;
 }) => (
     <div className="assets-list">
         {items.map((item) =>
@@ -115,7 +116,7 @@ const AssetsList = ({
                     blogId={blogId}
                     item={item}
                     key={item.url}
-                    onUpload={(id) => onUploaded(id, item.url!)}
+                    onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
                 />
             )
         )}
@@ -165,10 +166,12 @@ export class BlogAssignAssets extends React.Component<Props, State> {
         });
     };
 
-    handleAssetsUploaded = (id: number, url: string) => {
+    handleAssetsUploaded = (id: number, url: string, oldURL: string) => {
+        console.log(id, url);
         this.setState((state) => {
-            const cindex = state.assets.map((x) => x.url).indexOf(url);
+            const cindex = state.assets.map((x) => x.url).indexOf(oldURL);
             const assets = [...state.assets.slice(0, cindex), { id, url }, ...state.assets.slice(cindex + 1)];
+            console.log(assets);
             return { assets };
         });
     };

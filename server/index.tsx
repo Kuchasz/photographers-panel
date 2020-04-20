@@ -44,7 +44,9 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
+
 app.use(express.static("../site/dist", { index: false }));
+app.use("/images", express.static("images", { index: false }));
 
 app.get(blog.getLastBlog.route, async (_req, res) => {
     const blog = await blogModel.getMostRecent();
@@ -146,10 +148,16 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
 
     //var { blogId }: { blogId: number } = req.body;
 
-    processImage(req.file.buffer)
-        .toFile(`./images/${req.file.originalname}`, (_err, _info) => {
-            console.log(_err, _info);
-        });
+    const finalName = 100000000 + Math.floor(Math.random()*999999990);
+
+    processImage(req.file.buffer).toFile(`./images/${finalName}.jpg`, (_err, _info) => {
+        console.log(_err, _info);
+    });
+
+    result = {
+        type: ResultType.Success,
+        result: { id: Math.floor(Math.random() * 10000), url: `http://192.168.56.102:8080/images/${finalName}.jpg` }
+    };
 
     // console.log(result, blogId, req.body);
     // console.log(req.file);
@@ -159,8 +167,9 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
     // } catch (err) {
     //     result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlog" };
     // }
+
     setTimeout(() => {
-        res.json("result");
+        res.json(result);
     }, 3000);
 });
 

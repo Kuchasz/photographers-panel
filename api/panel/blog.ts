@@ -45,7 +45,7 @@ export type DeleteBlogError = "ErrorOccuredWhileDeletingBlog";
 export type DeleteBlogResult = Result<DeleteBlogError>;
 
 export type UploadBlogAssetError = "ErrorOccuredWhileUploadingBlogAsset";
-export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number }>;
+export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number, url: string }>;
 
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
@@ -168,6 +168,7 @@ export const uploadBlogAsset = (
         }
         onProgress(percent);
     };
+    request.responseType = 'json';
     request.upload.onloadstart = () => onProgress(0);
     request.onloadend = () => onEnd(request.response);
     request.onload = () => console.log(":onload");
