@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BlogListItem, changeBlogVisibility } from "../../../../api/panel/blog";
-import { Table, Whisper, Icon, IconButton, ButtonToolbar, Tooltip, Divider } from "rsuite";
+import { Table, Icon, IconButton, ButtonToolbar, Divider } from "rsuite";
+import { ToolTip } from "../common/tooltip";
 
 interface Props {
     onSelect: (id: number) => void;
@@ -23,29 +24,28 @@ const BlogIcon = ({ id, initialVisibility }: BlogIconProps) => {
 
     const onChangeBlogVisibility = () => {
         setIsLoading(true);
-        changeBlogVisibility({ id, shouldBeVisible: !visible }).then(result => {
+        changeBlogVisibility({ id, shouldBeVisible: !visible }).then((result) => {
             setVisible(!visible);
             setIsLoading(false);
         });
     };
 
     return (
-        <Whisper
-            onClick={onChangeBlogVisibility}
-            trigger="hover"
-            speaker={
-                <Tooltip>
+        <ToolTip
+            text={
+                <>
                     Blog is <i>{visible ? "visible" : "hidden"}</i>
-                </Tooltip>
+                </>
             }
         >
             <IconButton
+                onClick={onChangeBlogVisibility}
                 style={{ color: visible ? "#4CAF50" : "#F44336" }}
                 loading={isLoading}
                 appearance="subtle"
                 icon={<Icon icon={visible ? "eye" : "eye-slash"} />}
             />
-        </Whisper>
+        </ToolTip>
     );
 };
 
@@ -102,23 +102,29 @@ export class BlogsList extends React.Component<Props, State> {
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
-                                <IconButton
-                                    appearance="subtle"
-                                    icon={<Icon icon="edit2" />}
-                                    onClick={() => this.props.onEdit(blog.id)}
-                                />
+                                <ToolTip placement="left" text={"Edit blog"}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="edit2" />}
+                                        onClick={() => this.props.onEdit(blog.id)}
+                                    />
+                                </ToolTip>
                                 <Divider vertical />
-                                <IconButton
-                                    appearance="subtle"
-                                    icon={<Icon icon="trash2" />}
-                                    onClick={() => this.props.onDelete(blog.id)}
-                                />
+                                <ToolTip placement="left" text={"Delete blog"}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="trash2" />}
+                                        onClick={() => this.props.onDelete(blog.id)}
+                                    />
+                                </ToolTip>
                                 <Divider vertical />
-                                <IconButton
-                                    appearance="subtle"
-                                    icon={<Icon icon="th-large" />}
-                                    onClick={() => this.props.onAssignAssets(blog.id)}
-                                />
+                                <ToolTip placement="left" text={"Assign assets"}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="th-large" />}
+                                        onClick={() => this.props.onAssignAssets(blog.id)}
+                                    />
+                                </ToolTip>
                             </ButtonToolbar>
                         )}
                     </Table.Cell>

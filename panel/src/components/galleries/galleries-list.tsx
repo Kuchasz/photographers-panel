@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Tooltip, Table, Icon, Whisper, Progress, Button, ButtonToolbar } from "rsuite";
+import { Table, Icon, Progress, ButtonToolbar, IconButton, Divider } from "rsuite";
 import { range } from "../../../../utils/array";
 import { GalleryDto } from "../../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
+import { ToolTip } from "../common/tooltip";
 
 interface Props {
     onSelect: (item: any) => void;
@@ -30,38 +31,38 @@ const getColorFromBlogEntry = (blogId: string) => (blogId ? "#4caf50" : "#f44336
 
 const stateTooltips = {
     [PrivateGalleryState.Available]: (
-        <Tooltip>
+        <>
             Gallery is <i>available</i>.
-        </Tooltip>
+        </>
     ),
     [PrivateGalleryState.TurnedOff]: (
-        <Tooltip>
+        <>
             Gallery is <i>turned off</i>.
-        </Tooltip>
+        </>
     ),
     [PrivateGalleryState.NotReady]: (
-        <Tooltip>
+        <>
             Gallery is <i>not ready yet</i>.
-        </Tooltip>
+        </>
     )
 };
 
 const blogTooltips = {
     Available: (
-        <Tooltip>
+        <>
             Blog is <i>available</i>.
-        </Tooltip>
+        </>
     ),
     None: (
-        <Tooltip>
+        <>
             There is <i>no blog</i>.
-        </Tooltip>
+        </>
     )
 };
 
 const passHash = (password: string) =>
     range(password.length - 1)
-        .map(x => "*")
+        .map((x) => "*")
         .reduce((agg, cur) => agg + cur, "");
 
 const obfuscatePassword = (password: string) => password.slice(0, 1) + passHash(password);
@@ -117,9 +118,9 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.HeaderCell>State</Table.HeaderCell>
                     <Table.Cell dataKey="state">
                         {(gallery: GalleryDto) => (
-                            <Whisper trigger="hover" speaker={stateTooltips[gallery.state]}>
+                            <ToolTip text={stateTooltips[gallery.state]}>
                                 <Icon icon="info" style={{ color: getColorFromGalleryState(gallery.state) }} />
-                            </Whisper>
+                            </ToolTip>
                         )}
                     </Table.Cell>
                 </Table.Column>
@@ -128,12 +129,9 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.HeaderCell>Blog</Table.HeaderCell>
                     <Table.Cell dataKey="blog">
                         {(gallery: GalleryDto) => (
-                            <Whisper
-                                trigger="hover"
-                                speaker={gallery.blogId ? blogTooltips.Available : blogTooltips.None}
-                            >
+                            <ToolTip text={gallery.blogId ? blogTooltips.Available : blogTooltips.None}>
                                 <Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blogId) }} />
-                            </Whisper>
+                            </ToolTip>
                         )}
                     </Table.Cell>
                 </Table.Column>
@@ -169,18 +167,27 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.HeaderCell>Total Visits</Table.HeaderCell>
                     <Table.Cell dataKey="visits" />
                 </Table.Column>
-                <Table.Column width={150} fixed="right">
-                    <Table.HeaderCell />
 
-                    <Table.Cell>
+                <Table.Column width={130} align="center" fixed="right">
+                    <Table.HeaderCell>Actions</Table.HeaderCell>
+                    <Table.Cell className="link-group">
                         {(gallery: GalleryDto) => (
                             <ButtonToolbar>
-                                <Button size="xs" onClick={() => this.props.onEdit(gallery.id)}>
-                                    <Icon icon="edit2" /> Edit
-                                </Button>
-                                <Button size="xs" onClick={() => this.props.onDelete(gallery.id)}>
-                                    <Icon icon="trash2" /> Delete
-                                </Button>
+                                <ToolTip placement="left" text={"Edit gallery"}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="edit2" />}
+                                        onClick={() => this.props.onEdit(gallery.id)}
+                                    />
+                                </ToolTip>
+                                <Divider vertical />
+                                <ToolTip placement="left" text={"Delete gallery"}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="trash2" />}
+                                        onClick={() => this.props.onDelete(gallery.id)}
+                                    />
+                                </ToolTip>
                             </ButtonToolbar>
                         )}
                     </Table.Cell>
