@@ -25,6 +25,8 @@ export interface BlogEditDto {
     alias: string;
     date: string;
     content: string;
+    tags: string;
+    hasAssignments: boolean;
 }
 
 export interface BlogAssetsListItemDto {

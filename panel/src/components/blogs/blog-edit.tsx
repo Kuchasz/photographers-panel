@@ -3,7 +3,7 @@ import { Drawer, Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, 
 import { BlogEditDto, editBlog, getBlogForEdit } from "../../../../api/panel/blog";
 import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
-import { blogModel } from "./blog-model";
+import { blogModel, emptyBlog } from "./blog-model";
 
 interface Props {
     id: number;
@@ -11,13 +11,6 @@ interface Props {
     closeEditForm: () => void;
     onSaved: () => void;
 }
-
-export const emptyBlog = (): BlogEditDto => ({
-    title: "",
-    alias: "",
-    date: "",
-    content: ""
-});
 
 export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) => {
     const [formState, setFormState] = React.useState<BlogEditDto>(emptyBlog());
@@ -77,6 +70,11 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
                         <ControlLabel>Content</ControlLabel>
                         <FormControl name="content" componentClass="textarea" />
                         <HelpBlock tooltip>Content of blog</HelpBlock>
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>Tags</ControlLabel>
+                        <FormControl name="tags" disabled={formState.hasAssignments} />
+                        <HelpBlock tooltip>Tags of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>

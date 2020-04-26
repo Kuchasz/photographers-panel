@@ -132,9 +132,10 @@ export const createBlog = (blog: panel.BlogEditDto) =>
                     title, 
                     alias, 
                     content, 
+                    tags,
                     isHidden) 
-                VALUES (?, ?, ?, ?, ?)`,
-                [blog.date, blog.title, blog.alias, blog.content, true],
+                VALUES (?, ?, ?, ?, ?, ?)`,
+                [blog.date, blog.title, blog.alias, blog.content, blog.tags, true],
                 (err, _, _fields) => {
                     if (err) connection.rollback();
 
@@ -192,8 +193,9 @@ export const editBlog = (id: number, blog: panel.BlogEditDto) =>
                     title = ?, 
                     alias = ?, 
                     content = ?
+                    tags = ?
                 WHERE id = ?`,
-                [blog.date, blog.title, blog.alias, blog.content, id],
+                [blog.date, blog.title, blog.alias, blog.content, blog.tags, id],
                 (err, _, _fields) => {
                     if (err) connection.rollback();
 
@@ -207,16 +209,18 @@ export const getForEdit = (blogId: number): Promise<panel.BlogEditDto> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-            SELECT be.title, be.alias,  be.date, be.content
-            FROM blogentry be
+            SELECT be.title, be.alias, be.date, be.content, be.tags, (SELECT COUNT(id) FROM blogentryphoto WHERE BlogEntryId = ?) as AssignmentsCount
+            FROM blogentry be 
             WHERE be.id = ?`,
-            [blogId],
+            [blogId, blogId],
             (_err, [blog], _fields) => {
                 resolve({
                     title: blog.title,
                     alias: blog.alias,
                     date: getDateString(blog.date),
-                    content: blog.content
+                    content: blog.content,
+                    tags: blog.tags,
+                    hasAssignments: blog.AssignmentsCount > 0
                 });
             }
         );

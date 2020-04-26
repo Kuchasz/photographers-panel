@@ -46,7 +46,6 @@ const BlogAssetUploadThumb = ({
             () => setProcessing(true),
             (res) => {
                 setProcessing(false);
-                console.log(res);
                 res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
             }
         );
@@ -167,11 +166,9 @@ export class BlogAssignAssets extends React.Component<Props, State> {
     };
 
     handleAssetsUploaded = (id: number, url: string, oldURL: string) => {
-        console.log(id, url);
         this.setState((state) => {
             const cindex = state.assets.map((x) => x.url).indexOf(oldURL);
             const assets = [...state.assets.slice(0, cindex), { id, url }, ...state.assets.slice(cindex + 1)];
-            console.log(assets);
             return { assets };
         });
     };

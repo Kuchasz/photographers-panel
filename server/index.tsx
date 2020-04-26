@@ -45,7 +45,7 @@ const raiseErr = (err: Error, req: any, res: any) => {
 };
 
 app.use(express.static("../site/dist", { index: false }));
-app.use("/images", express.static("images", { index: false }));
+app.use("/public", express.static("public", { index: false }));
 
 app.get(blog.getLastBlog.route, async (_req, res) => {
     const blog = await blogModel.getMostRecent();
@@ -148,17 +148,25 @@ app.post(blogPanel.deleteBlog.route, async (req, res) => {
 app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Express.Request, res) => {
     let result: blogPanel.UploadBlogAssetResult | undefined = undefined;
 
-    //var { blogId }: { blogId: number } = req.body;
+    const blogId: number = (req as any).body.blogId;
 
     const finalName = 100000000 + Math.floor(Math.random() * 999999990);
 
-    processImage(req.file.buffer).toFile(`./images/${finalName}.jpg`, (_err, _info) => {
+    const dirPath = `public/blogs/${blogId}`;
+
+    if (!fs.existsSync(dirPath)){
+        fs.mkdirSync(dirPath);
+    }
+
+    const finalPath = `${dirPath}/${finalName}.jpg`
+
+    processImage(req.file.buffer).toFile(finalPath, (_err, _info) => {
         console.log(_err, _info);
     });
 
     result = {
         type: ResultType.Success,
-        result: { id: Math.floor(Math.random() * 10000), url: `http://192.168.56.102:8080/images/${finalName}.jpg` }
+        result: { id: Math.floor(Math.random() * 10000), url: `http://192.168.56.102:8080/${finalPath}` }
     };
 
     // console.log(result, blogId, req.body);
@@ -214,7 +222,10 @@ app.get(privateGalleryPanel.getGalleryVisits.route, async (req, res) => {
 });
 
 app.get(privateGalleryPanel.checkPasswordIsUnique.route, async (req, res) => {
-    const passwordUnique = await privateGalleryModel.checkPasswordIsUnique(req.params.password, req.params.galleryId ? Number(req.params.galleryId) : undefined);
+    const passwordUnique = await privateGalleryModel.checkPasswordIsUnique(
+        req.params.password,
+        req.params.galleryId ? Number(req.params.galleryId) : undefined
+    );
     res.json(passwordUnique);
 });
 

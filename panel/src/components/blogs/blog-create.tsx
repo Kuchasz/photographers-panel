@@ -14,20 +14,13 @@ import {
 import { BlogEditDto, createBlog } from "../../../../api/panel/blog";
 import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
-import { blogModel } from "./blog-model";
+import { blogModel, emptyBlog } from "./blog-model";
 
 interface Props {
     showCreateForm: boolean;
     closeCreateForm: () => void;
     onAdded: () => void;
 }
-
-export const emptyBlog = (): BlogEditDto => ({
-    title: "",
-    alias: "",
-    date: "",
-    content: ""
-});
 
 export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) => {
     const [formState, setFormState] = React.useState<BlogEditDto>(emptyBlog());
@@ -84,6 +77,11 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                         <ControlLabel>Content</ControlLabel>
                         <FormControl name="content" componentClass="textarea" />
                         <HelpBlock tooltip>Content of blog</HelpBlock>
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>Tags</ControlLabel>
+                        <FormControl name="tags" />
+                        <HelpBlock tooltip>Tags of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
