@@ -169,7 +169,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
     };
 };
 
-export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
+export const checkPasswordIsUnique = (password: string, galleryId?: number): Promise<boolean> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
@@ -178,7 +178,12 @@ export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
             WHERE p.pass = ?`,
             [password],
             (_err, galleries, _fields) => {
-                resolve(galleries.length === 0);
+                const [gallery] = galleries;
+                if (!gallery) {
+                    resolve(true);
+                } else {
+                    resolve(gallery.id === galleryId);
+                }
             }
         );
     });

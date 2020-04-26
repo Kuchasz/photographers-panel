@@ -44,7 +44,6 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-
 app.use(express.static("../site/dist", { index: false }));
 app.use("/images", express.static("images", { index: false }));
 
@@ -88,7 +87,10 @@ app.post(blogPanel.createBlog.route, async (req, res) => {
 });
 
 app.get(blogPanel.checkAliasIsUnique.route, async (req, res) => {
-    const aliasUnique = await blogModel.checkAliasIsUnique(req.params.alias);
+    const aliasUnique = await blogModel.checkAliasIsUnique(
+        req.params.alias,
+        req.params.blogId ? Number(req.params.blogId) : undefined
+    );
     res.json(aliasUnique);
 });
 
@@ -148,7 +150,7 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
 
     //var { blogId }: { blogId: number } = req.body;
 
-    const finalName = 100000000 + Math.floor(Math.random()*999999990);
+    const finalName = 100000000 + Math.floor(Math.random() * 999999990);
 
     processImage(req.file.buffer).toFile(`./images/${finalName}.jpg`, (_err, _info) => {
         console.log(_err, _info);
@@ -212,7 +214,7 @@ app.get(privateGalleryPanel.getGalleryVisits.route, async (req, res) => {
 });
 
 app.get(privateGalleryPanel.checkPasswordIsUnique.route, async (req, res) => {
-    const passwordUnique = await privateGalleryModel.checkPasswordIsUnique(req.params.password);
+    const passwordUnique = await privateGalleryModel.checkPasswordIsUnique(req.params.password, req.params.galleryId ? Number(req.params.galleryId) : undefined);
     res.json(passwordUnique);
 });
 

@@ -28,21 +28,21 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
         getBlogForEdit(id).then(setFormState);
     }, [id]);
 
-    const submitEditBlog = () => {
+    const submitEditBlog = async () => {
         if (formRef.current) {
-            if (formRef.current.check()) {
-                setIsLoading(true);
-                editBlog(id, formState).then(result => {
-                    if (result.type === ResultType.Success) {
-                        Alert.success("Blog successfully edited.");
-                        closeEditForm();
-                        onSaved();
-                    } else {
-                        Alert.error("An error occured while editing blog.");
-                    }
-                    setIsLoading(false);
-                });
-            }
+            const result = await formRef.current.checkAsync();
+            if (result.hasError) return;
+            setIsLoading(true);
+            editBlog(id, formState).then((result) => {
+                if (result.type === ResultType.Success) {
+                    Alert.success("Blog successfully edited.");
+                    closeEditForm();
+                    onSaved();
+                } else {
+                    Alert.error("An error occured while editing blog.");
+                }
+                setIsLoading(false);
+            });
         }
     };
 
@@ -54,9 +54,9 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
             <Drawer.Body>
                 <Form
                     ref={formRef}
-                    model={blogModel}
+                    model={blogModel(id)}
                     formValue={formState}
-                    onChange={x => setFormState(x as BlogEditDto)}
+                    onChange={(x) => setFormState(x as BlogEditDto)}
                 >
                     <FormGroup>
                         <ControlLabel>Title</ControlLabel>
@@ -65,7 +65,7 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Alias</ControlLabel>
-                        <FormControl name="alias" />
+                        <FormControl name="alias" checkAsync />
                         <HelpBlock tooltip>Alias of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>

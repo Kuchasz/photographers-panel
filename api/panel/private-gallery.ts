@@ -72,9 +72,9 @@ export const getGalleryVisits = (
     ).then(resp => resp.json());
 getGalleryVisits.route = getGalleryVisitsRoute;
 
-const checkPasswordIsUniqueRoute = "/api/panel/gallery-password-unique/:password";
-export const checkPasswordIsUnique = (password: string): Promise<boolean> =>
-    fetch("http://192.168.56.102:8080" + checkPasswordIsUniqueRoute.replace(":password", password)).then(resp =>
+const checkPasswordIsUniqueRoute = "/api/panel/gallery-password-unique/:password/:galleryId?";
+export const checkPasswordIsUnique = (galleryId?: number) => (password: string): Promise<boolean> =>
+    fetch("http://192.168.56.102:8080" + checkPasswordIsUniqueRoute.replace(":password", password).replace(":galleryId?", galleryId?.toString() ?? "")).then(resp =>
         resp.json()
     );
 checkPasswordIsUnique.route = checkPasswordIsUniqueRoute;

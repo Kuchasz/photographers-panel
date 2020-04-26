@@ -48,8 +48,9 @@ export const get = (alias: string): Promise<site.BlogEntry> =>
         SELECT be.title, be.date, be.content, bep.photourl, bep.alttext 
         FROM blogentry be 
         JOIN blogentryphoto bep ON be.id = bep.BlogEntryId 
-        WHERE be.alias LIKE '${alias}'
+        WHERE be.alias LIKE ?
         `,
+            [alias],
             (_err, blogEntryPhotos, _fields) => {
                 const [first] = blogEntryPhotos;
                 const blog = {
@@ -143,16 +144,21 @@ export const createBlog = (blog: panel.BlogEditDto) =>
         });
     });
 
-export const checkAliasIsUnique = (alias: string): Promise<boolean> =>
+export const checkAliasIsUnique = (alias: string, blogId?: number): Promise<boolean> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
             SELECT be.id 
             FROM blogentry be
             WHERE be.alias = ?`,
-            [alias],
+            [alias, blogId],
             (_err, blogs, _fields) => {
-                resolve(blogs.length === 0);
+                const [blog] = blogs;
+                if (!blog) {
+                    resolve(true);
+                } else {
+                    resolve(blog.id === blogId);
+                }
             }
         );
     });
@@ -216,12 +222,11 @@ export const getForEdit = (blogId: number): Promise<panel.BlogEditDto> =>
         );
     });
 
-    
 export const deleteBlog = (id: number) =>
-new Promise((resolve, reject) => {
-    connection.beginTransaction(() => {
-        connection.query(
-            `
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `
             DELETE FROM blogentry
             WHERE id = ?;
             
@@ -233,12 +238,12 @@ new Promise((resolve, reject) => {
 
             DELETE FROM blogvisit
             WHERE BlogEntryId = ?;`,
-            [id, id, id, id],
-            (err, _, _fields) => {
-                if (err) connection.rollback();
+                [id, id, id, id],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
 
-                err == null ? resolve() : reject(err);
-            }
-        );
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
     });
-});

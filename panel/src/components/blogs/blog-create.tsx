@@ -1,5 +1,16 @@
 import * as React from "react";
-import { Drawer, Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, ButtonToolbar, Alert, Icon } from "rsuite";
+import {
+    Drawer,
+    Button,
+    Form,
+    FormGroup,
+    ControlLabel,
+    FormControl,
+    HelpBlock,
+    ButtonToolbar,
+    Alert,
+    Icon
+} from "rsuite";
 import { BlogEditDto, createBlog } from "../../../../api/panel/blog";
 import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
@@ -23,22 +34,22 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const formRef = React.useRef<FormInstance>();
 
-    const submitCreateBlog = () => {
+    const submitCreateBlog = async () => {
         if (formRef.current) {
-            if (formRef.current.check()) {
-                setIsLoading(true);
-                createBlog(formState).then(result => {
-                    if (result.type === ResultType.Success) {
-                        Alert.success("Blog successfully added.");
-                        setFormState(emptyBlog());
-                        closeCreateForm();
-                        onAdded();
-                    } else {
-                        Alert.error("An error occured while adding blog.");
-                    }
-                    setIsLoading(false);
-                });
-            }
+            const result = await formRef.current.checkAsync();
+            if (result.hasError) return;
+            setIsLoading(true);
+            createBlog(formState).then((result) => {
+                if (result.type === ResultType.Success) {
+                    Alert.success("Blog successfully added.");
+                    setFormState(emptyBlog());
+                    closeCreateForm();
+                    onAdded();
+                } else {
+                    Alert.error("An error occured while adding blog.");
+                }
+                setIsLoading(false);
+            });
         }
     };
 
@@ -50,9 +61,9 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
             <Drawer.Body>
                 <Form
                     ref={formRef}
-                    model={blogModel}
+                    model={blogModel()}
                     formValue={formState}
-                    onChange={x => setFormState(x as BlogEditDto)}
+                    onChange={(x) => setFormState(x as BlogEditDto)}
                 >
                     <FormGroup>
                         <ControlLabel>Title</ControlLabel>
@@ -61,7 +72,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Alias</ControlLabel>
-                        <FormControl name="alias" />
+                        <FormControl name="alias" checkAsync />
                         <HelpBlock tooltip>Alias of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
@@ -77,7 +88,8 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                     <FormGroup>
                         <ButtonToolbar>
                             <Button onClick={submitCreateBlog} appearance="primary" loading={isLoading}>
-                                <Icon icon="edit2" />Create
+                                <Icon icon="edit2" />
+                                Create
                             </Button>
                             <Button
                                 onClick={() => {

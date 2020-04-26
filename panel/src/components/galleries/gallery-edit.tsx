@@ -57,21 +57,21 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
         getGalleryForEdit(id).then(setFormState);
     }, [id]);
 
-    const submitEditGallery = () => {
+    const submitEditGallery = async () => {
         if (formRef.current) {
-            if (formRef.current.check()) {
-                setIsLoading(true);
-                editGallery(id, formState).then(result => {
-                    if (result.type === ResultType.Success) {
-                        Alert.success("Gallery successfully edited.");
-                        closeEditForm();
-                        onSaved();
-                    } else {
-                        Alert.error("An error occured while editing gallery.");
-                    }
-                    setIsLoading(false);
-                });
-            }
+            const result = await formRef.current.checkAsync();
+            if (result.hasError) return;
+            setIsLoading(true);
+            editGallery(id, formState).then((result) => {
+                if (result.type === ResultType.Success) {
+                    Alert.success("Gallery successfully edited.");
+                    closeEditForm();
+                    onSaved();
+                } else {
+                    Alert.error("An error occured while editing gallery.");
+                }
+                setIsLoading(false);
+            });
         }
     };
 
@@ -83,9 +83,9 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
             <Drawer.Body>
                 <Form
                     ref={formRef}
-                    model={galleryModel}
+                    model={galleryModel(id)}
                     formValue={formState}
-                    onChange={x => setFormState(x as GalleryEditDto)}
+                    onChange={(x) => setFormState(x as GalleryEditDto)}
                 >
                     <FormGroup>
                         <ControlLabel>Place</ControlLabel>

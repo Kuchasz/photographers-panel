@@ -52,22 +52,22 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
         getBlogSelectList().then(setBlogs);
     }, []);
 
-    const submitCreateGallery = () => {
+    const submitCreateGallery = async () => {
         if (formRef.current) {
-            if (formRef.current.check()) {
-                setIsLoading(true);
-                createGallery(formState).then(result => {
-                    if (result.type === ResultType.Success) {
-                        Alert.success("Gallery successfully added.");
-                        setFormState(emptyGallery());
-                        closeCreateForm();
-                        onAdded();
-                    } else {
-                        Alert.error("An error occured while adding gallery.");
-                    }
-                    setIsLoading(false);
-                });
-            }
+            const result = await formRef.current.checkAsync();
+            if (result.hasError) return;
+            setIsLoading(true);
+            createGallery(formState).then((result) => {
+                if (result.type === ResultType.Success) {
+                    Alert.success("Gallery successfully added.");
+                    setFormState(emptyGallery());
+                    closeCreateForm();
+                    onAdded();
+                } else {
+                    Alert.error("An error occured while adding gallery.");
+                }
+                setIsLoading(false);
+            });
         }
     };
 
@@ -79,9 +79,9 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
             <Drawer.Body>
                 <Form
                     ref={formRef}
-                    model={galleryModel}
+                    model={galleryModel()}
                     formValue={formState}
-                    onChange={x => setFormState(x as GalleryEditDto)}
+                    onChange={(x) => setFormState(x as GalleryEditDto)}
                 >
                     <FormGroup>
                         <ControlLabel>Place</ControlLabel>

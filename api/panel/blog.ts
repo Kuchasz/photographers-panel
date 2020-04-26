@@ -81,9 +81,9 @@ export const createBlog = (blog: BlogEditDto) =>
     });
 createBlog.route = createBlogRoute;
 
-const checkAliasIsUniqueRoute = "/api/panel/blog-alias-unique/:alias";
-export const checkAliasIsUnique = (alias: string): Promise<boolean> =>
-    fetch("http://192.168.56.102:8080" + checkAliasIsUniqueRoute.replace(":alias", alias)).then((resp) => resp.json());
+const checkAliasIsUniqueRoute = "/api/panel/blog-alias-unique/:alias/:blogId?";
+export const checkAliasIsUnique = (blogId?: number) => (alias: string): Promise<boolean> =>
+    fetch("http://192.168.56.102:8080" + checkAliasIsUniqueRoute.replace(":alias", alias).replace(":blogId?", blogId?.toString() ?? "")).then((resp) => resp.json());
 checkAliasIsUnique.route = checkAliasIsUniqueRoute;
 
 const changeBlogVisibilityRoute = "/api/panel/blog-change-visibility";

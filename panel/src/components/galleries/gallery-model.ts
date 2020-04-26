@@ -2,7 +2,7 @@ import { Schema } from "rsuite";
 import { checkPasswordIsUnique } from "../../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 
-export const galleryModel = Schema.Model({
+export const galleryModel = (galleryId?: number) => Schema.Model({
     place: Schema.Types.StringType()
         .isRequired("Place of the wedding must be set.")
         .minLength(5, "Place of the wedding must be at least 5 characters long."),
@@ -28,7 +28,7 @@ export const galleryModel = Schema.Model({
         .containsLowercaseLetter("Password should contain lowercase letter.")
         .containsNumber("Password must contain numbers.")
         .minLength(8, "Password must be at least 8 characters long.")
-        .addRule(checkPasswordIsUnique, "Password must be unique."),
+        .addRule(checkPasswordIsUnique(galleryId), "Password must be unique."),
     directPath: Schema.Types.StringType().isURL("Direct path must be an url."),
     blog: Schema.Types.NumberType()
 });
