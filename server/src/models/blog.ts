@@ -7,7 +7,7 @@ export const getMostRecent = (): Promise<site.LastBlog> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-      SELECT alias, content, title FROM blogentry 
+      SELECT alias, content, title FROM Blog 
       WHERE isHidden = 0 
       ORDER BY date DESC 
       LIMIT 1`,
@@ -21,19 +21,20 @@ export const getList = (): Promise<site.BlogListItem[]> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-      SELECT be.title, be.date, be.alias, bep.photourl, bep.alttext FROM blogentry be 
-      JOIN blogentryphoto bep ON bep.id = (
-          SELECT id from blogentryphoto
-          WHERE BlogEntryId = be.id
+      SELECT b.Id, b.title, b.date, b.alias, ba.Url, ba.Alt 
+      FROM Blog b 
+      JOIN BlogAsset ba ON ba.id = (
+          SELECT id from BlogAsset
+          WHERE Blog_id = b.id
           LIMIT 1)
-      WHERE be.isHidden = 0 
-      ORDER BY be.date DESC`,
+      WHERE b.isHidden = 0 
+      ORDER BY b.date DESC`,
             (_err, blogs, _fields) => {
                 const blogListItems = blogs.map((b: any) => ({
                     title: b.title,
                     date: getDateString(new Date(b.date)),
                     alias: b.alias,
-                    photoUrl: `http://pyszstudio.pl/media/images/blog/${getDateString(new Date(b.date))}/${b.photourl}`
+                    photoUrl: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(b.Id), b.Url)}`
                 }));
 
                 resolve(blogListItems);
@@ -41,27 +42,25 @@ export const getList = (): Promise<site.BlogListItem[]> =>
         );
     });
 
-export const get = (alias: string): Promise<site.BlogEntry> =>
+export const get = (alias: string): Promise<site.Blog> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-        SELECT be.title, be.date, be.content, bep.photourl, bep.alttext 
-        FROM blogentry be 
-        JOIN blogentryphoto bep ON be.id = bep.BlogEntryId 
-        WHERE be.alias LIKE ?
+        SELECT b.Id, b.title, b.date, b.content, ba.Url, ba.Alt 
+        FROM Blog b 
+        JOIN BlogAsset ba ON b.id = ba.Blog_id 
+        WHERE b.alias LIKE ?
         `,
             [alias],
-            (_err, blogEntryPhotos, _fields) => {
-                const [first] = blogEntryPhotos;
+            (_err, blogAssets, _fields) => {
+                const [first] = blogAssets;
                 const blog = {
                     title: first.title,
                     date: getDateString(new Date(first.date)),
                     content: first.content,
-                    photos: blogEntryPhotos.map((p: any) => ({
-                        photoUrl: `http://pyszstudio.pl/media/images/blog/${getDateString(new Date(first.date))}/${
-                            p.photourl
-                        }`,
-                        altText: p.alttext
+                    assets: blogAssets.map((p: any) => ({
+                        url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(p.Id), p.Url)}`,
+                        alt: p.Alt
                     }))
                 };
 
@@ -74,8 +73,8 @@ export const getSelectList = (): Promise<panel.BlogSelectItem[]> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-      SELECT be.title, be.date, be.id FROM blogentry be 
-      ORDER BY be.date DESC`,
+      SELECT b.title, b.date, b.id FROM Blog b 
+      ORDER BY b.date DESC`,
             (_err, blogs, _fields) => {
                 const blogSelectListItems = blogs.map((b: any) => ({
                     label: `${b.title} (${getDateString(b.date)})`,
@@ -91,18 +90,18 @@ export const getListForPanel = (): Promise<panel.BlogListItem[]> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-            SELECT be.id, be.date, be.title, SUBSTRING(be.content, 1, 50) as content, be.isHidden, COALESCE( bv.count, 0 ) AS visits, COALESCE( bc.count, 0 ) AS comments FROM blogentry be 
+            SELECT b.id, b.date, b.title, SUBSTRING(b.content, 1, 50) as content, b.isHidden, COALESCE( bv.count, 0 ) AS visits, COALESCE( bc.count, 0 ) AS comments FROM Blog b 
             LEFT JOIN 
-            (SELECT BlogEntryId, COUNT(*) AS count 
-             FROM blogvisit
-             GROUP BY BlogEntryId) bv
-            ON be.id = bv.BlogEntryId
+            (SELECT Blog_id, COUNT(*) AS count 
+             FROM BlogVisit
+             GROUP BY Blog_id) bv
+            ON b.id = bv.Blog_id
             LEFT JOIN 
-            (SELECT blogEntry_id, COUNT(*) AS count 
-             FROM blogcomment
-             GROUP BY blogEntry_id) bc
-            ON be.id = bc.blogEntry_id
-            ORDER BY be.date DESC`,
+            (SELECT Blog_id, COUNT(*) AS count 
+             FROM BlogComment
+             GROUP BY Blog_id) bc
+            ON b.id = bc.Blog_id
+            ORDER BY b.date DESC`,
             (_err, blogs, _fields) => {
                 const blogListItems = blogs.map(
                     (b: any) =>
@@ -127,7 +126,7 @@ export const createBlog = (blog: panel.BlogEditDto) =>
         connection.beginTransaction(() => {
             connection.query(
                 `
-                INSERT INTO blogentry(
+                INSERT INTO Blog(
                     date, 
                     title, 
                     alias, 
@@ -149,9 +148,9 @@ export const checkAliasIsUnique = (alias: string, blogId?: number): Promise<bool
     new Promise((resolve, reject) => {
         connection.query(
             `
-            SELECT be.id 
-            FROM blogentry be
-            WHERE be.alias = ?`,
+            SELECT b.id 
+            FROM Blog b
+            WHERE b.alias = ?`,
             [alias, blogId],
             (_err, blogs, _fields) => {
                 const [blog] = blogs;
@@ -169,7 +168,7 @@ export const changeVisibility = (blogVisibility: panel.BlogVisibilityDto) =>
         connection.beginTransaction(() => {
             connection.query(
                 `
-            UPDATE blogentry
+            UPDATE Blog
             SET isHidden = ?
             WHERE id = ?`,
                 [!blogVisibility.shouldBeVisible, blogVisibility.id],
@@ -187,12 +186,12 @@ export const editBlog = (id: number, blog: panel.BlogEditDto) =>
         connection.beginTransaction(() => {
             connection.query(
                 `
-                UPDATE blogentry
+                UPDATE Blog
                 SET
                     date = ?, 
                     title = ?, 
                     alias = ?, 
-                    content = ?
+                    content = ?,
                     tags = ?
                 WHERE id = ?`,
                 [blog.date, blog.title, blog.alias, blog.content, blog.tags, id],
@@ -205,13 +204,27 @@ export const editBlog = (id: number, blog: panel.BlogEditDto) =>
         });
     });
 
+export const getTags = (blogId: number): Promise<string> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+            SELECT b.alias
+            FROM Blog b 
+            WHERE b.id = ?`,
+            [blogId, blogId],
+            (_err, [blog], _fields) => {
+                resolve(blog.alias);
+            }
+        );
+    });
+
 export const getForEdit = (blogId: number): Promise<panel.BlogEditDto> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-            SELECT be.title, be.alias, be.date, be.content, be.tags, (SELECT COUNT(id) FROM blogentryphoto WHERE BlogEntryId = ?) as AssignmentsCount
-            FROM blogentry be 
-            WHERE be.id = ?`,
+            SELECT b.title, b.alias, b.date, b.content, b.tags, (SELECT COUNT(id) FROM BlogAsset WHERE Blog_id = ?) as AssignmentsCount
+            FROM Blog b 
+            WHERE b.id = ?`,
             [blogId, blogId],
             (_err, [blog], _fields) => {
                 resolve({
@@ -231,17 +244,17 @@ export const deleteBlog = (id: number) =>
         connection.beginTransaction(() => {
             connection.query(
                 `
-            DELETE FROM blogentry
+            DELETE FROM Blog
             WHERE id = ?;
             
-            DELETE FROM blogentryphoto
-            WHERE BlogEntryId = ?;
+            DELETE FROM BlogAsset
+            WHERE Blog_id = ?;
             
-            DELETE FROM blogcomment
-            WHERE blogEntry_id = ?;
+            DELETE FROM BlogComment
+            WHERE Blog_id = ?;
 
-            DELETE FROM blogvisit
-            WHERE BlogEntryId = ?;`,
+            DELETE FROM BlogVisit
+            WHERE Blog_id = ?;`,
                 [id, id, id, id],
                 (err, _, _fields) => {
                     if (err) connection.rollback();
@@ -251,3 +264,40 @@ export const deleteBlog = (id: number) =>
             );
         });
     });
+
+export const createBlogAsset = (blogId: number, assetId: string, alt: string): Promise<number> =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `INSERT INTO BlogAsset(Blog_id, Url, Alt) VALUES (?, ?, ?)`,
+                [blogId, assetId, alt],
+                (err, results, _fields) => {
+                    if (err) connection.rollback();
+                    err == null ? resolve(results.insertId) : reject(err);
+                }
+            );
+        });
+    });
+
+export const getAssetsForBlog = (blogId: number): Promise<panel.BlogAssetsListItemDto[]> =>
+    new Promise((resolve, reject) => {
+        connection.query(
+            `
+        SELECT ba.id, ba.Url
+        FROM BlogAsset ba 
+        WHERE ba.Blog_id = ?`,
+            [blogId],
+            (_err, blogAssets, _fields) => {
+                resolve(
+                    blogAssets.map((ba: any) => ({
+                        id: ba.id,
+                        url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(blogId), ba.Url)}`
+                    }))
+                );
+            }
+        );
+    });
+
+export const getAssetsPath = (blogId: number) => `public/blogs/${blogId}`;
+export const getAssetId = (blogTags: string) => `${blogTags}-${100000000 + Math.floor(Math.random() * 999999990)}.jpg`;
+export const getAssetPath = (assetsPath: string, assetId: string) => `${assetsPath}/${assetId}`;

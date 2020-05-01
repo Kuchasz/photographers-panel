@@ -1,4 +1,4 @@
-import { PrivateGalleryState as privateGallery } from "../private-gallery";
+import { PrivateGalleryState } from "../private-gallery";
 
 export interface PrivateGalleryUrlCheckResult {
     gallery?: PrivateGalleryDetails;
@@ -7,7 +7,7 @@ export interface PrivateGalleryUrlCheckResult {
 
 export interface PrivateGalleryDetails {
     id: number;
-    state: privateGallery;
+    state: PrivateGalleryState;
     bride: string;
     groom: string;
     place: string;

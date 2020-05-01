@@ -2,8 +2,9 @@ import * as React from "react";
 import galleryPhoto from "../images/page_private_photo.png";
 import { Link } from "react-router-dom";
 import { strings } from "../resources";
-import * as getPrivateGalleryUrl from "../../../api/private-gallery";
-import * as notification from "../../../api/notification";
+import * as getPrivateGalleryUrl from "../../../api/site/private-gallery";
+import * as commonPrivateGallery from "../../../api/private-gallery";
+import * as notification from "../../../api/site/notification";
 import { ResultType } from "../../../api/common";
 
 const getContent = (
@@ -22,7 +23,7 @@ const getContent = (
             description: strings.privateGallery.notExists.description
         };
 
-    if (result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.Available)
+    if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available)
         return {
             title: strings.privateGallery.available.title
                 .replace(":bride", result.gallery.bride)
@@ -30,7 +31,7 @@ const getContent = (
             description: strings.privateGallery.available.description
         };
 
-    if (result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.TurnedOff)
+    if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.TurnedOff)
         return {
             title: strings.privateGallery.turnedOff.title
                 .replace(":bride", result.gallery.bride)
@@ -38,7 +39,7 @@ const getContent = (
             description: strings.privateGallery.turnedOff.description
         };
 
-    if (result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.NotReady)
+    if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.NotReady)
         return {
             title: strings.privateGallery.notReady.title
                 .replace(":bride", result.gallery.bride)
@@ -124,7 +125,7 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                                 </div>
                             </div>
                         ) : null}
-                        {result?.gallery?.state === getPrivateGalleryUrl.PrivateGalleryState.NotReady ? (
+                        {result?.gallery?.state === commonPrivateGallery.PrivateGalleryState.NotReady ? (
                             <div className="form">
                                 {this.state.isLoadingNotification ? (
                                     <div className="cover">{strings.privateGallery.notification.subscribing}</div>
@@ -151,7 +152,7 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                         ) : null}
                         {result?.gallery ? (
                             <div>
-                                {result.gallery.state === getPrivateGalleryUrl.PrivateGalleryState.Available ? (
+                                {result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available ? (
                                     <Link to={result.gallery.url} className="button">
                                         {strings.privateGallery.enterGallery}
                                     </Link>

@@ -1,8 +1,8 @@
 import * as React from "react";
-import { BlogEntry, getBlog } from "../../../api/blog";
+import * as api from "../../../api/site/blog";
 
-type BlogProps = { initialState?: BlogEntry; alias: string };
-type BlogState = { blog?: BlogEntry };
+type BlogProps = { initialState?: api.Blog; alias: string };
+type BlogState = { blog?: api.Blog };
 
 export class Blog extends React.Component<BlogProps, BlogState> {
 
@@ -10,7 +10,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
 
     componentDidMount() {
         if (this.state.blog === undefined) {
-            getBlog(this.props.alias).then(blog => this.setState({ blog }));
+            api.getBlog(this.props.alias).then(blog => this.setState({ blog }));
         }
     }
 
@@ -44,8 +44,8 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                         <br />
                         <br />
                         <div className="photos">
-                            {this.state.blog.photos.map(p => (
-                                <img key={p.photoUrl} src={p.photoUrl} alt={p.altText} />
+                            {this.state.blog.assets.map(p => (
+                                <img key={p.url} src={p.url} alt={p.text} />
                             ))}
                         </div>
                     </article>

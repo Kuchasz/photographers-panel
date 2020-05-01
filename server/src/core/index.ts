@@ -10,7 +10,14 @@ export const allowCrossDomain = function (_req: any, res: any, next: Function) {
     next();
 };
 
-export const processImage = (image: Buffer) =>
-    sharp(image)
-        .resize({ width: 900 })
-        .composite([{ input: readFileSync(resolve(__dirname, "logo-watermark.png")), gravity: "southwest" }]);
+export const processImage = (image: Buffer) => (finalPath: string): Promise<void> =>
+    new Promise((res, rej) => {
+        sharp(image)
+            .resize({ width: 900 })
+            .composite([{ input: readFileSync(resolve(__dirname, "logo-watermark.png")), gravity: "southwest" }])
+            .toFile(finalPath, async (_err, _info) => {
+                if (_err) rej();
+                res();
+            });
+    });
+

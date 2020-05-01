@@ -1,7 +1,5 @@
 import React from "react";
-import { strings } from "../resources";
-import { first } from "../../../utils/array";
-import { OfferEntry, getOffer } from "../../../api/offer";
+import { OfferEntry, getOffer } from "../../../api/site/offer";
 
 const getImageBackgroundStyle = (url: string) => {
     return {

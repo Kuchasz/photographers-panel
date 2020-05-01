@@ -47,7 +47,7 @@ export type DeleteBlogError = "ErrorOccuredWhileDeletingBlog";
 export type DeleteBlogResult = Result<DeleteBlogError>;
 
 export type UploadBlogAssetError = "ErrorOccuredWhileUploadingBlogAsset";
-export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number, url: string }>;
+export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number; url: string }>;
 
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
@@ -85,7 +85,10 @@ createBlog.route = createBlogRoute;
 
 const checkAliasIsUniqueRoute = "/api/panel/blog-alias-unique/:alias/:blogId?";
 export const checkAliasIsUnique = (blogId?: number) => (alias: string): Promise<boolean> =>
-    fetch("http://192.168.56.102:8080" + checkAliasIsUniqueRoute.replace(":alias", alias).replace(":blogId?", blogId?.toString() ?? "")).then((resp) => resp.json());
+    fetch(
+        "http://192.168.56.102:8080" +
+            checkAliasIsUniqueRoute.replace(":alias", alias).replace(":blogId?", blogId?.toString() ?? "")
+    ).then((resp) => resp.json());
 checkAliasIsUnique.route = checkAliasIsUniqueRoute;
 
 const changeBlogVisibilityRoute = "/api/panel/blog-change-visibility";
@@ -153,16 +156,11 @@ export const uploadBlogAsset = (
 ) => {
     const request = new XMLHttpRequest();
 
-    // request.upload.onprogress = (event: ProgressEvent) => onProgress((event.loaded / event.total) * 100);
-    // request.upload.onloadend = () => onUploadEnd();
-    // request.onloadend = () => onEnd(request.response);
-
-    // request.upload.onloadstart = () => onProgress(0);
     request.upload.onloadend = () => {
         onProgress(100);
         onUploadEnd();
     };
-    // request.onload = () => console.log(":onload");
+
     request.upload.onprogress = (event: ProgressEvent) => {
         let percent = 0;
         if (event.lengthComputable) {
@@ -170,7 +168,7 @@ export const uploadBlogAsset = (
         }
         onProgress(percent);
     };
-    request.responseType = 'json';
+    request.responseType = "json";
     request.upload.onloadstart = () => onProgress(0);
     request.onloadend = () => onEnd(request.response);
     request.onload = () => console.log(":onload");
@@ -185,3 +183,10 @@ export const uploadBlogAsset = (
     request.send(payload);
 };
 uploadBlogAsset.route = uploadBlogAssetRoute;
+
+const getBlogAssetsRoute = "/api/panel/blog-assets/:blogId";
+export const getBlogAssets = (blogId: number): Promise<BlogAssetsListItemDto[]> =>
+    fetch("http://192.168.56.102:8080" + getBlogAssetsRoute.replace(":blogId", blogId.toString())).then(
+        (resp) => resp.json() as Promise<BlogAssetsListItemDto[]>
+    );
+getBlogAssets.route = getBlogAssetsRoute;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BlogListItem, getBlogsList } from "../../../api/blog";
+import { BlogListItem, getBlogsList } from "../../../api/site/blog";
 import { Link } from "react-router-dom";
 
 type BlogsProps = { initialState?: BlogListItem[] };

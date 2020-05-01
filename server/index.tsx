@@ -29,6 +29,19 @@ import sharp from "sharp";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
+import { migrations } from "./src/migrations";
+import { connection } from "./src/db";
+
+let currentMigration = 1;
+migrations.forEach(async (run) => {
+    try {
+        const runOrNot = await run(connection);
+        console.log(`Migration ${currentMigration++} ${runOrNot ? "run" : "skipped"}`);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
 const app = express();
 app.use(express.json());
 app.use(compression());
@@ -150,37 +163,37 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
 
     const blogId: number = (req as any).body.blogId;
 
-    const finalName = 100000000 + Math.floor(Math.random() * 999999990);
+    try {
+        const blogTags = await blogModel.getTags(blogId);
 
-    const dirPath = `public/blogs/${blogId}`;
+        const assetId = blogModel.getAssetId(blogTags);
 
-    if (!fs.existsSync(dirPath)){
-        fs.mkdirSync(dirPath);
+        const assetsPath = blogModel.getAssetsPath(blogId);
+
+        if (!fs.existsSync(assetsPath)) {
+            fs.mkdirSync(assetsPath);
+        }
+
+        const finalPath = blogModel.getAssetPath(assetsPath, assetId);
+
+        await processImage(req.file.buffer)(finalPath);
+
+        const id = await blogModel.createBlogAsset(blogId, assetId, "blah some alt text here");
+
+        result = {
+            type: ResultType.Success,
+            result: { id, url: `http://192.168.56.102:8080/${finalPath}` }
+        };
+    } catch (err) {
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileUploadingBlogAsset" };
     }
 
-    const finalPath = `${dirPath}/${finalName}.jpg`
+    res.json(result);
+});
 
-    processImage(req.file.buffer).toFile(finalPath, (_err, _info) => {
-        console.log(_err, _info);
-    });
-
-    result = {
-        type: ResultType.Success,
-        result: { id: Math.floor(Math.random() * 10000), url: `http://192.168.56.102:8080/${finalPath}` }
-    };
-
-    // console.log(result, blogId, req.body);
-    // console.log(req.file);
-    // try {
-    //     await blogModel.deleteBlog(id);
-    //     result = { type: ResultType.Success };
-    // } catch (err) {
-    //     result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlog" };
-    // }
-
-    setTimeout(() => {
-        res.json(result);
-    }, 3000);
+app.get(blogPanel.getBlogAssets.route, async (req, res) => {
+    const blogAssets = await blogModel.getAssetsForBlog(Number(req.params.blogId));
+    res.json(blogAssets);
 });
 
 app.post(message.send.route, async (req, res) => {

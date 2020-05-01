@@ -1,13 +1,13 @@
-export interface BlogEntry {
+export interface Blog {
     title: string;
     date: string;
     content: string;
-    photos: BlogEntryPhoto[];
+    assets: BlogAsset[];
 }
 
-export interface BlogEntryPhoto {
-    photoUrl: string;
-    altText: string;
+export interface BlogAsset {
+    url: string;
+    text: string;
 }
 
 export interface BlogListItem {
@@ -25,7 +25,7 @@ export interface LastBlog {
 
 const getBlogRoute = "/api/blog/:alias";
 export const getBlog = (alias: string) =>
-    new Promise<BlogEntry>((resolve, _) => {
+    new Promise<Blog>((resolve, _) => {
         fetch("http://192.168.56.102:8080" + getBlogRoute.replace(":alias", alias))
             .then(result => result.json())
             .then(resolve);

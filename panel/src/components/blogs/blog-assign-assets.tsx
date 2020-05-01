@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { Modal, Button, Icon, IconButton, Loader, Progress } from "rsuite";
-import { BlogAssetsListItemDto, uploadBlogAsset } from "../../../../api/panel/blog";
+import { BlogAssetsListItemDto, uploadBlogAsset, getBlogAssets } from "../../../../api/panel/blog";
 import { range, union, distinctBy } from "../../../../utils/array";
 import { inRange } from "../../../../utils/number";
 import { read } from "../../../../utils/file";
@@ -123,32 +123,23 @@ const AssetsList = ({
     </div>
 );
 
-const items = [
-    { id: 31, url: "https://picsum.photos/122/200" },
-    { id: 72, url: "https://picsum.photos/100" },
-    { id: 63, url: "https://picsum.photos/100/350" },
-    { id: 54, url: "https://picsum.photos/100/150" },
-    { id: 45, url: "https://picsum.photos/100/250" },
-    { id: 36, url: "https://picsum.photos/100/300" },
-    { id: 27, url: "https://picsum.photos/150/100" },
-    { id: 182, url: "https://picsum.photos/150/150" },
-    { id: 89, url: "https://picsum.photos/150/200" },
-    { id: 90, url: "https://picsum.photos/150/250" },
-    { id: 10, url: "https://picsum.photos/150/300" },
-    { id: 11, url: "https://picsum.photos/200" },
-    { id: 12, url: "https://picsum.photos/200/100" },
-    { id: 13, url: "https://picsum.photos/200/150" },
-    { id: 14, url: "https://picsum.photos/200/200" },
-    { id: 15, url: "https://picsum.photos/200/250" },
-    { id: 16, url: "https://picsum.photos/200/300" },
-    { id: 17, url: "https://picsum.photos/250/100" },
-    { id: 18, url: "https://picsum.photos/250/150" }
-];
-
 export class BlogAssignAssets extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = { assets: items };
+        this.state = { assets: [] };
+    }
+
+    componentDidMount() {
+        getBlogAssets(this.props.id).then((assets) => {
+            this.setState({ assets });
+        });
+    }
+
+    componentDidUpdate(prevProps: Props) {
+        if (this.props.id === prevProps.id) return;
+        getBlogAssets(this.props.id).then((assets) => {
+            this.setState({ assets });
+        });
     }
 
     handleNewAssets = (assets: { url: string; file: File }[]) => {
@@ -175,7 +166,6 @@ export class BlogAssignAssets extends React.Component<Props, State> {
 
     handleModalHide = () => {
         this.props.closeAssignAssets();
-        this.setState(() => ({ assets: items }));
     };
 
     render() {
