@@ -16,11 +16,15 @@ interface State {
     isChangingVisibility: boolean;
 }
 
-type BlogIconProps = { id: number; initialVisibility: boolean };
+type VisibilityIconProps = { id: number; initialVisibility: boolean };
 
-const BlogIcon = ({ id, initialVisibility }: BlogIconProps) => {
-    const [visible, setVisible] = useState(initialVisibility);
+const VisibilityIcon = ({ id, initialVisibility }: VisibilityIconProps) => {
+    const [visible, setVisible] = useState<boolean>();
     const [isLoading, setIsLoading] = useState(false);
+
+    React.useEffect(() => {
+        setVisible(initialVisibility);
+    }, [id]);
 
     const onChangeBlogVisibility = () => {
         setIsLoading(true);
@@ -34,7 +38,8 @@ const BlogIcon = ({ id, initialVisibility }: BlogIconProps) => {
         <ToolTip
             text={
                 <>
-                    Blog is <i>{visible ? "visible" : "hidden"}</i>
+                    Blog is {visible}
+                    <i>{visible ? "visible" : "hidden"}</i>
                 </>
             }
         >
@@ -67,8 +72,8 @@ export class BlogsList extends React.Component<Props, State> {
             >
                 <Table.Column width={100} align="center">
                     <Table.HeaderCell>Visibility</Table.HeaderCell>
-                    <Table.Cell dataKey="visible" className="link-group">
-                        {(blog: BlogListItem) => <BlogIcon id={blog.id} initialVisibility={blog.visible} />}
+                    <Table.Cell className="link-group">
+                        {(blog: BlogListItem) => <VisibilityIcon id={blog.id} initialVisibility={blog.visible} />}
                     </Table.Cell>
                 </Table.Column>
 

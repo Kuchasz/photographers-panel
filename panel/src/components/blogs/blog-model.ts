@@ -11,7 +11,7 @@ export const blogModel = (blogId?: number) => Schema.Model({
         .minLength(10, "Alias of the blog must be at least 10 characters long.")
         .maxLength(200, "Alias may not be longer than 200 characters.")
         .pattern(/^[a-z0-9-]*$/, "Alias may contain only lowercase a-z letters")
-        .pattern(/^([a-z]+-){3,}([a-z]+)$/, "Alias must match pattern my-new-blog-post")
+        .pattern(/^([a-z0-9]+-){3,}([a-z0-9]+)$/, "Alias must match pattern my-new-blog-post")
         .addRule(checkAliasIsUnique(blogId), "Alias must be unique."),
     date: Schema.Types.DateType()
         .isRequired("Date of the blog must be set."),
@@ -24,7 +24,7 @@ export const blogModel = (blogId?: number) => Schema.Model({
         .minLength(20, "Tags of the blog must be at least 20 characters long.")
         .maxLength(100, "Tags may not be longer than 200 characters.")
         .pattern(/^[a-z0-9-]*$/, "Tags may contain only lowercase a-z letters")
-        .pattern(/^([a-z]+-){4,}([a-z]+)$/, "Tags must match pattern awesome-wedding-photo-blog")
+        .pattern(/^([a-z0-9]+-){4,}([a-z0-9]+)$/, "Tags must match pattern awesome-wedding-photo-blog")
 });
 
 export const emptyBlog = (): BlogEditDto => ({
