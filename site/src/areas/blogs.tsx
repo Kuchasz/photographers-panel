@@ -10,7 +10,7 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
 
     componentDidMount() {
         if (this.state.blogs === undefined) {
-            getBlogsList().then(blogs => this.setState({ blogs }));
+            getBlogsList().then((blogs) => this.setState({ blogs }));
         }
     }
 
@@ -21,12 +21,10 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
                     <section>
                         <article>
                             {this.state.blogs
-                                ? this.state.blogs.map(blog => (
+                                ? this.state.blogs.map((blog) => (
                                       <Link key={blog.alias} to={"/blog/" + blog.alias}>
-                                          <div style={{ backgroundImage: `url(${blog.photoUrl})` }}>
-                                              <div className="hover-bg">{blog.title}</div>
-                                              <div className="blog-date">{blog.date}</div>
-                                          </div>
+                                          <img className="thumb" src={blog.photoUrl}></img>
+                                          <div className="blog-title">{blog.title}</div>
                                       </Link>
                                   ))
                                 : null}
