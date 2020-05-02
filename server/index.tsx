@@ -114,7 +114,6 @@ app.post(blogPanel.changeBlogVisibility.route, async (req, res) => {
     let result: blogPanel.ChangeBlogVisibilityResult | undefined = undefined;
 
     try {
-        console.log(req.body);
         await blogModel.changeVisibility(req.body as blogPanel.BlogVisibilityDto);
         result = { type: ResultType.Success };
     } catch (err) {
@@ -129,7 +128,6 @@ app.post(blogPanel.changeMainBlogAsset.route, async (req, res) => {
     let result: blogPanel.ChangeMainBlogAssetResult | undefined = undefined;
 
     try {
-        console.log(req.body);
         await blogModel.changeMainAsset(req.body as blogPanel.MainBlogAssetDto);
         result = { type: ResultType.Success };
     } catch (err) {
@@ -212,6 +210,21 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
 app.get(blogPanel.getBlogAssets.route, async (req, res) => {
     const blogAssets = await blogModel.getAssetsForBlog(Number(req.params.blogId));
     res.json(blogAssets);
+});
+
+app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
+    let result: blogPanel.DeleteBlogAssetResult | undefined = undefined;
+
+    var { id }: { id: number } = req.body;
+
+    try {
+        await blogModel.deleteBlogAsset(id);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlogAsset" };
+    }
+
+    res.json(result);
 });
 
 app.post(message.send.route, async (req, res) => {

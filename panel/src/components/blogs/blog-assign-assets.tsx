@@ -1,11 +1,16 @@
 import React, { ChangeEvent } from "react";
-import { Modal, Button, Icon, IconButton, Loader, Progress } from "rsuite";
-import { BlogAssetsListItemDto, uploadBlogAsset, getBlogAssets, changeMainBlogAsset } from "../../../../api/panel/blog";
+import { Modal, Button, Icon, IconButton, Loader, Progress, Alert } from "rsuite";
+import {
+    BlogAssetsListItemDto,
+    uploadBlogAsset,
+    getBlogAssets,
+    changeMainBlogAsset,
+    deleteBlogAsset
+} from "../../../../api/panel/blog";
 import { range, union, distinctBy } from "../../../../utils/array";
 import { inRange } from "../../../../utils/number";
 import { read } from "../../../../utils/file";
 import { ResultType } from "../../../../api/common";
-import { IconProps } from "rsuite/lib/Icon";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
 
@@ -18,24 +23,26 @@ interface State {
     assets: BlogAssetsListItem[];
 }
 
-const OverlayButton = ({ icon, onClick }: { icon: React.ReactElement<IconProps>; onClick: () => void }) => (
-    <Button onClick={onClick} color="blue" className="overlay-button">
-        {icon}
-    </Button>
-);
+interface OverlayButtonProps {
+    onClick: () => void;
+    onDelete: () => void;
+    isMain: boolean;
+}
 
-const MainIndicator = () => (
-    <div className="main-indicator">
-        <Icon icon="star-o" />
+const OverlayButtons = ({ isMain, onClick, onDelete }: OverlayButtonProps) => (
+    <div className="overlay-button">
+        <Icon onClick={onClick} className={!isMain ? "hideable" : ""} icon={isMain ? "star" : "star-o"} />
+        <Icon onClick={onDelete} className="hideable" icon="trash-o" />
     </div>
 );
 
 interface AssetThumbProps {
     item: BlogAssetsListItem;
     onSetAsMain: (assetId: number) => void;
+    onDelete: (assetId: number) => void;
 }
 
-const AssetThumb = ({ item, onSetAsMain }: AssetThumbProps) => {
+const AssetThumb = ({ item, onSetAsMain, onDelete }: AssetThumbProps) => {
     return (
         <AssetsListItem className="thumb">
             {Math.random() === 1 ? (
@@ -46,11 +53,11 @@ const AssetThumb = ({ item, onSetAsMain }: AssetThumbProps) => {
                     size="xs"
                 />
             ) : null}
-            {item.isMain ? (
-                <MainIndicator />
-            ) : (
-                <OverlayButton onClick={() => onSetAsMain(item.id!)} icon={<Icon icon="star-o" />} />
-            )}
+            <OverlayButtons
+                isMain={item.isMain!}
+                onDelete={() => onDelete(item.id!)}
+                onClick={() => onSetAsMain(item.id!)}
+            />
             <img src={item.url}></img>
         </AssetsListItem>
     );
@@ -129,18 +136,20 @@ const AssetsList = ({
     onAssetsChosen,
     blogId,
     onUploaded,
-    onSetAsMain
+    onSetAsMain,
+    onDelete
 }: {
     blogId: number;
     items: BlogAssetsListItem[];
     onAssetsChosen: (assets: { url: string; file: File }[]) => void;
     onUploaded: (id: number, url: string, oldURL: string) => void;
     onSetAsMain: (assetId: number) => void;
+    onDelete: (assetId: number) => void;
 }) => (
     <div className="assets-list">
         {items.map((item) =>
             item.id !== undefined ? (
-                <AssetThumb onSetAsMain={onSetAsMain} item={item} key={item.id} />
+                <AssetThumb onDelete={onDelete} onSetAsMain={onSetAsMain} item={item} key={item.id} />
             ) : (
                 <AssetUploadingThumb
                     blogId={blogId}
@@ -212,14 +221,27 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                     { ...newMain, isMain: true },
                     ...state.assets.slice(newMainIndex + 1)
                 ];
-                assets = [
-                    ...assets.slice(0, oldMainIndex),
-                    { ...oldMain, isMain: false },
-                    ...assets.slice(oldMainIndex + 1)
-                ];
+
+                if (oldMain)
+                    assets = [
+                        ...assets.slice(0, oldMainIndex),
+                        { ...oldMain, isMain: false },
+                        ...assets.slice(oldMainIndex + 1)
+                    ];
 
                 return { assets };
             });
+        });
+    };
+
+    handleDelete = (assetId: number) => {
+        deleteBlogAsset(assetId).then((result) => {
+            if (result.type === ResultType.Success) {
+                Alert.success("Blog asset removed.");
+                this.setState((state) => ({ assets: state.assets.filter((a) => a.id !== assetId) }));
+            } else {
+                Alert.error("An error ocurred while removing blog asset.");
+            }
         });
     };
 
@@ -244,6 +266,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                         onAssetsChosen={this.handleNewAssets}
                         onUploaded={this.handleAssetsUploaded}
                         onSetAsMain={this.handleMarkAsMain}
+                        onDelete={this.handleDelete}
                         items={this.state.assets}
                     />
                 </Modal.Body>

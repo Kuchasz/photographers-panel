@@ -35,7 +35,7 @@ export interface BlogAssetsListItemDto {
     isMain: boolean;
 }
 
-export interface MainBlogAssetDto{
+export interface MainBlogAssetDto {
     id: number;
     mainBlogAsset: number;
 }
@@ -57,6 +57,9 @@ export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number; u
 
 export type ChangeMainBlogAssetError = "ErrorOccuredWhileChangingMainBlogAsset";
 export type ChangeMainBlogAssetResult = Result<ChangeMainBlogAssetError>;
+
+export type DeleteBlogAssetError = "ErrorOccuredWhileDeletingBlogAsset";
+export type DeleteBlogAssetResult = Result<DeleteBlogAssetError>;
 
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
@@ -180,8 +183,6 @@ export const uploadBlogAsset = (
     request.responseType = "json";
     request.upload.onloadstart = () => onProgress(0);
     request.onloadend = () => onEnd(request.response);
-    request.onload = () => console.log(":onload");
-    request.onprogress = () => console.log(":onprogress");
 
     const payload = new FormData();
     payload.append("asset", asset);
@@ -200,7 +201,6 @@ export const getBlogAssets = (blogId: number): Promise<BlogAssetsListItemDto[]> 
     );
 getBlogAssets.route = getBlogAssetsRoute;
 
-
 const changeMainBlogAssetRoute = "/api/panel/blog-change-main-asset";
 export const changeMainBlogAsset = (blogMainAsset: MainBlogAssetDto) =>
     new Promise<ChangeBlogVisibilityResult>((resolve, _) => {
@@ -216,3 +216,19 @@ export const changeMainBlogAsset = (blogMainAsset: MainBlogAssetDto) =>
             .then(resolve);
     });
 changeMainBlogAsset.route = changeMainBlogAssetRoute;
+
+const deleteBlogAssetRoute = "/api/panel/remove-blog-asset";
+export const deleteBlogAsset = (id: number) =>
+    new Promise<DeleteBlogResult>((resolve, _) => {
+        fetch("http://192.168.56.102:8080" + deleteBlogAssetRoute, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id })
+        })
+            .then((result) => result.json())
+            .then(resolve);
+    });
+deleteBlogAsset.route = deleteBlogAssetRoute;

@@ -259,9 +259,10 @@ export const deleteBlog = (id: number) =>
         connection.beginTransaction(() => {
             connection.query(
                 `
-            DELETE FROM Blog
+            UPDATE Blog
+            SET MainBlogAsset_id = NULL
             WHERE id = ?;
-            
+ 
             DELETE FROM BlogAsset
             WHERE Blog_id = ?;
             
@@ -269,8 +270,11 @@ export const deleteBlog = (id: number) =>
             WHERE Blog_id = ?;
 
             DELETE FROM BlogVisit
-            WHERE Blog_id = ?;`,
-                [id, id, id, id],
+            WHERE Blog_id = ?;
+            
+            DELETE FROM Blog
+            WHERE id = ?;`,
+                [id, id, id, id, id],
                 (err, _, _fields) => {
                     if (err) connection.rollback();
 
@@ -313,6 +317,23 @@ export const getAssetsForBlog = (blogId: number): Promise<panel.BlogAssetsListIt
                 );
             }
         );
+    });
+
+export const deleteBlogAsset = (id: number) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `
+            DELETE FROM BlogAsset
+            WHERE Id = ?;`,
+                [id],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
     });
 
 export const getAssetsPath = (blogId: number) => `public/blogs/${blogId}`;
