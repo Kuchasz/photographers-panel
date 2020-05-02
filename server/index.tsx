@@ -32,16 +32,19 @@ const Youch = require("youch");
 import { migrations } from "./src/migrations";
 import { connection } from "./src/db";
 
-let currentMigration = 1;
-migrations.forEach(async (run) => {
-    try {
-        const runOrNot = await run(connection);
-        console.log(`Migration ${currentMigration++} ${runOrNot ? "run" : "skipped"}`);
-    } catch (err) {
-        console.error(err);
+const runMigrations = async () => {
+    for (let i = 0; i < migrations.length; i++) {
+        try {
+            console.log(`Migration ${i}`);
+            const runOrNot = await migrations[i](connection);
+            console.log(`Migration ${i} ${runOrNot ? "run" : "skipped"}`);
+        } catch (err) {
+            console.error(err);
+        }
     }
-});
+};
 
+runMigrations();
 const app = express();
 app.use(express.json());
 app.use(compression());
@@ -117,6 +120,21 @@ app.post(blogPanel.changeBlogVisibility.route, async (req, res) => {
     } catch (err) {
         console.log(err);
         result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogVisibility" };
+    }
+
+    res.json(result);
+});
+
+app.post(blogPanel.changeMainBlogAsset.route, async (req, res) => {
+    let result: blogPanel.ChangeMainBlogAssetResult | undefined = undefined;
+
+    try {
+        console.log(req.body);
+        await blogModel.changeMainAsset(req.body as blogPanel.MainBlogAssetDto);
+        result = { type: ResultType.Success };
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingMainBlogAsset" };
     }
 
     res.json(result);

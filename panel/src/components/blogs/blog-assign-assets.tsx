@@ -1,10 +1,11 @@
 import React, { ChangeEvent } from "react";
 import { Modal, Button, Icon, IconButton, Loader, Progress } from "rsuite";
-import { BlogAssetsListItemDto, uploadBlogAsset, getBlogAssets } from "../../../../api/panel/blog";
+import { BlogAssetsListItemDto, uploadBlogAsset, getBlogAssets, changeMainBlogAsset } from "../../../../api/panel/blog";
 import { range, union, distinctBy } from "../../../../utils/array";
 import { inRange } from "../../../../utils/number";
 import { read } from "../../../../utils/file";
 import { ResultType } from "../../../../api/common";
+import { IconProps } from "rsuite/lib/Icon";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
 
@@ -17,16 +18,45 @@ interface State {
     assets: BlogAssetsListItem[];
 }
 
-const BlogAssetThumb = (item: BlogAssetsListItem) => {
+const OverlayButton = ({ icon, onClick }: { icon: React.ReactElement<IconProps>; onClick: () => void }) => (
+    <Button onClick={onClick} color="blue" className="overlay-button">
+        {icon}
+    </Button>
+);
+
+const MainIndicator = () => (
+    <div className="main-indicator">
+        <Icon icon="star-o" />
+    </div>
+);
+
+interface AssetThumbProps {
+    item: BlogAssetsListItem;
+    onSetAsMain: (assetId: number) => void;
+}
+
+const AssetThumb = ({ item, onSetAsMain }: AssetThumbProps) => {
     return (
         <AssetsListItem className="thumb">
-            <IconButton icon={<Icon icon="close" />} circle size="xs" />
+            {Math.random() === 1 ? (
+                <IconButton
+                    onClick={() => onSetAsMain(item.id!)}
+                    icon={item.isMain ? <Icon icon="star" /> : <Icon icon="star-o" />}
+                    circle
+                    size="xs"
+                />
+            ) : null}
+            {item.isMain ? (
+                <MainIndicator />
+            ) : (
+                <OverlayButton onClick={() => onSetAsMain(item.id!)} icon={<Icon icon="star-o" />} />
+            )}
             <img src={item.url}></img>
         </AssetsListItem>
     );
 };
 
-const BlogAssetUploadThumb = ({
+const AssetUploadingThumb = ({
     item,
     blogId,
     onUpload
@@ -53,7 +83,6 @@ const BlogAssetUploadThumb = ({
 
     return (
         <AssetsListItem className="thumb">
-            {/* <img src={item.url}></img> */}
             {processing && <Loader inverse backdrop center />}
             {inRange(0, 100, uploadProgress) && (
                 <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={uploadProgress} />
@@ -62,11 +91,11 @@ const BlogAssetUploadThumb = ({
     );
 };
 
-interface BlogAssetButtonProps {
+interface AssetUploadButtonProps {
     onAssetsChosen: (assets: { url: string; file: File }[]) => void;
 }
 
-const BlogAssetButton = ({ onAssetsChosen }: BlogAssetButtonProps) => {
+const AssetUploadButton = ({ onAssetsChosen }: AssetUploadButtonProps) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
 
     const triggerFileSelect = () => {
@@ -99,19 +128,21 @@ const AssetsList = ({
     items,
     onAssetsChosen,
     blogId,
-    onUploaded
+    onUploaded,
+    onSetAsMain
 }: {
     blogId: number;
     items: BlogAssetsListItem[];
     onAssetsChosen: (assets: { url: string; file: File }[]) => void;
     onUploaded: (id: number, url: string, oldURL: string) => void;
+    onSetAsMain: (assetId: number) => void;
 }) => (
     <div className="assets-list">
         {items.map((item) =>
             item.id !== undefined ? (
-                <BlogAssetThumb {...item} key={item.id} />
+                <AssetThumb onSetAsMain={onSetAsMain} item={item} key={item.id} />
             ) : (
-                <BlogAssetUploadThumb
+                <AssetUploadingThumb
                     blogId={blogId}
                     item={item}
                     key={item.url}
@@ -119,7 +150,7 @@ const AssetsList = ({
                 />
             )
         )}
-        <BlogAssetButton onAssetsChosen={onAssetsChosen} />
+        <AssetUploadButton onAssetsChosen={onAssetsChosen} />
     </div>
 );
 
@@ -164,6 +195,34 @@ export class BlogAssignAssets extends React.Component<Props, State> {
         });
     };
 
+    handleMarkAsMain = (assetId: number) => {
+        changeMainBlogAsset({
+            id: this.props.id,
+            mainBlogAsset: assetId
+        }).then(() => {
+            this.setState((state) => {
+                const newMainIndex = state.assets.map((x) => x.id).indexOf(assetId);
+                const oldMainIndex = state.assets.indexOf(state.assets.filter((x) => x.isMain)[0]);
+
+                const newMain = state.assets[newMainIndex];
+                const oldMain = state.assets[oldMainIndex];
+
+                let assets = [
+                    ...state.assets.slice(0, newMainIndex),
+                    { ...newMain, isMain: true },
+                    ...state.assets.slice(newMainIndex + 1)
+                ];
+                assets = [
+                    ...assets.slice(0, oldMainIndex),
+                    { ...oldMain, isMain: false },
+                    ...assets.slice(oldMainIndex + 1)
+                ];
+
+                return { assets };
+            });
+        });
+    };
+
     handleModalHide = () => {
         this.props.closeAssignAssets();
     };
@@ -184,13 +243,9 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                         blogId={this.props.id}
                         onAssetsChosen={this.handleNewAssets}
                         onUploaded={this.handleAssetsUploaded}
+                        onSetAsMain={this.handleMarkAsMain}
                         items={this.state.assets}
                     />
-                    {/* <Uploader multiple listType="picture" action="//jsonplaceholder.typicode.com/posts/">
-                        <Button>
-                            <Icon icon="camera-retro" size="lg" />
-                        </Button>
-                    </Uploader> */}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.closeAssignAssets} appearance="primary">

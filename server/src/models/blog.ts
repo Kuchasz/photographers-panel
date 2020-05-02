@@ -23,11 +23,8 @@ export const getList = (): Promise<site.BlogListItem[]> =>
             `
       SELECT b.Id, b.title, b.date, b.alias, ba.Url, ba.Alt 
       FROM Blog b 
-      JOIN BlogAsset ba ON ba.id = (
-          SELECT id from BlogAsset
-          WHERE Blog_id = b.id
-          LIMIT 1)
-      WHERE b.isHidden = 0 
+      LEFT JOIN BlogAsset ba ON ba.id = b.MainBlogAsset_id
+      WHERE b.isHidden = 0 AND ba.Id IS NOT NULL
       ORDER BY b.date DESC`,
             (_err, blogs, _fields) => {
                 const blogListItems = blogs.map((b: any) => ({
@@ -181,6 +178,24 @@ export const changeVisibility = (blogVisibility: panel.BlogVisibilityDto) =>
         });
     });
 
+export const changeMainAsset = (blogMainAsset: panel.MainBlogAssetDto) =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `
+            UPDATE Blog
+            SET MainBlogAsset_id = ?
+            WHERE id = ?`,
+                [blogMainAsset.mainBlogAsset, blogMainAsset.id],
+                (err, _, _fields) => {
+                    if (err) connection.rollback();
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
+    });
+
 export const editBlog = (id: number, blog: panel.BlogEditDto) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
@@ -283,15 +298,17 @@ export const getAssetsForBlog = (blogId: number): Promise<panel.BlogAssetsListIt
     new Promise((resolve, reject) => {
         connection.query(
             `
-        SELECT ba.id, ba.Url
+        SELECT b.MainBlogAsset_id, ba.id, ba.Url
         FROM BlogAsset ba 
+        JOIN Blog b ON ba.Blog_id = b.Id
         WHERE ba.Blog_id = ?`,
             [blogId],
             (_err, blogAssets, _fields) => {
                 resolve(
                     blogAssets.map((ba: any) => ({
                         id: ba.id,
-                        url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(blogId), ba.Url)}`
+                        url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
+                        isMain: ba.MainBlogAsset_id === ba.id
                     }))
                 );
             }

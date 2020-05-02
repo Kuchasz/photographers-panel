@@ -32,6 +32,12 @@ export interface BlogEditDto {
 export interface BlogAssetsListItemDto {
     id: number;
     url: string;
+    isMain: boolean;
+}
+
+export interface MainBlogAssetDto{
+    id: number;
+    mainBlogAsset: number;
 }
 
 export type CreateBlogError = "ErrorOccuredWhileBlogGallery";
@@ -48,6 +54,9 @@ export type DeleteBlogResult = Result<DeleteBlogError>;
 
 export type UploadBlogAssetError = "ErrorOccuredWhileUploadingBlogAsset";
 export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number; url: string }>;
+
+export type ChangeMainBlogAssetError = "ErrorOccuredWhileChangingMainBlogAsset";
+export type ChangeMainBlogAssetResult = Result<ChangeMainBlogAssetError>;
 
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
@@ -190,3 +199,20 @@ export const getBlogAssets = (blogId: number): Promise<BlogAssetsListItemDto[]> 
         (resp) => resp.json() as Promise<BlogAssetsListItemDto[]>
     );
 getBlogAssets.route = getBlogAssetsRoute;
+
+
+const changeMainBlogAssetRoute = "/api/panel/blog-change-main-asset";
+export const changeMainBlogAsset = (blogMainAsset: MainBlogAssetDto) =>
+    new Promise<ChangeBlogVisibilityResult>((resolve, _) => {
+        fetch("http://192.168.56.102:8080" + changeMainBlogAssetRoute, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(blogMainAsset)
+        })
+            .then((result) => result.json())
+            .then(resolve);
+    });
+changeMainBlogAsset.route = changeMainBlogAssetRoute;

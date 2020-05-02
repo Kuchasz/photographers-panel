@@ -52,6 +52,7 @@ export const renameColumn = (
 export const runQuery = (query: string, connection: Connection) =>
     new Promise((res, rej) => {
         connection.query(query, (_err) => {
+            log(`RUNNING: ${query}`, _err);
             if (_err) rej();
             else res();
         });
