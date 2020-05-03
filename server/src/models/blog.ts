@@ -2,6 +2,7 @@ import { connection } from "../db";
 import { getDateString } from "../../../utils/date";
 import * as site from "../../../api/site/blog";
 import * as panel from "../../../api/panel/blog";
+import { resolve } from "dns";
 
 export const getMostRecent = (): Promise<site.LastBlog> =>
     new Promise((resolve, reject) => {
@@ -334,6 +335,21 @@ export const deleteBlogAsset = (id: number) =>
                 }
             );
         });
+    });
+
+export const getAssetPathById = (id: number): Promise<string> =>
+    new Promise((res, rej) => {
+        connection.query(
+            `
+        SELECT ba.Url, ba.Blog_id
+        FROM BlogAsset ba
+        WHERE ba.Id = ?
+        LIMIT 1`,
+            [id],
+            (_err, [asset], _fields) => {
+                res(getAssetPath(getAssetsPath(asset.Blog_id), asset.Url));
+            }
+        );
     });
 
 export const getAssetsPath = (blogId: number) => `public/blogs/${blogId}`;

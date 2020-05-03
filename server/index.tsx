@@ -24,7 +24,7 @@ import * as privateGallery from "../api/site/private-gallery";
 import * as privateGalleryPanel from "../api/panel/private-gallery";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
-import { allowCrossDomain, processImage } from "./src/core";
+import { allowCrossDomain, processImage, deleteImage } from "./src/core";
 import sharp from "sharp";
 require("isomorphic-fetch");
 const Youch = require("youch");
@@ -218,7 +218,14 @@ app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
     var { id }: { id: number } = req.body;
 
     try {
+
+        const finalPath = await blogModel.getAssetPathById(id);
         await blogModel.deleteBlogAsset(id);
+
+
+        console.log(finalPath);
+        await deleteImage(finalPath);
+        
         result = { type: ResultType.Success };
     } catch (err) {
         result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlogAsset" };

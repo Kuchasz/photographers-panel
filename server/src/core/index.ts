@@ -1,5 +1,5 @@
 import sharp from "sharp";
-import { readFileSync } from "fs";
+import { readFileSync, unlinkSync } from "fs";
 import { resolve } from "path";
 
 export const allowCrossDomain = function (_req: any, res: any, next: Function) {
@@ -21,3 +21,8 @@ export const processImage = (image: Buffer) => (finalPath: string): Promise<void
             });
     });
 
+export const deleteImage = (imagePath: string): Promise<void> =>
+    new Promise((res, rej) => {
+        unlinkSync(imagePath);
+        res();
+    });
