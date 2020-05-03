@@ -225,8 +225,6 @@ app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
     try {
         const finalPath = await blogModel.getAssetPathById(id);
         await blogModel.deleteBlogAsset(id);
-
-        console.log(finalPath);
         await deleteImage(finalPath);
 
         result = { type: ResultType.Success };

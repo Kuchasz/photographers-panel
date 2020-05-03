@@ -7,8 +7,11 @@ export const subscribe = (subscribtion: Subscription): Promise<void> =>
             connection.query(
                 `INSERT INTO email (PrivateGalleryId, address) VALUES ('${subscribtion.privateGalleryId}', '${subscribtion.email}')`,
                 (err, _, _fields) => {
-                    if(err)
+                    if (err) {
                         connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
 
                     err == null ? resolve() : reject(err);
                 }

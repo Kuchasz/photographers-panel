@@ -7,7 +7,7 @@ export interface Blog {
 
 export interface BlogAsset {
     url: string;
-    text: string;
+    alt: string;
 }
 
 export interface BlogListItem {

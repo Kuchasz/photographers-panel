@@ -258,7 +258,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
         return (
             <Modal
                 className="blog-assign-assets"
-                size={"lg"}
+                full
                 show={this.props.showBlogAssignAssets}
                 onHide={this.handleModalHide}
             >

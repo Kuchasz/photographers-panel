@@ -52,7 +52,7 @@ export const get = (alias: string): Promise<site.Blog> =>
             [alias],
             (_err, blogAssets, _fields) => {
                 const [first] = blogAssets;
-                const blog = {
+                const blog: site.Blog = {
                     title: first.title,
                     date: getDateString(new Date(first.date)),
                     content: first.content,
@@ -134,8 +134,11 @@ export const createBlog = (blog: panel.BlogEditDto) =>
                 VALUES (?, ?, ?, ?, ?, ?)`,
                 [blog.date, blog.title, blog.alias, blog.content, blog.tags, true],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
-
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
                     err == null ? resolve() : reject(err);
                 }
             );
@@ -171,8 +174,11 @@ export const changeVisibility = (blogVisibility: panel.BlogVisibilityDto) =>
             WHERE id = ?`,
                 [!blogVisibility.shouldBeVisible, blogVisibility.id],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
-
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
                     err == null ? resolve() : reject(err);
                 }
             );
@@ -189,8 +195,11 @@ export const changeMainAsset = (blogMainAsset: panel.MainBlogAssetDto) =>
             WHERE id = ?`,
                 [blogMainAsset.mainBlogAsset, blogMainAsset.id],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
-
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
                     err == null ? resolve() : reject(err);
                 }
             );
@@ -212,8 +221,11 @@ export const editBlog = (id: number, blog: panel.BlogEditDto) =>
                 WHERE id = ?`,
                 [blog.date, blog.title, blog.alias, blog.content, blog.tags, id],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
-
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
                     err == null ? resolve() : reject(err);
                 }
             );
@@ -277,7 +289,11 @@ export const deleteBlog = (id: number) =>
             WHERE id = ?;`,
                 [id, id, id, id, id],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
 
                     err == null ? resolve() : reject(err);
                 }
@@ -292,7 +308,11 @@ export const createBlogAsset = (blogId: number, assetId: string, alt: string): P
                 `INSERT INTO BlogAsset(Blog_id, Url, Alt) VALUES (?, ?, ?)`,
                 [blogId, assetId, alt],
                 (err, results, _fields) => {
-                    if (err) connection.rollback();
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
                     err == null ? resolve(results.insertId) : reject(err);
                 }
             );
@@ -329,7 +349,11 @@ export const deleteBlogAsset = (id: number) =>
             WHERE Id = ?;`,
                 [id],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
 
                     err == null ? resolve() : reject(err);
                 }

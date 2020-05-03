@@ -89,7 +89,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
                     (prv, cur) => ({ [getDateString(cur.date)]: Number.parseInt(cur.count), ...prv }),
                     {}
                 );
-                const dailies = days.map(getDateString).map(x => ({ date: x, visits: dayVisits[x] ?? 0 }));
+                const dailies = days.map(getDateString).map((x) => ({ date: x, visits: dayVisits[x] ?? 0 }));
 
                 resolve(dailies);
             }
@@ -156,7 +156,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         );
     });
 
-    const rangeVisits = sum(dailyVisits, d => d.visits);
+    const rangeVisits = sum(dailyVisits, (d) => d.visits);
 
     return {
         bestDay,
@@ -239,7 +239,11 @@ export const createGallery = (gallery: GalleryEditDto) =>
                     gallery.blog
                 ],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
 
                     err == null ? resolve() : reject(err);
                 }
@@ -276,7 +280,11 @@ export const editGallery = (id: number, gallery: GalleryEditDto) =>
                     id
                 ],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
 
                     err == null ? resolve() : reject(err);
                 }
@@ -298,7 +306,11 @@ export const deleteGallery = (id: number) =>
                 WHERE PrivateGalleryId = ?;`,
                 [id, id, id],
                 (err, _, _fields) => {
-                    if (err) connection.rollback();
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
 
                     err == null ? resolve() : reject(err);
                 }
