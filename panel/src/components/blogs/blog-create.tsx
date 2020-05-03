@@ -47,7 +47,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
     };
 
     return (
-        <Drawer size="xs" placement="right" show={showCreateForm} onHide={closeCreateForm}>
+        <Drawer size="sm" placement="right" show={showCreateForm} onHide={closeCreateForm}>
             <Drawer.Header>
                 <Drawer.Title>Create new blog</Drawer.Title>
             </Drawer.Header>
@@ -60,27 +60,27 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                 >
                     <FormGroup>
                         <ControlLabel>Title</ControlLabel>
-                        <FormControl name="title" />
+                        <FormControl style={{width: 500}} name="title" />
                         <HelpBlock tooltip>Title of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Alias</ControlLabel>
-                        <FormControl name="alias" checkAsync />
+                        <FormControl style={{width: 500}} name="alias" checkAsync />
                         <HelpBlock tooltip>Alias of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Date</ControlLabel>
-                        <FormControl name="date" type="date" />
+                        <FormControl style={{width: 500}} name="date" type="date" />
                         <HelpBlock tooltip>Date of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Content</ControlLabel>
-                        <FormControl name="content" componentClass="textarea" />
+                        <FormControl style={{width: 500}} name="content" componentClass="textarea" />
                         <HelpBlock tooltip>Content of blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Tags</ControlLabel>
-                        <FormControl name="tags" />
+                        <FormControl style={{width: 500}} name="tags" />
                         <HelpBlock tooltip>Tags of the blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>

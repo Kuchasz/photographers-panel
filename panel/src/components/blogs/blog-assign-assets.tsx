@@ -11,6 +11,7 @@ import { range, union, distinctBy } from "../../../../utils/array";
 import { inRange } from "../../../../utils/number";
 import { read } from "../../../../utils/file";
 import { ResultType } from "../../../../api/common";
+import { ToolTip } from "../common/tooltip";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
 
@@ -31,8 +32,12 @@ interface OverlayButtonProps {
 
 const OverlayButtons = ({ isMain, onClick, onDelete }: OverlayButtonProps) => (
     <div className="overlay-button">
-        <Icon onClick={onClick} className={!isMain ? "hideable" : ""} icon={isMain ? "star" : "star-o"} />
-        <Icon onClick={onDelete} className="hideable" icon="trash-o" />
+        <ToolTip text={isMain ? "Asset is main" : "Set asset as main"}>
+            <Icon onClick={onClick} className={!isMain ? "hideable" : ""} icon={isMain ? "star" : "star-o"} />
+        </ToolTip>
+        <ToolTip text="Delete asset">
+            <Icon onClick={onDelete} className="hideable" icon="trash-o" />
+        </ToolTip>
     </div>
 );
 
