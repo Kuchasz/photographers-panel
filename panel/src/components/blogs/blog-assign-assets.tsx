@@ -58,21 +58,29 @@ const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) =
             />
         </ToolTip>
         <ToolTip text="Delete asset">
-            <Icon onClick={onDelete} className="hideable" icon="trash-o" />
+            <Icon
+                onClick={(e: MouseEvent) => {
+                    onDelete();
+                    e.stopPropagation();
+                }}
+                className="hideable"
+                icon="trash-o"
+            />
         </ToolTip>
     </div>
 );
 
 interface AssetDescriptorProps {
     item: BlogAssetsListItem;
+    onAltChanged: (id: number, alt: string) => void;
 }
 
 const debouncedChangeBlogAssetAlt = debounceRequest(changeBlogAssetAlt);
-const AssetDescriptor = ({ item, ...props }: AssetDescriptorProps) => {
+const AssetDescriptor = ({ item, onAltChanged, ...props }: AssetDescriptorProps) => {
     const [altText, setAltText] = React.useState<string>(item.alt!);
 
     const changeAlt = (value: string) => {
-        debouncedChangeBlogAssetAlt(item.id!, value);
+        debouncedChangeBlogAssetAlt(item.id!, value).then(() => onAltChanged(item.id!, value));
         setAltText(value);
     };
 
@@ -93,11 +101,12 @@ interface AssetThumbProps {
     item: BlogAssetsListItem;
     onSetAsMain: (assetId: number) => void;
     onDelete: (assetId: number) => void;
+    onAltChange: (assetId: number, alt: string) => void;
 }
 
-const AssetThumb = ({ item, onSetAsMain, onDelete }: AssetThumbProps) => {
+const AssetThumb = ({ item, onSetAsMain, onDelete, onAltChange }: AssetThumbProps) => {
     return (
-        <Whisper placement="auto" speaker={<AssetDescriptor item={item} />} trigger="click">
+        <Whisper placement="auto" speaker={<AssetDescriptor onAltChanged={onAltChange} item={item} />} trigger="click">
             <AssetsListItem className="thumb">
                 <OverlayButtons
                     isMain={item.isMain!}
@@ -186,7 +195,8 @@ const AssetsList = ({
     blogId,
     onUploaded,
     onSetAsMain,
-    onDelete
+    onDelete,
+    onAltChange
 }: {
     blogId: number;
     items: BlogAssetsListItem[];
@@ -194,11 +204,18 @@ const AssetsList = ({
     onUploaded: (id: number, url: string, oldURL: string) => void;
     onSetAsMain: (assetId: number) => void;
     onDelete: (assetId: number) => void;
+    onAltChange: (assetId: number, alt: string) => void;
 }) => (
     <div className="assets-list">
         {items.map((item) =>
             item.id !== undefined ? (
-                <AssetThumb onDelete={onDelete} onSetAsMain={onSetAsMain} item={item} key={item.id} />
+                <AssetThumb
+                    onAltChange={onAltChange}
+                    onDelete={onDelete}
+                    onSetAsMain={onSetAsMain}
+                    item={item}
+                    key={item.id}
+                />
             ) : (
                 <AssetUploadingThumb
                     blogId={blogId}
@@ -283,6 +300,18 @@ export class BlogAssignAssets extends React.Component<Props, State> {
         });
     };
 
+    handleAltChange = (assetId: number, alt: string) => {
+        this.setState((state) => {
+            const index = state.assets.map((x) => x.id).indexOf(assetId);
+
+            const item = state.assets[index];
+
+            let assets = [...state.assets.slice(0, index), { ...item, alt }, ...state.assets.slice(index + 1)];
+
+            return { assets };
+        });
+    };
+
     handleDelete = (assetId: number) => {
         deleteBlogAsset(assetId).then((result) => {
             if (result.type === ResultType.Success) {
@@ -316,6 +345,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                         onUploaded={this.handleAssetsUploaded}
                         onSetAsMain={this.handleMarkAsMain}
                         onDelete={this.handleDelete}
+                        onAltChange={this.handleAltChange}
                         items={this.state.assets}
                     />
                 </Modal.Body>
