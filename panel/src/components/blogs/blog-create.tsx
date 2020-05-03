@@ -8,8 +8,7 @@ import {
     FormControl,
     HelpBlock,
     ButtonToolbar,
-    Alert,
-    Icon
+    Alert
 } from "rsuite";
 import { BlogEditDto, createBlog } from "../../../../api/panel/blog";
 import { FormInstance } from "rsuite/lib/Form/Form";
@@ -75,7 +74,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Content</ControlLabel>
-                        <FormControl style={{width: 500}} name="content" componentClass="textarea" />
+                        <FormControl style={{width: 500, height: 300}} name="content" componentClass="textarea" />
                         <HelpBlock tooltip>Content of blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
@@ -86,8 +85,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                     <FormGroup>
                         <ButtonToolbar>
                             <Button onClick={submitCreateBlog} appearance="primary" loading={isLoading}>
-                                <Icon icon="edit2" />
-                                Create
+                                Save
                             </Button>
                             <Button
                                 onClick={() => {

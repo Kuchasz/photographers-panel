@@ -146,7 +146,7 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                     <FormGroup>
                         <ButtonToolbar>
                             <Button onClick={submitCreateGallery} appearance="primary" loading={isLoading}>
-                                Create
+                                Save
                             </Button>
                             <Button
                                 onClick={() => {

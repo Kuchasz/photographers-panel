@@ -68,7 +68,7 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Content</ControlLabel>
-                        <FormControl style={{width: 500}} name="content" componentClass="textarea" />
+                        <FormControl style={{width: 500, height: 300}} name="content" componentClass="textarea" />
                         <HelpBlock tooltip>Content of blog</HelpBlock>
                     </FormGroup>
                     <FormGroup>
