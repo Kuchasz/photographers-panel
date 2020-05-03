@@ -1,17 +1,32 @@
 import React, { ChangeEvent } from "react";
-import { Modal, Button, Icon, IconButton, Loader, Progress, Alert } from "rsuite";
+import {
+    Modal,
+    Button,
+    Icon,
+    Loader,
+    Progress,
+    Alert,
+    Whisper,
+    Popover,
+    FormGroup,
+    ControlLabel,
+    FormControl,
+    Form
+} from "rsuite";
 import {
     BlogAssetsListItemDto,
     uploadBlogAsset,
     getBlogAssets,
     changeMainBlogAsset,
-    deleteBlogAsset
+    deleteBlogAsset,
+    changeBlogAssetAlt
 } from "../../../../api/panel/blog";
 import { range, union, distinctBy } from "../../../../utils/array";
 import { inRange } from "../../../../utils/number";
 import { read } from "../../../../utils/file";
 import { ResultType } from "../../../../api/common";
 import { ToolTip } from "../common/tooltip";
+import { debounceRequest } from "../../../../utils/function";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
 
@@ -25,21 +40,54 @@ interface State {
 }
 
 interface OverlayButtonProps {
-    onClick: () => void;
+    onSetAsMain: () => void;
     onDelete: () => void;
     isMain: boolean;
 }
 
-const OverlayButtons = ({ isMain, onClick, onDelete }: OverlayButtonProps) => (
+const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) => (
     <div className="overlay-button">
         <ToolTip text={isMain ? "Asset is main" : "Set asset as main"}>
-            <Icon onClick={onClick} className={!isMain ? "hideable" : ""} icon={isMain ? "star" : "star-o"} />
+            <Icon
+                onClick={(e: MouseEvent) => {
+                    onSetAsMain();
+                    e.stopPropagation();
+                }}
+                className={!isMain ? "hideable" : ""}
+                icon={isMain ? "star" : "star-o"}
+            />
         </ToolTip>
         <ToolTip text="Delete asset">
             <Icon onClick={onDelete} className="hideable" icon="trash-o" />
         </ToolTip>
     </div>
 );
+
+interface AssetDescriptorProps {
+    item: BlogAssetsListItem;
+}
+
+const debouncedChangeBlogAssetAlt = debounceRequest(changeBlogAssetAlt);
+const AssetDescriptor = ({ item, ...props }: AssetDescriptorProps) => {
+    const [altText, setAltText] = React.useState<string>(item.alt!);
+
+    const changeAlt = (value: string) => {
+        debouncedChangeBlogAssetAlt(item.id!, value);
+        setAltText(value);
+    };
+
+    return (
+        <Popover {...props} title="Describe the asset">
+            <img style={{ width: "300px", height: "300px", objectFit: "cover" }} src={item.url}></img>
+            <Form fluid>
+                <FormGroup>
+                    <ControlLabel>Description</ControlLabel>
+                    <FormControl onChange={changeAlt} value={altText} name="description" />
+                </FormGroup>
+            </Form>
+        </Popover>
+    );
+};
 
 interface AssetThumbProps {
     item: BlogAssetsListItem;
@@ -49,22 +97,16 @@ interface AssetThumbProps {
 
 const AssetThumb = ({ item, onSetAsMain, onDelete }: AssetThumbProps) => {
     return (
-        <AssetsListItem className="thumb">
-            {Math.random() === 1 ? (
-                <IconButton
-                    onClick={() => onSetAsMain(item.id!)}
-                    icon={item.isMain ? <Icon icon="star" /> : <Icon icon="star-o" />}
-                    circle
-                    size="xs"
+        <Whisper placement="auto" speaker={<AssetDescriptor item={item} />} trigger="click">
+            <AssetsListItem className="thumb">
+                <OverlayButtons
+                    isMain={item.isMain!}
+                    onDelete={() => onDelete(item.id!)}
+                    onSetAsMain={() => onSetAsMain(item.id!)}
                 />
-            ) : null}
-            <OverlayButtons
-                isMain={item.isMain!}
-                onDelete={() => onDelete(item.id!)}
-                onClick={() => onSetAsMain(item.id!)}
-            />
-            <img src={item.url}></img>
-        </AssetsListItem>
+                <img src={item.url}></img>
+            </AssetsListItem>
+        </Whisper>
     );
 };
 
@@ -132,8 +174,10 @@ const AssetUploadButton = ({ onAssetsChosen }: AssetUploadButtonProps) => {
     );
 };
 
-const AssetsListItem: React.FC<{ className: string }> = ({ children, className }) => (
-    <div className={`item ${className}`}>{children}</div>
+const AssetsListItem: React.FC<{ className: string; onClick?: () => void }> = ({ children, className, onClick }) => (
+    <div onClick={onClick} className={`item ${className}`}>
+        {children}
+    </div>
 );
 
 const AssetsList = ({

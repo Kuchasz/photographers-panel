@@ -33,6 +33,7 @@ export interface BlogAssetsListItemDto {
     id: number;
     url: string;
     isMain: boolean;
+    alt: string;
 }
 
 export interface MainBlogAssetDto {
@@ -60,6 +61,9 @@ export type ChangeMainBlogAssetResult = Result<ChangeMainBlogAssetError>;
 
 export type DeleteBlogAssetError = "ErrorOccuredWhileDeletingBlogAsset";
 export type DeleteBlogAssetResult = Result<DeleteBlogAssetError>;
+
+export type ChangeBlogAssetAltError = "ErrorOccuredWhileChangingBlogAssetError";
+export type ChangeBlogAssetAltResult = Result<ChangeBlogAssetAltError>;
 
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
@@ -232,3 +236,19 @@ export const deleteBlogAsset = (id: number) =>
             .then(resolve);
     });
 deleteBlogAsset.route = deleteBlogAssetRoute;
+
+const changeBlogAssetAltRoute = "/api/panel/change-blog-asset-alt";
+export const changeBlogAssetAlt = (id: number, alt: string) =>
+    new Promise<ChangeBlogAssetAltResult>((resolve, _) => {
+        fetch("http://192.168.56.102:8080" + changeBlogAssetAltRoute, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id, alt })
+        })
+            .then((result) => result.json())
+            .then(resolve);
+    });
+changeBlogAssetAlt.route = changeBlogAssetAltRoute;

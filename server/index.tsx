@@ -235,6 +235,22 @@ app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
     res.json(result);
 });
 
+app.post(blogPanel.changeBlogAssetAlt.route, async (req, res) => {
+    let result: blogPanel.ChangeBlogAssetAltResult | undefined = undefined;
+
+    var { id, alt }: { id: number, alt: string } = req.body;
+
+    try {
+        await blogModel.changeBlogAssetAlt(id, alt);
+
+        result = { type: ResultType.Success };
+    } catch (err) {
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogAssetError" };
+    }
+
+    res.json(result);
+});
+
 app.post(message.send.route, async (req, res) => {
     const mesg = req.body as message.Message;
 

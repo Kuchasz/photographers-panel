@@ -323,18 +323,22 @@ export const getAssetsForBlog = (blogId: number): Promise<panel.BlogAssetsListIt
     new Promise((resolve, reject) => {
         connection.query(
             `
-        SELECT b.MainBlogAsset_id, ba.id, ba.Url
+        SELECT b.MainBlogAsset_id, ba.id, ba.Url, ba.Alt
         FROM BlogAsset ba 
         JOIN Blog b ON ba.Blog_id = b.Id
         WHERE ba.Blog_id = ?`,
             [blogId],
-            (_err, blogAssets, _fields) => {
+            (_err, blogAssets: { MainBlogAsset_id: number; id: number; Url: string; Alt: string }[], _fields) => {
                 resolve(
-                    blogAssets.map((ba: any) => ({
-                        id: ba.id,
-                        url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
-                        isMain: ba.MainBlogAsset_id === ba.id
-                    }))
+                    blogAssets.map(
+                        (ba: any) =>
+                            ({
+                                id: ba.id,
+                                url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
+                                isMain: ba.MainBlogAsset_id === ba.id,
+                                alt: ba.Alt
+                            } as panel.BlogAssetsListItemDto)
+                    )
                 );
             }
         );
@@ -376,6 +380,28 @@ export const getAssetPathById = (id: number): Promise<string> =>
         );
     });
 
+export const changeBlogAssetAlt = (id: number, alt: string): Promise<void> =>
+    new Promise((resolve, reject) => {
+        connection.beginTransaction(() => {
+            connection.query(
+                `
+                UPDATE BlogAsset
+                SET Alt = ?
+                WHERE Id = ?`,
+                [alt, id],
+                (err, _, _fields) => {
+                    if (err) {
+                        connection.rollback();
+                    } else {
+                        connection.commit();
+                    }
+
+                    err == null ? resolve() : reject(err);
+                }
+            );
+        });
+    });
+
 export const getAssetsPath = (blogId: number) => `public/blogs/${blogId}`;
-export const getAssetId = (blogTags: string) => `${blogTags}-${100000000 + Math.floor(Math.random() * 999999990)}.jpg`;
+export const getAssetId = (blogTags: string) => `${blogTags}-${100000000 + Math.floor(Math.random() * 999999990)}.webp`;
 export const getAssetPath = (assetsPath: string, assetId: string) => `${assetsPath}/${assetId}`;

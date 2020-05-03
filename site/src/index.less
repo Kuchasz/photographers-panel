@@ -18,11 +18,14 @@
 .blog {
     article {
         display: flex;
-        flex-direction: column;
         align-items: center;
         flex-wrap: wrap;
         justify-content: center;
         width: 1000px;
+
+        &.show {
+            flex-direction: column;
+        }
 
         h1 {
             text-align: center;

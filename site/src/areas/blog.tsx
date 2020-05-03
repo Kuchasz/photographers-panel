@@ -19,7 +19,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
         return (
             <div className="blog">
                 <section>
-                    <article>
+                    <article className="show">
                         <h1>
                             <sup>
                                 <small>{this.state.blog.date}</small>
