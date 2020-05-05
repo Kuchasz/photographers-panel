@@ -26,7 +26,7 @@ import { inRange } from "../../../../utils/number";
 import { read } from "../../../../utils/file";
 import { ResultType } from "../../../../api/common";
 import { ToolTip } from "../common/tooltip";
-import { debounceRequest } from "../../../../utils/function";
+import { debounce } from "../../../../utils/function";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
 
@@ -50,7 +50,7 @@ const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) =
         <ToolTip text={isMain ? "Asset is main" : "Set asset as main"}>
             <Icon
                 onClick={(e: MouseEvent) => {
-                    onSetAsMain();
+                    if (!isMain) onSetAsMain();
                     e.stopPropagation();
                 }}
                 className={!isMain ? "hideable" : ""}
@@ -75,27 +75,36 @@ interface AssetDescriptorProps {
     onAltChanged: (id: number, alt: string) => void;
 }
 
-const debouncedChangeBlogAssetAlt = debounceRequest(changeBlogAssetAlt);
-const AssetDescriptor = ({ item, onAltChanged, ...props }: AssetDescriptorProps) => {
-    const [altText, setAltText] = React.useState<string>(item.alt!);
+export class AssetDescriptor extends React.Component<AssetDescriptorProps, { altText: string }> {
+    constructor(props: AssetDescriptorProps) {
+        super(props);
+        this.state = { altText: this.props.item.alt! };
+    }
 
-    const changeAlt = (value: string) => {
-        debouncedChangeBlogAssetAlt(item.id!, value).then(() => onAltChanged(item.id!, value));
-        setAltText(value);
+    debounceChangeBlogAssetAlt = debounce((value: string) => {
+        changeBlogAssetAlt(this.props.item.id!, value).then(() => this.props.onAltChanged(this.props.item.id!, value));
+    }, 1000);
+
+    changeAlt = (value: string) => {
+        this.debounceChangeBlogAssetAlt(value);
+        this.setState(() => ({ altText: value }));
     };
 
-    return (
-        <Popover {...props} title="Describe the asset">
-            <img style={{ width: "300px", height: "300px", objectFit: "cover" }} src={item.url}></img>
-            <Form fluid>
-                <FormGroup>
-                    <ControlLabel>Description</ControlLabel>
-                    <FormControl onChange={changeAlt} value={altText} name="description" />
-                </FormGroup>
-            </Form>
-        </Popover>
-    );
-};
+    render() {
+        const { item, onAltChanged, ...props } = this.props;
+        return (
+            <Popover {...props} title="Describe the asset">
+                <img style={{ width: "300px", height: "300px", objectFit: "cover" }} src={item.url}></img>
+                <Form fluid>
+                    <FormGroup>
+                        <ControlLabel>Description</ControlLabel>
+                        <FormControl onChange={this.changeAlt} value={this.state.altText} name="description" />
+                    </FormGroup>
+                </Form>
+            </Popover>
+        );
+    }
+}
 
 interface AssetThumbProps {
     item: BlogAssetsListItem;
@@ -328,6 +337,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
     };
 
     render() {
+        console.log("render whole list of assets");
         return (
             <Modal
                 className="blog-assign-assets"

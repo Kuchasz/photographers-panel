@@ -1,20 +1,41 @@
-const debounce = (ms: number) => <T>(inner: T ):T => {
-    let timer:any = null;
-    let resolves: any[] = [];
-  
-    return <any>function (...args: any[]) {    
-      // Run the function after a certain amount of time
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        // Get the result of the inner function, then apply it to the resolve function of
-        // each promise that has been created since the last time the inner function was run
-        let result = (inner as any)(...args);
-        resolves.forEach(r => r(result));
-        resolves = [];
-      }, ms);
-  
-      return new Promise(r => resolves.push(r));
-    };
-  }
+/**
+ * A function that emits a side effect and does not return anything.
+ */
+export type Procedure = (...args: any[]) => void;
 
-export const debounceRequest = debounce(500);
+export type Options = {
+  isImmediate: boolean,
+}
+
+export function debounce<F extends Procedure>(
+  func: F,
+  waitMilliseconds = 50,
+  options: Options = {
+    isImmediate: false
+  },
+): (this: ThisParameterType<F>, ...args: Parameters<F>) => void {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+  return function(this: ThisParameterType<F>, ...args: Parameters<F>) {
+    const context = this;
+
+    const doLater = function() {
+      timeoutId = undefined;
+      if (!options.isImmediate) {
+        func.apply(context, args);
+      }
+    }
+
+    const shouldCallNow = options.isImmediate && timeoutId === undefined;
+
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(doLater, waitMilliseconds);
+
+    if (shouldCallNow) {
+      func.apply(context, args);
+    }
+  }
+}
