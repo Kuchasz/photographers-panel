@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Drawer, Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, ButtonToolbar, Alert } from "rsuite";
 import { BlogEditDto, editBlog, getBlogForEdit } from "../../../../api/panel/blog";
-import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
 import { blogModel, emptyBlog } from "./blog-model";
+import { FormInstance } from "rsuite/lib/Form/index.d.ts";
 
 interface Props {
     id: number;

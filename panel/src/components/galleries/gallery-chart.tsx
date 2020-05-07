@@ -1,35 +1,24 @@
-import { utc as moment } from "moment";
 import React from "react";
-import { Line } from "react-chartjs-2";
-import { ChartOptions } from "chart.js";
 import { VisitsSummaryDto } from "../../../../api/panel/private-gallery";
+import { getDayAndMonth } from "../../../../utils/date";
 
-const chartOptions: ChartOptions = {
-    maintainAspectRatio: false,
-    responsive: true,
-    legend: {
-        display: false
-    },
-    scales: {
-        yAxes: [
-            {
-                ticks: {
-                    beginAtZero: true
-                }
-            }
-        ]
-    }
+import ChartistGraph from "react-chartist";
+
+const chartOptions = {
+    low: 0,
+    showArea: true,
+    height: 300
 };
 
-const formatDateToDayAndMonth = (dateString: string) => moment(dateString, "YYYY-MM-DD").format("DD/MM");
+const formatDateToDayAndMonth = (dateString: string) => getDayAndMonth(new Date(dateString));
 
 const getData = (visits: VisitsSummaryDto[]) => ({
-    labels: visits.map(visit => formatDateToDayAndMonth(visit.date)),
-    datasets: [{ fill: "#34c3ff", borderColor: "#34c3ff", data: visits.map(visit => Number(visit.visits)) }]
+    labels: visits.map((visit) => formatDateToDayAndMonth(visit.date)),
+    series: [visits.map((visit) => Number(visit.visits))]
 });
 
 export const GalleryChart = ({ visits }: { visits: VisitsSummaryDto[] }) => (
     <div className="chart">
-        <Line options={chartOptions} data={getData(visits)} />
+        <ChartistGraph data={getData(visits)} options={chartOptions} type={"Line"} />
     </div>
 );

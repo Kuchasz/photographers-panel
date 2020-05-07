@@ -14,9 +14,9 @@ import {
 import { PrivateGalleryState } from "../../../../api/private-gallery";
 import { BlogSelectItem, getBlogSelectList } from "../../../../api/panel/blog";
 import { GalleryEditDto, createGallery } from "../../../../api/panel/private-gallery";
-import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
 import { galleryModel } from "./gallery-model";
+import { FormInstance } from "rsuite/lib/Form/index.d.ts";
 
 interface Props {
     showCreateForm: boolean;

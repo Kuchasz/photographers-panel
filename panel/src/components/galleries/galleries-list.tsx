@@ -109,6 +109,8 @@ export class GalleriesList extends React.PureComponent<Props, State> {
             <Table
                 rowHeight={50}
                 virtualized={true}
+                shouldUpdateScroll={true}
+                onDataUpdated={() => {}}
                 loading={this.props.loadingGalleries}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item.id)}

@@ -1,14 +1,15 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = {
+module.exports = (env, argv) => ({
     entry: path.resolve("./src/index.tsx"),
     output: {
         filename: "bundle.js"
     },
-    mode: "development",
-    devtool: 'inline-source-map',
+    mode: argv.mode,
+    devtool: "inline-source-map",
     module: {
         rules: [
             {
@@ -25,18 +26,18 @@ module.exports = {
                         {
                             loader: "postcss-loader",
                             options: {
-                                plugins: [require('autoprefixer')]
+                                plugins: [require("autoprefixer")]
                             }
-                        }, "sass-loader"]
+                        },
+                        "sass-loader"
+                    ]
                 })
-            }, {
+            },
+            {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: [
-                        'css-loader',
-                        'less-loader?javascriptEnabled=true'
-                    ]
+                    use: ["css-loader", "less-loader?javascriptEnabled=true"]
                 })
             }
             // this rule handles images
@@ -64,6 +65,15 @@ module.exports = {
     resolve: {
         extensions: [".scss", ".ts", ".tsx", ".js"]
     },
+    optimization:
+        argv.mode === "production"
+            ? {
+                  usedExports: true,
+                  sideEffects: true,
+                  minimize: true,
+                  minimizer: [new TerserPlugin()]
+              }
+            : {},
     plugins: [
         new HtmlWebpackPlugin({
             template: "src/index.html",
@@ -83,4 +93,4 @@ module.exports = {
         contentBase: path.resolve("./dist"),
         open: true
     }
-};
+});

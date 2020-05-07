@@ -65,6 +65,8 @@ export class BlogsList extends React.Component<Props, State> {
             <Table
                 rowHeight={50}
                 virtualized={true}
+                shouldUpdateScroll={true}
+                onDataUpdated={() => {}}
                 loading={this.props.loadingBlogs}
                 height={700}
                 onRowClick={(item: any) => this.props.onSelect(item.id)}

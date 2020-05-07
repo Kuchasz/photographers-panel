@@ -11,9 +11,9 @@ import {
     Alert
 } from "rsuite";
 import { BlogEditDto, createBlog } from "../../../../api/panel/blog";
-import { FormInstance } from "rsuite/lib/Form/Form";
 import { ResultType } from "../../../../api/common";
 import { blogModel, emptyBlog } from "./blog-model";
+import { FormInstance } from "rsuite/lib/Form/index.d.ts";
 
 interface Props {
     showCreateForm: boolean;

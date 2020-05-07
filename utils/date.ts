@@ -21,6 +21,12 @@ export const getDateString = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
+export const getDayAndMonth = (date: Date) => {
+    const month = withMinLength(date.getMonth() + 1, 2);
+    const day = withMinLength(date.getDate(), 2);
+    return `${day}/${month}`;
+}
+
 export const getDateRange = (startDate: Date, endDate: Date) => {
     var dateArray = new Array();
     var currentDate = startDate;
