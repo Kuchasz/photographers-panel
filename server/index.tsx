@@ -238,7 +238,7 @@ app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
 app.post(blogPanel.changeBlogAssetAlt.route, async (req, res) => {
     let result: blogPanel.ChangeBlogAssetAltResult | undefined = undefined;
 
-    var { id, alt }: { id: number, alt: string } = req.body;
+    var { id, alt }: { id: number; alt: string } = req.body;
 
     try {
         await blogModel.changeBlogAssetAlt(id, alt);

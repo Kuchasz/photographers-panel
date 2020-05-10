@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node index.tsx",
-    "watch": "nodemon --watch ../site/dist --watch ../api --watch ./src -e ts,tsx,json -e ts,tsx,json --exec \"ts-node\" index.tsx"
+    "watch": "nodemon --watch . --ext ts,tsx --exec ts-node --ignore '*.test.ts' --delay 2 index.tsx"
   },
   "keywords": [],
   "author": "",

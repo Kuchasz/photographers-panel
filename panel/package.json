@@ -7,17 +7,22 @@
     "src/index.tsx",
     "*.less",
     "*.scss",
-    "*.css"],
+    "*.css"
+  ],
   "scripts": {
-    "build:development": "webpack --mode development",
-    "build:production": "webpack --mode production",
-    "start": "webpack-dev-server --mode development --port 3008",
-    "start:production": "webpack-dev-server --port 3008 --mode production"
+    "b:dev": "webpack --mode development",
+    "b:prod": "webpack --mode production",
+    "start:dev": "webpack-dev-server --mode development --port 3008",
+    "start:prod": "webpack-dev-server --mode production --port 3008",
+    "analyze:dev": "webpack --mode development --analyze",
+    "analyze:prod": "webpack --mode production --analyze"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "progress-bar-webpack-plugin": "^2.1.0"
+  },
   "devDependencies": {
     "@types/node": "^11.15.3",
     "@types/react": "^16.9.16",

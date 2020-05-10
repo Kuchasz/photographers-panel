@@ -2,6 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 
 module.exports = (env, argv) => ({
     entry: path.resolve("./src/index.tsx"),
@@ -9,7 +11,7 @@ module.exports = (env, argv) => ({
         filename: "bundle.js"
     },
     mode: argv.mode,
-    devtool: "inline-source-map",
+    devtool: argv.mode === "production" ? "source-map" : "eval-source-map",
     module: {
         rules: [
             {
@@ -75,6 +77,8 @@ module.exports = (env, argv) => ({
               }
             : {},
     plugins: [
+        ...(argv.analyze ? [new BundleAnalyzerPlugin({ analyzerHost: "192.168.56.102", analyzerPort: "8888" })] : []),
+        new ProgressBarPlugin(),
         new HtmlWebpackPlugin({
             template: "src/index.html",
             alwaysWriteToDisk: true,
