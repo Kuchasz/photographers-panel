@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Panel, Icon, IconButton, Alert } from "rsuite";
+import { Panel, Icon, Alert, Button } from "rsuite";
 import { addMonths } from "../../../../utils/date";
 import "./styles.less";
 import { confirm } from "../common/confirmation";
@@ -182,10 +182,9 @@ export class Blogs extends React.Component<Props, State> {
                 <div className="list">
                     <Panel
                         header={
-                            <span>
-                                Blogs
-                                <IconButton onClick={this.showCreateForm} icon={<Icon icon="plus" />} color="green" />
-                            </span>
+                            <Button onClick={this.showCreateForm} color="green">
+                                <Icon icon="plus" /> Create Blog
+                            </Button>
                         }
                     >
                         <BlogsList

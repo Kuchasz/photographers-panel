@@ -2,7 +2,6 @@ import { connection } from "../db";
 import { getDateString } from "../../../utils/date";
 import * as site from "../../../api/site/blog";
 import * as panel from "../../../api/panel/blog";
-import { resolve } from "dns";
 
 export const getMostRecent = (): Promise<site.LastBlog> =>
     new Promise((resolve, reject) => {

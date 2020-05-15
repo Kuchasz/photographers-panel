@@ -9,8 +9,8 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
     new Promise((resolve, reject) => {
         connection.query(
             `
-        SELECT p.id, p.state, p.bride, p.groom, p.place, p.lastname, p.dir, p.date, be.title, be.alias FROM privategallery AS p 
-        LEFT OUTER JOIN blogentry be ON be.id = p.BlogEntryId
+        SELECT p.id, p.state, p.bride, p.groom, p.place, p.lastname, p.dir, p.date, be.title, be.alias FROM PrivateGallery AS p 
+        LEFT OUTER JOIN Blog be ON be.id = p.Blog_id
         WHERE p.pass = ?
         `,
             [password],
@@ -42,7 +42,7 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
 
 export const exists = (id: number): Promise<boolean> =>
     new Promise((resolve, reject) =>
-        connection.query(`SELECT id FROM privategallery AS p WHERE p.id = ?`, [id], (_err, rows, _fields) => {
+        connection.query(`SELECT id FROM PrivateGallery AS p WHERE p.id = ?`, [id], (_err, rows, _fields) => {
             resolve(rows.length !== 0);
         })
     );
@@ -51,9 +51,9 @@ export const getList = (): Promise<GalleryDto[]> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-            SELECT p.id, p.date, p.place, p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.BlogEntryId, SUM(d.count) as visits 
-            FROM privategallery p
-            LEFT JOIN daily d ON p.id = d.PrivateGalleryId
+            SELECT p.id, p.date, p.place, p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.Blog_id, SUM(d.count) as visits 
+            FROM PrivateGallery p
+            LEFT JOIN PrivateGalleryDailyVisit d ON p.id = d.PrivateGallery_id
             GROUP BY p.id
             ORDER BY p.date DESC`,
             (_err, galleries, _fields) => {
@@ -67,7 +67,7 @@ export const getList = (): Promise<GalleryDto[]> =>
                     state: Number(g.state),
                     password: g.pass,
                     url: g.dir,
-                    blogId: Number(g.BlogEntryId),
+                    blogId: Number(g.Blog_id),
                     visits: g.visits ? Number(g.visits) : 0
                 }));
 
@@ -82,7 +82,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const dailyVisits = await new Promise<VisitsSummaryDto[]>((resolve, reject) => {
         connection.query(
-            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ? AND d.date BETWEEN ? AND ?`,
+            `SELECT d.count, d.date FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ? AND d.date BETWEEN ? AND ?`,
             [galleryId, getDateString(startDate), getDateString(endDate)],
             (_err, visists: any[], _fields) => {
                 const dayVisits = visists.reduce(
@@ -98,7 +98,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const bestDay = await new Promise<VisitsSummaryDto>((resolve, reject) => {
         connection.query(
-            `SELECT d.count, d.date FROM daily d WHERE d.PrivateGalleryId = ?
+            `SELECT d.count, d.date FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ?
             ORDER BY d.count DESC
             LIMIT 1`,
             [galleryId],
@@ -114,8 +114,8 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const totalVisits = await new Promise<number>((resolve, reject) => {
         connection.query(
-            `SELECT SUM(d.count) as visits FROM daily d WHERE d.PrivateGalleryId = ?
-            GROUP BY d.PrivateGalleryId`,
+            `SELECT SUM(d.count) as visits FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ?
+            GROUP BY d.PrivateGallery_id`,
             [galleryId],
             (_err, result, _fields) => {
                 if (result && result.length > 0) {
@@ -129,8 +129,8 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const emails = await new Promise<number>((resolve, reject) => {
         connection.query(
-            `SELECT COUNT(d.id) as emails FROM email d WHERE d.PrivateGalleryId = ?
-            GROUP BY d.PrivateGalleryId`,
+            `SELECT COUNT(d.id) as emails FROM PrivateGalleryEmail d WHERE d.PrivateGallery_id = ?
+            GROUP BY d.PrivateGallery_id`,
             [galleryId],
             (_err, result, _fields) => {
                 if (result && result.length > 0) {
@@ -144,7 +144,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const todayVisits = await new Promise<number>((resolve, reject) => {
         connection.query(
-            `SELECT d.count FROM daily d WHERE d.PrivateGalleryId = ? AND date = ?`,
+            `SELECT d.count FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ? AND date = ?`,
             [galleryId, today],
             (_err, result, _fields) => {
                 if (result && result.length > 0) {
@@ -174,7 +174,7 @@ export const checkPasswordIsUnique = (password: string, galleryId?: number): Pro
         connection.query(
             `
             SELECT p.id 
-            FROM privategallery p
+            FROM PrivateGallery p
             WHERE p.pass = ?`,
             [password],
             (_err, galleries, _fields) => {
@@ -192,8 +192,8 @@ export const getForEdit = (galleryId: number): Promise<GalleryEditDto> =>
     new Promise((resolve, reject) => {
         connection.query(
             `
-            SELECT p.place, p.date,  p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.BlogEntryId
-            FROM privategallery p
+            SELECT p.place, p.date,  p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.Blog_id
+            FROM PrivateGallery p
             WHERE p.id = ?`,
             [galleryId],
             (_err, [gallery], _fields) => {
@@ -206,7 +206,7 @@ export const getForEdit = (galleryId: number): Promise<GalleryEditDto> =>
                     state: Number(gallery.state),
                     password: gallery.pass,
                     directPath: gallery.dir,
-                    blog: Number(gallery.BlogEntryId)
+                    blog: Number(gallery.Blog_id)
                 });
             }
         );
@@ -216,7 +216,7 @@ export const createGallery = (gallery: GalleryEditDto) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
             connection.query(
-                `INSERT INTO privategallery(
+                `INSERT INTO PrivateGallery(
                     date, 
                     place, 
                     bride, 
@@ -225,7 +225,7 @@ export const createGallery = (gallery: GalleryEditDto) =>
                     state, 
                     pass, 
                     dir, 
-                    BlogEntryId) 
+                    Blog_id) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     gallery.date,
@@ -255,7 +255,7 @@ export const editGallery = (id: number, gallery: GalleryEditDto) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
             connection.query(
-                `UPDATE privategallery
+                `UPDATE PrivateGallery
                 SET
                     date = ?, 
                     place = ?, 
@@ -265,7 +265,7 @@ export const editGallery = (id: number, gallery: GalleryEditDto) =>
                     state = ?, 
                     pass = ?, 
                     dir = ?, 
-                    BlogEntryId = ?
+                    Blog_id = ?
                 WHERE id = ?`,
                 [
                     gallery.date,
@@ -296,14 +296,14 @@ export const deleteGallery = (id: number) =>
     new Promise((resolve, reject) => {
         connection.beginTransaction(() => {
             connection.query(
-                `DELETE FROM privategallery
+                `DELETE FROM PrivateGallery
                 WHERE id = ?;
                 
-                DELETE FROM email
-                WHERE PrivateGalleryId = ?;
+                DELETE FROM PrivateGalleryEmail
+                WHERE PrivateGallery_id = ?;
                 
-                DELETE FROM daily
-                WHERE PrivateGalleryId = ?;`,
+                DELETE FROM PrivateGalleryDailyVisit
+                WHERE PrivateGallery_id = ?;`,
                 [id, id, id],
                 (err, _, _fields) => {
                     if (err) {

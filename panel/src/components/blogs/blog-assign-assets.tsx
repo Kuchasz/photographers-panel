@@ -95,7 +95,7 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
         const { item, onAltChanged, ...props } = this.props;
         return (
             <Popover {...props} title="Describe the asset">
-                <img style={{ width: "300px", height: "300px", objectFit: "cover" }} src={item.url}></img>
+                <img style={{ width: "400px", height: "400px", objectFit: "cover" }} src={item.url}></img>
                 <Form fluid>
                     <FormGroup>
                         <ControlLabel>Description</ControlLabel>

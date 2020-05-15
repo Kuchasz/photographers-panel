@@ -1,7 +1,7 @@
 import * as React from "react";
 import { GalleriesList } from "./galleries-list";
 import { GalleryCreate } from "./gallery-create";
-import { Panel, Icon, IconButton, Alert } from "rsuite";
+import { Panel, Icon, Button, Alert } from "rsuite";
 import { GalleryStats } from "./gallery-stats";
 import { GalleryChart } from "./gallery-chart";
 import { GalleryVisitRange } from "./gallery-visit-range";
@@ -81,7 +81,7 @@ export class Galleries extends React.Component<Props, State> {
         this.setState(
             () => ({ isLoadingGalleries: true }),
             () => {
-                getGalleriesList().then(galleries => {
+                getGalleriesList().then((galleries) => {
                     const selectedGallery = galleries[0].id;
                     this.setState({
                         galleries,
@@ -98,11 +98,11 @@ export class Galleries extends React.Component<Props, State> {
         if (startDate === undefined || endDate === undefined) return;
         this.setState(() => ({ disableAutoDate: true, startDate, endDate }));
         if (this.state.selectedGallery) {
-            this.setState(_state => ({
+            this.setState((_state) => ({
                 isLoading: true
             }));
 
-            getGalleryVisits(startDate, endDate, this.state.selectedGallery).then(resp =>
+            getGalleryVisits(startDate, endDate, this.state.selectedGallery).then((resp) =>
                 this.setState({ isLoading: false, stats: getStats(resp), visits: resp.dailyVisits })
             );
         }
@@ -115,19 +115,19 @@ export class Galleries extends React.Component<Props, State> {
     onGallerySelected = (selectedGallery: number) => {
         if (selectedGallery === this.state.selectedGallery) return;
 
-        const gallery = this.state.galleries.filter(x => x.id === selectedGallery)[0];
+        const gallery = this.state.galleries.filter((x) => x.id === selectedGallery)[0];
 
         const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(gallery.date);
         const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(gallery.date), 1);
 
-        this.setState(_state => ({
+        this.setState((_state) => ({
             isLoading: true,
             startDate,
             endDate,
             selectedGallery
         }));
 
-        getGalleryVisits(startDate, endDate, selectedGallery).then(resp =>
+        getGalleryVisits(startDate, endDate, selectedGallery).then((resp) =>
             this.setState({ isLoading: false, stats: getStats(resp), visits: resp.dailyVisits })
         );
     };
@@ -193,10 +193,9 @@ export class Galleries extends React.Component<Props, State> {
                 <div className="list">
                     <Panel
                         header={
-                            <span>
-                                Galleries{" "}
-                                <IconButton onClick={this.showCreateForm} icon={<Icon icon="plus" />} color="green" />
-                            </span>
+                            <Button onClick={this.showCreateForm} color="green">
+                                <Icon icon="plus" /> Create Gallery
+                            </Button>
                         }
                     >
                         <GalleriesList

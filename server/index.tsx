@@ -5,8 +5,6 @@ import multer from "multer";
 
 const upload = multer();
 
-//import { renderToString } from "react-dom/server";
-// import { matchPath, StaticRouter } from "react-router";
 import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
 import * as privateGalleryModel from "./src/models/private-gallery";
@@ -25,7 +23,6 @@ import * as privateGalleryPanel from "../api/panel/private-gallery";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
 import { allowCrossDomain, processImage, deleteImage, deleteImages } from "./src/core";
-import sharp from "sharp";
 require("isomorphic-fetch");
 const Youch = require("youch");
 
@@ -33,18 +30,19 @@ import { migrations } from "./src/migrations";
 import { connection } from "./src/db";
 
 const runMigrations = async () => {
+    console.log(`Running ${migrations.length} migrations`);
     for (let i = 0; i < migrations.length; i++) {
         try {
-            console.log(`Migration ${i}`);
+            console.log("----------------------");
+            console.log(`Running Migration ${i + 1}`);
             const runOrNot = await migrations[i](connection);
-            console.log(`Migration ${i} ${runOrNot ? "run" : "skipped"}`);
+            console.log(runOrNot ? "done" : "skipped");
         } catch (err) {
             console.error(err);
         }
     }
 };
 
-runMigrations();
 const app = express();
 app.use(express.json());
 app.use(compression());
@@ -422,6 +420,13 @@ app.get("*", async (req, res) => {
     });
 });
 
-app.listen(8080, () => {
-    console.log("Photographers-panel server started");
-});
+const runApp = async () => {
+    
+    await runMigrations();
+
+    app.listen(8080, () => {
+        console.log("Photographers-panel server started");
+    });
+};
+
+runApp();
