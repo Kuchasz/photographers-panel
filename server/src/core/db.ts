@@ -27,7 +27,7 @@ export const renameTable = (tableName: string, newTableName: string, connection:
     new Promise((res, rej) => {
         connection.query(`RENAME TABLE \`${tableName}\` TO \`${newTableName}\``, (_err) => {
             log(`RENAMING ${tableName} => ${newTableName}`, _err);
-            if (_err) rej();
+            if (_err) { rej(_err) }
             else res();
         });
     });
@@ -43,7 +43,7 @@ export const renameColumn = (
             `ALTER TABLE \`${tableName}\` RENAME COLUMN \`${columnName}\` TO \`${newColumnName}\``,
             (_err) => {
                 log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, _err);
-                if (_err) rej();
+                if (_err) rej(_err);
                 else res();
             }
         );

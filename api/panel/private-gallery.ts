@@ -1,6 +1,6 @@
 import { getDateString } from "../../utils/date";
 import { PrivateGalleryState } from "../private-gallery";
-import { Result } from "../common";
+import { endpoint, Result } from "../common";
 
 export interface VisitsSummaryDto {
     date: string;
@@ -54,7 +54,7 @@ export type DeleteGalleryResult = Result<DeleteGalleryError>;
 
 const getGalleriesListRoute = "/api/panel/galleries-list";
 export const getGalleriesList = () =>
-    fetch("http://192.168.56.102:8080" + getGalleriesListRoute).then(resp => resp.json() as Promise<GalleryDto[]>);
+    fetch(endpoint + getGalleriesListRoute).then(resp => resp.json() as Promise<GalleryDto[]>);
 getGalleriesList.route = getGalleriesListRoute;
 
 const getGalleryVisitsRoute = "/api/panel/gallery-stats/:start/:end/:galleryId";
@@ -64,17 +64,17 @@ export const getGalleryVisits = (
     selectedGallery: number
 ): Promise<GalleryVisitsDto> =>
     fetch(
-        "http://192.168.56.102:8080" +
-            getGalleryVisitsRoute
-                .replace(":start", getDateString(startDate))
-                .replace(":end", getDateString(endDate))
-                .replace(":galleryId", selectedGallery.toString())
+        endpoint +
+        getGalleryVisitsRoute
+            .replace(":start", getDateString(startDate))
+            .replace(":end", getDateString(endDate))
+            .replace(":galleryId", selectedGallery.toString())
     ).then(resp => resp.json());
 getGalleryVisits.route = getGalleryVisitsRoute;
 
 const checkPasswordIsUniqueRoute = "/api/panel/gallery-password-unique/:password/:galleryId?";
 export const checkPasswordIsUnique = (galleryId?: number) => (password: string): Promise<boolean> =>
-    fetch("http://192.168.56.102:8080" + checkPasswordIsUniqueRoute.replace(":password", password).replace(":galleryId?", galleryId?.toString() ?? "")).then(resp =>
+    fetch(endpoint + checkPasswordIsUniqueRoute.replace(":password", password).replace(":galleryId?", galleryId?.toString() ?? "")).then(resp =>
         resp.json()
     );
 checkPasswordIsUnique.route = checkPasswordIsUniqueRoute;
@@ -82,7 +82,7 @@ checkPasswordIsUnique.route = checkPasswordIsUniqueRoute;
 const createGalleryRoute = "/api/panel/create-gallery";
 export const createGallery = (gallery: GalleryEditDto) =>
     new Promise<CreateGalleryResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + createGalleryRoute, {
+        fetch(endpoint + createGalleryRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -97,7 +97,7 @@ createGallery.route = createGalleryRoute;
 
 const getGalleryForEditRoute = "/api/panel/gallery-for-edit/:galleryId";
 export const getGalleryForEdit = (id: number) =>
-    fetch("http://192.168.56.102:8080" + getGalleryForEditRoute.replace(":galleryId", id.toString())).then(
+    fetch(endpoint + getGalleryForEditRoute.replace(":galleryId", id.toString())).then(
         resp => resp.json() as Promise<GalleryEditDto>
     );
 getGalleryForEdit.route = getGalleryForEditRoute;
@@ -105,7 +105,7 @@ getGalleryForEdit.route = getGalleryForEditRoute;
 const editGalleryRoute = "/api/panel/edit-gallery";
 export const editGallery = (id: number, gallery: GalleryEditDto) =>
     new Promise<EditGalleryResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + editGalleryRoute, {
+        fetch(endpoint + editGalleryRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -121,7 +121,7 @@ editGallery.route = editGalleryRoute;
 const deleteGalleryRoute = "/api/panel/remove-gallery";
 export const deleteGallery = (id: number) =>
     new Promise<DeleteGalleryResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + deleteGalleryRoute, {
+        fetch(endpoint + deleteGalleryRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",

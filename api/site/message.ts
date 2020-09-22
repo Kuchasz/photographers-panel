@@ -1,4 +1,4 @@
-import { Result } from "../common";
+import { endpoint, Result } from "../common";
 
 export interface Message {
     name: string;
@@ -13,7 +13,7 @@ export type SendResult = Result<MessageValidationError>;
 export const sendRoute = "/api/send-message";
 export const send = (message: Message) =>
     new Promise<SendResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + sendRoute, {
+        fetch(endpoint + sendRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",

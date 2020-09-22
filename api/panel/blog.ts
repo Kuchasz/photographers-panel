@@ -1,4 +1,4 @@
-import { Result } from "../common";
+import { endpoint, Result } from "../common";
 
 export interface BlogSelectItem {
     label: string;
@@ -68,7 +68,7 @@ export type ChangeBlogAssetAltResult = Result<ChangeBlogAssetAltError>;
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
     new Promise<BlogSelectItem[]>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + getBlogSelectListRoute)
+        fetch(endpoint + getBlogSelectListRoute)
             .then((result) => result.json())
             .then(resolve);
     });
@@ -77,7 +77,7 @@ getBlogSelectList.route = getBlogSelectListRoute;
 const getBlogsListRoute = "/api/panel/blogs-list";
 export const getBlogsList = () =>
     new Promise<BlogListItem[]>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + getBlogsListRoute)
+        fetch(endpoint + getBlogsListRoute)
             .then((result) => result.json())
             .then(resolve);
     });
@@ -86,7 +86,7 @@ getBlogsList.route = getBlogsListRoute;
 const createBlogRoute = "/api/panel/create-blog";
 export const createBlog = (blog: BlogEditDto) =>
     new Promise<CreateBlogResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + createBlogRoute, {
+        fetch(endpoint + createBlogRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -102,7 +102,7 @@ createBlog.route = createBlogRoute;
 const checkAliasIsUniqueRoute = "/api/panel/blog-alias-unique/:alias/:blogId?";
 export const checkAliasIsUnique = (blogId?: number) => (alias: string): Promise<boolean> =>
     fetch(
-        "http://192.168.56.102:8080" +
+        endpoint +
             checkAliasIsUniqueRoute.replace(":alias", alias).replace(":blogId?", blogId?.toString() ?? "")
     ).then((resp) => resp.json());
 checkAliasIsUnique.route = checkAliasIsUniqueRoute;
@@ -110,7 +110,7 @@ checkAliasIsUnique.route = checkAliasIsUniqueRoute;
 const changeBlogVisibilityRoute = "/api/panel/blog-change-visibility";
 export const changeBlogVisibility = (blogVisibility: BlogVisibilityDto) =>
     new Promise<ChangeBlogVisibilityResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + changeBlogVisibilityRoute, {
+        fetch(endpoint + changeBlogVisibilityRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -125,7 +125,7 @@ changeBlogVisibility.route = changeBlogVisibilityRoute;
 
 const getBlogForEditRoute = "/api/panel/blog-for-edit/:blogId";
 export const getBlogForEdit = (id: number) =>
-    fetch("http://192.168.56.102:8080" + getBlogForEditRoute.replace(":blogId", id.toString())).then(
+    fetch(endpoint + getBlogForEditRoute.replace(":blogId", id.toString())).then(
         (resp) => resp.json() as Promise<BlogEditDto>
     );
 getBlogForEdit.route = getBlogForEditRoute;
@@ -133,7 +133,7 @@ getBlogForEdit.route = getBlogForEditRoute;
 const editBlogRoute = "/api/panel/edit-blog";
 export const editBlog = (id: number, blog: BlogEditDto) =>
     new Promise<BlogEditResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + editBlogRoute, {
+        fetch(endpoint + editBlogRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -149,7 +149,7 @@ editBlog.route = editBlogRoute;
 const deleteBlogRoute = "/api/panel/remove-blog";
 export const deleteBlog = (id: number) =>
     new Promise<DeleteBlogResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + deleteBlogRoute, {
+        fetch(endpoint + deleteBlogRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -192,7 +192,7 @@ export const uploadBlogAsset = (
     payload.append("asset", asset);
     payload.append("blogId", id.toString());
 
-    request.open("POST", "http://192.168.56.102:8080" + uploadBlogAssetRoute, true);
+    request.open("POST", endpoint + uploadBlogAssetRoute, true);
 
     request.send(payload);
 };
@@ -200,7 +200,7 @@ uploadBlogAsset.route = uploadBlogAssetRoute;
 
 const getBlogAssetsRoute = "/api/panel/blog-assets/:blogId";
 export const getBlogAssets = (blogId: number): Promise<BlogAssetsListItemDto[]> =>
-    fetch("http://192.168.56.102:8080" + getBlogAssetsRoute.replace(":blogId", blogId.toString())).then(
+    fetch(endpoint + getBlogAssetsRoute.replace(":blogId", blogId.toString())).then(
         (resp) => resp.json() as Promise<BlogAssetsListItemDto[]>
     );
 getBlogAssets.route = getBlogAssetsRoute;
@@ -208,7 +208,7 @@ getBlogAssets.route = getBlogAssetsRoute;
 const changeMainBlogAssetRoute = "/api/panel/blog-change-main-asset";
 export const changeMainBlogAsset = (blogMainAsset: MainBlogAssetDto) =>
     new Promise<ChangeBlogVisibilityResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + changeMainBlogAssetRoute, {
+        fetch(endpoint + changeMainBlogAssetRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -224,7 +224,7 @@ changeMainBlogAsset.route = changeMainBlogAssetRoute;
 const deleteBlogAssetRoute = "/api/panel/remove-blog-asset";
 export const deleteBlogAsset = (id: number) =>
     new Promise<DeleteBlogResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + deleteBlogAssetRoute, {
+        fetch(endpoint + deleteBlogAssetRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -240,7 +240,7 @@ deleteBlogAsset.route = deleteBlogAssetRoute;
 const changeBlogAssetAltRoute = "/api/panel/change-blog-asset-alt";
 export const changeBlogAssetAlt = (id: number, alt: string) =>
     new Promise<ChangeBlogAssetAltResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + changeBlogAssetAltRoute, {
+        fetch(endpoint + changeBlogAssetAltRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",

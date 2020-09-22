@@ -1,3 +1,4 @@
+import { endpoint } from "../common";
 import { PrivateGalleryState } from "../private-gallery";
 
 export interface PrivateGalleryUrlCheckResult {
@@ -24,7 +25,7 @@ export interface BlogDetails {
 export const getGalleryUrlRoute = "/api/private-gallery-url/:password";
 export const getGalleryUrl = (password: string) =>
     new Promise<PrivateGalleryUrlCheckResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + getGalleryUrlRoute.replace(":password", password))
+        fetch(endpoint + getGalleryUrlRoute.replace(":password", password))
             .then(result => result.json())
             .then(resolve);
     });

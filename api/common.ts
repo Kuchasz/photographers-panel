@@ -7,3 +7,5 @@ type Success<U> = { type: ResultType.Success, result?: U };
 type Error<T> = { type: ResultType.Error; error: T };
 
 export type Result<T, U = null> = Success<U> | Error<T>;
+
+export const endpoint: string = "http://localhost:8080";

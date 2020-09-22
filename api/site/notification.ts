@@ -1,4 +1,4 @@
-import { Result } from "../common";
+import { endpoint, Result } from "../common";
 
 export interface Subscription {
     privateGalleryId: number;
@@ -12,7 +12,7 @@ export type SubscribtionResult = Result<SubscribtionValidationError>;
 export const subscribeForNotificationRoute = "/api/subscribe-for-notification";
 export const subscribeForNotification = (subscription: Subscription) =>
     new Promise<SubscribtionResult>((resolve, _) => {
-        fetch("http://192.168.56.102:8080" + subscribeForNotificationRoute, {
+        fetch(endpoint + subscribeForNotificationRoute, {
             method: "POST",
             headers: {
                 Accept: "application/json",
