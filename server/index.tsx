@@ -387,7 +387,7 @@ app.get("*", async (req, res) => {
         return;
     }
 
-    fs.readFile(path.resolve("../site/dist/index.html"), "utf8", (err, data) => {
+    fs.readFile(path.resolve("../site/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500).send("An error occurred");
@@ -410,7 +410,7 @@ app.get("*", async (req, res) => {
         }
 
         return res.send(
-            data.replace('<div id="root"></div>', `<div id="root">${siteContent}</div>`).replace(
+            template.replace('<div id="root"></div>', `<div id="root">${siteContent}</div>`).replace(
                 "{initial_state}",
                 `<script type="text/javascript">window.___InitialState___=${JSON.stringify({
                     [desiredRoute.route]: initialState
@@ -425,7 +425,7 @@ const runApp = async () => {
     await runMigrations();
 
     app.listen(8080, () => {
-        console.log("Photographers-panel server started");
+        console.log("Application server started...");
     });
 };
 

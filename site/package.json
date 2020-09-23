@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:development": "rimraf ./dist | webpack --mode development",
-    "watch:development": "rimraf ./dist | webpack --mode development --watch",
-    "build:production": "webpack --mode production",
-    "start": "webpack-dev-server"
+    "build:dev": "rimraf ./dist | webpack --mode development",
+    "watch:dev": "rimraf ./dist | webpack --mode development --watch",
+    "build:prod": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
