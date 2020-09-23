@@ -2,14 +2,14 @@ import * as React from "react";
 import galleryPhoto from "../images/page_private_photo.png";
 import { Link } from "react-router-dom";
 import { strings } from "../resources";
-import * as getPrivateGalleryUrl from "../../../api/site/private-gallery";
+import * as privateGallery from "../../../api/site/private-gallery";
 import * as commonPrivateGallery from "../../../api/private-gallery";
 import * as notification from "../../../api/site/notification";
 import { ResultType } from "../../../api/common";
 
 const getContent = (
     isLoading?: boolean,
-    result?: getPrivateGalleryUrl.PrivateGalleryUrlCheckResult
+    result?: privateGallery.PrivateGalleryUrlCheckResult
 ): { title?: string; description?: string; blog?: string } => {
     if (isLoading === undefined || result === undefined)
         return {
@@ -56,11 +56,19 @@ type PrivateGalleryState = {
     email: string;
     isLoading?: boolean;
     isLoadingNotification?: boolean;
-    result?: getPrivateGalleryUrl.PrivateGalleryUrlCheckResult;
+    result?: privateGallery.PrivateGalleryUrlCheckResult;
     notificationResult?: notification.SubscribtionResult;
 };
 
 export class PrivateGallery extends React.Component<PrivateGalleryProps, PrivateGalleryState> {
+
+    viewGalleryRef: React.RefObject<HTMLFormElement>;
+    constructor(props: PrivateGalleryProps) {
+        super(props);
+        this.viewGalleryRef = React.createRef<HTMLFormElement>();
+    }
+
+
     state = {
         password: "",
         email: "",
@@ -80,7 +88,7 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
     getPrivateGalleryUrl() {
         if (this.state.password) {
             this.setState({ isLoading: true });
-            getPrivateGalleryUrl.getGalleryUrl(this.state.password).then(result => {
+            privateGallery.getGalleryUrl(this.state.password).then(result => {
                 const passwordReset = result.gallery === undefined;
                 this.setState(state => ({ result, isLoading: false, password: passwordReset ? "" : state.password }));
             });
@@ -147,15 +155,21 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                                 <a className="button" onClick={() => this.subscribeForNotification()}>
                                     {strings.privateGallery.notification.subscribe}
                                 </a>
-                                <br/><br/><br/><br/>
+                                <br /><br /><br /><br />
                             </div>
                         ) : null}
                         {result?.gallery ? (
                             <div>
                                 {result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available ? (
-                                    <Link to={result.gallery.url} className="button">
-                                        {strings.privateGallery.enterGallery}
-                                    </Link>
+                                    <>
+                                        <form ref={this.viewGalleryRef} method="POST" action={privateGallery.viewGalleryUrl.route}>
+                                            <input name="galleryId" value={result.gallery.id} type="hidden"></input>
+                                            <input name="galleryUrl" value={result.gallery.url} type="hidden"></input>
+                                        </form>
+                                        <a onClick={() => this.viewGalleryRef.current?.submit()} className="button">
+                                            {strings.privateGallery.enterGallery}
+                                        </a>
+                                    </>
                                 ) : result.blog ? (
                                     <div>
                                         <span>

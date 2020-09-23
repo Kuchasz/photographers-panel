@@ -23,6 +23,8 @@ import * as privateGalleryPanel from "../api/panel/private-gallery";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
 import { allowCrossDomain, processImage, deleteImage, deleteImages } from "./src/core";
+import { runPhotoGalleryServer } from "../../ps-photo-gallery/server";
+
 require("isomorphic-fetch");
 const Youch = require("youch");
 
@@ -45,6 +47,7 @@ const runMigrations = async () => {
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded());
 app.use(compression());
 app.use(allowCrossDomain);
 
@@ -59,6 +62,8 @@ const raiseErr = (err: Error, req: any, res: any) => {
 };
 
 app.use(express.static("../site/dist", { index: false }));
+
+app.use(privateGallery.viewGalleryUrl.route, express.static("../../ps-photo-gallery/client/dist", { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
 app.get(blog.getLastBlog.route, async (_req, res) => {
@@ -273,6 +278,28 @@ app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
     res.json(gallery);
 });
 
+app.post(privateGallery.viewGalleryUrl.route, async (req, res) => {
+    const { galleryUrl, galleryId } = req.body;
+    const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
+
+    fs.readFile(path.resolve("../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("An error occurred");
+        }
+
+        return res.send(
+            template
+                // .replace(`"/main.css`, `"${privateGallery.viewGalleryUrl.route}/main.css`)
+                // .replace(`"/bundle.js`, `"${privateGallery.viewGalleryUrl.route}/bundle.js`)
+                .replace(
+                    `<div id="state-initializer">{initial_state}</div>`,
+                    `<script type="text/javascript">window.___InitialState___=${JSON.stringify(initialState)}</script>`
+                )
+        );
+    });
+});
+
 app.get(privateGalleryPanel.getGalleriesList.route, async (req, res) => {
     const galleries = await privateGalleryModel.getList();
     res.json(galleries);
@@ -420,8 +447,10 @@ app.get("*", async (req, res) => {
     });
 });
 
+runPhotoGalleryServer(app);
+
 const runApp = async () => {
-    
+
     await runMigrations();
 
     app.listen(8080, () => {

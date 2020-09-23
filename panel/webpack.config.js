@@ -87,8 +87,8 @@ module.exports = (env, argv) => ({
         new ExtractTextPlugin("styles.css")
     ],
     devServer: {
-        port: 8080,
-        host: "192.168.56.102",
+        port: 8081,
+        host: "localhost",
         historyApiFallback: true,
         watchOptions: {
             aggregateTimeout: 300,
