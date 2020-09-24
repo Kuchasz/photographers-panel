@@ -1,27 +1,34 @@
-import * as SendGridTypings from "@sendgrid/mail";
-const SendGrid: typeof SendGridTypings.MailService = require("@sendgrid/mail");
 import { notifications } from "../config";
+import nodemailer from "nodemailer";
 
-SendGrid.setApiKey(notifications.sendGridApiKey);
+const transporter = nodemailer.createTransport({
+    host: notifications.server.host,
+    port: notifications.server.port,
+    secure: notifications.server.secure,
+    auth: {
+        user: notifications.server.auth.user,
+        pass: notifications.server.auth.pass
+    }
+});
 
 export const sendEmail = async (from: string, email: string, content: string) =>
     new Promise<void>((res, rej) => {
-        SendGrid.send(
-            {
-                to: notifications.targetEmail,
-                from: notifications.fromEmail,
-                replyTo: email,
-                subject: `Pyszstudio - Nowa wiadomość od ${from}`,
-                html: `<html>
-                    <p><strong>Imie:</strong> ${from}</p>
-                    <p><strong>E-mail:</strong> ${email}</p>
-                    <p><strong>Treść wiadomości:</strong> <br /><br />${content}</p>
-                </html>`
-            },
-            false,
-            err => {
-                if (err) rej();
-                else res();
-            }
-        );
+        const message = {
+            from: notifications.message.from,
+            to: notifications.message.target,
+            subject: `Pyszstudio - Nowa wiadomość od ${from}`,
+            html: `<html>
+                <p><strong>Imie:</strong> ${from}</p>
+                <p><strong>E-mail:</strong> ${email}</p>
+                <p><strong>Treść wiadomości:</strong> <br /><br />${content}</p>
+            </html>`,
+            replyTo: `${from} <${email}>`
+        };
+
+        transporter.sendMail(message, (err) => {
+            if (err) {
+                rej(err)
+            } else { res(); }
+        });
+
     });

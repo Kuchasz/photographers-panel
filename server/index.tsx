@@ -1,4 +1,3 @@
-// import React from "react";
 import express from "express";
 import compression from "compression";
 import multer from "multer";
@@ -22,7 +21,7 @@ import * as privateGallery from "../api/site/private-gallery";
 import * as privateGalleryPanel from "../api/panel/private-gallery";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
-import { allowCrossDomain, processImage, deleteImage, deleteImages } from "./src/core";
+import { allowCrossDomain, processImage } from "./src/core";
 import { runPhotoGalleryServer } from "../../ps-photo-gallery/server";
 
 require("isomorphic-fetch");
@@ -30,6 +29,7 @@ const Youch = require("youch");
 
 import { migrations } from "./src/migrations";
 import { connection } from "./src/db";
+import { deleteFile, deleteFolderRecursive } from "./src/core/fs";
 
 const runMigrations = async () => {
     console.log(`Running ${migrations.length} migrations`);
@@ -66,6 +66,8 @@ app.use(express.static("../site/dist", { index: false }));
 app.use(privateGallery.viewGalleryUrl.route, express.static("../../ps-photo-gallery/client/dist", { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
+// site related APIs
+
 app.get(blog.getLastBlog.route, async (_req, res) => {
     const blog = await blogModel.getMostRecent();
     res.json(blog);
@@ -80,6 +82,72 @@ app.get(blog.getBlog.route, async (req, res) => {
     const blog = await blogModel.get(req.params.alias);
     res.json(blog);
 });
+
+app.post(message.send.route, async (req, res) => {
+    const mesg = req.body as message.Message;
+
+    const error = messageModel.validate(mesg);
+
+    if (error) {
+        res.json({ type: ResultType.Error, error });
+        return;
+    }
+
+    try {
+        await sendEmail(mesg.name, mesg.email, mesg.content);
+        res.json({ type: ResultType.Success });
+    } catch {
+        res.json({ type: ResultType.Error, error: "InternalError" });
+    }
+});
+
+app.post(notification.subscribeForNotification.route, async (req, res) => {
+    let result: notification.SubscribtionResult | undefined = undefined;
+
+    var emailIsValid = emailModel.validate(req.body.email);
+    if (!emailIsValid) result = { type: ResultType.Error, error: "EmailInvalid" };
+
+    const galleryExists = await privateGalleryModel.exists(req.body.privateGalleryId);
+    if (galleryExists === false) result = { type: ResultType.Error, error: "GalleryDoesNotExists" };
+
+    const subscribtionExists = await notificationModel.alreadySubscribed(req.body);
+    if (subscribtionExists === true) result = { type: ResultType.Error, error: "AlreadySubscribed" };
+
+    if (result == undefined) {
+        await notificationModel.subscribe(req.body);
+        result = { type: ResultType.Success };
+    }
+
+    res.json(result);
+});
+
+app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
+    const gallery = await privateGalleryModel.getUrl(req.params.password);
+
+    res.json(gallery);
+});
+
+app.post(privateGallery.viewGalleryUrl.route, async (req, res) => {
+    const { galleryUrl, galleryId } = req.body;
+    const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
+
+    fs.readFile(path.resolve("../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("An error occurred");
+        }
+
+        return res.send(
+            template
+                .replace(
+                    `<div id="state-initializer">{initial_state}</div>`,
+                    `<script type="text/javascript">window.___InitialState___=${JSON.stringify(initialState)}</script>`
+                )
+        );
+    });
+});
+
+// panel related APIs
 
 app.get(blogPanel.getBlogSelectList.route, async (req, res) => {
     const blogs = await blogModel.getSelectList();
@@ -171,7 +239,7 @@ app.post(blogPanel.deleteBlog.route, async (req, res) => {
         await blogModel.deleteBlog(id);
         const assetsPath = blogModel.getAssetsPath(id);
 
-        await deleteImages(assetsPath);
+        await deleteFolderRecursive(assetsPath);
 
         result = { type: ResultType.Success };
     } catch (err) {
@@ -205,7 +273,7 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
 
         result = {
             type: ResultType.Success,
-            result: { id, url: `http://192.168.56.102:8080/${finalPath}` }
+            result: { id, url: `/${finalPath}` }
         };
     } catch (err) {
         console.log(err);
@@ -228,7 +296,7 @@ app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
     try {
         const finalPath = await blogModel.getAssetPathById(id);
         await blogModel.deleteBlogAsset(id);
-        await deleteImage(finalPath);
+        await deleteFile(finalPath);
 
         result = { type: ResultType.Success };
     } catch (err) {
@@ -252,52 +320,6 @@ app.post(blogPanel.changeBlogAssetAlt.route, async (req, res) => {
     }
 
     res.json(result);
-});
-
-app.post(message.send.route, async (req, res) => {
-    const mesg = req.body as message.Message;
-
-    const error = messageModel.validate(mesg);
-
-    if (error) {
-        res.json({ type: ResultType.Error, error });
-        return;
-    }
-
-    try {
-        await sendEmail(mesg.name, mesg.email, mesg.content);
-        res.json({ type: ResultType.Success });
-    } catch {
-        res.json({ type: ResultType.Error, error: "InternalError" });
-    }
-});
-
-app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
-    const gallery = await privateGalleryModel.getUrl(req.params.password);
-
-    res.json(gallery);
-});
-
-app.post(privateGallery.viewGalleryUrl.route, async (req, res) => {
-    const { galleryUrl, galleryId } = req.body;
-    const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
-
-    fs.readFile(path.resolve("../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send("An error occurred");
-        }
-
-        return res.send(
-            template
-                // .replace(`"/main.css`, `"${privateGallery.viewGalleryUrl.route}/main.css`)
-                // .replace(`"/bundle.js`, `"${privateGallery.viewGalleryUrl.route}/bundle.js`)
-                .replace(
-                    `<div id="state-initializer">{initial_state}</div>`,
-                    `<script type="text/javascript">window.___InitialState___=${JSON.stringify(initialState)}</script>`
-                )
-        );
-    });
 });
 
 app.get(privateGalleryPanel.getGalleriesList.route, async (req, res) => {
@@ -370,34 +392,12 @@ app.post(privateGalleryPanel.deleteGallery.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(notification.subscribeForNotification.route, async (req, res) => {
-    let result: notification.SubscribtionResult | undefined = undefined;
-
-    var emailIsValid = emailModel.validate(req.body.email);
-    if (!emailIsValid) result = { type: ResultType.Error, error: "EmailInvalid" };
-
-    const galleryExists = await privateGalleryModel.exists(req.body.privateGalleryId);
-    if (galleryExists === false) result = { type: ResultType.Error, error: "GalleryDoesNotExists" };
-
-    const subscribtionExists = await notificationModel.alreadySubscribed(req.body);
-    if (subscribtionExists === true) result = { type: ResultType.Error, error: "AlreadySubscribed" };
-
-    if (result == undefined) {
-        await notificationModel.subscribe(req.body);
-        result = { type: ResultType.Success };
-    }
-
-    res.json(result);
-});
-
 app.get("/robots.txt", function (req, res) {
     res.type("text/plain");
     res.send("User-agent: *\nAllow: /");
 });
 
 app.get("*", async (req, res) => {
-    //routes.home
-
     let desiredRoute: { route: string };
     let initialState: any;
 
@@ -447,9 +447,10 @@ app.get("*", async (req, res) => {
     });
 });
 
-runPhotoGalleryServer(app);
 
 const runApp = async () => {
+    
+    await runPhotoGalleryServer(app);
 
     await runMigrations();
 

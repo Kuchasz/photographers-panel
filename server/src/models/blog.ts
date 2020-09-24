@@ -31,7 +31,7 @@ export const getList = (): Promise<site.BlogListItem[]> =>
                     title: b.title,
                     date: getDateString(new Date(b.date)),
                     alias: b.alias,
-                    photoUrl: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(b.Id), b.Url)}`
+                    photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`
                 }));
 
                 resolve(blogListItems);
@@ -56,7 +56,7 @@ export const get = (alias: string): Promise<site.Blog> =>
                     date: getDateString(new Date(first.date)),
                     content: first.content,
                     assets: blogAssets.map((p: any) => ({
-                        url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(p.Id), p.Url)}`,
+                        url: `/${getAssetPath(getAssetsPath(p.Id), p.Url)}`,
                         alt: p.Alt
                     }))
                 };
@@ -333,7 +333,7 @@ export const getAssetsForBlog = (blogId: number): Promise<panel.BlogAssetsListIt
                         (ba: any) =>
                             ({
                                 id: ba.id,
-                                url: `http://192.168.56.102:8080/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
+                                url: `/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
                                 isMain: ba.MainBlogAsset_id === ba.id,
                                 alt: ba.Alt
                             } as panel.BlogAssetsListItemDto)

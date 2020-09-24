@@ -24,8 +24,8 @@ export class Links extends React.Component<LinksProps, LinksState> {
                         <ul>
                             {strings.link.links.map(l => (
                                 <li key={l.url}>
-                                    <a href={`http://${l.url}`} target="_blank">
-                                        {l.label} - {l.url}
+                                    <a href={l.url} target="_blank">
+                                        {l.label}
                                     </a>
                                 </li>
                             ))}

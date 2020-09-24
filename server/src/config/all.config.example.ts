@@ -7,7 +7,17 @@ export const db = {
 };
 
 export const notifications = {
-    sendGridApiKey: "SENDGRID_API_KEY",
-    targetEmail: "TARGET_COMPANY_EMAIL_ADDRESS",
-    fromEmail: { name: "SENDER_NAME", email: "SENDER_EMAIL" }
+    server: {
+        host: "SMTP_HOST",
+        port: 0, //port number
+        secure: false, //use secured connection
+        auth: {
+            user: "USER_LOGIN",
+            pass: "USER_PASSWORD"
+        }
+    },
+    message: {
+        target: "TARGET_EMAIL",
+        from: "FROM_EMAIL"    
+    }
 };

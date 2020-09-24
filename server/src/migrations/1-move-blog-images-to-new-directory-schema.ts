@@ -1,6 +1,7 @@
 import fs from "fs";
 import { resolve, join } from "path";
 import { Connection } from "mysql";
+import { deleteFolderRecursiveSync, rename } from "../core/fs";
 
 const withMinLength = (number: number, minLength: number) =>
     new Array(minLength - String(number).length + 1).join("0") + number;
@@ -13,7 +14,7 @@ const getDateString = (date: Date) => {
 };
 
 export const run = (connection: Connection): Promise<boolean> =>
-    new Promise((res, rej) => {
+    new Promise(async (res, rej) => {
         if (!fs.existsSync(resolve("public/blog"))) {
             res(false);
             return;
@@ -28,20 +29,24 @@ export const run = (connection: Connection): Promise<boolean> =>
 
         connection.query(
             `SELECT be.id, be.date, bep.photourl FROM blogentryphoto bep INNER JOIN blogentry be ON be.id = bep.BlogEntryId`,
-            (_err, results: result[], _fields) => {
+            async (_err, results: result[], _fields) => {
                 const allPaths = results.map((p) => ({
                     old: oldPath(getDateString(p.date))(p.photourl),
                     new: newPath(p.id.toString())(p.photourl)
                 }));
 
-                allPaths.forEach((p) => {
+                for (const p of allPaths) {
                     const dirName = p.new.split("/").reverse().slice(1).reverse().join("/");
                     if (!fs.existsSync(dirName)) {
                         fs.mkdirSync(dirName);
                     }
-                    fs.existsSync(p.old) && fs.renameSync(p.old, p.new);
-                });
+                    if (fs.existsSync(p.old)) {
+                        await rename(p.old, p.new);
+                    }
+                }
 
+                deleteFolderRecursiveSync("public/blog");
+                
                 res(true);
             }
         );

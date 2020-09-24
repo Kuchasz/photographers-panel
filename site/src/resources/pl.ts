@@ -67,11 +67,11 @@ export const pl = {
         linksHeader: "Podobne strony internetowe",
         contactNow: "Skontaktuj się teraz",
         links: [
-            { label: "Zespół Songo and Zuza", url: "www.songoandzuza.pl" },
-            { label: "Zespół Różowa Pantera", url: "www.rozowapantera.pl" },
-            { label: "Zespół Talizman", url: "www.talizman.net.pl" },
-            { label: "Foto-Video Admont2", url: "www.admont.wixsite.com" },
-            { label: "Zespół Reda", url: "www.zespolreda.pl" }
+            { label: "Zespół Songo and Zuza", url: "https://www.songoandzuza.pl" },
+            { label: "Zespół Różowa Pantera", url: "http://www.rozowapantera.pl" },
+            { label: "Zespół Talizman", url: "http://www.talizman.net.pl" },
+            { label: "Foto-Video Admont2", url: "https://admont.wixsite.com/admont" },
+            { label: "Zespół Reda", url: "https://zespolreda.pl" }
         ]
     },
     privateGallery: {
