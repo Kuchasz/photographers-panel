@@ -1,9 +1,10 @@
 import { Connection } from "mysql";
 import { log } from "./log";
 
+
 export const tableExists = (tableName: string, connection: Connection): Promise<boolean> =>
     new Promise((res, rej) => {
-        connection.query(`SHOW TABLES LIKE ?`, [tableName], (err, matchedColumns, _fields) => {
+        connection.query(`SHOW TABLES LIKE ?`, [tableName], (err, matchedColumns) => {
             if (matchedColumns.length === 1) res(true);
             else res(false);
         });
@@ -11,7 +12,7 @@ export const tableExists = (tableName: string, connection: Connection): Promise<
 
 export const columnExists = (tableName: string, columnName: string, connection: Connection): Promise<boolean> =>
     new Promise((res, rej) => {
-        connection.query(`SHOW COLUMNS FROM \`${tableName}\` LIKE ?`, [columnName], (err, matchedColumns, _fields) => {
+        connection.query(`SHOW COLUMNS FROM \`${tableName}\` LIKE ?`, [columnName], (err, matchedColumns) => {
             if (err) {
                 res(false);
                 return;

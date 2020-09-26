@@ -1,6 +1,7 @@
 import express from "express";
 import compression from "compression";
 import multer from "multer";
+import cookieParser from "cookie-parser";
 
 const upload = multer();
 
@@ -19,16 +20,19 @@ import * as message from "../api/site/message";
 import * as notification from "../api/site/notification";
 import * as privateGallery from "../api/site/private-gallery";
 import * as privateGalleryPanel from "../api/panel/private-gallery";
+import * as authPanel from "../api/panel/auth";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
 import { allowCrossDomain, processImage } from "./src/core";
 import { runPhotoGalleryServer } from "../../ps-photo-gallery/server";
+import * as config from "./src/config";
 
 require("isomorphic-fetch");
 const Youch = require("youch");
 
 import { migrations } from "./src/migrations";
 import { connection } from "./src/db";
+import { login, verify } from "./src/auth";
 import { deleteFile, deleteFolderRecursive } from "./src/core/fs";
 
 const runMigrations = async () => {
@@ -49,6 +53,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(compression());
+app.use(cookieParser());
 app.use(allowCrossDomain);
 
 const raiseErr = (err: Error, req: any, res: any) => {
@@ -149,17 +154,32 @@ app.post(privateGallery.viewGalleryUrl.route, async (req, res) => {
 
 // panel related APIs
 
-app.get(blogPanel.getBlogSelectList.route, async (req, res) => {
+app.post(authPanel.logIn.route, async (req, res) => {
+    let result: authPanel.LogInResult | undefined = undefined;
+
+    try {
+        const tokens = await login(req.body as authPanel.UserCredentials);
+        result = { type: ResultType.Success, result: { authToken: tokens, refreshToken: tokens } };
+        res.cookie(config.auth.cookieName, result.result.authToken, { httpOnly: true, maxAge: config.auth.maxAge * 1000 }); //secure the cookie!!
+    } catch (err) {
+        console.log(err);
+        result = { type: ResultType.Error, error: 'ErrorOccuredWhileLogIn' };
+    }
+
+    res.json(result);
+});
+
+app.get(blogPanel.getBlogSelectList.route, verify, async (req, res) => {
     const blogs = await blogModel.getSelectList();
     res.json(blogs);
 });
 
-app.get(blogPanel.getBlogsList.route, async (req, res) => {
+app.get(blogPanel.getBlogsList.route, verify, async (req, res) => {
     const blogs = await blogModel.getListForPanel();
     res.json(blogs);
 });
 
-app.post(blogPanel.createBlog.route, async (req, res) => {
+app.post(blogPanel.createBlog.route, verify, async (req, res) => {
     let result: blogPanel.CreateBlogResult | undefined = undefined;
 
     try {
@@ -173,7 +193,7 @@ app.post(blogPanel.createBlog.route, async (req, res) => {
     res.json(result);
 });
 
-app.get(blogPanel.checkAliasIsUnique.route, async (req, res) => {
+app.get(blogPanel.checkAliasIsUnique.route, verify, async (req, res) => {
     const aliasUnique = await blogModel.checkAliasIsUnique(
         req.params.alias,
         req.params.blogId ? Number(req.params.blogId) : undefined
@@ -181,7 +201,7 @@ app.get(blogPanel.checkAliasIsUnique.route, async (req, res) => {
     res.json(aliasUnique);
 });
 
-app.post(blogPanel.changeBlogVisibility.route, async (req, res) => {
+app.post(blogPanel.changeBlogVisibility.route, verify, async (req, res) => {
     let result: blogPanel.ChangeBlogVisibilityResult | undefined = undefined;
 
     try {
@@ -195,7 +215,7 @@ app.post(blogPanel.changeBlogVisibility.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(blogPanel.changeMainBlogAsset.route, async (req, res) => {
+app.post(blogPanel.changeMainBlogAsset.route, verify, async (req, res) => {
     let result: blogPanel.ChangeMainBlogAssetResult | undefined = undefined;
 
     try {
@@ -209,7 +229,7 @@ app.post(blogPanel.changeMainBlogAsset.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(blogPanel.editBlog.route, async (req, res) => {
+app.post(blogPanel.editBlog.route, verify, async (req, res) => {
     let result: blogPanel.BlogEditResult | undefined = undefined;
 
     var { id, blog }: { id: number; blog: blogPanel.BlogEditDto } = req.body;
@@ -225,12 +245,12 @@ app.post(blogPanel.editBlog.route, async (req, res) => {
     res.json(result);
 });
 
-app.get(blogPanel.getBlogForEdit.route, async (req, res) => {
+app.get(blogPanel.getBlogForEdit.route, verify, async (req, res) => {
     const blog = await blogModel.getForEdit(Number(req.params.blogId));
     res.json(blog);
 });
 
-app.post(blogPanel.deleteBlog.route, async (req, res) => {
+app.post(blogPanel.deleteBlog.route, verify, async (req, res) => {
     let result: blogPanel.DeleteBlogResult | undefined = undefined;
 
     var { id }: { id: number } = req.body;
@@ -249,7 +269,7 @@ app.post(blogPanel.deleteBlog.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Express.Request, res) => {
+app.post(blogPanel.uploadBlogAsset.route, verify, upload.single("asset"), async (req: Express.Request, res) => {
     let result: blogPanel.UploadBlogAssetResult | undefined = undefined;
 
     const blogId: number = (req as any).body.blogId;
@@ -283,12 +303,12 @@ app.post(blogPanel.uploadBlogAsset.route, upload.single("asset"), async (req: Ex
     res.json(result);
 });
 
-app.get(blogPanel.getBlogAssets.route, async (req, res) => {
+app.get(blogPanel.getBlogAssets.route, verify, async (req, res) => {
     const blogAssets = await blogModel.getAssetsForBlog(Number(req.params.blogId));
     res.json(blogAssets);
 });
 
-app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
+app.post(blogPanel.deleteBlogAsset.route, verify, async (req, res) => {
     let result: blogPanel.DeleteBlogAssetResult | undefined = undefined;
 
     var { id }: { id: number } = req.body;
@@ -306,7 +326,7 @@ app.post(blogPanel.deleteBlogAsset.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(blogPanel.changeBlogAssetAlt.route, async (req, res) => {
+app.post(blogPanel.changeBlogAssetAlt.route, verify, async (req, res) => {
     let result: blogPanel.ChangeBlogAssetAltResult | undefined = undefined;
 
     var { id, alt }: { id: number; alt: string } = req.body;
@@ -322,12 +342,12 @@ app.post(blogPanel.changeBlogAssetAlt.route, async (req, res) => {
     res.json(result);
 });
 
-app.get(privateGalleryPanel.getGalleriesList.route, async (req, res) => {
+app.get(privateGalleryPanel.getGalleriesList.route, verify, async (req, res) => {
     const galleries = await privateGalleryModel.getList();
     res.json(galleries);
 });
 
-app.get(privateGalleryPanel.getGalleryVisits.route, async (req, res) => {
+app.get(privateGalleryPanel.getGalleryVisits.route, verify, async (req, res) => {
     const galleries = await privateGalleryModel.getStats(
         Number.parseInt(req.params.galleryId),
         new Date(req.params.start),
@@ -336,7 +356,7 @@ app.get(privateGalleryPanel.getGalleryVisits.route, async (req, res) => {
     res.json(galleries);
 });
 
-app.get(privateGalleryPanel.checkPasswordIsUnique.route, async (req, res) => {
+app.get(privateGalleryPanel.checkPasswordIsUnique.route, verify, async (req, res) => {
     const passwordUnique = await privateGalleryModel.checkPasswordIsUnique(
         req.params.password,
         req.params.galleryId ? Number(req.params.galleryId) : undefined
@@ -344,12 +364,12 @@ app.get(privateGalleryPanel.checkPasswordIsUnique.route, async (req, res) => {
     res.json(passwordUnique);
 });
 
-app.get(privateGalleryPanel.getGalleryForEdit.route, async (req, res) => {
+app.get(privateGalleryPanel.getGalleryForEdit.route, verify, async (req, res) => {
     const gallery = await privateGalleryModel.getForEdit(Number(req.params.galleryId));
     res.json(gallery);
 });
 
-app.post(privateGalleryPanel.createGallery.route, async (req, res) => {
+app.post(privateGalleryPanel.createGallery.route, verify, async (req, res) => {
     let result: privateGalleryPanel.CreateGalleryResult | undefined = undefined;
 
     try {
@@ -362,7 +382,7 @@ app.post(privateGalleryPanel.createGallery.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(privateGalleryPanel.editGallery.route, async (req, res) => {
+app.post(privateGalleryPanel.editGallery.route, verify, async (req, res) => {
     let result: privateGalleryPanel.EditGalleryResult | undefined = undefined;
 
     var { id, gallery }: { id: number; gallery: privateGalleryPanel.GalleryEditDto } = req.body;
@@ -377,7 +397,7 @@ app.post(privateGalleryPanel.editGallery.route, async (req, res) => {
     res.json(result);
 });
 
-app.post(privateGalleryPanel.deleteGallery.route, async (req, res) => {
+app.post(privateGalleryPanel.deleteGallery.route, verify, async (req, res) => {
     let result: privateGalleryPanel.DeleteGalleryResult | undefined = undefined;
 
     var { id }: { id: number } = req.body;
@@ -449,7 +469,7 @@ app.get("*", async (req, res) => {
 
 
 const runApp = async () => {
-    
+
     await runPhotoGalleryServer(app);
 
     await runMigrations();

@@ -21,3 +21,10 @@ export const notifications = {
         from: "FROM_EMAIL"    
     }
 };
+
+export const auth = {
+    secretKey: `RSA_256_PRIVATE_KEY`,
+    publicKey: `RSA_256_PUBLIC_KEY`,
+    cookieName: 'SESSION_COOKIE_NAME',
+    maxAge: 0 //session max age in seconds
+};
