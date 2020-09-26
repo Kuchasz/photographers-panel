@@ -23,3 +23,7 @@ export const logIn = (credentials: UserCredentials) =>
             .then(resolve);
     });
 logIn.route = logInRoute;
+
+const viewLogInRoute = "/panel";
+export const viewLogIn = () => { };
+viewLogIn.route = viewLogInRoute;

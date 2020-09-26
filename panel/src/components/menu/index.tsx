@@ -14,7 +14,8 @@ const menuItems: MenuItem[] = [
     {route: 'emails', icon: "envelope-o", text: 'Emails'},
     {route: 'galleries', icon: "leaf", text: 'Galleries'},
     {route: 'blogs', icon: "flag", text: 'Blogs'},
-    {route: 'comments', icon: "comments", text: 'Comments'}
+    {route: 'comments', icon: "comments", text: 'Comments'},
+    {route: 'login', icon: "trash", text: 'LogIn'}
 ];
 
 const styles = {

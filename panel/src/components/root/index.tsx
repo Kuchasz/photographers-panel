@@ -6,6 +6,7 @@ import {Galleries} from "../galleries/index";
 import { NavBarInstance } from "../navbar";
 import { Emails } from "../emails";
 import { Blogs } from "../blogs";
+import { LogIn } from "../login";
 
 export class Root extends React.Component {
     render() {
@@ -21,6 +22,7 @@ export class Root extends React.Component {
                         <Route exact path='/galleries' component={Galleries}/>
                         <Route exact path='/emails' component={Emails}/>
                         <Route exact path='/blogs' component={Blogs}/>
+                        <Route exact path='/login' component={LogIn}/>
                     </div>
                 </div>
             </div>

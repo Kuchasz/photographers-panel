@@ -22,7 +22,7 @@ export interface BlogDetails {
     title: string;
 }
 
-export const getGalleryUrlRoute = "/api/private-gallery-url/:password";
+const getGalleryUrlRoute = "/api/private-gallery-url/:password";
 export const getGalleryUrl = (password: string) =>
     new Promise<PrivateGalleryUrlCheckResult>((resolve, _) => {
         fetch(privateGallery + getGalleryUrlRoute.replace(":password", password))
@@ -31,6 +31,6 @@ export const getGalleryUrl = (password: string) =>
     });
 getGalleryUrl.route = getGalleryUrlRoute;
 
-export const viewGalleryUrlRoute = "/gallery";
-export const viewGalleryUrl = () => { };
-viewGalleryUrl.route = viewGalleryUrlRoute;
+const viewGalleryRoute = "/gallery";
+export const viewGallery = () => { };
+viewGallery.route = viewGalleryRoute;

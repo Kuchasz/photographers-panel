@@ -68,7 +68,8 @@ const raiseErr = (err: Error, req: any, res: any) => {
 
 app.use(express.static("../site/dist", { index: false }));
 
-app.use(privateGallery.viewGalleryUrl.route, express.static("../../ps-photo-gallery/client/dist", { index: false }));
+app.use(privateGallery.viewGallery.route, express.static("../../ps-photo-gallery/client/dist", { index: false }));
+app.use(authPanel.viewLogIn.route, express.static("../panel/dist", { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
 // site related APIs
@@ -132,7 +133,7 @@ app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
     res.json(gallery);
 });
 
-app.post(privateGallery.viewGalleryUrl.route, async (req, res) => {
+app.post(privateGallery.viewGallery.route, async (req, res) => {
     const { galleryUrl, galleryId } = req.body;
     const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
@@ -168,6 +169,23 @@ app.post(authPanel.logIn.route, async (req, res) => {
 
     res.json(result);
 });
+
+app.get(authPanel.viewLogIn.route, async (req, res) => {
+    // const { galleryUrl, galleryId } = req.body;
+    // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
+
+    fs.readFile(path.resolve("../panel/dist/index.html"), "utf8", (err, template) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("An error occurred");
+        }
+
+        return res.send(
+            template
+        );
+    });
+});
+
 
 app.get(blogPanel.getBlogSelectList.route, verify, async (req, res) => {
     const blogs = await blogModel.getSelectList();
@@ -418,6 +436,7 @@ app.get("/robots.txt", function (req, res) {
 });
 
 app.get("*", async (req, res) => {
+    console.log('Running fallback route');
     let desiredRoute: { route: string };
     let initialState: any;
 

@@ -7,7 +7,7 @@ import "chartist/dist/scss/chartist.scss";
 import { BrowserRouter } from "react-router-dom";
 
 render(
-    <BrowserRouter>
+    <BrowserRouter basename="/panel">
         <Root />
     </BrowserRouter>,
     document.querySelector("#root")

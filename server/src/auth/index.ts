@@ -4,7 +4,7 @@ import { auth } from "../config";
 import * as jwt from "../core/jwt";
 import { Request, Response, NextFunction } from 'express';
 
-const validateCredentials = (username: string, password: string) => username === 'admin' && password === 'bee';
+const validateCredentials = (username: string, password: string) => username === 'admin' && password === 'beebee';
 
 export const login = async ({ username, password }: UserCredentials) => {
     if (validateCredentials(username, password)) {
