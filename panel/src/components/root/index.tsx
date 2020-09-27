@@ -1,31 +1,48 @@
 import * as React from "react";
-import {Route} from "react-router";
-import {Dashboard} from "../dashboard/index";
-import {Menu} from "../menu/index";
-import {Galleries} from "../galleries/index";
+import { Route } from "react-router";
+// import { Dashboard } from "../dashboard/index";
+import { Menu } from "../menu/index";
+import { Galleries } from "../galleries/index";
 import { NavBarInstance } from "../navbar";
-import { Emails } from "../emails";
+// import { Emails } from "../emails";
 import { Blogs } from "../blogs";
+import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+// import { RouteComponentProps, withRouter } from "react-router-dom";
+import { routes } from "../../routes";
 import { LogIn } from "../login";
+import { isLoggedIn } from "../../security";
+import { Soon } from "../soon";
+// import { doesHttpOnlyCookieExist } from "../../../../utils/auth";
 
-export class Root extends React.Component {
+interface Props extends RouteComponentProps {
+}
+
+interface State {
+}
+
+class RootComponent extends React.Component<Props, State> {
     render() {
-        return (
-            <div style={{height: '100%', display:'flex', flexDirection:'column'}}>
-                <NavBarInstance/>
+        const canLogOut = this.props.location.pathname !== routes.login;
+        const fullPageView = !canLogOut || [routes.emails, routes.comments, routes.home, routes.stats].includes(this.props.location.pathname);
+        
+        return !isLoggedIn() && canLogOut ? <Redirect to={routes.login}/> : <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <NavBarInstance canLogOut={canLogOut} />
                 <div id="layout">
-                    <div>
-                        <Menu/>
-                    </div>
-                    <div id="content">
-                        <Route exact path='/' component={Dashboard}/>
-                        <Route exact path='/galleries' component={Galleries}/>
-                        <Route exact path='/emails' component={Emails}/>
-                        <Route exact path='/blogs' component={Blogs}/>
-                        <Route exact path='/login' component={LogIn}/>
+                    {canLogOut && <div>
+                        <Menu />
+                    </div>}
+                    <div id="content" className={fullPageView ? "full-page" : ""}>
+                        <Route exact path={routes.home} component={Soon} />
+                        <Route exact path={routes.stats} component={Soon} />
+                        <Route exact path={routes.galleries} component={Galleries} />
+                        <Route exact path={routes.emails} component={Soon} />
+                        <Route exact path={routes.comments} component={Soon} />
+                        <Route exact path={routes.blogs} component={Blogs} />
+                        <Route exact path={routes.login} component={LogIn} />
                     </div>
                 </div>
             </div>
-        )
     }
 }
+
+export const Root = withRouter(props => <RootComponent {...props} />);

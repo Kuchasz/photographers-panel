@@ -9,7 +9,8 @@ const validateCredentials = (username: string, password: string) => username ===
 export const login = async ({ username, password }: UserCredentials) => {
     if (validateCredentials(username, password)) {
         const encodedToken = await jwt.sign({ username }, auth.secretKey, { algorithm: "RS256", expiresIn: auth.maxAge });
-        return encodedToken;
+        const decoded = jwt.decode(encodedToken, { json: true });
+        return { encodedToken, iat: Number(decoded.iat), exp: Number(decoded.exp) };
     } else {
         return Promise.reject('Invalid credentials');
     }

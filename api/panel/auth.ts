@@ -6,7 +6,7 @@ export interface UserCredentials {
 }
 
 export type LogInError = "ErrorOccuredWhileLogIn";
-export type LogInResult = Result<LogInError, { authToken: string, refreshToken: string }>;
+export type LogInResult = Result<LogInError, { authToken: string, refreshToken: string, issuedAt: number, expireDate: number }>;
 
 const logInRoute = "/api/panel/log-in";
 export const logIn = (credentials: UserCredentials) =>

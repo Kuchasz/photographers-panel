@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 
 render(
     <BrowserRouter basename="/panel">
+    {/* <BrowserRouter basename="/"> */}
         <Root />
     </BrowserRouter>,
     document.querySelector("#root")

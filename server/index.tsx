@@ -160,7 +160,7 @@ app.post(authPanel.logIn.route, async (req, res) => {
 
     try {
         const tokens = await login(req.body as authPanel.UserCredentials);
-        result = { type: ResultType.Success, result: { authToken: tokens, refreshToken: tokens } };
+        result = { type: ResultType.Success, result: { authToken: tokens.encodedToken, refreshToken: tokens.encodedToken, issuedAt: tokens.iat, expireDate: tokens.exp } };
         res.cookie(config.auth.cookieName, result.result.authToken, { httpOnly: true, maxAge: config.auth.maxAge * 1000 }); //secure the cookie!!
     } catch (err) {
         console.log(err);

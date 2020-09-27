@@ -6,8 +6,16 @@
     display: flex;
     height: 100%;
     flex-grow: 1;
+
     >#content {
         overflow-y: auto;
         flex: 1;
+
+        &.full-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
     }
 }
