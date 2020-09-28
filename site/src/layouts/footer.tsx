@@ -1,7 +1,7 @@
 import React from "react";
 import { strings } from "../resources";
 // import { Link } from "react-router";
-import { menuItems } from "../routes";
+// import { menuItems } from "../menuItems";
 import {getYear} from "../../../utils/date";
 
 const year = getYear(new Date());

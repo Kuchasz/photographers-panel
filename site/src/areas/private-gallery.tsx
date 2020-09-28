@@ -162,7 +162,7 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                             <div>
                                 {result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available ? (
                                     <>
-                                        <form ref={this.viewGalleryRef} method="POST" action={privateGallery.viewGalleryUrl.route}>
+                                        <form ref={this.viewGalleryRef} method="POST" action={privateGallery.viewGallery.route}>
                                             <input name="galleryId" value={result.gallery.id} type="hidden"></input>
                                             <input name="galleryUrl" value={result.gallery.url} type="hidden"></input>
                                         </form>

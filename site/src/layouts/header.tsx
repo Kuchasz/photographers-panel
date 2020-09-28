@@ -3,7 +3,8 @@ import { strings } from "../resources";
 import { randomElement, first, nextElement, last } from "../../../utils/array";
 import { firstSegment } from "../../../utils/url";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
-import { routes, menuItems } from "../routes";
+import { routes } from "../routes";
+import { menuItems } from "../menu-items";
 
 const getHeaderBackgroundStyle = (photo: string) => {
     const url = require(`../images/top/${photo}`);

@@ -1,5 +1,3 @@
-import { strings } from "./resources";
-import { zip } from "../../utils/array";
 import { getBlog, getBlogsList, getLastBlog } from "../../api/site/blog";
 import { getVideosList } from "../../api/site/video";
 import { getOffersList, getOffer } from "../../api/site/offer";
@@ -17,12 +15,3 @@ export const routes = {
     links: { fullPage: false, route: "/linki", label: "Links", getData: empty },
     private: { fullPage: false, route: "/prywatna", label: "Private", getData: empty }
 };
-
-type MenuItem = { route: string; fullPage: boolean; label: string };
-type MenuItems = keyof typeof strings.menu;
-const mapToMenuItem = (v: { route: string; fullPage: boolean }, k: MenuItems): MenuItem => {
-    return { route: v.route, fullPage: v.fullPage, label: strings.menu[k] };
-};
-
-
-export const menuItems = zip(Object.values(routes), Object.keys(routes) as MenuItems[], mapToMenuItem);
