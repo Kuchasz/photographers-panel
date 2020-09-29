@@ -455,7 +455,7 @@ app.get("*", async (req, res) => {
     fs.readFile(path.resolve("../site/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred: site HTML load");
+            return res.status(500).send("An error occurred: site HTML load" + path.resolve("../site/dist/index.html"));
         }
 
         let siteContent = "";
