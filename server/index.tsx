@@ -66,10 +66,10 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-app.use(express.static("../site/dist", { index: false }));
+app.use(express.static("../photographers-panel/site/dist", { index: false }));
 
-app.use(privateGallery.viewGallery.route, express.static("../../ps-photo-gallery/client/dist", { index: false }));
-app.use(authPanel.viewLogIn.route, express.static("../panel/dist", { index: false }));
+app.use(privateGallery.viewGallery.route, express.static("../ps-photo-gallery/client/dist", { index: false }));
+app.use(authPanel.viewLogIn.route, express.static("../photographers-panel/panel/dist", { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
 // site related APIs
