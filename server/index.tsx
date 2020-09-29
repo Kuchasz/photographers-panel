@@ -177,7 +177,7 @@ app.get(authPanel.viewLogIn.route, async (req, res) => {
     fs.readFile(path.resolve("../panel/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred: panel HTML load");
+            return res.status(500).send("An error occurred: panel HTML load " + path.resolve("../panel/dist/index.html"));
         }
 
         return res.send(
