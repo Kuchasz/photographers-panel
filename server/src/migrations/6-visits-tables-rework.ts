@@ -11,10 +11,10 @@ export const run = (connection: Connection): Promise<boolean> =>
 
             await renameTable("counter", "PageVisit", connection);
             await renameTable("daily", "PrivateGalleryDailyVisit", connection);
-            await renameColumn("PrivateGalleryDailyVisit", "PrivateGalleryId", "PrivateGallery_id", connection);
+            await renameColumn("PrivateGalleryDailyVisit", "PrivateGalleryId", "PrivateGallery_id", "int(8)", connection);
             
             await renameTable("email", "PrivateGalleryEmail", connection);
-            await renameColumn("PrivateGalleryEmail", "PrivateGalleryId", "PrivateGallery_id", connection);
+            await renameColumn("PrivateGalleryEmail", "PrivateGalleryId", "PrivateGallery_id", "int(8)", connection);
             
             await runQuery(`DROP TABLE \`offerphoto\`;`, connection);
             await runQuery(`DROP TABLE \`offer\`;`, connection);

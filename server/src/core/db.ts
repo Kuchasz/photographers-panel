@@ -36,11 +36,12 @@ export const renameColumn = (
     tableName: string,
     columnName: string,
     newColumnName: string,
+    dataType: string,
     connection: Connection
 ): Promise<void> =>
     new Promise((res, rej) => {
         connection.query(
-            `ALTER TABLE \`${tableName}\` RENAME COLUMN \`${columnName}\` TO \`${newColumnName}\``,
+            `ALTER TABLE \`${tableName}\` CHANGE COLUMN \`${columnName}\` \`${newColumnName}\` ${dataType}`,
             (err) => {
                 log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, err);
                 if (err) rej(err);

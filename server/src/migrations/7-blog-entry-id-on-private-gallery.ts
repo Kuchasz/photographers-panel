@@ -9,7 +9,7 @@ export const run = (connection: Connection): Promise<boolean> =>
                 return;
             }
 
-            await renameColumn("PrivateGallery", "BlogEntryId", "Blog_id", connection);
+            await renameColumn("PrivateGallery", "BlogEntryId", "Blog_id", "int(11)", connection);
 
             res(true);
 

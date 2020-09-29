@@ -31,33 +31,33 @@ export const run = (connection: Connection): Promise<boolean> =>
             }
 
             await renameTable("blogentry", "Blog", connection);
-            await renameColumn("Blog", "id", "Id", connection);
-            await renameColumn("Blog", "date", "Date", connection);
-            await renameColumn("Blog", "title", "Title", connection);
-            await renameColumn("Blog", "alias", "Alias", connection);
-            await renameColumn("Blog", "content", "Content", connection);
-            await renameColumn("Blog", "tags", "Tags", connection);
-            await renameColumn("Blog", "isHidden", "IsHidden", connection);
+            await renameColumn("Blog", "id", "Id", "int(11)", connection);
+            await renameColumn("Blog", "date", "Date", "date", connection);
+            await renameColumn("Blog", "title", "Title", "varchar(200)", connection);
+            await renameColumn("Blog", "alias", "Alias", "varchar(200)", connection);
+            await renameColumn("Blog", "content", "Content", "varchar(1000)", connection);
+            await renameColumn("Blog", "tags", "Tags", "varchar(100)", connection);
+            await renameColumn("Blog", "isHidden", "IsHidden", "tinyiny(1)", connection);
 
             await renameTable("blogcomment", "BlogComment", connection);
-            await renameColumn("BlogComment", "blogEntry_id", "Blog_id", connection);
-            await renameColumn("BlogComment", "id", "Id", connection);
-            await renameColumn("BlogComment", "userName", "UserName", connection);
-            await renameColumn("BlogComment", "content", "Content", connection);
-            await renameColumn("BlogComment", "date", "Date", connection);
-            await renameColumn("BlogComment", "state", "State", connection);
+            await renameColumn("BlogComment", "blogEntry_id", "Blog_id", "int(11)", connection);
+            await renameColumn("BlogComment", "id", "Id", "int(11)", connection);
+            await renameColumn("BlogComment", "userName", "UserName", "varchar(255)", connection);
+            await renameColumn("BlogComment", "content", "Content", "text", connection);
+            await renameColumn("BlogComment", "date", "Date", "datetime", connection);
+            await renameColumn("BlogComment", "state", "State", "enum('new', 'approved', 'rejected')", connection);
 
             await renameTable("blogvisit", "BlogVisit", connection);
-            await renameColumn("BlogVisit", "BlogEntryId", "Blog_id", connection);
-            await renameColumn("BlogVisit", "id", "Id", connection);
-            await renameColumn("BlogVisit", "ip", "Ip", connection);
-            await renameColumn("BlogVisit", "date", "Date", connection);
+            await renameColumn("BlogVisit", "BlogEntryId", "Blog_id", "int(11)", connection);
+            await renameColumn("BlogVisit", "id", "Id", "int(12)", connection);
+            await renameColumn("BlogVisit", "ip", "Ip", "varchar(15)", connection);
+            await renameColumn("BlogVisit", "date", "Date", "datetime", connection);
 
             await renameTable("blogentryphoto", "BlogAsset", connection);
-            await renameColumn("BlogAsset", "id", "Id", connection);
-            await renameColumn("BlogAsset", "BlogEntryId", "Blog_id", connection);
-            await renameColumn("BlogAsset", "photourl", "Url", connection);
-            await renameColumn("BlogAsset", "alttext", "Alt", connection);
+            await renameColumn("BlogAsset", "id", "Id", "int(11)", connection);
+            await renameColumn("BlogAsset", "BlogEntryId", "Blog_id", "int(11)", connection);
+            await renameColumn("BlogAsset", "photourl", "Url", "varchar(100)", connection);
+            await renameColumn("BlogAsset", "alttext", "Alt", "varchar(150)", connection);
 
             connection.query(`SELECT b.Id, b.Tags FROM Blog b`, (_err, results: result[], _fields) => {
                 const promises = results.map((x) => runNormalizeTags(x, connection));
