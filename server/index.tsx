@@ -140,7 +140,7 @@ app.post(privateGallery.viewGallery.route, async (req, res) => {
     fs.readFile(path.resolve("../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred");
+            return res.status(500).send("An error occurred: gallery HTML load");
         }
 
         return res.send(
@@ -177,7 +177,7 @@ app.get(authPanel.viewLogIn.route, async (req, res) => {
     fs.readFile(path.resolve("../panel/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred");
+            return res.status(500).send("An error occurred: panel HTML load");
         }
 
         return res.send(
@@ -455,7 +455,7 @@ app.get("*", async (req, res) => {
     fs.readFile(path.resolve("../site/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred");
+            return res.status(500).send("An error occurred: site HTML load");
         }
 
         let siteContent = "";
