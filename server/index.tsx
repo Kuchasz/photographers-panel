@@ -137,7 +137,7 @@ app.post(privateGallery.viewGallery.route, async (req, res) => {
     const { galleryUrl, galleryId } = req.body;
     const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(path.resolve("../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(path.resolve("../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500).send("An error occurred: gallery HTML load");
@@ -174,7 +174,7 @@ app.get(authPanel.viewLogIn.route, async (req, res) => {
     // const { galleryUrl, galleryId } = req.body;
     // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(path.resolve("../panel/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(path.resolve("../photographers-panel/panel/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500).send("An error occurred: panel HTML load " + path.resolve("../panel/dist/index.html"));
@@ -452,10 +452,10 @@ app.get("*", async (req, res) => {
         return;
     }
 
-    fs.readFile(path.resolve("../site/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(path.resolve("../photographers-panel/site/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred: site HTML load" + path.resolve("../site/dist/index.html"));
+            return res.status(500).send("An error occurred: site HTML load" + path.resolve("../photographers-panel/site/dist/index.html"));
         }
 
         let siteContent = "";
