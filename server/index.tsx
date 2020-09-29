@@ -436,7 +436,6 @@ app.get("/robots.txt", function (req, res) {
 });
 
 app.get("*", async (req, res) => {
-    console.log('Running fallback route');
     let desiredRoute: { route: string };
     let initialState: any;
 

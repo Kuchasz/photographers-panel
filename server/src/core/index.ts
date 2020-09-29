@@ -13,7 +13,7 @@ export const allowCrossDomain = function (_req: any, res: any, next: Function) {
 export const processImage = (image: Buffer) => (finalPath: string): Promise<void> =>
     new Promise((res, rej) => {
         sharp(image)
-            .resize({ width: 1000, height: 1000, fit: "inside" })
+            .resize(1000, 1000, { fit: "inside" })
             .composite([{ input: readFileSync(resolve(__dirname, "logo-watermark.png")), gravity: "southwest" }])
             .webp({ quality: 65 })
             .toFile(finalPath, async (_err, _info) => {

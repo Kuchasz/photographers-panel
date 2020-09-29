@@ -1,3 +1,5 @@
+import { app } from "../server/src/config";
+
 export enum ResultType {
     Success,
     Error
@@ -8,4 +10,4 @@ type Error<T> = { type: ResultType.Error; error: T };
 
 export type Result<T, U = null> = Success<U> | Error<T>;
 
-export const endpoint: string = "http://localhost:8080";
+export const endpoint: string = app.appPath;

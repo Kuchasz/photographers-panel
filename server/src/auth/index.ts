@@ -23,8 +23,6 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
         return res.status(403).send();
     }
 
-    console.log(`AccessToken: (${accessToken.substr(0, 10)}...)[${accessToken.length}]`);
-
     let payload;
 
     try {
