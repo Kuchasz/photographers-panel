@@ -28,3 +28,7 @@ export const auth = {
     cookieName: 'SESSION_COOKIE_NAME',
     maxAge: 0 //session max age in seconds
 };
+
+export const app ={
+    appPath: "http://APP_ROOT_PATH.com"
+}
