@@ -37,7 +37,7 @@ export const run = (connection: Connection): Promise<boolean> =>
             await renameColumn("Blog", "alias", "Alias", "varchar(200)", connection);
             await renameColumn("Blog", "content", "Content", "varchar(1000)", connection);
             await renameColumn("Blog", "tags", "Tags", "varchar(100)", connection);
-            await renameColumn("Blog", "isHidden", "IsHidden", "tinyiny(1)", connection);
+            await renameColumn("Blog", "isHidden", "IsHidden", "tinyint(1)", connection);
 
             await renameTable("blogcomment", "BlogComment", connection);
             await renameColumn("BlogComment", "blogEntry_id", "Blog_id", "int(11)", connection);
