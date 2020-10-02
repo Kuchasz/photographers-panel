@@ -1,5 +1,7 @@
 import * as React from "react";
 import * as api from "../../../api/site/blog";
+import facebookIcon from "../images/facebook.svg";
+import { strings } from "../resources";
 
 type BlogProps = { initialState?: api.Blog; alias: string };
 type BlogState = { blog?: api.Blog };
@@ -29,18 +31,8 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                         </h1>
                         <h2>{this.state.blog.content}</h2>
                         <span>
-                            Świetnie bawiłeś się na tym weselu? Znasz Młodą Parę? Lub może po prostu podobają Ci się
-                            zdjęcia, kliknij:
+                            {strings.blog.shareMessage}<a href={`https://www.facebook.com/sharer/sharer.php?u=${window.location}`}><img src={facebookIcon} /></a>
                         </span>
-                        <div className="fb-share-button"
-                            data-href="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                            data-layout="button_count">
-                        </div>
-                        <div
-                            className="fb-share-button"
-                            data-href="http://{$smarty.server.HTTP_HOST}{$smarty.server.REQUEST_URI}"
-                            data-layout="button_count"
-                        ></div>
                         <br />
                         <br />
                         <div className="photos">
@@ -59,7 +51,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
 {
     /* <div class="blog">
     <section>
-    	{if $smarty.post.title = $blog->title}
+        {if $smarty.post.title = $blog->title}
         <article>
             <h1 style="display: inline"><sup><small>{$blog->date}</small></sup><br/>{$blog->title}</h1>
             <h2 style="margin-bottom: 50px">{$blog->content}</h2>
@@ -76,9 +68,9 @@ export class Blog extends React.Component<BlogProps, BlogState> {
             {/foreach}
         </article>
         {else}
-        	<script type="text/javascript">
-        		location.replace('{$base_url}');
-        	</script>
+            <script type="text/javascript">
+                location.replace('{$base_url}');
+            </script>
         {/if}
     </section>
     <div id="fb-root"></div>

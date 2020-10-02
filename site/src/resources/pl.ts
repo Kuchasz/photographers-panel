@@ -159,5 +159,8 @@ export const pl = {
                 youtube: "https://www.youtube.com/channel/UCANjnytGkPi04eBXuInRtBQ"
             }
         }
+    },
+    blog: {
+        shareMessage: "Aby podzielić się zdjęciami ze znajomymi możesz udostępnić wpis na facebooku"
     }
 };

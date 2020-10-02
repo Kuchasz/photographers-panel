@@ -14,7 +14,7 @@ import Root from "../site/dist/bundle.js";
 import * as blog from "../api/site/blog";
 import * as blogPanel from "../api/panel/blog";
 import fs from "fs";
-import path from "path";
+import {resolve} from "path";
 import { routes } from "../site/src/routes";
 import * as message from "../api/site/message";
 import * as notification from "../api/site/notification";
@@ -66,10 +66,10 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-app.use(express.static("../photographers-panel/site/dist", { index: false }));
+app.use(express.static(resolve(__dirname + "/../site/dist"), { index: false }));
 
-app.use(privateGallery.viewGallery.route, express.static(__dirname + "/../../ps-photo-gallery/client/dist", { index: false }));
-app.use(authPanel.viewLogIn.route, express.static(__dirname + "/../panel/dist", { index: false }));
+app.use(privateGallery.viewGallery.route, express.static(resolve(__dirname + "/../../ps-photo-gallery/client/dist"), { index: false }));
+app.use(authPanel.viewLogIn.route, express.static(resolve(__dirname + "/../panel/dist"), { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
 // site related APIs
@@ -137,10 +137,10 @@ app.post(privateGallery.viewGallery.route, async (req, res) => {
     const { galleryUrl, galleryId } = req.body;
     const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(path.resolve(__dirname + "/../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(resolve(__dirname + "/../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred: gallery HTML load");
+            return res.status(500);
         }
 
         return res.send(
@@ -174,10 +174,10 @@ app.get(authPanel.viewLogIn.route, async (req, res) => {
     // const { galleryUrl, galleryId } = req.body;
     // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(path.resolve(__dirname + "/../panel/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(resolve(__dirname + "/../panel/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred: panel HTML load " + path.resolve("../panel/dist/index.html"));
+            return res.status(500);
         }
 
         return res.send(
@@ -452,10 +452,10 @@ app.get("*", async (req, res) => {
         return;
     }
 
-    fs.readFile(path.resolve(__dirname + "/../site/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(resolve(__dirname + "/../site/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500).send("An error occurred: site HTML load" + path.resolve(__dirname + "/../site/dist/index.html"));
+            return res.status(500);
         }
 
         let siteContent = "";
