@@ -7,7 +7,8 @@ import ChartistGraph from "react-chartist";
 const chartOptions = {
     low: 0,
     showArea: true,
-    height: 300
+    height: 300,
+    fullWidth: true
 };
 
 const formatDateToDayAndMonth = (dateString: string) => getDayAndMonth(new Date(dateString));

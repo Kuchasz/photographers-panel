@@ -307,7 +307,7 @@ app.post(blogPanel.uploadBlogAsset.route, verify, upload.single("asset"), async 
 
         await processImage(req.file.buffer)(finalPath);
 
-        const id = await blogModel.createBlogAsset(blogId, assetId, "blah some alt text here");
+        const id = await blogModel.createBlogAsset(blogId, assetId, "");
 
         result = {
             type: ResultType.Success,
