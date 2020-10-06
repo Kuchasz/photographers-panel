@@ -121,6 +121,13 @@ export class Blogs extends React.Component<Props, State> {
         });
     };
 
+    onVisibilityChange = (selectedBlog: number, visibility: boolean) => {
+        const blog = this.state.blogs.find(b => b.id === selectedBlog);
+        if(blog){
+            blog.visible = visibility;
+        }
+    };
+
     onAssignAssets = (selectedBlog: number) => {
         this.setState({
             blogToEditId: selectedBlog,
@@ -194,6 +201,7 @@ export class Blogs extends React.Component<Props, State> {
                             onEdit={this.onBlogEdit}
                             onAssignAssets={this.onAssignAssets}
                             onDelete={this.onBlogDelete}
+                            onVisibilityChange={this.onVisibilityChange}
                         />
                     </Panel>
                 </div>

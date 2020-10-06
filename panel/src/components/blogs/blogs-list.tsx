@@ -7,6 +7,7 @@ interface Props {
     onSelect: (id: number) => void;
     onEdit: (id: number) => void;
     onAssignAssets: (id: number) => void;
+    onVisibilityChange: (id: number, visibility: boolean) => void;
     onDelete: (id: number) => void;
     blogs: BlogListItem[];
     loadingBlogs: boolean;
@@ -16,9 +17,9 @@ interface State {
     isChangingVisibility: boolean;
 }
 
-type VisibilityIconProps = { id: number; initialVisibility: boolean };
+type VisibilityIconProps = { id: number; initialVisibility: boolean, onVisibilityChange: (visibility: boolean) => void };
 
-const VisibilityIcon = ({ id, initialVisibility }: VisibilityIconProps) => {
+const VisibilityIcon = ({ id, initialVisibility, onVisibilityChange }: VisibilityIconProps) => {
     const [visible, setVisible] = useState<boolean>();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -29,6 +30,7 @@ const VisibilityIcon = ({ id, initialVisibility }: VisibilityIconProps) => {
     const onChangeBlogVisibility = () => {
         setIsLoading(true);
         changeBlogVisibility({ id, shouldBeVisible: !visible }).then((result) => {
+            onVisibilityChange(!visible);
             setVisible(!visible);
             setIsLoading(false);
         });
@@ -66,7 +68,7 @@ export class BlogsList extends React.Component<Props, State> {
                 rowHeight={50}
                 virtualized={true}
                 shouldUpdateScroll={true}
-                onDataUpdated={() => {}}
+                onDataUpdated={() => { }}
                 loading={this.props.loadingBlogs}
                 height={700}
                 onRowClick={(item: any) => this.props.onSelect(item.id)}
@@ -75,7 +77,7 @@ export class BlogsList extends React.Component<Props, State> {
                 <Table.Column width={100} align="center">
                     <Table.HeaderCell>Visibility</Table.HeaderCell>
                     <Table.Cell className="link-group">
-                        {(blog: BlogListItem) => <VisibilityIcon id={blog.id} initialVisibility={blog.visible} />}
+                        {(blog: BlogListItem) => <VisibilityIcon onVisibilityChange={(visibility) => this.props.onVisibilityChange(blog.id, visibility)} id={blog.id} initialVisibility={blog.visible} />}
                     </Table.Cell>
                 </Table.Column>
 
