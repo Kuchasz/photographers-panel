@@ -41,7 +41,7 @@ export interface MainBlogAssetDto {
     mainBlogAsset: number;
 }
 
-export type CreateBlogError = "ErrorOccuredWhileBlogGallery";
+export type CreateBlogError = "ErrorOccuredWhileCreatingBlog";
 export type CreateBlogResult = Result<CreateBlogError>;
 
 export type ChangeBlogVisibilityError = "ErrorOccuredWhileChangingBlogVisibility";
