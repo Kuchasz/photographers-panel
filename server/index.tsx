@@ -14,7 +14,7 @@ import Root from "../site/dist/bundle.js";
 import * as blog from "../api/site/blog";
 import * as blogPanel from "../api/panel/blog";
 import fs from "fs";
-import {resolve} from "path";
+import { resolve } from "path";
 import { routes } from "../site/src/routes";
 import * as message from "../api/site/message";
 import * as notification from "../api/site/notification";
@@ -164,13 +164,13 @@ app.post(authPanel.logIn.route, async (req, res) => {
         res.cookie(config.auth.cookieName, result.result.authToken, { httpOnly: true, maxAge: config.auth.maxAge * 1000 }); //secure the cookie!!
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: 'ErrorOccuredWhileLogIn' };
+        result = { type: ResultType.Error, error: 'ErrorOccuredWhileLogIn', errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
 });
 
-app.get(authPanel.viewLogIn.route, async (req, res) => {
+app.get(`${authPanel.viewLogIn.route}/*`, async (req, res) => {
     // const { galleryUrl, galleryId } = req.body;
     // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
@@ -205,7 +205,7 @@ app.post(blogPanel.createBlog.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileBlogGallery" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingBlog", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -227,7 +227,7 @@ app.post(blogPanel.changeBlogVisibility.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogVisibility" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogVisibility", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -241,7 +241,7 @@ app.post(blogPanel.changeMainBlogAsset.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingMainBlogAsset" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingMainBlogAsset", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -257,7 +257,7 @@ app.post(blogPanel.editBlog.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingBlog" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingBlog", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -281,7 +281,7 @@ app.post(blogPanel.deleteBlog.route, verify, async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlog" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlog", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -300,7 +300,7 @@ app.post(blogPanel.uploadBlogAsset.route, verify, upload.single("asset"), async 
         const assetsPath = blogModel.getAssetsPath(blogId);
 
         if (!fs.existsSync(assetsPath)) {
-            fs.mkdirSync(assetsPath);
+            fs.mkdirSync(assetsPath, { recursive: true });
         }
 
         const finalPath = blogModel.getAssetPath(assetsPath, assetId);
@@ -315,7 +315,7 @@ app.post(blogPanel.uploadBlogAsset.route, verify, upload.single("asset"), async 
         };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileUploadingBlogAsset" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileUploadingBlogAsset", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -338,7 +338,7 @@ app.post(blogPanel.deleteBlogAsset.route, verify, async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlogAsset" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlogAsset", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -354,7 +354,7 @@ app.post(blogPanel.changeBlogAssetAlt.route, verify, async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogAssetError" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogAssetError", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -394,7 +394,7 @@ app.post(privateGalleryPanel.createGallery.route, verify, async (req, res) => {
         await privateGalleryModel.createGallery(req.body as privateGalleryPanel.GalleryEditDto);
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingGallery" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingGallery", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -409,7 +409,7 @@ app.post(privateGalleryPanel.editGallery.route, verify, async (req, res) => {
         await privateGalleryModel.editGallery(id, gallery);
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingGallery" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingGallery", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
@@ -424,7 +424,7 @@ app.post(privateGalleryPanel.deleteGallery.route, verify, async (req, res) => {
         await privateGalleryModel.deleteGallery(id);
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingGallery" };
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingGallery", errorMessage: JSON.stringify(err) };
     }
 
     res.json(result);
