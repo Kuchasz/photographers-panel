@@ -36,19 +36,16 @@ import { login, verify } from "./src/auth";
 import { deleteFile, deleteFolderRecursive } from "./src/core/fs";
 import { Connection } from "mysql2/promise";
 
-const runMigration = (migration: (connection: Connection) => Promise<boolean>, connection: Connection) => new Promise<boolean>((res, rej) => {
-    connection.beginTransaction(async () => {
-        try {
-            const runOrNot = await migration(connection);
-            connection.commit();
-            res(runOrNot);
-        } catch (err) {
-            console.log('Rolling back transaction');
-            connection.rollback(() => {
-                rej(err);
-            });
-        }
-    });
+const runMigration = (migration: (connection: Connection) => Promise<boolean>, connection: Connection) => new Promise<boolean>(async (res, rej) => {
+    try {
+        await connection.beginTransaction();
+        const runOrNot = await migration(connection);
+        await connection.commit();
+        res(runOrNot);
+    } catch (err) {
+        console.log('Rolling back transaction');
+        await connection.rollback();
+    }
 });
 
 const runMigrations = async () => {
