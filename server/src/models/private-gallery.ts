@@ -4,6 +4,7 @@ import { getDateString, getDateRange } from "../../../utils/date";
 import { GalleryEditDto, GalleryDto, GalleryVisitsDto, VisitsSummaryDto } from "../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../api/private-gallery";
 import { sum } from "../../../utils/array";
+import { RowDataPacket } from "mysql2";
 
 export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> =>
     new Promise((resolve, reject) => {
@@ -14,7 +15,7 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
         WHERE p.pass = ?
         `,
             [password],
-            (_err, [gallery], _fields) => {
+            (_err, [gallery]: RowDataPacket[], _fields) => {
                 const result: PrivateGalleryUrlCheckResult =
                     gallery == undefined
                         ? { gallery, blog: undefined }
@@ -42,7 +43,7 @@ export const getUrl = (password: string): Promise<PrivateGalleryUrlCheckResult> 
 
 export const exists = (id: number): Promise<boolean> =>
     new Promise((resolve, reject) =>
-        connection.query(`SELECT id FROM PrivateGallery AS p WHERE p.id = ?`, [id], (_err, rows, _fields) => {
+        connection.query(`SELECT id FROM PrivateGallery AS p WHERE p.id = ?`, [id], (_err, rows: RowDataPacket[], _fields) => {
             resolve(rows.length !== 0);
         })
     );
@@ -102,7 +103,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
             ORDER BY d.count DESC
             LIMIT 1`,
             [galleryId],
-            (_err, visits, _fields) => {
+            (_err, visits: RowDataPacket[], _fields) => {
                 if (visits && visits.length > 0) {
                     const [visit] = visits;
                     resolve({ date: getDateString(visit.date), visits: visit.count });
@@ -117,7 +118,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
             `SELECT SUM(d.count) as visits FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ?
             GROUP BY d.PrivateGallery_id`,
             [galleryId],
-            (_err, result, _fields) => {
+            (_err, result: RowDataPacket[], _fields) => {
                 if (result && result.length > 0) {
                     const [visit] = result;
                     resolve(visit.visits);
@@ -132,7 +133,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
             `SELECT COUNT(d.id) as emails FROM PrivateGalleryEmail d WHERE d.PrivateGallery_id = ?
             GROUP BY d.PrivateGallery_id`,
             [galleryId],
-            (_err, result, _fields) => {
+            (_err, result: RowDataPacket[], _fields) => {
                 if (result && result.length > 0) {
                     const [email] = result;
                     resolve(email.emails);
@@ -146,7 +147,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         connection.query(
             `SELECT d.count FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ? AND date = ?`,
             [galleryId, today],
-            (_err, result, _fields) => {
+            (_err, result: RowDataPacket[], _fields) => {
                 if (result && result.length > 0) {
                     const [daily] = result;
                     resolve(daily.count);
@@ -177,7 +178,7 @@ export const checkPasswordIsUnique = (password: string, galleryId?: number): Pro
             FROM PrivateGallery p
             WHERE p.pass = ?`,
             [password],
-            (_err, galleries, _fields) => {
+            (_err, galleries: RowDataPacket[], _fields) => {
                 const [gallery] = galleries;
                 if (!gallery) {
                     resolve(true);
@@ -196,7 +197,7 @@ export const getForEdit = (galleryId: number): Promise<GalleryEditDto> =>
             FROM PrivateGallery p
             WHERE p.id = ?`,
             [galleryId],
-            (_err, [gallery], _fields) => {
+            (_err, [gallery]: RowDataPacket[], _fields) => {
                 resolve({
                     place: gallery.place,
                     date: getDateString(gallery.date),

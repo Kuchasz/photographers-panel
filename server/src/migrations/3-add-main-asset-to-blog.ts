@@ -1,4 +1,4 @@
-import { Connection } from "mysql";
+import { Connection } from "mysql2/promise";
 import { columnExists, runQuery } from "../core/db";
 
 export const run = (connection: Connection): Promise<boolean> =>

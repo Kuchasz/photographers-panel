@@ -1,4 +1,4 @@
-import { Connection } from "mysql";
+import { Connection } from "mysql2/promise";
 import { columnExists, renameTable, renameColumn } from "../core/db";
 
 type result = { Id: number; Tags: string };
@@ -11,16 +11,8 @@ const normalizeTags = (tags: string) =>
         .normalize("NFD")
         .replace(/[^a-z0-9-]/g, "");
 
-const runNormalizeTags = (r: result, connection: Connection): Promise<void> =>
-    new Promise((res, rej) => {
-        connection.query("UPDATE Blog SET Tags = ? WHERE Id = ?", [normalizeTags(r.Tags), r.Id], (_err) => {
-            if (_err) {
-                rej(_err);
-                return;
-            }
-            res();
-        });
-    });
+const runNormalizeTags = (r: result, connection: Connection): Promise<any> => 
+    connection.query("UPDATE Blog SET Tags = ? WHERE Id = ?", [normalizeTags(r.Tags), r.Id]);
 
 export const run = (connection: Connection): Promise<boolean> =>
     new Promise<boolean>(async (res, rej) => {

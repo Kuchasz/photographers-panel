@@ -2,275 +2,217 @@ import { connection } from "../db";
 import { getDateString } from "../../../utils/date";
 import * as site from "../../../api/site/blog";
 import * as panel from "../../../api/panel/blog";
+import { RowDataPacket } from "mysql2/promise";
 
-export const getMostRecent = (): Promise<site.LastBlog> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
-      SELECT alias, content, title FROM Blog 
-      WHERE isHidden = 0 
-      ORDER BY date DESC 
-      LIMIT 1`,
-            (_err, [first], _fields) => {
-                resolve(first);
-            }
-        );
-    });
+export const getMostRecent = async (): Promise<site.LastBlog> => {
+    const [[mostRecent]] = await connection.query<RowDataPacket[]>(`
+            SELECT alias, content, title FROM Blog 
+            WHERE isHidden = 0 
+            ORDER BY date DESC 
+            LIMIT 1`);
 
-export const getList = (): Promise<site.BlogListItem[]> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
-      SELECT b.Id, b.title, b.date, b.alias, ba.Url, ba.Alt 
-      FROM Blog b 
-      LEFT JOIN BlogAsset ba ON ba.id = b.MainBlogAsset_id
-      WHERE b.isHidden = 0 AND ba.Id IS NOT NULL
-      ORDER BY b.date DESC`,
-            (_err, blogs, _fields) => {
-                const blogListItems = blogs.map((b: any) => ({
-                    title: b.title,
-                    date: getDateString(new Date(b.date)),
-                    alias: b.alias,
-                    photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`
-                }));
+    return mostRecent as site.LastBlog;
+}
 
-                resolve(blogListItems);
-            }
-        );
-    });
+export const getList = async (): Promise<site.BlogListItem[]> => {
+    const [blogs] = await connection.query<RowDataPacket[]>(`
+            SELECT b.Id, b.title, b.date, b.alias, ba.Url, ba.Alt 
+            FROM Blog b 
+            LEFT JOIN BlogAsset ba ON ba.id = b.MainBlogAsset_id
+            WHERE b.isHidden = 0 AND ba.Id IS NOT NULL
+            ORDER BY b.date DESC`);
 
-export const get = (alias: string): Promise<site.Blog> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
-        SELECT b.Id, b.title, b.date, b.content, ba.Url, ba.Alt 
-        FROM Blog b 
-        JOIN BlogAsset ba ON b.id = ba.Blog_id 
-        WHERE b.alias LIKE ?
-        `,
-            [alias],
-            (_err, blogAssets, _fields) => {
-                const [first] = blogAssets;
-                const blog: site.Blog = {
-                    title: first.title,
-                    date: getDateString(new Date(first.date)),
-                    content: first.content,
-                    assets: blogAssets.map((p: any) => ({
-                        url: `/${getAssetPath(getAssetsPath(p.Id), p.Url)}`,
-                        alt: p.Alt
-                    }))
-                };
+    const blogListItems = blogs.map((b: any) => ({
+        title: b.title,
+        date: getDateString(new Date(b.date)),
+        alias: b.alias,
+        photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`
+    }));
 
-                resolve(blog);
-            }
-        );
-    });
+    return blogListItems;
+}
 
-export const getSelectList = (): Promise<panel.BlogSelectItem[]> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
-      SELECT b.title, b.date, b.id FROM Blog b 
-      ORDER BY b.date DESC`,
-            (_err, blogs, _fields) => {
-                const blogSelectListItems = blogs.map((b: any) => ({
-                    label: `${b.title} (${getDateString(b.date)})`,
-                    value: b.id
-                }));
+export const get = async (alias: string): Promise<site.Blog> => {
+    const [blogAssets] = await connection.query<RowDataPacket[]>(`
+            SELECT b.Id, b.title, b.date, b.content, ba.Url, ba.Alt 
+            FROM Blog b 
+            JOIN BlogAsset ba ON b.id = ba.Blog_id 
+            WHERE b.alias LIKE ?`);
 
-                resolve(blogSelectListItems);
-            }
-        );
-    });
+    const [first] = blogAssets;
 
-export const getListForPanel = (): Promise<panel.BlogListItem[]> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
+    const blog: site.Blog = {
+        title: first.title,
+        date: getDateString(new Date(first.date)),
+        content: first.content,
+        assets: blogAssets.map((p: any) => ({
+            url: `/${getAssetPath(getAssetsPath(p.Id), p.Url)}`,
+            alt: p.Alt
+        }))
+    };
+
+    return blog;
+}
+
+export const registerVisit = (): Promise<any> =>
+    connection.query(`
+            INSERT INTO BlogVisit(Ip, Date, Blog_id) 
+            VALUES (?, ?, ?)
+            SELECT Ip, Date, Blog_id FROM DUAL 
+            WHERE NOT EXISTS (SELECT * FROM BlogVisit 
+            WHERE Ip=? AND Date=? AND Blog_id=? LIMIT 1)`)
+
+export const getSelectList = async (): Promise<panel.BlogSelectItem[]> => {
+    const blogs = await connection.query<RowDataPacket[]>(`
+            SELECT b.title, b.date, b.id FROM Blog b 
+            ORDER BY b.date DESC`);
+
+    const blogSelectListItems = blogs.map((b: any) => ({
+        label: `${b.title} (${getDateString(b.date)})`,
+        value: b.id
+    }));
+
+    return blogSelectListItems;
+}
+
+export const getListForPanel = async (): Promise<panel.BlogListItem[]> => {
+    const [blogs] = await connection.query<RowDataPacket[]>(`
             SELECT b.id, b.date, b.title, SUBSTRING(b.content, 1, 50) as content, b.isHidden, COALESCE( bv.count, 0 ) AS visits, COALESCE( bc.count, 0 ) AS comments FROM Blog b 
             LEFT JOIN 
             (SELECT Blog_id, COUNT(*) AS count 
-             FROM BlogVisit
-             GROUP BY Blog_id) bv
+                FROM BlogVisit
+                GROUP BY Blog_id) bv
             ON b.id = bv.Blog_id
             LEFT JOIN 
             (SELECT Blog_id, COUNT(*) AS count 
-             FROM BlogComment
-             GROUP BY Blog_id) bc
+                FROM BlogComment
+                GROUP BY Blog_id) bc
             ON b.id = bc.Blog_id
-            ORDER BY b.date DESC`,
-            (_err, blogs, _fields) => {
-                const blogListItems = blogs.map(
-                    (b: any) =>
-                        <panel.BlogListItem>{
-                            id: b.id,
-                            date: getDateString(new Date(b.date)),
-                            title: b.title,
-                            content: `${b.content}...`,
-                            visits: b.visits,
-                            comments: b.comments,
-                            visible: !b.isHidden
-                        }
-                );
+            ORDER BY b.date DESC`);
 
-                resolve(blogListItems);
+    const blogListItems = blogs.map(
+        (b: any) =>
+            <panel.BlogListItem>{
+                id: b.id,
+                date: getDateString(new Date(b.date)),
+                title: b.title,
+                content: `${b.content}...`,
+                visits: b.visits,
+                comments: b.comments,
+                visible: !b.isHidden
             }
-        );
-    });
+    );
 
-export const createBlog = (blog: panel.BlogEditDto) =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `
-                INSERT INTO Blog(
-                    date, 
-                    title, 
-                    alias, 
-                    content, 
-                    tags,
-                    isHidden) 
-                VALUES (?, ?, ?, ?, ?, ?)`,
-                [blog.date, blog.title, blog.alias, blog.content, blog.tags, true],
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+    return blogListItems;
+}
 
-export const checkAliasIsUnique = (alias: string, blogId?: number): Promise<boolean> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
+export const createBlog = async (blog: panel.BlogEditDto) => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(`
+            INSERT INTO Blog(
+                date, 
+                title, 
+                alias, 
+                content, 
+                tags,
+                isHidden) 
+            VALUES (?, ?, ?, ?, ?, ?)`,
+            [blog.date, blog.title, blog.alias, blog.content, blog.tags, true]);
+    } catch (err) {
+        await connection.rollback();
+        return Promise.reject();
+    }
+}
+
+export const checkAliasIsUnique = async (alias: string, blogId?: number): Promise<boolean> => {
+    const [[blog]] = await connection.query<RowDataPacket[]>(`
             SELECT b.id 
             FROM Blog b
             WHERE b.alias = ?`,
-            [alias, blogId],
-            (_err, blogs, _fields) => {
-                const [blog] = blogs;
-                if (!blog) {
-                    resolve(true);
-                } else {
-                    resolve(blog.id === blogId);
-                }
-            }
-        );
-    });
+        [alias, blogId]);
 
-export const changeVisibility = (blogVisibility: panel.BlogVisibilityDto) =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `
+    return !blog || blog.id === blogId;
+}
+
+export const changeVisibility = async (blogVisibility: panel.BlogVisibilityDto) => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(`
             UPDATE Blog
             SET isHidden = ?
             WHERE id = ?`,
-                [!blogVisibility.shouldBeVisible, blogVisibility.id],
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+            [!blogVisibility.shouldBeVisible, blogVisibility.id]);
+    } catch (err) {
+        connection.rollback();
+        return Promise.reject();
+    }
+}
 
-export const changeMainAsset = (blogMainAsset: panel.MainBlogAssetDto) =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `
+export const changeMainAsset = async (blogMainAsset: panel.MainBlogAssetDto) => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(`
             UPDATE Blog
             SET MainBlogAsset_id = ?
             WHERE id = ?`,
-                [blogMainAsset.mainBlogAsset, blogMainAsset.id],
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+            [blogMainAsset.mainBlogAsset, blogMainAsset.id]);
+    } catch (err) {
+        connection.rollback();
+        return Promise.reject();
+    }
+}
 
-export const editBlog = (id: number, blog: panel.BlogEditDto) =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `
-                UPDATE Blog
-                SET
-                    date = ?, 
-                    title = ?, 
-                    alias = ?, 
-                    content = ?,
-                    tags = ?
-                WHERE id = ?`,
-                [blog.date, blog.title, blog.alias, blog.content, blog.tags, id],
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+export const editBlog = async (id: number, blog: panel.BlogEditDto) => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(`
+            UPDATE Blog
+            SET
+                date = ?, 
+                title = ?, 
+                alias = ?, 
+                content = ?,
+                tags = ?
+            WHERE id = ?`,
+            [blog.date, blog.title, blog.alias, blog.content, blog.tags, id]);
+    } catch (err) {
+        connection.rollback();
+        return Promise.reject();
+    }
+}
 
-export const getTags = (blogId: number): Promise<string> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
+export const getTags = async (blogId: number): Promise<string> => {
+    const [[blog]]: any = await connection.query<RowDataPacket[]>(`
             SELECT b.alias
             FROM Blog b 
             WHERE b.id = ?`,
-            [blogId, blogId],
-            (_err, [blog], _fields) => {
-                resolve(blog.alias);
-            }
-        );
-    });
+        [blogId, blogId]);
 
-export const getForEdit = (blogId: number): Promise<panel.BlogEditDto> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
+    return blog.alias;
+}
+
+export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => {
+    const [[blog]]: any = connection.query<RowDataPacket[]>(`
             SELECT b.title, b.alias, b.date, b.content, b.tags, (SELECT COUNT(id) FROM BlogAsset WHERE Blog_id = ?) as AssignmentsCount
             FROM Blog b 
             WHERE b.id = ?`,
-            [blogId, blogId],
-            (_err, [blog], _fields) => {
-                resolve({
-                    title: blog.title,
-                    alias: blog.alias,
-                    date: getDateString(blog.date),
-                    content: blog.content,
-                    tags: blog.tags,
-                    hasAssignments: blog.AssignmentsCount > 0
-                });
-            }
-        );
-    });
+        [blogId, blogId]);
 
-export const deleteBlog = (id: number) =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `
+    return {
+        title: blog.title,
+        alias: blog.alias,
+        date: getDateString(blog.date),
+        content: blog.content,
+        tags: blog.tags,
+        hasAssignments: blog.AssignmentsCount > 0
+    };
+}
+
+export const deleteBlog = async (id: number) => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(`
             UPDATE Blog
             SET MainBlogAsset_id = NULL
             WHERE id = ?;
@@ -286,120 +228,82 @@ export const deleteBlog = (id: number) =>
             
             DELETE FROM Blog
             WHERE id = ?;`,
-                [id, id, id, id, id],
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
+            [id, id, id, id, id]);
+    } catch (err) {
+        connection.rollback();
+        return Promise.reject();
+    }
+}
 
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+export const createBlogAsset = async (blogId: number, assetId: string, alt: string): Promise<number> => {
+    try {
+        await connection.beginTransaction();
+        const [[results]]: any = await connection.query(`
+            INSERT INTO BlogAsset(Blog_id, Url, Alt) VALUES (?, ?, ?)`,
+            [blogId, assetId, alt]);
+        return results.insertId;
+    } catch (err) {
+        connection.rollback();
+        return Promise.reject();
+    }
+}
 
-export const createBlogAsset = (blogId: number, assetId: string, alt: string): Promise<number> =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `INSERT INTO BlogAsset(Blog_id, Url, Alt) VALUES (?, ?, ?)`,
-                [blogId, assetId, alt],
-                (err, results, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
-                    err == null ? resolve(results.insertId) : reject(err);
-                }
-            );
-        });
-    });
+export const getAssetsForBlog = async (blogId: number): Promise<panel.BlogAssetsListItemDto[]> => {
+    const [blogAssets] = await connection.query<RowDataPacket[]>(`
+            SELECT b.MainBlogAsset_id, ba.id, ba.Url, ba.Alt
+            FROM BlogAsset ba 
+            JOIN Blog b ON ba.Blog_id = b.Id
+            WHERE ba.Blog_id = ?`,
+        [blogId]);
 
-export const getAssetsForBlog = (blogId: number): Promise<panel.BlogAssetsListItemDto[]> =>
-    new Promise((resolve, reject) => {
-        connection.query(
-            `
-        SELECT b.MainBlogAsset_id, ba.id, ba.Url, ba.Alt
-        FROM BlogAsset ba 
-        JOIN Blog b ON ba.Blog_id = b.Id
-        WHERE ba.Blog_id = ?`,
-            [blogId],
-            (_err, blogAssets: { MainBlogAsset_id: number; id: number; Url: string; Alt: string }[], _fields) => {
-                resolve(
-                    blogAssets.map(
-                        (ba: any) =>
-                            ({
-                                id: ba.id,
-                                url: `/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
-                                isMain: ba.MainBlogAsset_id === ba.id,
-                                alt: ba.Alt
-                            } as panel.BlogAssetsListItemDto)
-                    )
-                );
-            }
-        );
-    });
+    return blogAssets.map(
+        (ba: any) =>
+            ({
+                id: ba.id,
+                url: `/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
+                isMain: ba.MainBlogAsset_id === ba.id,
+                alt: ba.Alt
+            } as panel.BlogAssetsListItemDto)
+    )
+}
 
-export const deleteBlogAsset = (id: number) =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `
+export const deleteBlogAsset = async (id: number) => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(`
             DELETE FROM BlogAsset
             WHERE Id = ?;`,
-                [id],
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
+            [id]);
+    } catch (err) {
+        connection.rollback();
+        return Promise.reject();
+    }
+}
 
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+export const getAssetPathById = async (id: number): Promise<string> => {
+    const [[asset]]: any = await connection.query<RowDataPacket[]>(`
+            SELECT ba.Url, ba.Blog_id
+            FROM BlogAsset ba
+            WHERE ba.Id = ?
+            LIMIT 1`,
+        [id]);
 
-export const getAssetPathById = (id: number): Promise<string> =>
-    new Promise((res, rej) => {
-        connection.query(
-            `
-        SELECT ba.Url, ba.Blog_id
-        FROM BlogAsset ba
-        WHERE ba.Id = ?
-        LIMIT 1`,
-            [id],
-            (_err, [asset], _fields) => {
-                res(getAssetPath(getAssetsPath(asset.Blog_id), asset.Url));
-            }
-        );
-    });
+    return getAssetPath(getAssetsPath(asset.Blog_id), asset.Url);
+}
 
-export const changeBlogAssetAlt = (id: number, alt: string): Promise<void> =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `
-                UPDATE BlogAsset
-                SET Alt = ?
-                WHERE Id = ?`,
-                [alt, id],
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
-
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+export const changeBlogAssetAlt = async (id: number, alt: string): Promise<void> => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(`
+            UPDATE BlogAsset
+            SET Alt = ?
+            WHERE Id = ?`,
+            [alt, id]);
+    } catch (err) {
+        connection.rollback();
+        return Promise.reject();
+    }
+}
 
 export const getAssetsPath = (blogId: number) => `public/blogs/${blogId}`;
 export const getAssetId = (blogTags: string) => `${blogTags}-${100000000 + Math.floor(Math.random() * 999999990)}.webp`;

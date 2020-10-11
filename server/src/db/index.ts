@@ -1,4 +1,8 @@
-import { createConnection } from "mysql";
+import { Connection, createConnection } from "mysql2/promise";
 import { db } from "../config";
 
-export const connection = createConnection(db);
+(async () => {
+    connection = await createConnection(db);
+})();
+
+export let connection: Connection;

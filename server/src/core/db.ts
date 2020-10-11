@@ -1,60 +1,77 @@
-import { Connection } from "mysql";
+import { Connection } from "mysql2/promise";
 import { log } from "./log";
 
 
-export const tableExists = (tableName: string, connection: Connection): Promise<boolean> =>
-    new Promise((res, rej) => {
-        connection.query(`SHOW TABLES LIKE ?`, [tableName], (err, matchedColumns) => {
-            if (matchedColumns.length === 1) res(true);
-            else res(false);
-        });
-    });
+export const tableExists = async (tableName: string, connection: Connection): Promise<boolean> => {
+    try {
+        const [_, fields] = await connection.query(`SHOW TABLES LIKE ?`, [tableName]);
+        return fields.length === 1;
+    } catch (err) {
+        return Promise.reject();
+    }
+}
 
-export const columnExists = (tableName: string, columnName: string, connection: Connection): Promise<boolean> =>
-    new Promise((res, rej) => {
-        connection.query(`SHOW COLUMNS FROM \`${tableName}\` LIKE ?`, [columnName], (err, matchedColumns) => {
-            if (err) {
-                res(false);
-                return;
-            }
+export const columnExists = async (tableName: string, columnName: string, connection: Connection): Promise<boolean> => {
+    try {
+        const [_, fields] = await connection.query(`SHOW COLUMNS FROM \`${tableName}\` LIKE ?`, [columnName]);
+        return fields.length === 1;
+    } catch (err) {
+        return Promise.reject();
+    }
+}
 
-            if (matchedColumns.length === 1) res(true);
-            else res(false);
-        });
-    });
+export const renameTable = async (tableName: string, newTableName: string, connection: Connection): Promise<void> => {
+    try {
+        await connection.query(`RENAME TABLE \`${tableName}\` TO \`${newTableName}\``);
+        log(`RENAMING ${tableName} => ${newTableName}`, null);
+    } catch (err) {
+        log(`RENAMING ${tableName} => ${newTableName}`, err);
+        return Promise.reject();
+    }
+}
 
-export const renameTable = (tableName: string, newTableName: string, connection: Connection): Promise<void> =>
-    new Promise((res, rej) => {
-        connection.query(`RENAME TABLE \`${tableName}\` TO \`${newTableName}\``, (err) => {
-            log(`RENAMING ${tableName} => ${newTableName}`, err);
-            if (err) { rej(err) }
-            else res();
-        });
-    });
+export const changeColumnType = async (tableName: string, columnName: string, newDataType: string, connection: Connection): Promise<void> => {
+    try {
+        await connection.query(`ALTER TABLE ${tableName} CHANGE COLUMN ${columnName} ${columnName} ${newDataType}`);
+        log(`CHANGING ${tableName}.${columnName} datatype => ${newDataType}`, null);
+    } catch (err) {
+        log(`CHANGING ${tableName}.${columnName} datatype => ${newDataType}`, err);
+        return Promise.reject();
+    }
+}
 
-export const renameColumn = (
+export const renameColumn = async (
     tableName: string,
     columnName: string,
     newColumnName: string,
     dataType: string,
     connection: Connection
-): Promise<void> =>
-    new Promise((res, rej) => {
-        connection.query(
-            `ALTER TABLE \`${tableName}\` CHANGE COLUMN \`${columnName}\` \`${newColumnName}\` ${dataType}`,
-            (err) => {
-                log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, err);
-                if (err) rej(err);
-                else res();
-            }
-        );
-    });
+): Promise<void> => {
+    try {
+        await connection.query(`ALTER TABLE \`${tableName}\` CHANGE COLUMN \`${columnName}\` \`${newColumnName}\` ${dataType}`);
+        log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, null);
+    } catch (err) {
+        log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, err);
+        return Promise.reject();
+    }
+}
 
-export const runQuery = (query: string, connection: Connection) =>
-    new Promise((res, rej) => {
-        connection.query(query, (err) => {
-            log(`RUNNING: ${query}`, err);
-            if (err) rej();
-            else res();
-        });
-    });
+export const runQuery = async (query: string, connection: Connection): Promise<void> => {
+    try {
+        await connection.query(query);
+        log(`RUNNING: ${query}`, null);
+    } catch (err) {
+        log(`RUNNING: ${query}`, err);
+    }
+}
+
+export const executeInTransaction = async (connection, sql: string, values: any | any[] | { [param: string]: any }) => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(sql, values);
+        await connection.commit();
+    } catch (err) {
+        await connection.rollback();
+        return Promise.reject();
+    }
+}

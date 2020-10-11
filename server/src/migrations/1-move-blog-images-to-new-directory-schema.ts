@@ -1,6 +1,6 @@
 import fs from "fs";
 import { resolve, join } from "path";
-import { Connection } from "mysql";
+import { Connection } from "mysql2/promise";
 import { deleteFolderRecursiveSync, rename } from "../core/fs";
 
 const withMinLength = (number: number, minLength: number) =>
