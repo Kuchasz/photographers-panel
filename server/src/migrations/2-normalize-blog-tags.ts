@@ -1,4 +1,4 @@
-import { Connection } from "mysql2/promise";
+import { Connection, RowDataPacket } from "mysql2/promise";
 import { columnExists, renameTable, renameColumn } from "../core/db";
 
 type result = { Id: number; Tags: string };
@@ -14,12 +14,10 @@ const normalizeTags = (tags: string) =>
 const runNormalizeTags = (r: result, connection: Connection): Promise<any> => 
     connection.query("UPDATE Blog SET Tags = ? WHERE Id = ?", [normalizeTags(r.Tags), r.Id]);
 
-export const run = (connection: Connection): Promise<boolean> =>
-    new Promise<boolean>(async (res, rej) => {
+export const run = async (connection: Connection): Promise<boolean> => {
         try {
             if (await columnExists("BlogAsset", "Blog_id", connection)) {
-                res(false);
-                return;
+                return false;
             }
 
             await renameTable("blogentry", "Blog", connection);
@@ -51,13 +49,11 @@ export const run = (connection: Connection): Promise<boolean> =>
             await renameColumn("BlogAsset", "photourl", "Url", "varchar(100)", connection);
             await renameColumn("BlogAsset", "alttext", "Alt", "varchar(150)", connection);
 
-            connection.query(`SELECT b.Id, b.Tags FROM Blog b`, (_err, results: result[], _fields) => {
-                const promises = results.map((x) => runNormalizeTags(x, connection));
-                Promise.all(promises)
-                    .then((x) => res(true))
-                    .catch((err) => rej(err));
-            });
+            const [results] = await connection.query<RowDataPacket[]>(`SELECT b.Id, b.Tags FROM Blog b`);
+            const promises = results.map((x: any) => runNormalizeTags(x, connection));
+            await Promise.all(promises);
+            return true;
         } catch (err) {
-            rej(err);
+            return Promise.reject(err);
         }
-    });
+    };

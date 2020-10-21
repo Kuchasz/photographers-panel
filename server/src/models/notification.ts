@@ -2,30 +2,20 @@ import { connection } from "../db";
 import { Subscription } from "../../../api/site/notification";
 import { RowDataPacket } from "mysql2";
 
-export const subscribe = (subscribtion: Subscription): Promise<void> =>
-    new Promise((resolve, reject) => {
-        connection.beginTransaction(() => {
-            connection.query(
-                `INSERT INTO email (PrivateGallery_id, address) VALUES ('${subscribtion.privateGalleryId}', '${subscribtion.email}')`,
-                (err, _, _fields) => {
-                    if (err) {
-                        connection.rollback();
-                    } else {
-                        connection.commit();
-                    }
+export const subscribe = async (subscribtion: Subscription): Promise<void> => {
+    try {
+        await connection.beginTransaction();
+        await connection.query(
+            `INSERT INTO email (PrivateGallery_id, address) VALUES ('${subscribtion.privateGalleryId}', '${subscribtion.email}')`);
+    } catch (err) {
+        await connection.rollback();
+        return Promise.reject();
+    }
+}
 
-                    err == null ? resolve() : reject(err);
-                }
-            );
-        });
-    });
+export const alreadySubscribed = async (subscribtion: Subscription): Promise<boolean> =>{
+    const [rows] = await connection.query<RowDataPacket[]>(`
+            SELECT e.PrivateGallery_id FROM email AS e WHERE e.PrivateGallery_id = ${subscribtion.privateGalleryId} AND e.address LIKE '${subscribtion.email}'`);
 
-export const alreadySubscribed = (subscribtion: Subscription): Promise<boolean> =>
-    new Promise((resolve, reject) =>
-        connection.query(
-            `SELECT e.PrivateGallery_id FROM email AS e WHERE e.PrivateGallery_id = ${subscribtion.privateGalleryId} AND e.address LIKE '${subscribtion.email}'`,
-            (_err, rows: RowDataPacket[], _fields) => {
-                resolve(rows.length !== 0);
-            }
-        )
-    );
+    return rows.length !== 0;
+}

@@ -17,7 +17,7 @@ export interface GalleryDto {
     state: PrivateGalleryState;
     password: string;
     url: string;
-    blogId: string;
+    blogId: number;
     visits: number;
 }
 

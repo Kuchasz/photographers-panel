@@ -43,8 +43,12 @@ const runMigration = (migration: (connection: Connection) => Promise<boolean>, c
         await connection.commit();
         res(runOrNot);
     } catch (err) {
-        console.log('Rolling back transaction');
+        console.log(err);
+        console.log('Rolling back transaction: START!');
         await connection.rollback();
+        console.log('Rolling back transaction: END!');
+        // return false;
+        return Promise.reject(err);
     }
 });
 
