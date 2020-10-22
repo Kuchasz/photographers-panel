@@ -1,8 +1,7 @@
-import { Connection, createConnection } from "mysql2/promise";
+import knex from "knex";
 import { db } from "../config";
 
-(async () => {
-    connection = await createConnection(db);
-})();
-
-export let connection: Connection;
+export const connection = knex({
+    client: "pg",
+    connection: db
+});

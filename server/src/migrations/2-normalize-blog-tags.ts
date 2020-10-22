@@ -1,4 +1,4 @@
-import { Connection, RowDataPacket } from "mysql2/promise";
+import Knex from "knex";
 import { columnExists, renameTable, renameColumn } from "../core/db";
 
 type result = { Id: number; Tags: string };
@@ -11,10 +11,10 @@ const normalizeTags = (tags: string) =>
         .normalize("NFD")
         .replace(/[^a-z0-9-]/g, "");
 
-const runNormalizeTags = (r: result, connection: Connection): Promise<any> => 
+const runNormalizeTags = (r: result, connection: Knex): Promise<any> => 
     connection.query("UPDATE Blog SET Tags = ? WHERE Id = ?", [normalizeTags(r.Tags), r.Id]);
 
-export const run = async (connection: Connection): Promise<boolean> => {
+export const run = async (connection: Knex): Promise<boolean> => {
         try {
             if (await columnExists("BlogAsset", "Blog_id", connection)) {
                 return false;

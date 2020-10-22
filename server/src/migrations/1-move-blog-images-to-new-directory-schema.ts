@@ -1,6 +1,6 @@
 import fs from "fs";
+import Knex from "knex";
 import { resolve, join } from "path";
-import { Connection } from "mysql2/promise";
 import { deleteFolderRecursiveSync, rename } from "../core/fs";
 
 const withMinLength = (number: number, minLength: number) =>
@@ -13,7 +13,7 @@ const getDateString = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
-export const run = (connection: Connection): Promise<boolean> =>
+export const run = (connection: Knex): Promise<boolean> =>
     new Promise(async (res, rej) => {
         if (!fs.existsSync(resolve("public/blog"))) {
             res(false);

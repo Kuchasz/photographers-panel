@@ -1,7 +1,7 @@
-import { Connection } from "mysql2/promise";
-import { columnExists, runQuery, tableExists, renameTable, renameColumn, changeColumnType } from "../core/db";
+import Knex from "knex";
+import { columnExists, runQuery, tableExists, renameTable, renameColumn } from "../core/db";
 
-export const run = (connection: Connection): Promise<boolean> =>
+export const run = (connection: Knex): Promise<boolean> =>
     new Promise<boolean>(async (res, rej) => {
         try {
             if (!(await tableExists("PrivateGalleryDailyVisit", connection))) {
