@@ -4,10 +4,9 @@ import { getDateString, getDateRange } from "../../../utils/date";
 import { GalleryEditDto, GalleryDto, GalleryVisitsDto, VisitsSummaryDto } from "../../../api/panel/private-gallery";
 import { PrivateGalleryState } from "../../../api/private-gallery";
 import { sum } from "../../../utils/array";
-import { RowDataPacket } from "mysql2";
 
 export const getUrl = async (password: string): Promise<PrivateGalleryUrlCheckResult> => {
-    const [[gallery]] = await connection.query<RowDataPacket[]>(`
+    const [[gallery]] = await connection.raw(`
             SELECT p.id, p.state, p.bride, p.groom, p.place, p.lastname, p.dir, p.date, be.title, be.alias FROM PrivateGallery AS p 
             LEFT OUTER JOIN Blog be ON be.id = p.Blog_id
             WHERE p.pass = ?`,
@@ -33,12 +32,12 @@ export const getUrl = async (password: string): Promise<PrivateGalleryUrlCheckRe
 }
 
 export const exists = async (id: number): Promise<boolean> => {
-    const [rows] = await connection.query<RowDataPacket[]>(`SELECT id FROM PrivateGallery AS p WHERE p.id = ?`, [id]);
+    const [rows] = await connection.raw(`SELECT id FROM PrivateGallery AS p WHERE p.id = ?`, [id]);
     return rows.length !== 0;
 }
 
 export const getList = async (): Promise<GalleryDto[]> => {
-    const [galleries] = await connection.query<RowDataPacket[]>(`
+    const [galleries] = await connection.raw(`
             SELECT p.id, p.date, p.place, p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.Blog_id, SUM(d.count) as visits 
             FROM PrivateGallery p
             LEFT JOIN PrivateGalleryDailyVisit d ON p.id = d.PrivateGallery_id
@@ -64,7 +63,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
     const days = getDateRange(startDate, endDate);
     const today = getDateString(new Date());
 
-    const [visists] = await connection.query<RowDataPacket[]>(`
+    const [visists] = await connection.raw(`
             SELECT d.count, d.date FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ? AND d.date BETWEEN ? AND ?`,
         [galleryId, getDateString(startDate), getDateString(endDate)]);
 
@@ -75,7 +74,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const dailyVisits = days.map(getDateString).map((x) => ({ date: x, visits: dayVisits[x] ?? 0 }));
 
-    const [bestDayVisits] = await connection.query<RowDataPacket[]>(`
+    const [bestDayVisits] = await connection.raw(`
             SELECT d.count, d.date FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ?
             ORDER BY d.count DESC
             LIMIT 1`,
@@ -85,7 +84,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         ? { date: getDateString(bestDayVisits[0].date), visits: bestDayVisits[0].count }
         : { date: "", visits: 0 };
 
-    const [totalVisitsResult] = await connection.query<RowDataPacket[]>(`
+    const [totalVisitsResult] = await connection.raw(`
             SELECT SUM(d.count) as visits FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ?
             GROUP BY d.PrivateGallery_id`,
         [galleryId]);
@@ -94,7 +93,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         ? totalVisitsResult[0].visits
         : 0;
 
-    const [emailsResult] = await connection.query<RowDataPacket[]>(`
+    const [emailsResult] = await connection.raw(`
             SELECT COUNT(d.id) as emails FROM PrivateGalleryEmail d WHERE d.PrivateGallery_id = ?
             GROUP BY d.PrivateGallery_id`,
         [galleryId]);
@@ -103,7 +102,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         ? emailsResult[0].emails
         : 0;
 
-    const [todayVisitsResult] = await connection.query<RowDataPacket[]>(`
+    const [todayVisitsResult] = await connection.raw(`
             SELECT d.count FROM PrivateGalleryDailyVisit d WHERE d.PrivateGallery_id = ? AND date = ?`,
         [galleryId, today]);
 
@@ -125,7 +124,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 };
 
 export const checkPasswordIsUnique = async (password: string, galleryId?: number): Promise<boolean> => {
-    const [galleries] = await connection.query<RowDataPacket[]>(`
+    const [galleries] = await connection.raw(`
             SELECT p.id 
             FROM PrivateGallery p
             WHERE p.pass = ?`,
@@ -139,7 +138,7 @@ export const checkPasswordIsUnique = async (password: string, galleryId?: number
 }
 
 export const getForEdit = async (galleryId: number): Promise<GalleryEditDto> => {
-    const [[gallery]] = await connection.query<RowDataPacket[]>(`
+    const [[gallery]] = await connection.raw(`
             SELECT p.place, p.date,  p.bride, p.groom, p.lastname, p.state, p.pass, p.dir, p.Blog_id
             FROM PrivateGallery p
             WHERE p.id = ?`,
@@ -159,8 +158,7 @@ export const getForEdit = async (galleryId: number): Promise<GalleryEditDto> => 
 
 export const createGallery = async (gallery: GalleryEditDto) => {
     try {
-        await connection.beginTransaction();
-        await connection.query(
+        await connection.raw(
             `INSERT INTO PrivateGallery(
                 date, 
                 place, 
@@ -184,15 +182,13 @@ export const createGallery = async (gallery: GalleryEditDto) => {
                 gallery.blog
             ]);
     } catch (err) {
-        await connection.rollback();
         return Promise.reject();
     }
 }
 
 export const editGallery = async (id: number, gallery: GalleryEditDto) => {
     try {
-        await connection.beginTransaction();
-        await connection.query(
+        await connection.raw(
             `UPDATE PrivateGallery
             SET
                 date = ?, 
@@ -218,15 +214,14 @@ export const editGallery = async (id: number, gallery: GalleryEditDto) => {
                 id
             ]);
     } catch (err) {
-        await connection.rollback();
         return Promise.reject();
     }
 }
 
 export const deleteGallery = async (id: number) => {
+    const transaction = await connection.transaction();
     try {
-        await connection.beginTransaction();
-        await connection.query(
+        await transaction.raw(
             `DELETE FROM PrivateGallery
             WHERE id = ?;
             
@@ -236,8 +231,9 @@ export const deleteGallery = async (id: number) => {
             DELETE FROM PrivateGalleryDailyVisit
             WHERE PrivateGallery_id = ?;`,
             [id, id, id]);
+        await transaction.commit();
     } catch (err) {
-        await connection.rollback();
+        await transaction.rollback();
         return Promise.reject();
     }
 }

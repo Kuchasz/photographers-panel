@@ -1,19 +1,16 @@
 import Knex from "knex";
 import { columnExists, runQuery, tableExists } from "../core/db";
 
-export const run = (connection: Knex): Promise<boolean> =>
-    new Promise<boolean>(async (res, rej) => {
-        try {
-            if (!(await tableExists("news", connection))) {
-                res(false);
-                return;
-            }
-
-            await runQuery(`DROP TABLE \`news\`;`, connection);
-
-            res(true);
-
-        } catch (err) {
-            rej(err);
+export const run = async (connection: Knex): Promise<boolean> => {
+    try {
+        if (!(await tableExists("news", connection))) {
+            return false;
         }
-    });
+
+        await runQuery(`DROP TABLE "news";`, connection);
+        return true;
+
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};

@@ -98,10 +98,12 @@ export const renameColumn = async (
 
 export const runQuery = async (query: string, knex: Knex): Promise<void> => {
     try {
-        await knex.raw(query);
+        const result = await knex.raw(query);
         log(`RUNNING: ${query}`, null);
+        return Promise.resolve(result);
     } catch (err) {
         log(`RUNNING: ${query}`, err);
+        return Promise.reject(err);
     }
 }
 

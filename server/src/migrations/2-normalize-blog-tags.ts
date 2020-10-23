@@ -11,8 +11,8 @@ const normalizeTags = (tags: string) =>
         .normalize("NFD")
         .replace(/[^a-z0-9-]/g, "");
 
-const runNormalizeTags = (r: result, connection: Knex): Promise<any> => 
-    connection.query("UPDATE Blog SET Tags = ? WHERE Id = ?", [normalizeTags(r.Tags), r.Id]);
+const runNormalizeTags = (r: result, connection: Knex): Promise<void> => 
+    connection("Blog").where({Id: r.Id}).update({Tags: normalizeTags(r.Tags)});
 
 export const run = async (connection: Knex): Promise<boolean> => {
         try {
@@ -49,7 +49,7 @@ export const run = async (connection: Knex): Promise<boolean> => {
             await renameColumn("BlogAsset", "photourl", "Url", "varchar(100)", connection);
             await renameColumn("BlogAsset", "alttext", "Alt", "varchar(150)", connection);
 
-            const [results] = await connection.query<RowDataPacket[]>(`SELECT b.Id, b.Tags FROM Blog b`);
+            const results = await connection("Blog").select("Id", "Tags");
             const promises = results.map((x: any) => runNormalizeTags(x, connection));
             await Promise.all(promises);
             return true;

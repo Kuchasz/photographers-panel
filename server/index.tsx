@@ -34,20 +34,18 @@ import { migrations } from "./src/migrations";
 import { connection } from "./src/db";
 import { login, verify } from "./src/auth";
 import { deleteFile, deleteFolderRecursive } from "./src/core/fs";
-import { Connection } from "mysql2/promise";
+import Knex from "knex";
 
-const runMigration = (migration: (connection: Connection) => Promise<boolean>, connection: Connection) => new Promise<boolean>(async (res, rej) => {
+const runMigration = (migration: (connection: Knex) => Promise<boolean>, connection: Knex) => new Promise<boolean>(async (res, rej) => {
+    const transaction = await connection.transaction();
     try {
-        await connection.beginTransaction();
-        const runOrNot = await migration(connection);
-        await connection.commit();
+        const runOrNot = await migration(transaction);
+        await transaction.commit();
         res(runOrNot);
     } catch (err) {
         console.log(err);
-        console.log('Rolling back transaction: START!');
-        await connection.rollback();
-        console.log('Rolling back transaction: END!');
-        // return false;
+        console.log('Rolling back transaction!');
+        await transaction.rollback();
         return Promise.reject(err);
     }
 });
@@ -61,7 +59,8 @@ const runMigrations = async () => {
             const runOrNot = await runMigration(migrations[i], connection);
             console.log(runOrNot ? "done" : "skipped");
         } catch (err) {
-            console.error(err);
+            console.log('Migrations failed');
+            // console.error(err);
         }
     }
 };

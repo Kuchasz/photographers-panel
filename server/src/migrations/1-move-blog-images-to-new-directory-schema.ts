@@ -13,11 +13,10 @@ const getDateString = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
-export const run = (connection: Knex): Promise<boolean> =>
-    new Promise(async (res, rej) => {
+export const run = async (connection: Knex): Promise<boolean> => {
+    try {
         if (!fs.existsSync(resolve("public/blog"))) {
-            res(false);
-            return;
+            return false;
         }
 
         if (!fs.existsSync(resolve("public/blogs"))) fs.mkdirSync(resolve("public/blogs"));
@@ -27,27 +26,28 @@ export const run = (connection: Knex): Promise<boolean> =>
 
         type result = { id: number; date: Date; photourl: string };
 
-        connection.query(
-            `SELECT be.id, be.date, bep.photourl FROM blogentryphoto bep INNER JOIN blogentry be ON be.id = bep.BlogEntryId`,
-            async (_err, results: result[], _fields) => {
-                const allPaths = results.map((p) => ({
-                    old: oldPath(getDateString(p.date))(p.photourl),
-                    new: newPath(p.id.toString())(p.photourl)
-                }));
+        const results = await connection("blogentryphoto")
+            .select<result[]>("blogentryphoto.id", "blogentryphoto.date", "blogentry.photourl")
+            .innerJoin("blogentry", "blogentry.id", "blogentryphoto.BlogEntryId");
 
-                for (const p of allPaths) {
-                    const dirName = p.new.split("/").reverse().slice(1).reverse().join("/");
-                    if (!fs.existsSync(dirName)) {
-                        fs.mkdirSync(dirName);
-                    }
-                    if (fs.existsSync(p.old)) {
-                        await rename(p.old, p.new);
-                    }
-                }
+        const allPaths = results.map((p) => ({
+            old: oldPath(getDateString(p.date))(p.photourl),
+            new: newPath(p.id.toString())(p.photourl)
+        }));
 
-                deleteFolderRecursiveSync("public/blog");
-                
-                res(true);
+        for (const p of allPaths) {
+            const dirName = p.new.split("/").reverse().slice(1).reverse().join("/");
+            if (!fs.existsSync(dirName)) {
+                fs.mkdirSync(dirName);
             }
-        );
-    });
+            if (fs.existsSync(p.old)) {
+                await rename(p.old, p.new);
+            }
+        }
+
+        deleteFolderRecursiveSync("public/blog");
+        return true;
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};

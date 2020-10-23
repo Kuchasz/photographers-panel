@@ -3,5 +3,6 @@ import { db } from "../config";
 
 export const connection = knex({
     client: "pg",
-    connection: db
+    connection: db,
+    searchPath: "jarvis_pstudio"
 });
