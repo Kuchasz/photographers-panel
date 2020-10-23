@@ -27,11 +27,16 @@ export const getList = async (): Promise<site.BlogListItem[]> => {
 }
 
 export const get = async (alias: string): Promise<site.Blog> => {
-    const { rows: blogAssets } = await connection.raw(`
-            SELECT b."Id", b."Title", b."Date", b."Content", ba."Url", ba."Alt" 
-            FROM "Blog" b 
-            JOIN "BlogAsset" ba ON b."Id" = ba."Blog_id" 
-            WHERE b."Alias" LIKE ?`, [alias]);
+    // const { rows: blogAssets } = await connection.raw(`
+    //         SELECT b."Id", b."Title", b."Date", b."Content", ba."Url", ba."Alt" 
+    //         FROM "Blog" b 
+    //         JOIN "BlogAsset" ba ON b."Id" = ba."Blog_id" 
+    //         WHERE b."Alias" LIKE ?`, [alias]);
+
+    const blogAssets = await connection("Blog")
+        .join("BlogAsset", "BlogAsset.Blog_id", "Blog.Id")
+        .where({ Alias: alias })
+        .select("Blog.Id", "Blog.Title", "Blog.Date", "Blog.Content", "BlogAsset.Url", "BlogAsset.Alt");
 
     const [first] = blogAssets;
 
@@ -57,13 +62,16 @@ export const registerVisit = (): Promise<any> =>
             WHERE Ip=? AND Date=? AND Blog_id=? LIMIT 1)`)
 
 export const getSelectList = async (): Promise<panel.BlogSelectItem[]> => {
-    const blogs = await connection.raw(`
-            SELECT b.title, b.date, b.id FROM Blog b 
-            ORDER BY b.date DESC`);
+    // const blogs = await connection.raw(`
+    //         SELECT b.title, b.date, b.id FROM Blog b 
+    //         ORDER BY b.date DESC`);
+    const blogs = await connection("Blog")
+        .orderBy("Date", "desc")
+        .select("Title", "Date", "Id");
 
     const blogSelectListItems = blogs.map((b: any) => ({
-        label: `${b.title} (${getDateString(b.date)})`,
-        value: b.id
+        label: `${b.Title} (${getDateString(b.Date)})`,
+        value: b.Id
     }));
 
     return blogSelectListItems;
@@ -102,38 +110,43 @@ export const getListForPanel = async (): Promise<panel.BlogListItem[]> => {
 
 export const createBlog = async (blog: panel.BlogEditDto) => {
     try {
-        await connection.raw(`
-            INSERT INTO Blog(
-                date, 
-                title, 
-                alias, 
-                content, 
-                tags,
-                isHidden) 
-            VALUES (?, ?, ?, ?, ?, ?)`,
-            [blog.date, blog.title, blog.alias, blog.content, blog.tags, true]);
+        await connection("Blog").insert({
+            Date: blog.date,
+            Title: blog.title,
+            Alias: blog.alias,
+            Content: blog.content,
+            Tags: blog.tags,
+            IsHidden: true
+        });
     } catch (err) {
         return Promise.reject();
     }
 }
 
 export const checkAliasIsUnique = async (alias: string, blogId?: number): Promise<boolean> => {
-    const [[blog]] = await connection.raw(`
-            SELECT b.id 
-            FROM Blog b
-            WHERE b.alias = ?`,
-        [alias, blogId]);
+    // const [[blog]] = await connection.raw(`
+    //         SELECT b.id 
+    //         FROM Blog b
+    //         WHERE b.alias = ?`,
+    //     [alias, blogId]);
 
-    return !blog || blog.id === blogId;
+    const [blog] = await connection("Blog")
+        .where({Alias: alias})
+        .select("Id");
+
+    return !blog || blog.Id === blogId;
 }
 
 export const changeVisibility = async (blogVisibility: panel.BlogVisibilityDto) => {
     try {
-        await connection.raw(`
-            UPDATE Blog
-            SET isHidden = ?
-            WHERE id = ?`,
-            [!blogVisibility.shouldBeVisible, blogVisibility.id]);
+        // await connection.raw(`
+        //     UPDATE Blog
+        //     SET isHidden = ?
+        //     WHERE id = ?`,
+        //     [!blogVisibility.shouldBeVisible, blogVisibility.id]);
+        await connection("Blog")
+            .where({Id: blogVisibility.id})
+            .update({IsHidden: !blogVisibility.shouldBeVisible});
     } catch (err) {
         return Promise.reject();
     }
@@ -141,11 +154,15 @@ export const changeVisibility = async (blogVisibility: panel.BlogVisibilityDto) 
 
 export const changeMainAsset = async (blogMainAsset: panel.MainBlogAssetDto) => {
     try {
-        await connection.raw(`
-            UPDATE Blog
-            SET MainBlogAsset_id = ?
-            WHERE id = ?`,
-            [blogMainAsset.mainBlogAsset, blogMainAsset.id]);
+        // await connection.raw(`
+        //     UPDATE Blog
+        //     SET MainBlogAsset_id = ?
+        //     WHERE id = ?`,
+        //     [blogMainAsset.mainBlogAsset, blogMainAsset.id]);
+        await connection("Blog")
+            .where({If: blogMainAsset.id})
+            .update({ MainBlogAsset_id: blogMainAsset.mainBlogAsset});
+
     } catch (err) {
         return Promise.reject();
     }
@@ -153,37 +170,50 @@ export const changeMainAsset = async (blogMainAsset: panel.MainBlogAssetDto) => 
 
 export const editBlog = async (id: number, blog: panel.BlogEditDto) => {
     try {
-        await connection.raw(`
-            UPDATE Blog
-            SET
-                date = ?, 
-                title = ?, 
-                alias = ?, 
-                content = ?,
-                tags = ?
-            WHERE id = ?`,
-            [blog.date, blog.title, blog.alias, blog.content, blog.tags, id]);
+        // await connection.raw(`
+        //     UPDATE Blog
+        //     SET
+        //         date = ?, 
+        //         title = ?, 
+        //         alias = ?, 
+        //         content = ?,
+        //         tags = ?
+        //     WHERE id = ?`,
+        //     [blog.date, blog.title, blog.alias, blog.content, blog.tags, id]);
+        await connection("Blog")
+            .where({Id: id})
+            .update({Date: blog.date, Title: blog.title, Alias: blog.alias, Content: blog.content, Tags: blog.tags});
     } catch (err) {
         return Promise.reject();
     }
 }
 
 export const getTags = async (blogId: number): Promise<string> => {
-    const [[blog]]: any = await connection.raw(`
-            SELECT b.alias
-            FROM Blog b 
-            WHERE b.id = ?`,
-        [blogId, blogId]);
+    // const [[blog]]: any = await connection.raw(`
+    //         SELECT b.alias
+    //         FROM Blog b 
+    //         WHERE b.id = ?`,
+    //     [blogId, blogId]);
+
+    const [blog] = await connection("Blog")
+        .where({Id: blogId})
+        .select("Alias");
 
     return blog.alias;
 }
 
 export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => {
-    const [[blog]]: any = connection.raw(`
-            SELECT b.title, b.alias, b.date, b.content, b.tags, (SELECT COUNT(id) FROM BlogAsset WHERE Blog_id = ?) as AssignmentsCount
-            FROM Blog b 
-            WHERE b.id = ?`,
-        [blogId, blogId]);
+    // const [[blog]]: any = connection.raw(`
+    //         SELECT b.title, b.alias, b.date, b.content, b.tags, (SELECT COUNT(id) FROM BlogAsset WHERE Blog_id = ?) as AssignmentsCount
+    //         FROM Blog b 
+    //         WHERE b.id = ?`,
+    //     [blogId, blogId]);
+
+    // const blogIdentifier = connection.ref("Blog.Id");
+
+    const [blog] = await connection("Blog")
+        .where({ Id: blogId})
+        .select("Title", "Alias", "Date", "Content", "Tags", connection("BlogAsset").where({Blog_id: blogId}).count("Id").as("AssignmentsCount"));
 
     return {
         title: blog.title,
