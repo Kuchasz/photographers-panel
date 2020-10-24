@@ -2,7 +2,7 @@ import { endpoint, Result } from "../common";
 
 export interface BlogSelectItem {
     label: string;
-    value: string;
+    value: number;
 }
 
 export interface BlogListItem {

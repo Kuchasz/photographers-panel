@@ -9,11 +9,11 @@ export const subscribe = async (subscribtion: Subscription): Promise<void> => {
         await connection("PrivateGalleryEmail")
             .insert({
                 PrivateGallery_id: subscribtion.privateGalleryId,
-                Email: subscribtion.email
+                Address: subscribtion.email
             });
 
     } catch (err) {
-        return Promise.reject();
+        return Promise.reject(err);
     }
 }
 

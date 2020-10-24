@@ -440,6 +440,7 @@ app.post(privateGalleryPanel.deleteGallery.route, verify, async (req, res) => {
         await privateGalleryModel.deleteGallery(id);
         result = { type: ResultType.Success };
     } catch (err) {
+        console.log(err);
         result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingGallery", errorMessage: JSON.stringify(err) };
     }
 

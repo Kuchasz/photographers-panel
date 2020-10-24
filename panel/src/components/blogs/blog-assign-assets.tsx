@@ -276,6 +276,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
         this.setState((state) => {
             const cindex = state.assets.map((x) => x.url).indexOf(oldURL);
             const assets = [...state.assets.slice(0, cindex), { id, url }, ...state.assets.slice(cindex + 1)];
+
             return { assets };
         });
     };
@@ -338,7 +339,6 @@ export class BlogAssignAssets extends React.Component<Props, State> {
     };
 
     render() {
-        console.log("render whole list of assets");
         return (
             <Modal
                 className="blog-assign-assets"

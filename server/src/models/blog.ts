@@ -14,7 +14,8 @@ export const getList = async (): Promise<site.BlogListItem[]> => {
         .leftJoin("BlogAsset", "BlogAsset.Id", "Blog.MainBlogAsset_id")
         .where({ IsHidden: 0 })
         .whereNotNull("BlogAsset.Id")
-        .orderBy("Blog.Date", "desc");
+        .orderBy("Blog.Date", "desc")
+        .select("Blog.Id", "BlogAsset.Url", "Blog.Title", "Blog.Date", "Blog.Alias");
 
     const blogListItems = blogs.map((b: any) => ({
         title: b.Title,
@@ -33,18 +34,18 @@ export const get = async (alias: string): Promise<site.Blog> => {
     //         JOIN "BlogAsset" ba ON b."Id" = ba."Blog_id" 
     //         WHERE b."Alias" LIKE ?`, [alias]);
 
-    const blogAssets = await connection("Blog")
+    const blogWithAssets = await connection("Blog")
         .join("BlogAsset", "BlogAsset.Blog_id", "Blog.Id")
         .where({ Alias: alias })
         .select("Blog.Id", "Blog.Title", "Blog.Date", "Blog.Content", "BlogAsset.Url", "BlogAsset.Alt");
 
-    const [first] = blogAssets;
+    const [first] = blogWithAssets;
 
     const blog: site.Blog = {
         title: first.Title,
         date: getDateString(new Date(first.Date)),
         content: first.Content,
-        assets: blogAssets.map((p: any) => ({
+        assets: blogWithAssets.map((p: any) => ({
             url: `/${getAssetPath(getAssetsPath(p.Id), p.Url)}`,
             alt: p.Alt
         }))
@@ -72,7 +73,7 @@ export const getSelectList = async (): Promise<panel.BlogSelectItem[]> => {
 
     const blogSelectListItems = blogs.map((b: any) => ({
         label: `${b.Title} (${getDateString(b.Date)})`,
-        value: b.Id
+        value: Number(b.Id)
     }));
 
     return blogSelectListItems;
@@ -117,13 +118,13 @@ export const getListForPanel = async (): Promise<panel.BlogListItem[]> => {
     const blogListItems = blogs.map(
         (b: any) =>
             <panel.BlogListItem>{
-                id: b.id,
-                date: getDateString(new Date(b.date)),
-                title: b.title,
-                content: `${b.content}...`,
-                visits: b.visits,
-                comments: b.comments,
-                visible: !b.isHidden
+                id: b.Id,
+                date: getDateString(new Date(b.Date)),
+                title: b.Title,
+                content: `${b.Content}...`,
+                visits: b.Visits,
+                comments: b.Comments,
+                visible: !b.IsHidden
             }
     );
 
@@ -152,9 +153,10 @@ export const checkAliasIsUnique = async (alias: string, blogId?: number): Promis
     //         WHERE b.alias = ?`,
     //     [alias, blogId]);
 
-    const [blog] = await connection("Blog")
+    const blog = await connection("Blog")
         .where({ Alias: alias })
-        .select("Id");
+        .select("Id")
+        .first();
 
     return !blog || blog.Id === blogId;
 }
@@ -188,7 +190,7 @@ export const changeMainAsset = async (blogMainAsset: panel.MainBlogAssetDto) => 
             .where({ Id: blogMainAsset.id });
 
     } catch (err) {
-        return Promise.reject();
+        return Promise.reject(err);
     }
 }
 
@@ -222,9 +224,9 @@ export const getTags = async (blogId: number): Promise<string> => {
 
     const [blog] = await connection("Blog")
         .where({ Id: blogId })
-        .select("Alias");
+        .select("Tags");
 
-    return blog.alias;
+    return blog.Tags;
 }
 
 export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => {
@@ -243,11 +245,11 @@ export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => 
                 .as("AssignmentsCount"));
 
     return {
-        title: blog.title,
-        alias: blog.alias,
-        date: getDateString(blog.date),
-        content: blog.content,
-        tags: blog.tags,
+        title: blog.Title,
+        alias: blog.Alias,
+        date: getDateString(blog.Date),
+        content: blog.Content,
+        tags: blog.Tags,
         hasAssignments: blog.AssignmentsCount > 0
     };
 }
@@ -273,30 +275,30 @@ export const deleteBlog = async (id: number) => {
         //     WHERE id = ?;`,
         //     [id, id, id, id, id]);
 
-        transaction("Blog")
+        await transaction("Blog")
             .update({ MainBlogAsset_id: null })
             .where({ Id: id });
 
-        transaction("BlogAsset")
+        await transaction("BlogAsset")
             .delete()
             .where({ Blog_id: id });
 
-        transaction("BlogComment")
+        await transaction("BlogComment")
             .delete()
             .where({ Blog_id: id });
 
-        transaction("BlogVisit")
+        await transaction("BlogVisit")
             .delete()
             .where({ Blog_id: id });
 
-        transaction("Blog")
+        await transaction("Blog")
             .delete()
             .where({ Id: id });
 
         await transaction.commit();
     } catch (err) {
         await transaction.rollback();
-        return Promise.reject();
+        return Promise.reject(err);
     }
 }
 
@@ -307,10 +309,10 @@ export const createBlogAsset = async (blogId: number, assetId: string, alt: stri
         //     [blogId, assetId, alt]);
         // return results.insertId;
 
-        return await connection("BlogAsset")
-            .insert({ Blog_id: blogId, Url: assetId, Alt: alt }, "id");
+        return (await connection("BlogAsset")
+            .insert({ Blog_id: blogId, Url: assetId, Alt: alt }, "Id"))[0];
     } catch (err) {
-        return Promise.reject();
+        return Promise.reject(err);
     }
 }
 
@@ -330,9 +332,9 @@ export const getAssetsForBlog = async (blogId: number): Promise<panel.BlogAssets
     return blogAssets.map(
         (ba: any) =>
             ({
-                id: ba.id,
+                id: ba.Id,
                 url: `/${getAssetPath(getAssetsPath(blogId), ba.Url)}`,
-                isMain: ba.MainBlogAsset_id === ba.id,
+                isMain: ba.MainBlogAsset_id === ba.Id,
                 alt: ba.Alt
             } as panel.BlogAssetsListItemDto)
     )
@@ -346,6 +348,7 @@ export const deleteBlogAsset = async (id: number) => {
         //     [id]);
 
         await connection("BlogAsset")
+            .delete()
             .where({ Id: id });
     } catch (err) {
         return Promise.reject();

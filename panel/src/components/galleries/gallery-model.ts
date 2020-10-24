@@ -5,7 +5,7 @@ import { PrivateGalleryState } from "../../../../api/private-gallery";
 export const galleryModel = (galleryId?: number) => Schema.Model({
     place: Schema.Types.StringType()
         .isRequired("Place of the wedding must be set.")
-        .minLength(5, "Place of the wedding must be at least 5 characters long."),
+        .minLength(2, "Place of the wedding must be at least 2 characters long."),
     date: Schema.Types.DateType().isRequired("Date of the wedding must be set."),
     bride: Schema.Types.StringType()
         .isRequired("Name of the bride must be set.")

@@ -8,7 +8,7 @@ export const run = async (connection: Knex): Promise<boolean> => {
         }
 
         await connection.schema.alterTable("Blog", builder => {
-            builder.integer("MainBlogAsset_id", 11).nullable();
+            builder.bigInteger("MainBlogAsset_id").nullable();
             builder.foreign("MainBlogAsset_id").references("BlogAsset.Id").onDelete("RESTRICT").onUpdate("RESTRICT");
         });
 

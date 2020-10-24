@@ -79,7 +79,7 @@ export const getList = async (): Promise<GalleryDto[]> => {
             "PrivateGallery.Password",
             "PrivateGallery.DirectPath",
             "PrivateGallery.Blog_id",
-            connection.raw(`COUNT("PrivateGalleryVisit"."Id") AS "Visits"`));
+            connection.raw(`COUNT("PrivateGallery"."Id") AS "Visits"`));
 
     return galleries.map((g: any) => ({
         id: g.Id,
@@ -91,7 +91,7 @@ export const getList = async (): Promise<GalleryDto[]> => {
         state: Number(g.State),
         password: g.Password,
         url: g.DirectPath,
-        blogId: Number(g.Blog_id),
+        blogId: g.Blog_id ? Number(g.Blog_id) : undefined,
         visits: g.Visits ? Number(g.Visits) : 0
     }));
 }
@@ -131,7 +131,7 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
         .limit(1);
 
     const bestDay = (bestDayVisits && bestDayVisits.length > 0)
-        ? { date: getDateString(bestDayVisits[0].date), visits: bestDayVisits[0].count }
+        ? { date: getDateString(bestDayVisits[0].Date), visits: bestDayVisits[0].Count }
         : { date: "", visits: 0 };
 
     // const [totalVisitsResult] = await connection.raw(`
@@ -141,11 +141,11 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
 
     const totalVisitsResult = await connection("PrivateGalleryVisit")
         .where({ PrivateGallery_id: galleryId })
-        .count("Id")
-        .limit(1);
+        .count("Id", { as: 'Visits' })
+        .first();
 
-    const totalVisits = (totalVisitsResult && totalVisitsResult.length > 0)
-        ? totalVisitsResult[0].visits as number
+    const totalVisits = (totalVisitsResult)
+        ? totalVisitsResult.Visits as number
         : 0;
 
     // const [emailsResult] = await connection.raw(`
@@ -154,11 +154,11 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
     //     [galleryId]);
 
     const emailsResult = await connection("PrivateGalleryEmail")
-        .count("Id as Emails")
+        .count("Id", { as: 'Emails' })
         .where({ PrivateGallery_id: galleryId });
 
     const emails = (emailsResult && emailsResult.length > 0)
-        ? emailsResult[0].emails as number
+        ? emailsResult[0].Emails as number
         : 0;
 
     // const [todayVisitsResult] = await connection.raw(`
@@ -166,12 +166,12 @@ export const getStats = async (galleryId: number, startDate: Date, endDate: Date
     //     [galleryId, today]);
 
     const todayVisitsResult = await connection("PrivateGalleryVisit")
+        .count("Id", { as: 'Count' })
         .where({ PrivateGallery_id: galleryId, Date: today })
-        .count("Id")
-        .limit(1);
+        .first();
 
-    const todayVisits = (todayVisitsResult && todayVisitsResult.length > 0)
-        ? todayVisitsResult[0].count as number
+    const todayVisits = todayVisitsResult
+        ? todayVisitsResult.Count as number
         : 0;
 
     const rangeVisits = sum(dailyVisits, (d) => d.visits);
@@ -194,16 +194,12 @@ export const checkPasswordIsUnique = async (password: string, galleryId?: number
     //         WHERE p.pass = ?`,
     //     [password]);
 
-    const galleries = await connection("PrivateGallery")
+    const gallery = await connection("PrivateGallery")
         .where({ Password: password })
         .select("Id")
-        .limit(1);
+        .first();
 
-    const [gallery] = galleries;
-
-    return !gallery
-        ? true
-        : gallery.id === galleryId
+    return !gallery || gallery.Id === galleryId;
 }
 
 export const getForEdit = async (galleryId: number): Promise<GalleryEditDto> => {
@@ -335,16 +331,19 @@ export const deleteGallery = async (id: number) => {
         //     WHERE PrivateGallery_id = ?;`,
         //     [id, id, id]);
 
-        transaction.delete("PrivateGallery")
+        await transaction("PrivateGallery")
+            .delete()
             .where({ Id: id });
-        transaction.delete("PrivateGalleryEmail")
+        await transaction("PrivateGalleryEmail")
+            .delete()
             .where({ PrivateGallery_id: id });
-        transaction.delete("PrivateGalleryVisit")
+        await transaction("PrivateGalleryVisit")
+            .delete()
             .where({ PrivateGallery_id: id });
 
         await transaction.commit();
     } catch (err) {
         await transaction.rollback();
-        return Promise.reject();
+        return Promise.reject(err);
     }
 }
