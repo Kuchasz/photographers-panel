@@ -65,6 +65,7 @@ export const getSelectList = async (): Promise<panel.BlogSelectItem[]> => {
     // const blogs = await connection.raw(`
     //         SELECT b.title, b.date, b.id FROM Blog b 
     //         ORDER BY b.date DESC`);
+
     const blogs = await connection("Blog")
         .orderBy("Date", "desc")
         .select("Title", "Date", "Id");
@@ -78,19 +79,40 @@ export const getSelectList = async (): Promise<panel.BlogSelectItem[]> => {
 }
 
 export const getListForPanel = async (): Promise<panel.BlogListItem[]> => {
-    const [blogs] = await connection.raw(`
-            SELECT b.id, b.date, b.title, SUBSTRING(b.content, 1, 50) as content, b.isHidden, COALESCE( bv.count, 0 ) AS visits, COALESCE( bc.count, 0 ) AS comments FROM Blog b 
-            LEFT JOIN 
-            (SELECT Blog_id, COUNT(*) AS count 
-                FROM BlogVisit
-                GROUP BY Blog_id) bv
-            ON b.id = bv.Blog_id
-            LEFT JOIN 
-            (SELECT Blog_id, COUNT(*) AS count 
-                FROM BlogComment
-                GROUP BY Blog_id) bc
-            ON b.id = bc.Blog_id
-            ORDER BY b.date DESC`);
+    // const [blogs] = await connection.raw(`
+    //         SELECT b.id, b.date, b.title, SUBSTRING(b.content, 1, 50) as content, b.isHidden, COALESCE( bv.count, 0 ) AS visits, COALESCE( bc.count, 0 ) AS comments FROM Blog b 
+    //         LEFT JOIN 
+    //         (SELECT Blog_id, COUNT(*) AS count 
+    //             FROM BlogVisit
+    //             GROUP BY Blog_id) bv
+    //         ON b.id = bv.Blog_id
+    //         LEFT JOIN 
+    //         (SELECT Blog_id, COUNT(*) AS count 
+    //             FROM BlogComment
+    //             GROUP BY Blog_id) bc
+    //         ON b.id = bc.Blog_id
+    //         ORDER BY b.date DESC`);
+
+    const blogs = await connection("Blog")
+        .select(
+            "Blog.Id",
+            "Blog.Date",
+            "Blog.Title",
+            connection.raw(`SUBSTRING("Blog"."Content", 1, 50) as "Content"`),
+            "Blog.IsHidden",
+            connection.raw(`COALESCE("BlogVisit"."Count", 0) as "Visits"`),
+            connection.raw(`COALESCE("BlogComment"."Count", 0) as "Comments"`))
+        .leftJoin(
+            connection("BlogVisit")
+                .select(connection.raw(`"Blog_id", COUNT(*) as "Count"`))
+                .groupBy("Blog_id")
+                .as("BlogVisit"), "BlogVisit.Blog_id", "Blog.Id")
+        .leftJoin(
+            connection("BlogComment")
+                .select(connection.raw(`"Blog_id", COUNT(*) as "Count"`))
+                .groupBy("Blog_id")
+                .as("BlogComment"), "BlogComment.Blog_id", "Blog.Id")
+        .orderBy("Blog.Date", "desc");
 
     const blogListItems = blogs.map(
         (b: any) =>
@@ -131,7 +153,7 @@ export const checkAliasIsUnique = async (alias: string, blogId?: number): Promis
     //     [alias, blogId]);
 
     const [blog] = await connection("Blog")
-        .where({Alias: alias})
+        .where({ Alias: alias })
         .select("Id");
 
     return !blog || blog.Id === blogId;
@@ -144,9 +166,10 @@ export const changeVisibility = async (blogVisibility: panel.BlogVisibilityDto) 
         //     SET isHidden = ?
         //     WHERE id = ?`,
         //     [!blogVisibility.shouldBeVisible, blogVisibility.id]);
+
         await connection("Blog")
-            .where({Id: blogVisibility.id})
-            .update({IsHidden: !blogVisibility.shouldBeVisible});
+            .where({ Id: blogVisibility.id })
+            .update({ IsHidden: !blogVisibility.shouldBeVisible });
     } catch (err) {
         return Promise.reject();
     }
@@ -159,9 +182,10 @@ export const changeMainAsset = async (blogMainAsset: panel.MainBlogAssetDto) => 
         //     SET MainBlogAsset_id = ?
         //     WHERE id = ?`,
         //     [blogMainAsset.mainBlogAsset, blogMainAsset.id]);
+
         await connection("Blog")
-            .where({If: blogMainAsset.id})
-            .update({ MainBlogAsset_id: blogMainAsset.mainBlogAsset});
+            .update({ MainBlogAsset_id: blogMainAsset.mainBlogAsset })
+            .where({ Id: blogMainAsset.id });
 
     } catch (err) {
         return Promise.reject();
@@ -180,9 +204,10 @@ export const editBlog = async (id: number, blog: panel.BlogEditDto) => {
         //         tags = ?
         //     WHERE id = ?`,
         //     [blog.date, blog.title, blog.alias, blog.content, blog.tags, id]);
+
         await connection("Blog")
-            .where({Id: id})
-            .update({Date: blog.date, Title: blog.title, Alias: blog.alias, Content: blog.content, Tags: blog.tags});
+            .where({ Id: id })
+            .update({ Date: blog.date, Title: blog.title, Alias: blog.alias, Content: blog.content, Tags: blog.tags });
     } catch (err) {
         return Promise.reject();
     }
@@ -196,7 +221,7 @@ export const getTags = async (blogId: number): Promise<string> => {
     //     [blogId, blogId]);
 
     const [blog] = await connection("Blog")
-        .where({Id: blogId})
+        .where({ Id: blogId })
         .select("Alias");
 
     return blog.alias;
@@ -209,11 +234,13 @@ export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => 
     //         WHERE b.id = ?`,
     //     [blogId, blogId]);
 
-    // const blogIdentifier = connection.ref("Blog.Id");
-
     const [blog] = await connection("Blog")
-        .where({ Id: blogId})
-        .select("Title", "Alias", "Date", "Content", "Tags", connection("BlogAsset").where({Blog_id: blogId}).count("Id").as("AssignmentsCount"));
+        .where({ Id: blogId })
+        .select("Title", "Alias", "Date", "Content", "Tags",
+            connection("BlogAsset")
+                .where({ Blog_id: blogId })
+                .count("Id")
+                .as("AssignmentsCount"));
 
     return {
         title: blog.title,
@@ -228,23 +255,44 @@ export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => 
 export const deleteBlog = async (id: number) => {
     const transaction = await connection.transaction();
     try {
-        await transaction.raw(`
-            UPDATE Blog
-            SET MainBlogAsset_id = NULL
-            WHERE id = ?;
- 
-            DELETE FROM BlogAsset
-            WHERE Blog_id = ?;
-            
-            DELETE FROM BlogComment
-            WHERE Blog_id = ?;
+        // await transaction.raw(`
+        //     UPDATE Blog
+        //     SET MainBlogAsset_id = NULL
+        //     WHERE id = ?;
 
-            DELETE FROM BlogVisit
-            WHERE Blog_id = ?;
-            
-            DELETE FROM Blog
-            WHERE id = ?;`,
-            [id, id, id, id, id]);
+        //     DELETE FROM BlogAsset
+        //     WHERE Blog_id = ?;
+
+        //     DELETE FROM BlogComment
+        //     WHERE Blog_id = ?;
+
+        //     DELETE FROM BlogVisit
+        //     WHERE Blog_id = ?;
+
+        //     DELETE FROM Blog
+        //     WHERE id = ?;`,
+        //     [id, id, id, id, id]);
+
+        transaction("Blog")
+            .update({ MainBlogAsset_id: null })
+            .where({ Id: id });
+
+        transaction("BlogAsset")
+            .delete()
+            .where({ Blog_id: id });
+
+        transaction("BlogComment")
+            .delete()
+            .where({ Blog_id: id });
+
+        transaction("BlogVisit")
+            .delete()
+            .where({ Blog_id: id });
+
+        transaction("Blog")
+            .delete()
+            .where({ Id: id });
+
         await transaction.commit();
     } catch (err) {
         await transaction.rollback();
@@ -254,23 +302,30 @@ export const deleteBlog = async (id: number) => {
 
 export const createBlogAsset = async (blogId: number, assetId: string, alt: string): Promise<number> => {
     try {
-        return await connection("BlogAsset").insert({ Blog_id: blogId, Url: assetId, Alt: alt }, "id");
         // const [[results]]: any = await connection.raw(`
         //     INSERT INTO BlogAsset(Blog_id, Url, Alt) VALUES (?, ?, ?)`,
         //     [blogId, assetId, alt]);
         // return results.insertId;
+
+        return await connection("BlogAsset")
+            .insert({ Blog_id: blogId, Url: assetId, Alt: alt }, "id");
     } catch (err) {
         return Promise.reject();
     }
 }
 
 export const getAssetsForBlog = async (blogId: number): Promise<panel.BlogAssetsListItemDto[]> => {
-    const [blogAssets] = await connection.raw(`
-            SELECT b.MainBlogAsset_id, ba.id, ba.Url, ba.Alt
-            FROM BlogAsset ba 
-            JOIN Blog b ON ba.Blog_id = b.Id
-            WHERE ba.Blog_id = ?`,
-        [blogId]);
+    // const [blogAssets] = await connection.raw(`
+    //         SELECT b.MainBlogAsset_id, ba.id, ba.Url, ba.Alt
+    //         FROM BlogAsset ba 
+    //         JOIN Blog b ON ba.Blog_id = b.Id
+    //         WHERE ba.Blog_id = ?`,
+    //     [blogId]);
+
+    const blogAssets = await connection("BlogAsset")
+        .join("Blog", "Blog.Id", "BlogAsset.Blog_id")
+        .where({ Blog_id: blogId })
+        .select("Blog.MainBlogAsset_id", "BlogAsset.Id", "BlogAsset.Url", "BlogAsset.Alt");
 
     return blogAssets.map(
         (ba: any) =>
@@ -285,33 +340,45 @@ export const getAssetsForBlog = async (blogId: number): Promise<panel.BlogAssets
 
 export const deleteBlogAsset = async (id: number) => {
     try {
-        await connection.raw(`
-            DELETE FROM BlogAsset
-            WHERE Id = ?;`,
-            [id]);
+        // await connection.raw(`
+        //     DELETE FROM BlogAsset
+        //     WHERE Id = ?;`,
+        //     [id]);
+
+        await connection("BlogAsset")
+            .where({ Id: id });
     } catch (err) {
         return Promise.reject();
     }
 }
 
 export const getAssetPathById = async (id: number): Promise<string> => {
-    const [[asset]]: any = await connection.raw(`
-            SELECT ba.Url, ba.Blog_id
-            FROM BlogAsset ba
-            WHERE ba.Id = ?
-            LIMIT 1`,
-        [id]);
+    // const [[asset]]: any = await connection.raw(`
+    //         SELECT ba.Url, ba.Blog_id
+    //         FROM BlogAsset ba
+    //         WHERE ba.Id = ?
+    //         LIMIT 1`,
+    //     [id]);
+
+    const [asset] = await connection("BlogAsset")
+        .where({ Id: id })
+        .select("Url", "Blog_id")
+        .limit(1);
 
     return getAssetPath(getAssetsPath(asset.Blog_id), asset.Url);
 }
 
 export const changeBlogAssetAlt = async (id: number, alt: string): Promise<void> => {
     try {
-        await connection.raw(`
-            UPDATE BlogAsset
-            SET Alt = ?
-            WHERE Id = ?`,
-            [alt, id]);
+        // await connection.raw(`
+        //     UPDATE BlogAsset
+        //     SET Alt = ?
+        //     WHERE Id = ?`,
+        //     [alt, id]);
+
+        await connection("BlogAsset")
+            .update({ Alt: alt })
+            .where({ Id: id });
     } catch (err) {
         return Promise.reject();
     }

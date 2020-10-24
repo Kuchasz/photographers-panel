@@ -27,7 +27,7 @@ const getColorFromGalleryState = (galleryState: PrivateGalleryState): any => {
     }
 };
 
-const getColorFromBlogEntry = (blogId: string) => (blogId ? "#4caf50" : "#f44336");
+const getColorFromBlogEntry = (blogId: number) => (blogId ? "#4caf50" : "#f44336");
 
 const stateTooltips = {
     [PrivateGalleryState.Available]: (

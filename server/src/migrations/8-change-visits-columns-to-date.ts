@@ -39,7 +39,10 @@ export const run = async (connection: Knex): Promise<boolean> => {
 
         for (const daily of results) {
             try {
-                await connection("PrivateGalleryVisit").insert({PrivateGallery_id: daily.PrivateGallery_id, Date: daily.date});
+                const visits = Array.from(Array(daily.count));
+                for (const _ of visits) {
+                    await connection("PrivateGalleryVisit").insert({ PrivateGallery_id: daily.PrivateGallery_id, Date: daily.date });
+                }
                 // await runQuery(`INSERT INTO "PrivateGalleryVisit"("PrivateGallery_id", "Date") VALUES ('${daily.PrivateGallery_id}', '${daily.date}')`, connection);
 
             } catch (err) {

@@ -186,7 +186,7 @@ app.post(authPanel.logIn.route, async (req, res) => {
     res.json(result);
 });
 
-app.get(`${authPanel.viewLogIn.route}/*`, async (req, res) => {
+app.get([`${authPanel.viewLogIn.route}`, `${authPanel.viewLogIn.route}/*`], async (req, res) => {
     // const { galleryUrl, galleryId } = req.body;
     // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
