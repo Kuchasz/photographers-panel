@@ -149,7 +149,7 @@ app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
     res.json(gallery);
 });
 
-app.post(privateGallery.viewGallery.route, async (req, res) => {
+app.post([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.route}/*`], async (req, res) => {
     const { galleryUrl, galleryId } = req.body;
     const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
@@ -455,7 +455,7 @@ app.get("/robots.txt", function (req, res) {
 app.get("*", async (req, res, next) => {
     if(req.url === "/api")
         return next();
-        
+
     let desiredRoute: { route: string };
     let initialState: any;
 
