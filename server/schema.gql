@@ -8,6 +8,10 @@ type Client {
   name: String!
 }
 
+type DeleteResult {
+  affectedRows: Int!
+}
+
 type Like {
   imageId: String!
   liked: Boolean!
@@ -17,6 +21,7 @@ type Like {
 type Mutation {
   connect(name: String!): Client!
   likeImage(clientId: Int!, galleryId: Int!, imageId: String!): Like!
+  unlikeImage(clientId: Int!, galleryId: Int!, imageId: String!): DeleteResult!
 }
 
 type Query {

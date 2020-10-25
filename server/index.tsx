@@ -452,7 +452,10 @@ app.get("/robots.txt", function (req, res) {
     res.send("User-agent: *\nAllow: /");
 });
 
-app.get("*", async (req, res) => {
+app.get("*", async (req, res, next) => {
+    if(req.url === "/api")
+        return next();
+        
     let desiredRoute: { route: string };
     let initialState: any;
 
