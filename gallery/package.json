@@ -5,6 +5,7 @@
   "license": "ISC",
   "main": "./dist",
   "typings": "./dist",
+  "private": true,
   "scripts": {
     "build": "webpack -p",
     "start": "webpack-dev-server --hot --inline",

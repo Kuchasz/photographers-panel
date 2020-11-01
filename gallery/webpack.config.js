@@ -1,4 +1,5 @@
 var resolve = require("path").resolve;
+var join = require("path").join;
 var webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -6,6 +7,8 @@ var autoprefixer = require("autoprefixer");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ngtools = require("@ngtools/webpack");
 require('dotenv').config({ path: resolve("../.env") });
+
+const rootModuleDirectory = (packageName) => join(__dirname, "../node_modules", packageName);
 
 var postcssLoader = {
     loader: "postcss-loader",
@@ -63,7 +66,11 @@ module.exports = {
         rules: [
             {
                 test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-                loader: "@ngtools/webpack"
+                loader: "@ngtools/webpack",
+                include: [
+                    join(__dirname, "src"),
+                    rootModuleDirectory("@pp/server")
+                ]
             },
             {
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
@@ -91,10 +98,10 @@ module.exports = {
     },
     resolve: {
         extensions: [".ts", ".js"],
-        modules: [resolve("node_modules")]
+        modules: [resolve("node_modules"), resolve("../node_modules")]
     },
     resolveLoader: {
-        modules: [resolve("node_modules")]
+        modules: [resolve("node_modules"), resolve("../node_modules")]
     },
     plugins: plugins,
     devServer: {
