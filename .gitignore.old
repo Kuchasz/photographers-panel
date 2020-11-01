@@ -1,5 +1,0 @@
-node_modules/
-dist/
-*.config.ts
-server/public/blogs/
-database.sqlite
