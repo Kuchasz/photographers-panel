@@ -29,5 +29,6 @@ export const auth = {
 };
 
 export const app ={
-    appPath: "http://APP_ROOT_PATH.com"
+    appPath: "http://APP_ROOT_PATH.com",
+    reviewUrl: "https://g.page/your-site/review"
 }

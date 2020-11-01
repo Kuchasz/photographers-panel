@@ -169,6 +169,10 @@ app.post([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.r
     });
 });
 
+app.get([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.route}/*`], async (req, res) => {
+    res.redirect(routes.private.route);
+});
+
 // panel related APIs
 
 app.post(authPanel.logIn.route, async (req, res) => {
