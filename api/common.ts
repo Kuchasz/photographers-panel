@@ -10,4 +10,4 @@ type Error<T> = { type: ResultType.Error; error: T, errorMessage?: string };
 
 export type Result<T, U = null> = Success<U> | Error<T>;
 
-export const endpoint: string = app.appPath;
+export const endpoint = app.appPath;

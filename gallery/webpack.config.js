@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var autoprefixer = require("autoprefixer");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ngtools = require("@ngtools/webpack");
+require('dotenv').config({ path: resolve("../.env") });
 
 var postcssLoader = {
     loader: "postcss-loader",
@@ -37,7 +38,8 @@ var plugins = [
         // entryModule: 'src/demo/app.module#AppModule',
         sourceMap: true,
         locale: "en"
-    })
+    }),
+    new webpack.EnvironmentPlugin(Object.keys(process.env))
 ];
 
 const optimization =

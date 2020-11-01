@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
         user: notifications.server.auth.user,
         pass: notifications.server.auth.pass
     }
-});
+} as any);
 
 export const sendEmail = async (from: string, email: string, content: string) =>
     new Promise<void>((res, rej) => {

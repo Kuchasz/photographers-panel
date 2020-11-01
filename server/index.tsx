@@ -2,7 +2,9 @@ import express from "express";
 import compression from "compression";
 import multer from "multer";
 import cookieParser from "cookie-parser";
+import { resolve } from "path";
 
+require('dotenv').config({ path: resolve("../.env") });
 const upload = multer();
 
 import * as blogModel from "./src/models/blog";
@@ -14,7 +16,6 @@ import Root from "../site/dist/bundle.js";
 import * as blog from "../api/site/blog";
 import * as blogPanel from "../api/panel/blog";
 import fs from "fs";
-import { resolve } from "path";
 import { routes } from "../site/src/routes";
 import * as message from "../api/site/message";
 import * as notification from "../api/site/notification";
@@ -24,7 +25,7 @@ import * as authPanel from "../api/panel/auth";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
 import { allowCrossDomain, processImage } from "./src/core";
-import { runPhotoGalleryServer } from "../../ps-photo-gallery/server";
+import { runPhotoGalleryServer } from "../gallery-server";
 import * as config from "./src/config";
 
 require("isomorphic-fetch");

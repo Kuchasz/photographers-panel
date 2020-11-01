@@ -4,6 +4,8 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
+require('dotenv').config({ path: path.resolve("../.env") });
 
 module.exports = (env, argv) => ({
     entry: path.resolve("./src/index.tsx"),
@@ -84,7 +86,8 @@ module.exports = (env, argv) => ({
             alwaysWriteToDisk: true,
             cache: false
         }),
-        new ExtractTextPlugin("styles.css")
+        new ExtractTextPlugin("styles.css"),
+        new EnvironmentPlugin(Object.keys(process.env))
     ],
     devServer: {
         port: 8081,

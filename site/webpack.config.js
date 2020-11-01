@@ -2,6 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
+require('dotenv').config({ path: path.resolve("../.env") });
+const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
 
 module.exports = {
     entry: path.resolve("./src/index.tsx"),
@@ -117,7 +119,8 @@ module.exports = {
         }),
         new CopyPlugin([{
             from: "src/images", to: "media/images"
-        }])
+        }]),
+        new EnvironmentPlugin(Object.keys(process.env))
     ],
     devServer: {
         port: 8081,
