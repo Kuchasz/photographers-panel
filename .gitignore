@@ -7,6 +7,6 @@ debug.log
 /.idea/
 /.vscode/
 *.secret.config.ts
-*.config.ts
+server/*/**/*.config.ts
 server/public/blogs/
 database.sqlite
