@@ -1,0 +1,25 @@
+<div class="images-container" *ngIf="images$ | async as images">
+    <ng-container *ngIf="currentDirectoryId$ | async as directoryId">
+        <div *ngFor="let columnImages of columnsImages" class="column">
+            <div
+                *ngFor="let image of columnImages"
+                (click)="enableFullscreenMode(image.id, directoryId)"
+                [style.flex-basis]="image.height + 'px'"
+                class="image-container"
+            >
+                <img [src]="image.src" />
+                <div class="background">
+                    <ng-container *ngIf="image.liked">
+                        <span class="mdi mdi-heart" (click)="unlikeImage(image.id, $event)"></span>
+                        <p>{{ (image.likes === 1 && image.liked) || image.likes === 0 ? "" : image.likes }}</p></ng-container
+                    >
+                    <ng-container *ngIf="!image.liked">
+                        <span class="mdi mdi-heart-outline" (click)="likeImage(image.id, $event)"></span>
+                        <p>{{ (image.likes === 1 && image.liked) || image.likes === 0 ? "" : image.likes }}</p></ng-container
+                    >
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,139 @@
+@keyframes wiggle {
+    0% {
+        transform: translateY(0px);
+    }
+
+    2% {
+        transform: translateY(5px);
+    }
+
+    4% {
+        transform: translateY(0px);
+    }
+
+    5% {
+        transform: translateY(5px);
+    }
+
+    6% {
+        transform: translateY(0px);
+    }
+}
+
+.gallery-state {
+    display: flex;
+    font-size: 0.75em;
+    // background: black;
+}
+
+span,
+a {
+    padding: 0.5em 0.75em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+%state-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.g-back-button {
+    @extend %state-button;
+    // background: white;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    opacity: 0.25;
+    align-items: center;
+    font-weight: 100;
+    cursor: pointer;
+    transition: opacity 0.25s;
+
+    &:hover {
+        // background: black;
+        // color: white;
+        opacity: 1;
+    }
+
+    div {
+        padding: 0em 0.5em;
+    }
+}
+
+.g-image-name {
+    background: black;
+    color: white;
+}
+
+.g-state-text {
+    user-select: none;
+    display: flex;
+    flex-grow: 1;
+    align-self: center;
+    height: 100%;
+    padding: 0px;
+    align-items: center;
+    color: white;
+
+    .g-snapped-count {
+        height: 100%;
+    }
+}
+
+.g-state-directory {
+    color: white;
+    flex-grow: 1;
+    align-self: center;
+}
+
+.g-state-button {
+    @extend %state-button;
+    cursor: pointer;
+    // background: black;
+    display: flex;
+    flex-direction: row;
+    font-weight: bolder;
+    align-items: center;
+    color: white;
+    opacity: 0.25;
+    transition: opacity 0.25s;
+
+    &.like {
+        .mdi {
+            padding: 0em .1em !important;
+        }
+    }
+
+    &:hover {
+        // background: white;
+        // color: black;
+        opacity: 1;
+    }
+
+    p {
+        // margin: 0px 5px;
+        user-select: none;
+    }
+
+    &.rate {
+        animation-name: wiggle;
+        animation-duration: 10s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+    }
+}
+
+.g-snapped-count {
+    @extend %state-button;
+    cursor: pointer;
+    background: black;
+    color: white;
+    transition: background 0.25s, color 0.25s;
+
+    &:hover {
+        background: white;
+        color: black;
+    }
+}

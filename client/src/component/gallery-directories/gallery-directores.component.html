@@ -1,0 +1,18 @@
+<ng-container *ngIf="gallery.state | async as state">
+    <div class="g-directory-filler"></div>
+    <div class="g-directories-container">
+        <div
+            class="g-directory"
+            *ngFor="let dir of objectKeys(state.directories)"
+            [ngClass]="{ visited: state.directories[dir].visited }"
+            (click)="selectDirectory(dir)"
+        >
+            <div class="g-directory-photo" [lazyImage]="getImage(dir).src"></div>
+            <div class="g-directory-background"></div>
+            <div class="g-state-text">
+                <span>{{ state.directories[dir].name }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="g-directory-filler"></div>
+</ng-container>

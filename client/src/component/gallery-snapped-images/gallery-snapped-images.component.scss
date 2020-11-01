@@ -1,0 +1,84 @@
+:host {
+    display: flex;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    background: #121212;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.g-thumb-container {
+    position: relative;
+    z-index: 206;
+    width: 100%;
+    height: 116px;
+    height: 100%;
+    left: 0;
+    flex-grow: 1;
+    top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    width: 100%;
+    margin: 0px;
+    margin-top: 8px;
+    background: #121212;
+}
+
+.g-thumbs {
+    padding: 8px 0px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    transition: transform ease-in 300ms;
+    transform: translate3d(0, 0, 0);
+}
+
+.g-thumb {
+    margin: 8px;
+    // opacity: 0.5;
+    transition: all ease-out 0.25s;
+    position: relative;
+}
+
+.g-thumb-image {
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    color: white;
+    transition: all 0.25s linear;
+
+    &.deleted {
+        opacity: 0.1;
+        filter: grayscale(1);
+    }
+}
+
+.g-thumb-delete {
+    opacity: 0;
+    transition: opacity 0.25s linear;
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    span {
+        font-size: xx-large;
+    }
+}

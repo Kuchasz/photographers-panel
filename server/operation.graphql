@@ -1,0 +1,25 @@
+query likes($clientId: Int!, $galleryId: Int!){
+  likes(clientId: $clientId, galleryId: $galleryId){
+    imageId,
+    liked,
+    likes
+  }
+}
+
+mutation likeImage($imageId: String!, $clientId: Int!, $galleryId: Int!){
+  likeImage(imageId: $imageId, galleryId: $galleryId, clientId: $clientId){
+    imageId
+  }
+}
+
+mutation unlikeImage($imageId: String!, $clientId: Int!, $galleryId: Int!){
+  unlikeImage(imageId: $imageId, galleryId: $galleryId, clientId: $clientId){
+    affectedRows
+  }
+}
+
+mutation connectClient($name: String!) {
+  connect(name: $name) {
+    id
+	}
+}

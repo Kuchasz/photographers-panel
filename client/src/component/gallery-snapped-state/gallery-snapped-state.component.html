@@ -1,0 +1,7 @@
+<span (click)="goBack()" class="g-state-button"><i class="material-icons">arrow_back</i></span>
+<span *ngIf="snappedCount > 0" class="g-state-text">
+    <span>{{ snappedCount }} {{ translations.state.selected }}</span>
+</span>
+<span class="g-state-button" *ngIf="fullscreenEnabled" (click)="toggleFullscreen()"
+    ><i class="material-icons">{{ translations.state.fullscreen }}</i></span
+>

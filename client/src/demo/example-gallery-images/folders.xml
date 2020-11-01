@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<item expandall="N" expandicon="N">
+	<item name="People" action="loadalbum" path= "People/" variables="People/photos.xml" desc= ""/>
+
+	<item name="Education" action="loadalbum" path= "Education/" variables="Education/photos.xml" desc= ""/>
+	<item name="Music" action="loadalbum" path= "Music/" variables="Music/photos.xml" desc= ""/>
+	<item name="Animals" action="loadalbum" path= "Animals/" variables="Animals/photos.xml" desc= ""/>
+	<item name="Artists" action="loadalbum" path= "Artists/" variables="Artists/photos.xml" desc= ""/>
+
+	<item name="Science" action="loadalbum" path= "Science/" variables="Science/photos.xml" desc= ""/>
+	<item name="Artists" action="loadalbum" path= "Artists/" variables="Artists/photos.xml" desc= ""/>
+	<item name="People" action="loadalbum" path= "People/" variables="People/photos.xml" desc= ""/>
+	<item name="Science" action="loadalbum" path= "Science/" variables="Science/photos.xml" desc= ""/>
+	<item name="Animals" action="loadalbum" path= "Animals/" variables="Animals/photos.xml" desc= ""/>
+
+	<item name="People" action="loadalbum" path= "People/" variables="People/photos.xml" desc= ""/>
+	<item name="Education" action="loadalbum" path= "Education/" variables="Education/photos.xml" desc= ""/>
+	<item name="Music" action="loadalbum" path= "Music/" variables="Music/photos.xml" desc= ""/>
+
+	<item name="Science" action="loadalbum" path= "Science/" variables="Science/photos.xml" desc= ""/>
+
+	<item name="Animals" action="loadalbum" path= "Animals/" variables="Animals/photos.xml" desc= ""/>
+	<item name="Artists" action="loadalbum" path= "Artists/" variables="Artists/photos.xml" desc= ""/>
+	<item name="Animals" action="loadalbum" path= "Animals/" variables="Animals/photos.xml" desc= ""/>
+	<item name="Artists" action="loadalbum" path= "Artists/" variables="Artists/photos.xml" desc= ""/>
+
+	<item name="Science" action="loadalbum" path= "Science/" variables="Science/photos.xml" desc= ""/>
+	<item name="Education" action="loadalbum" path= "Education/" variables="Education/photos.xml" desc= ""/>
+	<item name="Music" action="loadalbum" path= "Music/" variables="Music/photos.xml" desc= ""/>
+	<item name="People" action="loadalbum" path= "People/" variables="People/photos.xml" desc= ""/>
+	<item name="Education" action="loadalbum" path= "Education/" variables="Education/photos.xml" desc= ""/>
+	<item name="Music" action="loadalbum" path= "Music/" variables="Music/photos.xml" desc= ""/>
+</item>
+

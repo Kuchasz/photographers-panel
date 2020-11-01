@@ -1,0 +1,16 @@
+div {
+
+  height: 100%;
+  overflow: hidden;
+  justify-content: center;
+
+  gallery-main {
+    display: flex;
+  }
+
+  gallery-directories{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+}

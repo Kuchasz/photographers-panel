@@ -1,0 +1,90 @@
+:host {
+    display: block;
+    z-index: 1;
+    background: #fff;
+}
+
+.g-thumbs-container {
+  position: relative;
+  z-index: 206;
+  overflow-x: hidden;
+  width: 650px;
+  display: flex;
+  margin: 0px;
+}
+
+.g-thumb-container {
+    position: relative;
+    width: 100%;
+    height: 105px;
+    justify-content: center;
+    display: flex;
+    margin: 0px;
+}
+
+.g-thumbs {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 47.5px);
+    display: flex;
+    align-items: center;
+    transition: transform ease-out 0.2s;
+    transform: translate3d(0, 0, 0);
+}
+
+.g-thumb {
+    // padding: 2px;
+    padding: 8px;
+    opacity: 0.5;
+    transition: all ease 0.2s;
+}
+
+.g-thumb-image {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
+    // box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    color: #333;
+    transform: scale(.9);
+    
+    &.snapped {
+        border: solid 5px #333;
+    }
+}
+
+.g-thumb-current {
+    opacity: 1;
+    transform: scale(1.1);
+    // padding: 10px;
+    // margin: 10px 50px;
+}
+
+.g-nav-next,
+.g-nav-prev {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    opacity: 0.5;
+    padding: 50px 25px;
+    user-select: none;
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    z-index: 0;
+
+    &:active {
+        // animation: pressed-left ease-in-out 0.25s;
+        transform: translateX(5px);
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+}
