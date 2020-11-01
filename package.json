@@ -1,0 +1,14 @@
+{
+    "private": true,
+    "workspaces": {
+        "packages": [
+            "api",
+            "gallery",
+            "gallery-server",
+            "panel",
+            "server",
+            "site",
+            "utils"
+        ]
+    }
+}

@@ -11,7 +11,7 @@ import { Location } from "@angular/common";
 import { GalleryState, GalleryDirectory, GalleryImage } from "../../service/gallery.state";
 import { GalleryService } from "../../service/gallery.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
-import { app } from "../../../../server/src/config";
+import { app } from "@pp/server/src/config";
 import { translations } from '../../i18n';
 
 @Component({

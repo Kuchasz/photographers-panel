@@ -1,6 +1,6 @@
 import { Injectable, Optional } from "@angular/core";
 import { GraphQLClient } from "graphql-request";
-import { app } from "../../../server/src/config";
+import { app } from "@pp/server/src/config";
 
 import { getSdk } from "../../sdk";
 

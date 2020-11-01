@@ -1,4 +1,4 @@
-import { app } from "../server/src/config";
+import { app } from "@pp/server/src/config";
 
 export enum ResultType {
     Success,
