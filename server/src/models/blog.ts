@@ -1,7 +1,7 @@
 import { connection } from "../db";
-import { getDateString } from "../../../utils/date";
-import * as site from "../../../api/site/blog";
-import * as panel from "../../../api/panel/blog";
+import { getDateString } from "@pp/utils/date";
+import * as site from "@pp/api/site/blog";
+import * as panel from "@pp/api/panel/blog";
 
 export const getMostRecent = async (): Promise<site.LastBlog> => {
     const [mostRecent] = await connection("Blog").where({ IsHidden: 0 }).orderBy("Date", "desc").limit(1);

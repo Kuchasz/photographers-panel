@@ -1,4 +1,4 @@
-import { getDateString } from "../../utils/date";
+import { getDateString } from "@pp/utils/date";
 import { PrivateGalleryState } from "../private-gallery";
 import { endpoint, Result } from "../common";
 

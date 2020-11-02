@@ -1,6 +1,6 @@
 
 import { strings } from "./resources";
-import { zip } from "../../utils/array";
+import { zip } from "@pp/utils/array";
 import { routes } from "./routes";
 
 type MenuItem = { route: string; fullPage: boolean; label: string };

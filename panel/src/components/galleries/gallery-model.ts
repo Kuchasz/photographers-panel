@@ -1,6 +1,6 @@
 import { Schema } from "rsuite";
-import { checkPasswordIsUnique } from "../../../../api/panel/private-gallery";
-import { PrivateGalleryState } from "../../../../api/private-gallery";
+import { checkPasswordIsUnique } from "@pp/api/panel/private-gallery";
+import { PrivateGalleryState } from "@pp/api/private-gallery";
 
 export const galleryModel = (galleryId?: number) => Schema.Model({
     place: Schema.Types.StringType()

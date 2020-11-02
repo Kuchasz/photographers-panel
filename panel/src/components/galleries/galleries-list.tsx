@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Table, Icon, Progress, ButtonToolbar, IconButton, Divider } from "rsuite";
-import { range } from "../../../../utils/array";
-import { GalleryDto } from "../../../../api/panel/private-gallery";
-import { PrivateGalleryState } from "../../../../api/private-gallery";
+import { range } from "@pp/utils/array";
+import { GalleryDto } from "@pp/api/panel/private-gallery";
+import { PrivateGalleryState } from "@pp/api/private-gallery";
 import { ToolTip } from "../common/tooltip";
 
 interface Props {

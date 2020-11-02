@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { strings } from "../resources";
 import { routes } from "../routes";
-import { includesAll, distinctBy, includesAny } from "../../../utils/array";
-import { OfferListItem, getOffersList } from "../../../api/site/offer";
+import { includesAll, distinctBy, includesAny } from "@pp/utils/array";
+import { OfferListItem, getOffersList } from "@pp/api/site/offer";
 import linkPhoto from "../images/page_offer_photo.png";
 
 const getOfferImage = (imageFileName: string) => require(`../images/offers/${imageFileName}`);

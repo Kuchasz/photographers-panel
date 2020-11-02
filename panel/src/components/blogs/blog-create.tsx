@@ -10,8 +10,8 @@ import {
     ButtonToolbar,
     Alert
 } from "rsuite";
-import { BlogEditDto, createBlog } from "../../../../api/panel/blog";
-import { ResultType } from "../../../../api/common";
+import { BlogEditDto, createBlog } from "@pp/api/panel/blog";
+import { ResultType } from "@pp/api/common";
 import { blogModel, emptyBlog } from "./blog-model";
 import { FormInstance } from "rsuite/lib/Form/index.d.ts";
 

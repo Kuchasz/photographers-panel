@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Panel, Icon, Alert, Button } from "rsuite";
-import { addMonths } from "../../../../utils/date";
+import { addMonths } from "@pp/utils/date";
 import "./styles.less";
 import { confirm } from "../common/confirmation";
-import { getBlogsList, BlogListItem, deleteBlog } from "../../../../api/panel/blog";
+import { getBlogsList, BlogListItem, deleteBlog } from "@pp/api/panel/blog";
 import { BlogsList } from "./blogs-list";
 import { BlogCreate } from "./blog-create";
 import { BlogEdit } from "./blog-edit";
-import { ResultType } from "../../../../api/common";
+import { ResultType } from "@pp/api/common";
 import { BlogAssignAssets } from "./blog-assign-assets";
 
 interface Props {}

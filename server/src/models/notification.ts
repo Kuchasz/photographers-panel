@@ -1,5 +1,5 @@
 import { connection } from "../db";
-import { Subscription } from "../../../api/site/notification";
+import { Subscription } from "@pp/api/site/notification";
 
 export const subscribe = async (subscribtion: Subscription): Promise<void> => {
     try {

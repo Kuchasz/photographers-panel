@@ -1,9 +1,9 @@
 import { connection } from "../db";
-import { PrivateGalleryUrlCheckResult } from "../../../api/site/private-gallery";
-import { getDateString, getDateRange } from "../../../utils/date";
-import { GalleryEditDto, GalleryDto, GalleryVisitsDto, VisitsSummaryDto } from "../../../api/panel/private-gallery";
-import { PrivateGalleryState } from "../../../api/private-gallery";
-import { sum } from "../../../utils/array";
+import { PrivateGalleryUrlCheckResult } from "@pp/api/site/private-gallery";
+import { getDateString, getDateRange } from "@pp/utils/date";
+import { GalleryEditDto, GalleryDto, GalleryVisitsDto, VisitsSummaryDto } from "@pp/api/panel/private-gallery";
+import { PrivateGalleryState } from "@pp/api/private-gallery";
+import { sum } from "@pp/utils/array";
 
 export const getUrl = async (password: string): Promise<PrivateGalleryUrlCheckResult> => {
     // const [[gallery]] = await connection.raw(`

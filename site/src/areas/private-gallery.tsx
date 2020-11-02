@@ -2,10 +2,10 @@ import * as React from "react";
 import galleryPhoto from "../images/page_private_photo.png";
 import { Link } from "react-router-dom";
 import { strings } from "../resources";
-import * as privateGallery from "../../../api/site/private-gallery";
-import * as commonPrivateGallery from "../../../api/private-gallery";
-import * as notification from "../../../api/site/notification";
-import { ResultType } from "../../../api/common";
+import * as privateGallery from "@pp/api/site/private-gallery";
+import * as commonPrivateGallery from "@pp/api/private-gallery";
+import * as notification from "@pp/api/site/notification";
+import { ResultType } from "@pp/api/common";
 
 const getContent = (
     isLoading?: boolean,

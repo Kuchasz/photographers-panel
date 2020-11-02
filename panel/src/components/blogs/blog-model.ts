@@ -1,5 +1,5 @@
 import { Schema } from "rsuite";
-import { checkAliasIsUnique, BlogEditDto } from "../../../../api/panel/blog";
+import { checkAliasIsUnique, BlogEditDto } from "@pp/api/panel/blog";
 
 export const blogModel = (blogId?: number) => Schema.Model({
     title: Schema.Types.StringType()

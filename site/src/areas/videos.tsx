@@ -1,5 +1,5 @@
 import * as React from "react";
-import { VideoListItem, getVideosList } from "../../../api/site/video";
+import { VideoListItem, getVideosList } from "@pp/api/site/video";
 import { Link } from "react-router-dom";
 
 type BlogsProps = { initialState?: VideoListItem[] };

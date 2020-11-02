@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BlogListItem, changeBlogVisibility } from "../../../../api/panel/blog";
+import { BlogListItem, changeBlogVisibility } from "@pp/api/panel/blog";
 import { Table, Icon, IconButton, ButtonToolbar, Divider } from "rsuite";
 import { ToolTip } from "../common/tooltip";
 

@@ -1,8 +1,8 @@
 import React from "react";
 
-import { getGalleriesList, getGalleryVisits, GalleryDto, VisitsSummaryDto } from "../../../../api/panel/private-gallery";
+import { getGalleriesList, getGalleryVisits, GalleryDto, VisitsSummaryDto } from "@pp/api/panel/private-gallery";
 
-import { addMonths } from "../../../../utils/date";
+import { addMonths } from "@pp/utils/date";
 
 interface Props{}
 interface State{

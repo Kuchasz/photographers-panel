@@ -1,5 +1,5 @@
 import React from "react";
-import { OfferEntry, getOffer } from "../../../api/site/offer";
+import { OfferEntry, getOffer } from "@pp/api/site/offer";
 
 const getImageBackgroundStyle = (url: string) => {
     return {

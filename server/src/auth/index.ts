@@ -1,5 +1,5 @@
 
-import { UserCredentials } from "../../../api/panel/auth";
+import { UserCredentials } from "@pp/api/panel/auth";
 import { auth } from "../config";
 import * as jwt from "../core/jwt";
 import { Request, Response, NextFunction } from 'express';

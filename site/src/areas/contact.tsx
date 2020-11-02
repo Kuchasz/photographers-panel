@@ -1,7 +1,7 @@
 import * as React from "react";
 import { strings } from "../resources";
-import { send, SendResult } from "../../../api/site/message";
-import { ResultType } from "../../../api/common";
+import { send, SendResult } from "@pp/api/site/message";
+import { ResultType } from "@pp/api/common";
 
 import contactPhoto from "../images/page_contact_photo.png";
 

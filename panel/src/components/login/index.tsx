@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, ButtonToolbar, Alert } from "rsuite";
-// import { BlogEditDto, editBlog, getBlogForEdit } from "../../../../api/panel/blog";
-import { ResultType } from "../../../../api/common";
+// import { BlogEditDto, editBlog, getBlogForEdit } from "@pp/api/panel/blog";
+import { ResultType } from "@pp/api/common";
 import { loginModel } from "./login-model";
 import { FormInstance } from "rsuite/lib/Form/index.d.ts";
-import { UserCredentials, logIn } from "../../../../api/panel/auth";
+import { UserCredentials, logIn } from "@pp/api/panel/auth";
 import "./styles.less";
 import { Redirect } from "react-router-dom";
 // import { doesHttpOnlyCookieExist } from "../../../../utils/auth";

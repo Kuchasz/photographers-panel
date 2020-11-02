@@ -32,6 +32,8 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^3.0.1",
     "gulp": "^4.0.2",
+    "@pp/utils": "*",
+    "@pp/api": "*",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.10.3",
     "less-loader": "^4.1.0",

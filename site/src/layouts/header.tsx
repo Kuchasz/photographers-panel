@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { strings } from "../resources";
-import { randomElement, first, nextElement, last } from "../../../utils/array";
-import { firstSegment } from "../../../utils/url";
+import { randomElement, first, nextElement, last } from "@pp/utils/array";
+import { firstSegment } from "@pp/utils/url";
 import { Link, withRouter, RouteComponentProps } from "react-router-dom";
 import { routes } from "../routes";
 import { menuItems } from "../menu-items";

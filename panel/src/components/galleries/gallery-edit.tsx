@@ -11,10 +11,10 @@ import {
     SelectPicker,
     Alert
 } from "rsuite";
-import { PrivateGalleryState } from "../../../../api/private-gallery";
-import { BlogSelectItem, getBlogSelectList } from "../../../../api/panel/blog";
-import { GalleryEditDto, editGallery, getGalleryForEdit } from "../../../../api/panel/private-gallery";
-import { ResultType } from "../../../../api/common";
+import { PrivateGalleryState } from "@pp/api/private-gallery";
+import { BlogSelectItem, getBlogSelectList } from "@pp/api/panel/blog";
+import { GalleryEditDto, editGallery, getGalleryForEdit } from "@pp/api/panel/private-gallery";
+import { ResultType } from "@pp/api/common";
 import { galleryModel } from "./gallery-model";
 import { FormInstance } from "rsuite/lib/Form/index.d.ts";
 

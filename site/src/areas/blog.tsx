@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as api from "../../../api/site/blog";
+import * as api from "@pp/api/site/blog";
 import facebookIcon from "../images/facebook.svg";
 import { strings } from "../resources";
 

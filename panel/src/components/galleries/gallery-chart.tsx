@@ -1,6 +1,6 @@
 import React from "react";
-import { VisitsSummaryDto } from "../../../../api/panel/private-gallery";
-import { getDayAndMonth } from "../../../../utils/date";
+import { VisitsSummaryDto } from "@pp/api/panel/private-gallery";
+import { getDayAndMonth } from "@pp/utils/date";
 import ChartistGraph from "react-chartist";
 
 const chartOptions = {

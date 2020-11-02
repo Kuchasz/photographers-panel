@@ -1,6 +1,6 @@
-import { getBlog, getBlogsList, getLastBlog } from "../../api/site/blog";
-import { getVideosList } from "../../api/site/video";
-import { getOffersList, getOffer } from "../../api/site/offer";
+import { getBlog, getBlogsList, getLastBlog } from "@pp/api/site/blog";
+import { getVideosList } from "@pp/api/site/video";
+import { getOffersList, getOffer } from "@pp/api/site/offer";
 
 const empty = () => Promise.resolve({});
 

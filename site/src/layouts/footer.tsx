@@ -2,7 +2,7 @@ import React from "react";
 import { strings } from "../resources";
 // import { Link } from "react-router";
 // import { menuItems } from "../menuItems";
-import {getYear} from "../../../utils/date";
+import {getYear} from "@pp/utils/date";
 
 const year = getYear(new Date());
 

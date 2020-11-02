@@ -5,7 +5,7 @@ import { Panel, Icon, Button, Alert } from "rsuite";
 import { GalleryStats } from "./gallery-stats";
 import { GalleryChart } from "./gallery-chart";
 import { GalleryVisitRange } from "./gallery-visit-range";
-import { addMonths } from "../../../../utils/date";
+import { addMonths } from "@pp/utils/date";
 import "./styles.less";
 import {
     GalleryDto,
@@ -14,10 +14,10 @@ import {
     getGalleriesList,
     GalleryVisitsDto,
     deleteGallery
-} from "../../../../api/panel/private-gallery";
+} from "@pp/api/panel/private-gallery";
 import { GalleryEdit } from "./gallery-edit";
 import { confirm } from "../common/confirmation";
-import { ResultType } from "../../../../api/common";
+import { ResultType } from "@pp/api/common";
 
 const getStats = (x: GalleryVisitsDto) => ({
     todayVisits: x.todayVisits,

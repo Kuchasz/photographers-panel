@@ -21,13 +21,13 @@ import {
     changeMainBlogAsset,
     deleteBlogAsset,
     changeBlogAssetAlt
-} from "../../../../api/panel/blog";
-import { range, union, distinctBy } from "../../../../utils/array";
-import { inRange } from "../../../../utils/number";
-import { read } from "../../../../utils/file";
-import { ResultType } from "../../../../api/common";
+} from "@pp/api/panel/blog";
+import { range, union, distinctBy } from "@pp/utils/array";
+import { inRange } from "@pp/utils/number";
+import { read } from "@pp/utils/file";
+import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
-import { debounce } from "../../../../utils/function";
+import { debounce } from "@pp/utils/function";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
 
