@@ -2,6 +2,9 @@
   "name": "@pp/server",
   "description": "@pp/server",
   "version": "1.0.0",
+  "exports":{
+    ".": "./dist/"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node index.tsx",

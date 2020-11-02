@@ -8,6 +8,9 @@
   },
   "author": "",
   "license": "ISC",
+  "exports":{
+    ".": "./dist/"
+  },
   "dependencies": {
     "dotenv": "^8.2.0",
     "webpack": "^4.40.2"

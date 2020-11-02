@@ -13,10 +13,13 @@ cd ../site
 yarn install
 cd ..
 
-cd server
-node node_modules/.bin/tsc
-node node_modules/.bin/tsc ../api
-node node_modules/.bin/tsc ../gallery
-node node_modules/.bin/tsc ../gallery-server
-node node_modules/.bin/tsc ../panel
-node node_modules/.bin/tsc ../site
+# cd server
+# echo "BUILD: server"
+# node node_modules/.bin/tsc --rootDir . --outDir dist
+# echo "BUILD: api"
+# node node_modules/.bin/tsc --rootDir ../api --outDir ../api/dist
+# # node node_modules/.bin/tsc ../gallery
+# echo "BUILD: gallery-server"
+# node node_modules/.bin/tsc --rootDir ../gallery-server --outDir ../gallery-server/dist
+# node node_modules/.bin/tsc ../panel
+# node node_modules/.bin/tsc ../site

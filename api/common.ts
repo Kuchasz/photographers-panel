@@ -1,5 +1,3 @@
-import { app } from "@pp/server/src/config";
-
 export enum ResultType {
     Success,
     Error
@@ -10,4 +8,5 @@ type Error<T> = { type: ResultType.Error; error: T, errorMessage?: string };
 
 export type Result<T, U = null> = Success<U> | Error<T>;
 
-export const endpoint = app.appPath;
+export let endpoint = "";
+export const setEndpoint = (appPath: string) => endpoint = appPath;
