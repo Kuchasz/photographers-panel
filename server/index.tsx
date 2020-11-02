@@ -25,7 +25,7 @@ import * as authPanel from "../api/panel/auth";
 import { ResultType } from "../api/common";
 import { sendEmail } from "./src/messages";
 import { allowCrossDomain, processImage } from "./src/core";
-import { runPhotoGalleryServer } from "../gallery-server";
+import { runPhotoGalleryServer } from "@pp/gallery-server";
 import * as config from "./src/config";
 
 require("isomorphic-fetch");
@@ -85,7 +85,7 @@ const raiseErr = (err: Error, req: any, res: any) => {
 
 app.use(express.static(resolve(__dirname + "/../site/dist"), { index: false }));
 
-app.use(privateGallery.viewGallery.route, express.static(resolve(__dirname + "/../../ps-photo-gallery/client/dist"), { index: false }));
+app.use(privateGallery.viewGallery.route, express.static(resolve(__dirname + "/../gallery/dist"), { index: false }));
 app.use(authPanel.viewLogIn.route, express.static(resolve(__dirname + "/../panel/dist"), { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
@@ -154,7 +154,7 @@ app.post([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.r
     const { galleryUrl, galleryId } = req.body;
     const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(resolve(__dirname + "/../../ps-photo-gallery/client/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(resolve(__dirname + "/../gallery/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500);
