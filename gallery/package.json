@@ -6,7 +6,7 @@
   "main": "./dist",
   "typings": "./dist",
   "exports":{
-    ".": "./dist/"
+    "./": "./dist/"
   },
   "private": true,
   "scripts": {

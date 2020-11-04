@@ -4,12 +4,13 @@
   "scripts": {
     "build:dev": "rimraf ./dist | webpack --mode development",
     "watch:dev": "rimraf ./dist | webpack --mode development --watch",
-    "build:prod": "webpack --mode production"
+    "build:prod": "webpack --mode production",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "exports":{
-    ".": "./dist/"
+    "./": "./dist/"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

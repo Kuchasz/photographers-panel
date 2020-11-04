@@ -3,13 +3,12 @@
   "version": "0.7.2",
   "author": "",
   "license": "ISC",
-  "exports":{
-    ".": "./dist/"
-  },
+  "main":"./dist/index.js",
   "scripts": {
     "start": "nodemon --exec ts-node run.ts",
     "packages:check": "ncu",
-    "packages:bump": "ncu -u"
+    "packages:bump": "ncu -u",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/sqlite3": "3.1.6",

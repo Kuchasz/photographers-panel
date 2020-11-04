@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "ISC",
+  "scripts": {
+    "build": "tsc"
+  },
   "exports":{
-    ".": "./dist/"
+    "./": "./dist/"
+  },
+  "devDependencies": {
+    "typescript": "4.0.2"
   }
 }

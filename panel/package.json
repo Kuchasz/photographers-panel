@@ -8,7 +8,7 @@
     "*.css"
   ],
   "exports":{
-    ".": "./dist/"
+    "./": "./dist/"
   },
   "scripts": {
     "build:dev": "webpack --mode development",
