@@ -14,6 +14,7 @@
     "build:dev": "webpack --mode development",
     "watch:dev": "webpack --mode development --watch",
     "build:prod": "webpack --mode production",
+    "build": "webpack --mode production",
     "start:dev": "webpack-dev-server --mode development --port 3008",
     "start:prod": "webpack-dev-server --mode production --port 3008",
     "analyze:dev": "webpack --mode development --analyze",

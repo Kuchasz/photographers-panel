@@ -1,14 +1,17 @@
 {
     "private": true,
+    "scripts": {
+        "build": "yarn workspaces run build"
+    },
     "workspaces": {
         "packages": [
+            "utils",
             "api",
-            "gallery",
             "gallery-server",
+            "gallery",
             "panel",
-            "server",
             "site",
-            "utils"
+            "server"
         ]
     }
 }
