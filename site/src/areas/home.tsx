@@ -3,7 +3,7 @@ import mapImage from "../images/map.png";
 import photographerImage from "../images/address_ph.png";
 import { getLastBlog, LastBlog } from "@pp/api/site/blog";
 import { Link } from "react-router-dom";
-import { routes } from "../routes";
+import { routes } from "@pp/api/site/routes";
 import { strings } from "../resources";
 
 type HomeProps = { initialState?: LastBlog };

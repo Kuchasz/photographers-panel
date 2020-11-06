@@ -11,7 +11,7 @@ import { Offer } from "./areas/offer";
 import { Offers } from "./areas/offers";
 import { PrivateGallery } from "./areas/private-gallery";
 import { Route, Switch } from "react-router-dom";
-import { routes } from "./routes";
+import { routes } from "@pp/api/site/routes";
 import { Videos } from "./areas/videos";
 
 export const Root = ({ initialState }: { initialState?: any }) => (

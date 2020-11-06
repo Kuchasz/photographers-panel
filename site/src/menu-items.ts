@@ -1,7 +1,7 @@
 
 import { strings } from "./resources";
 import { zip } from "@pp/utils/array";
-import { routes } from "./routes";
+import { routes } from "@pp/api/site/routes";
 
 type MenuItem = { route: string; fullPage: boolean; label: string };
 type MenuItems = keyof typeof strings.menu;

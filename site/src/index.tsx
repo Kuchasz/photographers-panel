@@ -24,12 +24,12 @@ if (typeof document !== "undefined") {
     for (var prop in initialState) delete initialState[prop];
 
     initialState = undefined;
-} else {
-    module.exports = {
-        Root,
-        createElement: React.createElement,
-        StaticRouter,
-        renderToString,
-        matchPath
-    };
 }
+
+export const All = {
+    Root,
+    createElement: React.createElement,
+    StaticRouter,
+    renderToString,
+    matchPath
+};

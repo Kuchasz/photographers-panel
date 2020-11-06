@@ -9,9 +9,7 @@
   },
   "author": "",
   "license": "ISC",
-  "exports":{
-    "./": "./dist/"
-  },
+  "main": "dist/index.js",
   "dependencies": {
     "dotenv": "^8.2.0",
     "webpack": "^4.40.2"

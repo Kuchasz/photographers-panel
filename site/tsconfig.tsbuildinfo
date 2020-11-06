@@ -287,23 +287,22 @@
         "version": "3d8f127e0776d01ecd7e820f8b43a75d146174a29da149d84f8438a24845245e",
         "affectsGlobalScope": false
       },
-      "./src/routes.ts": {
-        "version": "df94b193a50521d1645dc5ac91db611e864daf3a77b2cc2fd95a16605af713fd",
-        "signature": "77c9497beaa0271be471256719a09977e4fd4218450dbc145d60e8aaf3142944",
+      "../api/site/routes.ts": {
+        "version": "d2fc36d633cef3fffd708934473e14d38704bb870041eb07bbbbc80788e5bd7c",
         "affectsGlobalScope": false
       },
       "./src/menu-items.ts": {
-        "version": "1286b6bca4f6ce969872802b09cfdc5b7c462d77fad9ededb7d0d3eb8007e0f9",
+        "version": "6c87e66c93b136865156cc325a64d77d14f54fbfa2d72e48ee32d9f3dc40e0cf",
         "signature": "24e5d8bc1b560e8d8f715128897815957289212e57550e9b80e9d404f35823fb",
         "affectsGlobalScope": false
       },
       "./src/layouts/header.tsx": {
-        "version": "76f87ba15583829ff7c169e89aed7b7b0cdbf2488f175764303117dc2558c68c",
+        "version": "0a0cebe3f39e761cfcb75ff1761b02a363304981556f8467a69b8cc79d647ec9",
         "signature": "eae6d0a90b966720551a4135a7422de50c61aeb7fb21314ae806a120b1f75c3b",
         "affectsGlobalScope": false
       },
       "./src/areas/home.tsx": {
-        "version": "0e116e8c2dad1626f64395aa124195889a412c7e96104ed45364e037f1d83644",
+        "version": "4efafc3245df39686d7c373f7b3d10faaa36fe82f5ed5d34f6bcf3840e206d83",
         "signature": "b2736f7edb2f2b5181cd178fac8cb6a74bf63045fda09d9e83e99a1e5ade2cdb",
         "affectsGlobalScope": false
       },
@@ -318,7 +317,7 @@
         "affectsGlobalScope": false
       },
       "./src/areas/offers.tsx": {
-        "version": "0d0569c568c57cdc72cb916586a2f08d8f856f99c9189da14ff825617e2d4a80",
+        "version": "16e0d2ed8fac9f65756061a42f46b80046b1c86cbc59177081f2740a5b9b1826",
         "signature": "1f1dfad882efa703ac2f314992f2cbbebdfa18479494f965af5c435c3af2a12b",
         "affectsGlobalScope": false
       },
@@ -345,7 +344,7 @@
         "affectsGlobalScope": false
       },
       "./src/root.tsx": {
-        "version": "f9da4f1a55070ba97d136fb6657400d76401cc3d5c1094b439cdd8f34ab71789",
+        "version": "66dd192c3961bad3ef89ac5d28cc276f86b1d71275689190ab2b756aede695f0",
         "signature": "96fb10d6ed2eab650403a1348eb6e774734f142195d04c5d8e0bfb9d697c4d29",
         "affectsGlobalScope": false
       },
@@ -355,8 +354,8 @@
         "affectsGlobalScope": true
       },
       "./src/index.tsx": {
-        "version": "2e36122bcb8c0a911b913d1a4a09fc154079a13130500e31d281d327df3905af",
-        "signature": "0edcea988767dfc0a41072a4f30f5bb354f128e61aa2a37e12ac3c62f2cf8b37",
+        "version": "8be41b17f783e43d7b8a0f1619255422b74756cfed6d14930e39237e712e36a4",
+        "signature": "117b0e5c2d6d67967a3e79dff7a2679aac1badba40c943510ec335175ac59fb6",
         "affectsGlobalScope": false
       },
       "./src/modules.d.ts": {
@@ -1679,6 +1678,11 @@
         "../api/common.ts",
         "../api/private-gallery.ts"
       ],
+      "../api/site/routes.ts": [
+        "../api/site/blog.ts",
+        "../api/site/offer.ts",
+        "../api/site/video.ts"
+      ],
       "../node_modules/@types/accepts/index.d.ts": [
         "../node_modules/@types/node/http.d.ts",
         "../node_modules/@types/node/index.d.ts"
@@ -2918,11 +2922,11 @@
       ],
       "./src/areas/home.tsx": [
         "../api/site/blog.ts",
+        "../api/site/routes.ts",
         "../node_modules/@types/react/index.d.ts",
         "./node_modules/@types/react-router-dom/index.d.ts",
         "./src/modules.d.ts",
-        "./src/resources/index.ts",
-        "./src/routes.ts"
+        "./src/resources/index.ts"
       ],
       "./src/areas/links.tsx": [
         "../node_modules/@types/react/index.d.ts",
@@ -2936,12 +2940,12 @@
       ],
       "./src/areas/offers.tsx": [
         "../api/site/offer.ts",
+        "../api/site/routes.ts",
         "../node_modules/@types/react/index.d.ts",
         "../utils/array.ts",
         "./node_modules/@types/react-router-dom/index.d.ts",
         "./src/modules.d.ts",
-        "./src/resources/index.ts",
-        "./src/routes.ts"
+        "./src/resources/index.ts"
       ],
       "./src/areas/private-gallery.tsx": [
         "../api/common.ts",
@@ -2976,24 +2980,25 @@
         "./src/resources/index.ts"
       ],
       "./src/layouts/header.tsx": [
+        "../api/site/routes.ts",
         "../node_modules/@types/react/index.d.ts",
         "../utils/array.ts",
         "../utils/url.ts",
         "./node_modules/@types/react-router-dom/index.d.ts",
         "./src/menu-items.ts",
-        "./src/resources/index.ts",
-        "./src/routes.ts"
+        "./src/resources/index.ts"
       ],
       "./src/menu-items.ts": [
+        "../api/site/routes.ts",
         "../utils/array.ts",
-        "./src/resources/index.ts",
-        "./src/routes.ts"
+        "./src/resources/index.ts"
       ],
       "./src/resources/index.ts": [
         "../node_modules/react-localization/lib/LocalizedStrings.d.ts",
         "./src/resources/pl.ts"
       ],
       "./src/root.tsx": [
+        "../api/site/routes.ts",
         "../node_modules/@types/react/index.d.ts",
         "./node_modules/@types/react-router-dom/index.d.ts",
         "./src/areas/blog.tsx",
@@ -3007,13 +3012,7 @@
         "./src/areas/videos.tsx",
         "./src/layouts/footer.tsx",
         "./src/layouts/head.tsx",
-        "./src/layouts/header.tsx",
-        "./src/routes.ts"
-      ],
-      "./src/routes.ts": [
-        "../api/site/blog.ts",
-        "../api/site/offer.ts",
-        "../api/site/video.ts"
+        "./src/layouts/header.tsx"
       ],
       "../utils/date.ts": [
         "../utils/number.ts"
@@ -4273,6 +4272,11 @@
         "../api/site/video.ts",
         "../node_modules/@types/react/index.d.ts"
       ],
+      "./src/index.tsx": [
+        "../node_modules/@types/react-dom/server/index.d.ts",
+        "../node_modules/@types/react-router/index.d.ts",
+        "../node_modules/@types/react/index.d.ts"
+      ],
       "./src/layouts/header.tsx": [
         "../node_modules/@types/react-router/index.d.ts",
         "../node_modules/@types/react/index.d.ts",
@@ -4280,11 +4284,6 @@
       ],
       "./src/resources/index.ts": [
         "../node_modules/react-localization/lib/LocalizedStrings.d.ts"
-      ],
-      "./src/routes.ts": [
-        "../api/site/blog.ts",
-        "../api/site/offer.ts",
-        "../api/site/video.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -4295,6 +4294,7 @@
       "../api/site/notification.ts",
       "../api/site/offer.ts",
       "../api/site/private-gallery.ts",
+      "../api/site/routes.ts",
       "../api/site/video.ts",
       "../node_modules/@types/accepts/index.d.ts",
       "../node_modules/@types/anymatch/index.d.ts",
@@ -4614,7 +4614,6 @@
       "./src/resources/index.ts",
       "./src/resources/pl.ts",
       "./src/root.tsx",
-      "./src/routes.ts",
       "../utils/array.ts",
       "../utils/date.ts",
       "../utils/number.ts",
