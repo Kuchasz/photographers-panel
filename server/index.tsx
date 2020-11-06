@@ -4,7 +4,7 @@ import multer from "multer";
 import cookieParser from "cookie-parser";
 import { resolve } from "path";
 
-require('dotenv').config({ path: resolve("../.env") });
+require('dotenv').config({ path: resolve(__dirname + "/../../.env") });
 const upload = multer();
 
 import * as blogModel from "./src/models/blog";
@@ -477,7 +477,9 @@ app.get("*", async (req, res, next) => {
         return;
     }
 
-    fs.readFile(resolve(__dirname + "/../site/dist/index.html"), "utf8", (err, template) => {
+    // const path = __dirname + "/../site/dist/index.html";
+    const path = "node_modules/@pp/site/dist/index.html";
+    fs.readFile(resolve(path), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500);
