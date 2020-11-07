@@ -4,11 +4,13 @@ name: Server
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
+
 on:
-  push:
+  workflow_run:
+    workflows: ["Client"]
     branches: [ master ]
-  # pull_request:
-  #   branches: [ master ]
+    types: 
+      - completed
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -17,6 +19,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build_site
+          path: ./site/dist
 
       - uses: actions/setup-node@v2-beta
         with:
