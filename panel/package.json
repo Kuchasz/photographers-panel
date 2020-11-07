@@ -7,9 +7,6 @@
     "*.scss",
     "*.css"
   ],
-  "exports":{
-    "./": "./dist/"
-  },
   "scripts": {
     "build:dev": "webpack --mode development",
     "watch:dev": "webpack --mode development --watch",

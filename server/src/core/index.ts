@@ -14,7 +14,7 @@ export const processImage = (image: Buffer) => (finalPath: string): Promise<void
     new Promise((res, rej) => {
         sharp(image)
             .resize(1000, 1000, { fit: "inside" })
-            .composite([{ input: readFileSync(resolve(__dirname, "logo-watermark.png")), gravity: "southwest" }])
+            .composite([{ input: readFileSync(resolve(__dirname + "/logo-watermark.png")), gravity: "southwest" }])
             .webp({ quality: 65 })
             .toFile(finalPath, async (_err, _info) => {
                 if (_err) rej();

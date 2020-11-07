@@ -5,9 +5,6 @@
   "license": "ISC",
   "main": "./dist",
   "typings": "./dist",
-  "exports":{
-    "./": "./dist/"
-  },
   "private": true,
   "scripts": {
     "build": "webpack -p",

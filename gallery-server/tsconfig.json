@@ -6,7 +6,7 @@
     "declarationMap": true,
     "moduleResolution": "node",
     "module": "commonjs",
-    "composite": true,
+    // "composite": true,
     "baseUrl": ".",
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,

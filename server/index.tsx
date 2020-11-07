@@ -4,7 +4,7 @@ import multer from "multer";
 import cookieParser from "cookie-parser";
 import { resolve } from "path";
 
-require('dotenv').config({ path: resolve(__dirname + "/../../.env") });
+require('dotenv').config({ path: resolve(__dirname + "/../.env") });
 const upload = multer();
 
 import * as blogModel from "./src/models/blog";
@@ -22,11 +22,15 @@ import * as notification from "@pp/api/site/notification";
 import * as privateGallery from "@pp/api/site/private-gallery";
 import * as privateGalleryPanel from "@pp/api/panel/private-gallery";
 import * as authPanel from "@pp/api/panel/auth";
-import { ResultType } from "@pp/api/common";
+import { ResultType, setEndpoint } from "@pp/api/common";
 import { sendEmail } from "./src/messages";
 import { allowCrossDomain, processImage } from "./src/core";
 import { runPhotoGalleryServer } from "@pp/gallery-server";
 import * as config from "./src/config";
+
+const requireModule = (path: string) => resolve(__dirname + `/../node_modules/${path}`);
+
+setEndpoint(config.app.appPath);
 
 require("isomorphic-fetch");
 const Youch = require("youch");
@@ -83,10 +87,10 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-app.use(express.static(resolve(__dirname + "/../site/dist"), { index: false }));
+app.use(express.static(requireModule("@pp/site/dist"), { index: false }));
 
-app.use(privateGallery.viewGallery.route, express.static(resolve(__dirname + "/../gallery/dist"), { index: false }));
-app.use(authPanel.viewLogIn.route, express.static(resolve(__dirname + "/../panel/dist"), { index: false }));
+app.use(privateGallery.viewGallery.route, express.static(requireModule("@pp/gallery/dist"), { index: false }));
+app.use(authPanel.viewLogIn.route, express.static(requireModule("@pp/panel/dist"), { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
 // site related APIs
@@ -154,7 +158,7 @@ app.post([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.r
     const { galleryUrl, galleryId } = req.body;
     const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(resolve(__dirname + "/../gallery/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(requireModule("@pp/gallery/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500);
@@ -195,7 +199,7 @@ app.get([`${authPanel.viewLogIn.route}`, `${authPanel.viewLogIn.route}/*`], asyn
     // const { galleryUrl, galleryId } = req.body;
     // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(resolve(__dirname + "/../panel/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(requireModule("@pp/panel/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500);
@@ -477,9 +481,7 @@ app.get("*", async (req, res, next) => {
         return;
     }
 
-    // const path = __dirname + "/../site/dist/index.html";
-    const path = "node_modules/@pp/site/dist/index.html";
-    fs.readFile(resolve(path), "utf8", (err, template) => {
+    fs.readFile(requireModule("@pp/site/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500);
@@ -520,7 +522,7 @@ const runApp = async () => {
     await runMigrations();
 
     app.listen(8080, () => {
-        console.log("Application server started...");
+        console.log("Application started...");
     });
 };
 

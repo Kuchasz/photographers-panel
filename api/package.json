@@ -6,9 +6,6 @@
   "scripts": {
     "build": "tsc"
   },
-  "exports":{
-    "./": "./dist/"
-  },
   "devDependencies": {
     "typescript": "4.0.2"
   }

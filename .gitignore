@@ -10,3 +10,6 @@ debug.log
 server/public/blogs/
 database.sqlite
 .env
+utils/**/*.js
+api/**/*.js
+server/**/*.js

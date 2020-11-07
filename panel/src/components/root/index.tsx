@@ -1,12 +1,11 @@
 import * as React from "react";
-import { Route } from "react-router";
 // import { Dashboard } from "../dashboard/index";
 import { Menu } from "../menu/index";
 import { Galleries } from "../galleries/index";
 import { NavBarInstance } from "../navbar";
 // import { Emails } from "../emails";
 import { Blogs } from "../blogs";
-import { Redirect, RouteComponentProps, withRouter } from "react-router-dom";
+import { Route, Redirect, RouteComponentProps, withRouter } from "react-router-dom";
 // import { RouteComponentProps, withRouter } from "react-router-dom";
 import { routes } from "../../routes";
 import { LogIn } from "../login";
