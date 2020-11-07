@@ -32,7 +32,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build_gallery
-          path: ./gallery
+          path: ./gallery/dist
   
   build_site:
     runs-on: ubuntu-latest
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build_site
-          path: ./site
+          path: ./site/dist
 
   build_panel:
     runs-on: ubuntu-latest
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build_panel
-          path: ./panel
+          path: ./panel/dist
 
   build_utils:
     runs-on: ubuntu-latest
