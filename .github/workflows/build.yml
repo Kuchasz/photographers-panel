@@ -18,6 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: c-hive/gha-yarn-cache@v1
+
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12.x'
@@ -39,6 +41,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: c-hive/gha-yarn-cache@v1
 
       - uses: actions/setup-node@v2-beta
         with:
@@ -62,6 +66,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: c-hive/gha-yarn-cache@v1
+
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12.x'
@@ -83,6 +89,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: c-hive/gha-yarn-cache@v1
 
       - uses: actions/setup-node@v2-beta
         with:
@@ -106,6 +114,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: c-hive/gha-yarn-cache@v1
+
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12.x'
@@ -128,6 +138,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: c-hive/gha-yarn-cache@v1
+
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12.x'
@@ -145,6 +157,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: c-hive/gha-yarn-cache@v1
 
       - uses: actions/download-artifact@v2
         with:
