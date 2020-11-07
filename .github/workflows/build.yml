@@ -6,7 +6,7 @@ name: Client
 # events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   # pull_request:
   #   branches: [ master ]
 
@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
+          node-version: "12.x"
           check-latest: true
 
       - run: yarn install
@@ -35,7 +35,7 @@ jobs:
         with:
           name: build_gallery
           path: ./gallery/dist
-  
+
   build_site:
     runs-on: ubuntu-latest
 
@@ -46,7 +46,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
+          node-version: "12.x"
           check-latest: true
 
       - run: yarn install
@@ -70,7 +70,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
+          node-version: "12.x"
           check-latest: true
 
       - run: yarn install
@@ -94,7 +94,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
+          node-version: "12.x"
           check-latest: true
 
       - run: yarn install
@@ -118,7 +118,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
+          node-version: "12.x"
           check-latest: true
 
       - run: yarn install
@@ -131,7 +131,7 @@ jobs:
         with:
           name: build_api
           path: ./api
-        
+
   build_gallery-server:
     runs-on: ubuntu-latest
 
@@ -142,7 +142,7 @@ jobs:
 
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
+          node-version: "12.x"
           check-latest: true
 
       - run: yarn install
@@ -150,9 +150,9 @@ jobs:
 
       - run: yarn run build
         working-directory: ./gallery-server
-  
+
   build_server:
-    needs: [build_site]
+    needs: [build_site, build_panel, build_gallery, build_utils, build_api]
     runs-on: ubuntu-latest
 
     steps:
@@ -165,9 +165,29 @@ jobs:
           name: build_site
           path: ./site/dist
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: build_panel
+          path: ./site/panel
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build_gallery
+          path: ./site/gallery
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build_utils
+          path: ./site/utils
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build_api
+          path: ./site/api
+
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: '12.x'
+          node-version: "12.x"
           check-latest: true
 
       - run: yarn install
@@ -175,3 +195,7 @@ jobs:
 
       - run: yarn run build
         working-directory: ./server
+
+      - uses: montudor/action-zip@v0.1.0
+        with:
+          args: zip -qq -r package.zip node_modules server
