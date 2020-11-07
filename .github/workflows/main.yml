@@ -62,3 +62,39 @@ jobs:
 
       - run: yarn run build:prod
         working-directory: ./panel
+
+  build_utils:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12.x'
+          check-latest: true
+
+      - run: yarn install
+        working-directory: ./utils
+
+      - run: yarn run build:prod
+        working-directory: ./utils
+
+  build_api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12.x'
+          check-latest: true
+
+      - run: yarn install
+        working-directory: ./api
+
+      - run: yarn run build:prod
+        working-directory: ./api
+
+        
