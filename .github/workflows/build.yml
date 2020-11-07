@@ -122,3 +122,42 @@ jobs:
           name: build_api
           path: ./api
         
+  build_gallery-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build_site
+          path: ./site/dist
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12.x'
+          check-latest: true
+
+      - run: yarn install
+        working-directory: ./gallery-server
+
+      - run: yarn run build
+        working-directory: ./gallery-server
+  
+  build_server:
+    needs: [site]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12.x'
+          check-latest: true
+
+      - run: yarn install
+        working-directory: ./server
+
+      - run: yarn run build
+        working-directory: ./server
