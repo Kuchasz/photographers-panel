@@ -28,6 +28,11 @@ jobs:
 
       - run: yarn run build
         working-directory: ./gallery
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build_gallery
+          path: ./gallery
   
   build_site:
     runs-on: ubuntu-latest
@@ -46,6 +51,11 @@ jobs:
       - run: yarn run build:prod
         working-directory: ./site
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build_site
+          path: ./site
+
   build_panel:
     runs-on: ubuntu-latest
 
@@ -62,6 +72,11 @@ jobs:
 
       - run: yarn run build:prod
         working-directory: ./panel
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build_panel
+          path: ./panel
 
   build_utils:
     runs-on: ubuntu-latest
@@ -80,6 +95,11 @@ jobs:
       - run: yarn run build
         working-directory: ./utils
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build_utils
+          path: ./utils
+
   build_api:
     runs-on: ubuntu-latest
 
@@ -96,4 +116,9 @@ jobs:
 
       - run: yarn run build
         working-directory: ./api
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build_api
+          path: ./api
         
