@@ -13,3 +13,4 @@ database.sqlite
 utils/**/*.js
 api/**/*.js
 server/**/*.js
+stats.json
