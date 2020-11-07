@@ -199,3 +199,8 @@ jobs:
       - uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r package.zip node_modules server
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: package.zip
