@@ -77,7 +77,7 @@ jobs:
       - run: yarn install
         working-directory: ./utils
 
-      - run: yarn run build:prod
+      - run: yarn run build
         working-directory: ./utils
 
   build_api:
@@ -94,7 +94,7 @@ jobs:
       - run: yarn install
         working-directory: ./api
 
-      - run: yarn run build:prod
+      - run: yarn run build
         working-directory: ./api
 
         
