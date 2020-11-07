@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Server
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  # pull_request:
+  #   branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build_gallery-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12.x'
+          check-latest: true
+
+      - run: yarn install
+        working-directory: ./gallery-server
+
+      - run: yarn run build
+        working-directory: ./gallery-server
+  
+  build_server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12.x'
+          check-latest: true
+
+      - run: yarn install
+        working-directory: ./server
+
+      - run: yarn run build
+        working-directory: ./server
