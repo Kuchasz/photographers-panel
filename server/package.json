@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node index.tsx",
+    "start": "ts-node app.tsx",
     "build": "tsc",
-    "watch": "nodemon --watch . --ext ts,tsx --exec ts-node --ignore '*.test.ts' --delay 2 index.tsx"
+    "watch": "nodemon --watch . --ext ts,tsx --exec ts-node --ignore '*.test.ts' --delay 2 app.tsx"
   },
   "author": "",
   "license": "ISC",
