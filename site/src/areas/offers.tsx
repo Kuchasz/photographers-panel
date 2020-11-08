@@ -6,7 +6,6 @@ import { includesAll, distinctBy, includesAny } from "@pp/utils/array";
 import { OfferListItem, getOffersList } from "@pp/api/site/offer";
 import linkPhoto from "../images/page_offer_photo.png";
 
-const getOfferImage = (imageFileName: string) => require(`../images/offers/${imageFileName}`);
 const getOfferUrl = (alias: string) => `${routes.offers.route}/${alias}`;
 
 type TariffYears = 2020 | 2021 | 2022;
