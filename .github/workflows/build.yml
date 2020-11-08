@@ -151,8 +151,13 @@ jobs:
       - run: yarn run build
         working-directory: ./gallery-server
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build_gallery-server
+          path: ./gallery-server
+
   build_server:
-    needs: [build_site, build_panel, build_gallery, build_utils, build_api]
+    needs: [build_site, build_panel, build_gallery, build_utils, build_api, build_gallery-server]
     runs-on: ubuntu-latest
 
     steps:
@@ -184,6 +189,11 @@ jobs:
         with:
           name: build_api
           path: ./api
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build_gallery-server
+          path: ./gallery-server
 
       - uses: actions/setup-node@v2-beta
         with:
