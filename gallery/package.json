@@ -41,7 +41,6 @@
     "autoprefixer": "9.8.0",
     "awesome-typescript-loader": "5.2.1",
     "copy-webpack-plugin": "6.0.1",
-    "@pp/server": "*",
     "core-js": "3.6.5",
     "css-loader": "3.5.3",
     "dotenv": "^8.2.0",
