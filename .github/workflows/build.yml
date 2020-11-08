@@ -168,22 +168,22 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: build_panel
-          path: ./site/panel
+          path: ./panel/dist
 
       - uses: actions/download-artifact@v2
         with:
           name: build_gallery
-          path: ./site/gallery
+          path: ./gallery/dist
 
       - uses: actions/download-artifact@v2
         with:
           name: build_utils
-          path: ./site/utils
+          path: ./utils
 
       - uses: actions/download-artifact@v2
         with:
           name: build_api
-          path: ./site/api
+          path: ./api
 
       - uses: actions/setup-node@v2-beta
         with:
