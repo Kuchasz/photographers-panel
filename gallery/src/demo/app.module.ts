@@ -48,7 +48,7 @@ document.querySelector("#state-initializer")?.remove();
                 return () =>
                     new Promise(async (res, rej) => {
                         const { galleryUrl: root, galleryId }: { galleryUrl: string; galleryId: number } = (window as any)
-                            .___InitialState___ ?? { galleryUrl: "/example-gallery-url/", galleryId: 1 };
+                            .___InitialState___ ?? { galleryUrl: "/you-are-missing-something-here/", galleryId: 1 };
 
                         const gallery = await fetchGallery(root);
 

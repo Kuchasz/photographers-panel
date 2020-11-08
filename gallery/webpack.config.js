@@ -4,7 +4,7 @@ var webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var autoprefixer = require("autoprefixer");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
+// var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ngtools = require("@ngtools/webpack");
 require('dotenv').config({ path: resolve("../.env") });
 
@@ -35,7 +35,7 @@ var plugins = [
     new MiniCssExtractPlugin({
         filename: "[name].css"
     }),
-    new CopyWebpackPlugin({ patterns: [{ from: resolve(__dirname, "src/demo/example-gallery-images"), to: "example-gallery-url" }], options: { concurrency: 20 } }),
+    // new CopyWebpackPlugin({ patterns: [{ from: resolve(__dirname, "src/demo/example-gallery-images"), to: "example-gallery-url" }], options: { concurrency: 20 } }),
     new ngtools.AngularCompilerPlugin({
         tsConfigPath: resolve(__dirname, "./tsconfig.json"),
         // entryModule: 'src/demo/app.module#AppModule',
