@@ -18,6 +18,8 @@ export class Blog extends React.Component<BlogProps, BlogState> {
 
     render() {
         if (this.state.blog === undefined) return null;
+        const location = global.window.location;
+
         return (
             <div className="blog">
                 <section>
@@ -31,7 +33,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                         </h1>
                         <h2>{this.state.blog.content}</h2>
                         <span>
-                            {strings.blog.shareMessage}<a href={`https://www.facebook.com/sharer/sharer.php?u=${window.location}`}><img src={facebookIcon} /></a>
+                            {strings.blog.shareMessage}<a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}><img src={facebookIcon} /></a>
                         </span>
                         <br />
                         <br />

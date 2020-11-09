@@ -462,7 +462,7 @@ app.get("/robots.txt", function (req, res) {
 });
 
 app.get("*", async (req, res, next) => {
-    if(req.url === "/api")
+    if (req.url === "/api")
         return next();
 
     let desiredRoute: { route: string };
@@ -497,6 +497,9 @@ app.get("*", async (req, res, next) => {
         );
 
         try {
+            (global as any).window = {
+                location: req.protocol + '://' + req.get('host') + req.originalUrl
+            };
             siteContent = Root.renderToString(app);
         } catch (err) {
             raiseErr(err, req, res);
