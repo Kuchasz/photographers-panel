@@ -7,7 +7,7 @@
                 [style.flex-basis]="image.height + 'px'"
                 class="image-container"
             >
-                <img [src]="image.src" />
+                <img [src]="image.src" (load)="onImageLoad($event)" loading="lazy"/>
                 <div class="background">
                     <ng-container *ngIf="image.liked">
                         <span class="mdi mdi-heart" (click)="unlikeImage(image.id, $event)"></span>

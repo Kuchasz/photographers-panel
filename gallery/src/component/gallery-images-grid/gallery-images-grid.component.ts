@@ -111,6 +111,10 @@ export class GalleryImagesGridComponent implements OnInit {
         );
     }
 
+    onImageLoad($event: Event){
+        ($event.target as HTMLImageElement).className = "loaded";
+    }
+
     enableFullscreenMode(imageId: string, directoryId: string) {
         // this.fullscreenModeEnabled = true;
         this.gallery.selectImage(imageId, directoryId);

@@ -94,13 +94,15 @@ a {
     // background: black;
     display: flex;
     flex-direction: row;
-    font-weight: bolder;
+    font-weight: normal;
     align-items: center;
     color: white;
     opacity: 0.25;
     transition: opacity 0.25s;
 
     &.like {
+        opacity: 1;
+
         .mdi {
             padding: 0em .1em !important;
         }
