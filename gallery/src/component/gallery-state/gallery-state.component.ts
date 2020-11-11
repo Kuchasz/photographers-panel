@@ -75,6 +75,14 @@ export class GalleryStateComponent {
         this.location.back();
     }
 
+    touchend($event) {
+        console.log($event.target);
+    }
+
+    touchstart($event) {
+        console.log($event.target);
+    }
+
     orderPhotos() { }
 
     public download(imgSrc: string) {
