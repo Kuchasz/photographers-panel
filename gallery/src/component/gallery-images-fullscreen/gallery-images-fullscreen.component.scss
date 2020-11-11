@@ -2,6 +2,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -12,6 +13,7 @@ gallery-images-fullscreen {
   // width: 100%;
   // display: flex;
   animation: 0.5s ease-out 0s 1 fadeIn;
+
   // flex-direction: column;
   // justify-content: center;
   // align-items: center;
@@ -27,7 +29,8 @@ gallery-images-fullscreen {
   flex-direction: column;
 }
 
-.g-box, .g-image-box {
+.g-box,
+.g-image-box {
   position: relative;
   display: flex;
   flex-direction: column;

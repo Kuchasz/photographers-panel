@@ -23,7 +23,42 @@
 .gallery-state {
     display: flex;
     font-size: 0.75em;
+
     // background: black;
+    // &.compact {
+    //     justify-content: space-between;
+
+    //     .g-state-directory {
+    //         display: none;
+    //     }
+
+    //     .g-state-button {
+    //         p {
+    //             display: none;
+    //         }
+    //     }
+    // }
+}
+
+@media (max-width: 480px) {
+    .gallery-state {
+
+        justify-content: space-between;
+
+        .g-state-directory {
+            display: none;
+        }
+
+        .g-state-button {
+            opacity: 1;
+            padding: 1.5em;
+            -webkit-tap-highlight-color: transparent;
+
+            p {
+                display: none;
+            }
+        }
+    }
 }
 
 span,
@@ -93,6 +128,7 @@ a {
     cursor: pointer;
     // background: black;
     display: flex;
+
     flex-direction: row;
     font-weight: normal;
     align-items: center;

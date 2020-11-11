@@ -1,41 +1,43 @@
-<ng-container *ngIf="currentDirectoryId$ | async as currentDirectoryId">
-    <ng-container *ngIf="currentDirectory$ | async as currentDirectory">
-        <div class="gallery-state" *ngIf="currentImage$ | async as currentImage">
-            <span *ngIf="!currentImage.liked" (click)="likeImage(currentImage.id, $event)" class="g-state-button like"><span class="mdi mdi-heart-outline"></span>
-                <p>{{ (currentImage.likes === 1 && currentImage.liked) || currentImage.likes === 0 ? "" : currentImage.likes }}</p>
-            </span>
-            <span *ngIf="currentImage.liked" (click)="unlikeImage(currentImage.id, $event)" class="g-state-button like"><span class="mdi mdi-heart"></span>
-                <p>{{ (currentImage.likes === 1 && currentImage.liked) || currentImage.likes === 0 ? "" : currentImage.likes }}</p>
-            </span>
-            <!-- <span class="g-state-text">
+<div class="gallery-state" *ngIf="currentImage$ | async as currentImage">
+    <span *ngIf="!currentImage.liked" (click)="likeImage(currentImage.id, $event)" class="g-state-button like"><span
+            class="mdi mdi-heart-outline"></span>
+        <p>{{ (currentImage.likes === 1 && currentImage.liked) || currentImage.likes === 0 ? "" : currentImage.likes }}
+        </p>
+    </span>
+    <span *ngIf="currentImage.liked" (click)="unlikeImage(currentImage.id, $event)" class="g-state-button like"><span
+            class="mdi mdi-heart"></span>
+        <p>{{ (currentImage.likes === 1 && currentImage.liked) || currentImage.likes === 0 ? "" : currentImage.likes }}
+        </p>
+    </span>
+    <!-- <span class="g-state-text">
                 <span class="g-snapped-count" *ngIf="snappedCount > 0" (click)="displaySnappedImages()"
                     >{{ snappedCount }} selected</span
                 > -->
-            <!-- <span>{{ currentImage.text }}</span> -->
-            <!-- </span> -->
-            <span class="g-state-directory">
-                <!-- <div>{{ currentDirectory.name }}</div> -->
-            </span>
+    <!-- <span>{{ currentImage.text }}</span> -->
+    <!-- </span> -->
+    <span class="g-state-directory">
+        <!-- <div>{{ currentDirectory.name }}</div> -->
+    </span>
 
 
-            <!-- <a [href]="currentImage.src" download target="_blank" class="g-state-button" *ngIf="downloadEnabled">
+    <!-- <a [href]="currentImage.src" download target="_blank" class="g-state-button" *ngIf="downloadEnabled">
                 <p>download</p><i class="material-icons">file_download</i>
             </a> -->
-            <!-- <span class="g-state-button" *ngIf="fullscreenEnabled" (click)="orderPhotos()"><i
+    <!-- <span class="g-state-button" *ngIf="fullscreenEnabled" (click)="orderPhotos()"><i
                     class="material-icons">shopping_cart</i></span> -->
-                    <!-- Bob lives in a <span class="mdi mdi-home"></span>. -->
+    <!-- Bob lives in a <span class="mdi mdi-home"></span>. -->
 
-            <span *ngIf="ratingRequestAvailable" class="g-state-button rate" (click)="openDisplayRatingRequestDetails()">{{ translations.state.reviewUs }}<span class="mdi mdi-message-text-outline"></span></span>
-            <span (click)="download(currentImage.src)" class="g-state-button" *ngIf="downloadEnabled">
-                <p>{{ translations.state.download }}</p><span class="mdi mdi-download"></span>
-            </span>
-            <span class="g-state-button" *ngIf="fullscreenEnabled" (click)="toggleFullscreen()">
-                <p>{{ translations.state.fullscreen }}</p><span class="mdi mdi-fullscreen"></span>
-            </span>
-            <span (click)="goBack()" class="g-state-button">
-                <p>{{ translations.state.close }}</p>
-                <span class="mdi mdi-close"></span>
-            </span>
-        </div>
-    </ng-container>
-</ng-container>
+    <span *ngIf="ratingRequestAvailable" class="g-state-button rate" (click)="openDisplayRatingRequestDetails()">
+        <p>{{ translations.state.reviewUs }}</p><span class="mdi mdi-message-text-outline"></span>
+    </span>
+    <span (click)="download(currentImage.src)" class="g-state-button" *ngIf="downloadEnabled">
+        <p>{{ translations.state.download }}</p><span class="mdi mdi-download"></span>
+    </span>
+    <span class="g-state-button" *ngIf="fullscreenEnabled" (click)="toggleFullscreen()">
+        <p>{{ translations.state.fullscreen }}</p><span class="mdi mdi-fullscreen"></span>
+    </span>
+    <span (click)="goBack()" class="g-state-button">
+        <p>{{ translations.state.close }}</p>
+        <span class="mdi mdi-close"></span>
+    </span>
+</div>

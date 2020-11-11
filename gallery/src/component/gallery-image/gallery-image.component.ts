@@ -86,7 +86,6 @@ export class GalleryImageComponent implements OnInit {
 
         fromEvent(mc, "panleft press panright").subscribe((e: any) => {
             const ratio = (e.deltaX / screenWidth) * 100;
-            console.log(ratio, e);
 
             TweenLite.set(elToMove, { translateX: `${ratio}%` });
         });
@@ -94,12 +93,10 @@ export class GalleryImageComponent implements OnInit {
         let currentDirectoryId = "";
 
         this.currentDirectoryId.subscribe((v) => {
-            console.log('DIRECTORY_ID:', v);
             currentDirectoryId = v;
         });
 
         fromEvent(mc, "panend").subscribe((e: any) => {
-            console.log('panend', e);
             const ratio = (e.deltaX / screenWidth) * 100;
             // elToMove.style.transform = `translateX(${ratio}%)`;
             const toVars =

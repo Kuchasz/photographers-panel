@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { map, switchMap, flatMap, find, first } from "rxjs/operators";
 import { ApiService } from '../../service/api.service';
 import { translations } from '../../i18n';
+import { DisplayModes } from '../../config/gallery.config';
 
 @Component({
     selector: "gallery-state",
@@ -21,30 +22,33 @@ export class GalleryStateComponent {
     @Input() config: GalleryConfig;
     @Output() onBack: EventEmitter<void> = new EventEmitter<void>(false);
 
-    currentDirectoryId$: Observable<string>;
+    // currentDirectoryId$: Observable<string>;
     currentImage$: Observable<GalleryImage>;
-    currentDirectory$: Observable<GalleryDirectory>;
-    translations = translations; 
+    // currentDirectory$: Observable<GalleryDirectory>;
+    translations = translations;
 
-    currentDirectoryId: string;
+    // currentDirectoryId: string;
+    downloadEnabled: boolean;
+    fullscreenEnabled: boolean;
 
     constructor(
         public gallery: GalleryService,
         public api: ApiService,
-        private route: ActivatedRoute,
         private router: Router,
         private location: Location
-    ) { }
+    ) {
+        this.downloadEnabled = window.fetch !== undefined && window.URL !== undefined;
+        this.fullscreenEnabled = screenfull ? screenfull.isEnabled : false;
+    }
 
     ngOnInit() {
-        this.currentDirectoryId$ = this.route.parent.paramMap.pipe(map((x) => x.get("id")));
-        this.currentDirectory$ = this.currentDirectoryId$.pipe(
-            switchMap((directoryId) => this.gallery.getDirectory(directoryId))
-        );
+        // this.currentDirectoryId$ = this.route.parent.paramMap.pipe(map((x) => x.get("id")));
+        // this.currentDirectory$ = this.currentDirectoryId$.pipe(
+        //     switchMap((directoryId) => this.gallery.getDirectory(directoryId))
+        // );
 
         this.currentImage$ = this.gallery.state.pipe(map((x) => x.images.find((i) => i.id === x.currId)));
-
-        this.currentDirectoryId$.subscribe((currentDirectoryId) => (this.currentDirectoryId = currentDirectoryId));
+        // this.currentDirectoryId$.subscribe((currentDirectoryId) => (this.currentDirectoryId = currentDirectoryId));
     }
 
     toggleFullscreen() {
@@ -52,16 +56,6 @@ export class GalleryStateComponent {
             if (screenfull.isFullscreen) screenfull.exit();
             else if (screenfull.isEnabled) screenfull.request();
         }
-    }
-
-    get fullscreenEnabled() {
-        if (screenfull) {
-            return screenfull.isEnabled;
-        }
-    }
-
-    get downloadEnabled() {
-        return (window.fetch !== undefined && window.URL !== undefined);
     }
 
     get snappedCount() {
@@ -83,22 +77,22 @@ export class GalleryStateComponent {
 
     orderPhotos() { }
 
-    download(imgSrc: string){
+    public download(imgSrc: string) {
         fetch(imgSrc)
-        .then(resp => resp.blob())
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            // the filename you want
-            a.download = imgSrc.split("/").reverse()[0];
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            // alert('your file has downloaded!'); // or you know, something with better UX...
-        })
-        .catch(() => console.log(`DOWNLOAD OF: ${imgSrc} failed.`));
+            .then(resp => resp.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                // the filename you want
+                a.download = imgSrc.split("/").reverse()[0];
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                // alert('your file has downloaded!'); // or you know, something with better UX...
+            })
+            .catch(() => console.log(`DOWNLOAD OF: ${imgSrc} failed.`));
     }
 
     // public snapImage() {
@@ -117,11 +111,7 @@ export class GalleryStateComponent {
         $event.stopPropagation();
     }
 
-    public openDisplayRatingRequestDetails(){
+    public openDisplayRatingRequestDetails() {
         this.gallery.setDisplayRatingRequestDetails(true);
-    }
-    
-    get currentImageId() {
-        return this.state.currId;
     }
 }

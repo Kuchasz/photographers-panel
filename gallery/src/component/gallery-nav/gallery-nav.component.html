@@ -1,4 +1,4 @@
-<div *ngIf="currentDirectoryId !== undefined" (click)="goBack()" class="g-nav">
+<div *ngIf="currentDirectoryId !== undefined" (touch)="goBack()" (click)="goBack()" class="g-nav">
 
   <div class="g-nav-prev" (click)="prev($event)">
     <span class="mdi mdi-chevron-left"></span>

@@ -36,6 +36,7 @@ export class GalleryImagesFullscreenComponent implements OnInit {
     currentDirectory: Observable<GalleryDirectory>;
 
     images$: Observable<GalleryImage[]>;
+    isFullView: boolean;
 
     constructor(public gallery: GalleryService, private route: ActivatedRoute, private location: Location) {}
 
@@ -44,6 +45,8 @@ export class GalleryImagesFullscreenComponent implements OnInit {
         this.thumbDirection = thumbPos === "left" || thumbPos === "right" ? "row" : "column";
 
         this.currentDirectoryId$ = this.route.parent.paramMap.pipe(map((x) => x.get("id")));
+
+        this.isFullView = this.gallery.config.displayMode !== DisplayModes.Compact;
 
         this.images$ = this.currentDirectoryId$.pipe(
             flatMap((directoryId) =>
@@ -66,10 +69,6 @@ export class GalleryImagesFullscreenComponent implements OnInit {
         if (ev.key !== "Escape") return;
 
         this.goBack();
-    }
-
-    get isFullView() {
-        return this.gallery.config.displayMode !== DisplayModes.Compact;
     }
 
     goBack() {
