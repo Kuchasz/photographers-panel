@@ -29,6 +29,8 @@ export const galleryModel = (galleryId?: number) => Schema.Model({
         .containsNumber("Password must contain numbers.")
         .minLength(8, "Password must be at least 8 characters long.")
         .addRule(checkPasswordIsUnique(galleryId), "Password must be unique."),
-    directPath: Schema.Types.StringType().isURL("Direct path must be an url."),
+    directPath: Schema.Types.StringType()
+        .isURL("Direct path must be an url.")
+        .pattern(/.*[^\/]$/, "Direct path may not end with trailing slash"),
     blog: Schema.Types.NumberType()
 });

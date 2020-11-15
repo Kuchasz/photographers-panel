@@ -121,7 +121,7 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>Password</ControlLabel>
-                        <FormControl name="password" type="password" checkAsync />
+                        <FormControl name="password" checkAsync />
                         <HelpBlock tooltip>
                             Password must be min 8 characters with numbers, upper and lowercases
                         </HelpBlock>

@@ -11,7 +11,6 @@ import { Location } from "@angular/common";
 import { GalleryState, GalleryDirectory, GalleryImage } from "../../service/gallery.state";
 import { GalleryService } from "../../service/gallery.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
-import { app } from "@pp/server/src/config";
 import { translations } from '../../i18n';
 import { DisplayModes } from '../../config/gallery.config';
 
@@ -24,7 +23,7 @@ import { DisplayModes } from '../../config/gallery.config';
 })
 export class RatingRequestWindowComponent implements OnInit {
     
-    reviewUrl: string = app.reviewUrl;
+    reviewUrl: string = 'https://g.page/pyszstudio/review';
     likedPhotos: string[] = [];
     translations = translations; 
     
