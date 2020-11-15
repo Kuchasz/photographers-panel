@@ -45,6 +45,8 @@ export class GalleryService {
             liked: likes.filter((l) => i.id === l.imageId).map((l) => l.liked)[0] ?? false
         }));
 
+        this.likedPhotos = likes.filter(l => l.liked).map(l => l.imageId);
+
         this.state.next({
             ...state,
             directories: result.directories,
@@ -52,8 +54,19 @@ export class GalleryService {
             directoryImages: result.directoryImages,
             currId: undefined,
             prevId: undefined,
-            nextId: undefined
+            nextId: undefined,
+            ratingRequestAvailable: this.likedPhotos.length >= 10
         });
+    }
+
+    unlikeImage(imageId: string) {
+        const img = this.state.getValue().images.find((x) => x.id === imageId);
+
+        if (img.liked === false)
+            return;
+
+        img.likes--;
+        img.liked = false;
     }
 
     likeImage(imageId: string) {
@@ -82,16 +95,6 @@ export class GalleryService {
     setDisplayRatingRequestDetails(display: boolean){
         const state = this.state.getValue();
         this.state.next({...state, displayRatingRequestDetails: display});
-    }
-
-    unlikeImage(imageId: string) {
-        const img = this.state.getValue().images.find((x) => x.id === imageId);
-
-        if (img.liked === false)
-            return;
-
-        img.likes--;
-        img.liked = false;
     }
 
     setOrientation(orientation: ScreenOrientation) {
