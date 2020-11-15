@@ -13,6 +13,7 @@ import { GalleryService } from "../../service/gallery.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { app } from "@pp/server/src/config";
 import { translations } from '../../i18n';
+import { DisplayModes } from '../../config/gallery.config';
 
 @Component({
     selector: "rating-request-window",
@@ -32,7 +33,10 @@ export class RatingRequestWindowComponent implements OnInit {
 
     ngOnInit() {
         const state = this.gallery.state.getValue(); 
-        this.likedPhotos = this.gallery.likedPhotos.slice(0, 10).map(imageId => state.images.find(x => x.id === imageId).src);
+
+        const photosToDisplay = this.gallery.config.displayMode === DisplayModes.Compact ? 4 : 10;
+
+        this.likedPhotos = this.gallery.likedPhotos.slice(0, photosToDisplay).map(imageId => state.images.find(x => x.id === imageId).src);
     }
 
     close(){

@@ -1,15 +1,13 @@
 <div class="gallery-state" *ngIf="currentImage$ | async as currentImage">
     <ng-container *ngIf="!currentImage.liked">
-        <span (touchend)="touchend($event)" (touchstart)="touchstart($event)"
-            (click)="likeImage(currentImage.id, $event)" class="g-state-button like">
+        <span [tap] (tapClick)="likeImage(currentImage.id)" class="g-state-button like">
             <span class="mdi mdi-heart-outline"></span>
             <p>{{ (currentImage.likes === 1 && currentImage.liked) || currentImage.likes === 0 ? "" : currentImage.likes }}
             </p>
         </span>
     </ng-container>
     <ng-container *ngIf="currentImage.liked">
-        <span (touchend)="touchend($event)" (touchstart)="touchstart($event)"
-            (click)="unlikeImage(currentImage.id, $event)" class="g-state-button like">
+        <span [tap] (tapClick)="unlikeImage(currentImage.id)" class="g-state-button like">
             <span class="mdi mdi-heart"></span>
             <p>{{ (currentImage.likes === 1 && currentImage.liked) || currentImage.likes === 0 ? "" : currentImage.likes }}
             </p>
@@ -33,16 +31,16 @@
                     class="material-icons">shopping_cart</i></span> -->
     <!-- Bob lives in a <span class="mdi mdi-home"></span>. -->
 
-    <span *ngIf="ratingRequestAvailable" class="g-state-button rate" (click)="openDisplayRatingRequestDetails()">
+    <span *ngIf="ratingRequestAvailable" class="g-state-button rate" [tap] (tapClick)="openDisplayRatingRequestDetails()">
         <p>{{ translations.state.reviewUs }}</p><span class="mdi mdi-message-text-outline"></span>
     </span>
-    <span (click)="download(currentImage.src)" class="g-state-button" *ngIf="downloadEnabled">
+    <span [tap] (tapClick)="download(currentImage.src)" class="g-state-button" *ngIf="downloadEnabled">
         <p>{{ translations.state.download }}</p><span class="mdi mdi-download"></span>
     </span>
-    <span class="g-state-button" *ngIf="fullscreenEnabled" (click)="toggleFullscreen()">
+    <span class="g-state-button" *ngIf="fullscreenEnabled" [tap] (tapClick)="toggleFullscreen()">
         <p>{{ translations.state.fullscreen }}</p><span class="mdi mdi-fullscreen"></span>
     </span>
-    <span (click)="goBack()" class="g-state-button">
+    <span [tap] (tapClick)="goBack()" class="g-state-button">
         <p>{{ translations.state.close }}</p>
         <span class="mdi mdi-close"></span>
     </span>

@@ -22,7 +22,7 @@ rating-request-window {
 
   header {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    // grid-template-columns: repeat(5, 1fr);
     height: 180px;
     grid-gap: 10px;
 
@@ -76,6 +76,7 @@ rating-request-window {
 
 @media screen and (max-width: 700px) {
   .popup {
-    width: 70%;
+    width: 100%;
+    height: 100%;
   }
 }

@@ -1,7 +1,7 @@
 <div class="overlay">
 	<div class="popup">
 		<p class="close" (click)="close()">&times;</p>
-		<header>
+		<header [style.grid-template-columns]="'repeat(' + likedPhotos.length/2 + ', 1fr)'">
 			<img *ngFor="let url of likedPhotos" [src]="url">
 		</header>
 		<h2>{{ translations.review.header }}</h2>

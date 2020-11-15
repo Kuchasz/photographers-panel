@@ -75,14 +75,6 @@ export class GalleryStateComponent {
         this.location.back();
     }
 
-    touchend($event) {
-        console.log($event.target);
-    }
-
-    touchstart($event) {
-        console.log($event.target);
-    }
-
     orderPhotos() { }
 
     public download(imgSrc: string) {
@@ -107,16 +99,18 @@ export class GalleryStateComponent {
     //     this.gallery.snapImage(this.currentImageId);
     // }
 
-    public likeImage(imageId: string, $event: MouseEvent) {
+    public likeImage(imageId: string) {//, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, galleryId: this.api.galleryId, clientId: this.api.clientId });
-        $event.stopPropagation();
+
+        // $event.stopPropagation();
     }
 
-    public unlikeImage(imageId: string, $event: MouseEvent) {
+    public unlikeImage(imageId: string) {//, $event: MouseEvent) {
         this.gallery.unlikeImage(imageId);
         this.api.sdk.unlikeImage({ imageId, galleryId: this.api.galleryId, clientId: this.api.clientId });
-        $event.stopPropagation();
+
+        // $event.stopPropagation();
     }
 
     public openDisplayRatingRequestDetails() {

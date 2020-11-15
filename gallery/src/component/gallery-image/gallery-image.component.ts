@@ -46,7 +46,8 @@ export class GalleryImageComponent implements OnInit {
 
         // console.log(el);
 
-        const mc = new Hammer(el);
+        const mc = new Hammer.Manager(el);
+        mc.add(new Hammer.Pan({}));
 
         // TweenLite.set(this.elContainer, { x: -this.config.width / 2 });
 
