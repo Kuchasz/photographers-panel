@@ -12,6 +12,7 @@ import * as messageModel from "./src/models/message";
 import * as privateGalleryModel from "./src/models/private-gallery";
 import * as emailModel from "./src/models/email";
 import * as notificationModel from "./src/models/notification";
+import * as page from "./src/models/page";
 import { All as Root } from "@pp/site";
 import * as blog from "@pp/api/site/blog";
 import * as blogPanel from "@pp/api/panel/blog";
@@ -505,6 +506,11 @@ app.get("*", async (req, res, next) => {
             raiseErr(err, req, res);
             return;
         }
+
+        const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "");
+
+        page.registerVisit(new Date(), address);
+        console.log(address);
 
         return res.send(
             template.replace('<div id="root"></div>', `<div id="root">${siteContent}</div>`).replace(
