@@ -46,6 +46,15 @@ export const getUrl = async (password: string): Promise<PrivateGalleryUrlCheckRe
         };
 }
 
+export const registerVisit = (galleryId: number, ip: string, date: Date): Promise<any> =>
+    connection.raw(`
+        INSERT INTO "PrivateGalleryVisit" ("Ip", "Date", "PrivateGallery_id") 
+        SELECT ?, ?, ?
+        WHERE
+            NOT EXISTS (
+                SELECT "Id" FROM "PrivateGalleryVisit" WHERE "Ip"=? AND "Date"=? AND "PrivateGallery_id"=?
+            )`, [ip, date, galleryId, ip, date, galleryId]);
+
 export const exists = async (id: number): Promise<boolean> => {
     // const [rows] = await connection.raw(`SELECT id FROM PrivateGallery AS p WHERE p.id = ?`, [id]);
     const rows = await connection("PrivateGallery")

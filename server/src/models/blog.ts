@@ -48,19 +48,21 @@ export const get = async (alias: string): Promise<site.Blog> => {
         assets: blogWithAssets.map((p: any) => ({
             url: `/${getAssetPath(getAssetsPath(p.Id), p.Url)}`,
             alt: p.Alt
-        }))
+        })),
+        id: first.Id
     };
 
     return blog;
 }
 
-export const registerVisit = (): Promise<any> =>
+export const registerVisit = (blogId: number, ip: string, date: Date): Promise<any> =>
     connection.raw(`
-            INSERT INTO BlogVisit(Ip, Date, Blog_id) 
-            VALUES (?, ?, ?)
-            SELECT Ip, Date, Blog_id FROM DUAL 
-            WHERE NOT EXISTS (SELECT * FROM BlogVisit 
-            WHERE Ip=? AND Date=? AND Blog_id=? LIMIT 1)`)
+        INSERT INTO "BlogVisit" ("Ip", "Date", "Blog_id") 
+        SELECT ?, ?, ?
+        WHERE
+            NOT EXISTS (
+                SELECT "Id" FROM "BlogVisit" WHERE "Ip"=? AND "Date"=? AND "Blog_id"=?
+            )`, [ip, date, blogId, ip, date, blogId]);
 
 export const getSelectList = async (): Promise<panel.BlogSelectItem[]> => {
     // const blogs = await connection.raw(`

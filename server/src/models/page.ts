@@ -9,15 +9,11 @@ export const exists = async (date: Date, ip: string): Promise<boolean> => {
     return rows.length !== 0;
 }
 
-export const registerVisit = async (date: Date, ip: string) => {
-    try {
-        if (await exists(date, ip)) {
-            return Promise.resolve();
-        }
-
-        await connection("PageVisit")
-            .insert({ Date: date, Ip: ip });
-    } catch (err) {
-        return Promise.reject();
-    }
-}
+export const registerVisit = (date: Date, ip: string): Promise<any> =>
+    connection.raw(`
+        INSERT INTO "PageVisit" ("Ip", "Date") 
+        SELECT ?, ?
+        WHERE
+            NOT EXISTS (
+                SELECT "Id" FROM "PageVisit" WHERE "Ip"=? AND "Date"=?
+            )`, [ip, date, ip, date]);
