@@ -25,11 +25,10 @@ jobs:
           node-version: "12.x"
           check-latest: true
 
-      - run: yarn install
-        working-directory: ./gallery
-
-      - run: yarn run build
-        working-directory: ./gallery
+      - run: |  
+          cd ./gallery
+          yarn install
+          yarn run build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -49,11 +48,10 @@ jobs:
           node-version: "12.x"
           check-latest: true
 
-      - run: yarn install
-        working-directory: ./site
-
-      - run: yarn run build:prod
-        working-directory: ./site
+      - run: |  
+          cd ./site
+          yarn install
+          yarn run site:prod
 
       - uses: actions/upload-artifact@v2
         with:
@@ -73,11 +71,10 @@ jobs:
           node-version: "12.x"
           check-latest: true
 
-      - run: yarn install
-        working-directory: ./panel
-
-      - run: yarn run build:prod
-        working-directory: ./panel
+      - run: |  
+          cd ./panel
+          yarn install
+          yarn run build:prod
 
       - uses: actions/upload-artifact@v2
         with:
@@ -97,11 +94,10 @@ jobs:
           node-version: "12.x"
           check-latest: true
 
-      - run: yarn install
-        working-directory: ./utils
-
-      - run: yarn run build
-        working-directory: ./utils
+      - run: |  
+          cd ./utils
+          yarn install
+          yarn run build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -121,11 +117,10 @@ jobs:
           node-version: "12.x"
           check-latest: true
 
-      - run: yarn install
-        working-directory: ./api
-
-      - run: yarn run build
-        working-directory: ./api
+      - run: |  
+          cd ./api
+          yarn install
+          yarn run build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -145,11 +140,10 @@ jobs:
           node-version: "12.x"
           check-latest: true
 
-      - run: yarn install
-        working-directory: ./gallery-server
-
-      - run: yarn run build
-        working-directory: ./gallery-server
+      - run: |  
+          cd ./gallery-server
+          yarn install
+          yarn run build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -200,21 +194,24 @@ jobs:
           node-version: "12.x"
           check-latest: true
 
-      - run: yarn install --production
-        working-directory: ./server
-
-      - run: yarn run build
-        working-directory: ./server
+      - run: |
+          cd ./server
+          yarn install --production
+          yarn run build
 
       - uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r package.zip node_modules server
 
-      - name: upload artifact
+      - run: |
+          mkdir package
+          mv package.zip package/package.zip
+
+      - name: upload artifact to stating
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
           server: ${{ secrets.ftp_server }}
           username: ${{ secrets.ftp_username }}
           password: ${{ secrets.ftp_password }}
-          local-dir: ./package.zip
-          server-dir: domains/kuchasz.usermd.net/package.zip
+          local-dir: ./package/
+          server-dir: domains/kuchasz.usermd.net/
