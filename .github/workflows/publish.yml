@@ -18,6 +18,7 @@ jobs:
           host: ${{ secrets.ssh_host }}
           username: ${{ secrets.ssh_username }}
           password: ${{ secrets.ssh_password }}
+          tryKeyboard: true
           command: |
             cd domains/kuchasz.usermd.net/
             rm -rf node_modules
