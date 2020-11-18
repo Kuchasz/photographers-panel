@@ -1,0 +1,30 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Client
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on: workflow_dispatch
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build_gallery:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: publish into staging
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ssh_host }}
+          username: ${{ secrets.ssh_username }}
+          password: ${{ secrets.ssh_password }}
+          port: 22
+          script: |
+            cd domains/kuchasz.usermd.net/
+            rm -rf node_modules
+            rm -rf public_nodejs
+            unzip package.zip
+            mv server public_nodejs
+            cd public_nodejs
+            npm install sqlite3
+            npm install sharp 
