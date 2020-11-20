@@ -7,6 +7,8 @@ const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
 require('dotenv').config({ path: path.resolve("../.env") });
 
+console.log(path.join(__dirname, "../node_modules/@pp/utils"))
+
 module.exports = (env, argv) => ({
     entry: path.resolve("./src/index.tsx"),
     output: {
@@ -17,8 +19,13 @@ module.exports = (env, argv) => ({
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: "ts-loader"
+                test: /\.ts|\.tsx$/,
+                use: "ts-loader",
+                include: [
+                    path.join(__dirname, "src"), 
+                    path.join(__dirname, "../node_modules/@pp/utils"), 
+                    path.join(__dirname, "../node_modules/@pp/api")
+                ]
             },
             {
                 test: /\.scss$/,

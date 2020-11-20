@@ -24,7 +24,6 @@ import {
 } from "@pp/api/panel/blog";
 import { range, union, distinctBy } from "@pp/utils/array";
 import { inRange } from "@pp/utils/number";
-import { read } from "@pp/utils/file";
 import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
 import { debounce } from "@pp/utils/function";
@@ -175,9 +174,9 @@ const AssetUploadButton = ({ onAssetsChosen }: AssetUploadButtonProps) => {
         inputRef.current?.click();
     };
 
-    const handleFilesChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const handleFilesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files ?? new FileList();
-        const res = await Promise.all(range(files.length).map((x) => read(files[x])));
+        const res = range(files.length).map(i => ({file: files[i], url: files[i].name}));//await Promise.all(range(files.length).map((x) => read(files[x])));
         onAssetsChosen(res);
     };
 
