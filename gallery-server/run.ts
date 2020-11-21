@@ -8,7 +8,7 @@ app.use(express.urlencoded());
 
 const runApp = async () => {
 
-    await runPhotoGalleryServer(app);
+    await runPhotoGalleryServer(app, __dirname);
 
     app.listen(8080, () => {
         console.log("Application server started...");

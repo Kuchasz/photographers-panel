@@ -11,12 +11,12 @@ import { GalleryServerContext } from 'contex';
 
 const connections: { [galleryId: number]: Promise<Connection> } = {};
 
-const createDb = (galleryId: number) => {
+const createDb = (databases: string, galleryId: number) => {
     return connections[galleryId]
         ? Promise.resolve(connections[galleryId])
         : connections[galleryId] = createConnection({
             type: "sqlite",
-            database: `${galleryId}.sqlite`,
+            database: `${databases}/${galleryId}.sqlite`,
             synchronize: true,
             logging: true,
             name: `DB_CONNECTION_NAME: ${Math.random()}`,
@@ -27,7 +27,7 @@ const createDb = (galleryId: number) => {
         });
 }
 
-export const runPhotoGalleryServer = async (app: express.Express) => {
+export const runPhotoGalleryServer = async (app: express.Express, databases: string) => {
 
     const server = new ApolloServer({
         schema: await buildSchema({
@@ -37,7 +37,7 @@ export const runPhotoGalleryServer = async (app: express.Express) => {
         context: async ({ req }) => {
             console.warn(`Number of connections: ${getConnectionManager().connections.length}`);
             return ({
-                db: await createDb(Number(req.headers.galleryid))
+                db: await createDb(databases, Number(req.headers.galleryid))
             }) as GalleryServerContext;
         },
         playground: true,
