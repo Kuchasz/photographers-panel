@@ -442,7 +442,9 @@ app.post(privateGalleryPanel.notifySubscribers.route, verify, async (req, res) =
     try {
         var { id }: { id: number } = req.body;
         const emails = await privateGalleryModel.getEmails(id);
-        await notifySubscribers(emails.emails.map(e => e.address));
+        const gallery = await privateGalleryModel.getForEdit(id);
+
+        await notifySubscribers(emails.emails.map(e => e.address), gallery.password);
         result = { type: ResultType.Success };
     } catch (err) {
         result = { type: ResultType.Error, error: "ErrorOccuredWhileNotifyingSubsribers", errorMessage: JSON.stringify(err) };

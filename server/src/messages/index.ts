@@ -1,5 +1,6 @@
 import { notifications } from "../config";
 import nodemailer from "nodemailer";
+import { template } from "./template";
 
 const transporter = nodemailer.createTransport({
     host: notifications.server.host,
@@ -33,13 +34,13 @@ export const sendEmail = async (from: string, email: string, content: string) =>
 
     });
 
-export const notifySubscribers = async (subscribers: string[]) =>
+export const notifySubscribers = async (subscribers: string[], password: string) =>
     new Promise<void>((res, rej) => {
         const message = {
             from: notifications.message.from,
             bcc: subscribers,
-            subject: `Galeria jest gotowa`,
-            html: `<html><p>Na galerie mozna juz wchodzic</p></html>`,
+            subject: `Udostępniliśmy galerię zdjęć`,
+            html: template(password),
             replyTo: `${notifications.message.from} <${notifications.message.target}>`
         };
 

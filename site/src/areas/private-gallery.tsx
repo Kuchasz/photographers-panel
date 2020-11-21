@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { strings } from "../resources";
 import * as privateGallery from "@pp/api/site/private-gallery";
 import * as commonPrivateGallery from "@pp/api/private-gallery";
-import * as notification from "@pp/api/site/notification";
 import { ResultType } from "@pp/api/common";
 
 const getContent = (
@@ -57,7 +56,7 @@ type PrivateGalleryState = {
     isLoading?: boolean;
     isLoadingNotification?: boolean;
     result?: privateGallery.PrivateGalleryUrlCheckResult;
-    notificationResult?: notification.SubscribtionResult;
+    notificationResult?: privateGallery.SubscribtionResult;
 };
 
 export class PrivateGallery extends React.Component<PrivateGalleryProps, PrivateGalleryState> {
@@ -98,7 +97,7 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
     async subscribeForNotification() {
         if (this.state.result?.gallery !== undefined) {
             this.setState({ isLoadingNotification: true });
-            const result = await notification.subscribeForNotification({
+            const result = await privateGallery.subscribeForNotification({
                 privateGalleryId: this.state.result.gallery.id,
                 email: this.state.email
             });
