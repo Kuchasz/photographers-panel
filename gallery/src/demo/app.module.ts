@@ -54,7 +54,7 @@ document.querySelector("#state-initializer")?.remove();
 
                         const clientId = await api.connect("John", galleryId);
 
-                        const likesResult = await api.sdk.getLikes({ galleryId, clientId });
+                        const likesResult = await api.sdk.likes({ clientId });
 
                         galleries.load(gallery, likesResult.likes);
                         res();

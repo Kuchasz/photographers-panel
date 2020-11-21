@@ -1,40 +1,44 @@
 import { DeleteResult } from '../entities/DeleteResult';
-import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
 import { Like } from "../entities/Like";
+import { GalleryServerContext } from 'contex';
 
 @Resolver()
 export class LikeResolver {
     @Mutation(() => Like)
-    likeImage(
+    async likeImage(
         @Arg("imageId") imageId: string,
         @Arg("clientId", () => Int) clientId: number,
-        @Arg("galleryId", () => Int) galleryId: number
+        @Ctx() ctx: GalleryServerContext
     ) {
         const like = new Like();
         like.imageId = imageId;
         like.clientId = clientId;
-        like.galleryId = galleryId;
-        return like.save();
+        return await ctx.db.getRepository(Like).save(like);
     }
 
     @Mutation(() => DeleteResult)
     async unlikeImage(
         @Arg("imageId") imageId: string,
         @Arg("clientId", () => Int) clientId: number,
-        @Arg("galleryId", () => Int) galleryId: number
+        @Ctx() ctx: GalleryServerContext
     ) {
-        const likeToDelete = await Like.findOne({ galleryId, imageId, clientId });
-        
-        if(!likeToDelete)
+        const repository = ctx.db.getRepository(Like);
+        const likeToDelete = await repository.findOne({ imageId, clientId });
+
+        if (!likeToDelete)
             return DeleteResult.None;
 
-        await likeToDelete.remove();
+        await repository.remove(likeToDelete);
         return DeleteResult.One;
     }
 
     @Query(() => [Like])
-    async likes(@Arg("galleryId", () => Int) galleryId: number, @Arg("clientId", () => Int) clientId: number) {
-        const allLikes = await Like.find({ galleryId });
+    async likes(
+        @Arg("clientId", () => Int) clientId: number,
+        @Ctx() ctx: GalleryServerContext
+    ) {
+        const allLikes = await ctx.db.getRepository(Like).find();
 
         const likes = allLikes.reduce((agg, curr) => {
             const like = agg[curr.imageId];

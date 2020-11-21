@@ -15,9 +15,6 @@ export class Like extends BaseEntity {
     @ManyToOne(type => Client)
     client: Client;
 
-    @PrimaryColumn({type: "int8"})
-    galleryId: number;
-
     @Field()
     liked: boolean;
 

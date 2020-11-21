@@ -8,7 +8,7 @@ debug.log
 /.vscode/
 *.secret.config.ts
 server/public/blogs/
-database.sqlite
+*.sqlite
 .env
 utils/**/*.js
 api/**/*.js

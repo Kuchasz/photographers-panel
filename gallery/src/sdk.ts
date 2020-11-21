@@ -3,6 +3,7 @@ import { print } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in keyof Pick<T, K>]?: Maybe<Pick<T, K>[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -32,28 +33,26 @@ export type Like = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  connect: Client;
   likeImage: Like;
   unlikeImage: DeleteResult;
-  connect: Client;
+};
+
+
+export type MutationConnectArgs = {
+  name: Scalars['String'];
 };
 
 
 export type MutationLikeImageArgs = {
-  galleryId: Scalars['Int'];
   clientId: Scalars['Int'];
   imageId: Scalars['String'];
 };
 
 
 export type MutationUnlikeImageArgs = {
-  galleryId: Scalars['Int'];
   clientId: Scalars['Int'];
   imageId: Scalars['String'];
-};
-
-
-export type MutationConnectArgs = {
-  name: Scalars['String'];
 };
 
 export type Query = {
@@ -64,13 +63,12 @@ export type Query = {
 
 export type QueryLikesArgs = {
   clientId: Scalars['Int'];
-  galleryId: Scalars['Int'];
 };
 
 
-export const GetLikesDocument = gql`
-    query getLikes($clientId: Int!, $galleryId: Int!) {
-  likes(clientId: $clientId, galleryId: $galleryId) {
+export const LikesDocument = gql`
+    query likes($clientId: Int!) {
+  likes(clientId: $clientId) {
     imageId
     liked
     likes
@@ -78,15 +76,15 @@ export const GetLikesDocument = gql`
 }
     `;
 export const LikeImageDocument = gql`
-    mutation likeImage($imageId: String!, $clientId: Int!, $galleryId: Int!) {
-  likeImage(imageId: $imageId, galleryId: $galleryId, clientId: $clientId) {
+    mutation likeImage($imageId: String!, $clientId: Int!) {
+  likeImage(imageId: $imageId, clientId: $clientId) {
     imageId
   }
 }
     `;
 export const UnlikeImageDocument = gql`
-    mutation unlikeImage($imageId: String!, $clientId: Int!, $galleryId: Int!) {
-  unlikeImage(imageId: $imageId, galleryId: $galleryId, clientId: $clientId) {
+    mutation unlikeImage($imageId: String!, $clientId: Int!) {
+  unlikeImage(imageId: $imageId, clientId: $clientId) {
     affectedRows
   }
 }
@@ -105,8 +103,8 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getLikes(variables: GetLikesQueryVariables): Promise<GetLikesQuery> {
-      return withWrapper(() => client.request<GetLikesQuery>(print(GetLikesDocument), variables));
+    likes(variables: LikesQueryVariables): Promise<LikesQuery> {
+      return withWrapper(() => client.request<LikesQuery>(print(LikesDocument), variables));
     },
     likeImage(variables: LikeImageMutationVariables): Promise<LikeImageMutation> {
       return withWrapper(() => client.request<LikeImageMutation>(print(LikeImageDocument), variables));
@@ -120,13 +118,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;
-export type GetLikesQueryVariables = Exact<{
+export type LikesQueryVariables = Exact<{
   clientId: Scalars['Int'];
-  galleryId: Scalars['Int'];
 }>;
 
 
-export type GetLikesQuery = (
+export type LikesQuery = (
   { __typename?: 'Query' }
   & { likes: Array<(
     { __typename?: 'Like' }
@@ -137,7 +134,6 @@ export type GetLikesQuery = (
 export type LikeImageMutationVariables = Exact<{
   imageId: Scalars['String'];
   clientId: Scalars['Int'];
-  galleryId: Scalars['Int'];
 }>;
 
 
@@ -152,7 +148,6 @@ export type LikeImageMutation = (
 export type UnlikeImageMutationVariables = Exact<{
   imageId: Scalars['String'];
   clientId: Scalars['Int'];
-  galleryId: Scalars['Int'];
 }>;
 
 

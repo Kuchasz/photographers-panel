@@ -130,13 +130,13 @@ export class GalleryImagesGridComponent implements OnInit {
 
     public likeImage(imageId: string, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
-        this.api.sdk.likeImage({ imageId, galleryId: this.api.galleryId, clientId: this.api.clientId });
+        this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });
         $event.stopPropagation();
     }
 
     public unlikeImage(imageId: string, $event: MouseEvent) {
         this.gallery.unlikeImage(imageId);
-        this.api.sdk.unlikeImage({ imageId, galleryId: this.api.galleryId, clientId: this.api.clientId });
+        this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
         $event.stopPropagation();
     }
 
