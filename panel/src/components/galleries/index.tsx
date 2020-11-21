@@ -146,6 +146,10 @@ export class Galleries extends React.Component<Props, State> {
         }
     };
 
+    onGalleryViewEmails = (selectedGallery: number) => {
+        Alert.info("SHOW ME THE EMAILS");
+    }
+
     closeCreateForm = () => {
         this.setState({ showCreateForm: false });
     };
@@ -200,6 +204,7 @@ export class Galleries extends React.Component<Props, State> {
                             onSelect={this.onGallerySelected}
                             onEdit={this.onGalleryEdit}
                             onDelete={this.onGalleryDelete}
+                            onViewEmails={this.onGalleryViewEmails}
                         />
                     </Panel>
                 </div>

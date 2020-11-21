@@ -9,6 +9,7 @@ interface Props {
     onSelect: (item: any) => void;
     onEdit: (item: any) => void;
     onDelete: (item: any) => void;
+    onViewEmails: (item: any) => void;
     galleries: GalleryDto[];
     loadingGalleries: boolean;
 }
@@ -170,7 +171,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.Cell dataKey="visits" />
                 </Table.Column>
 
-                <Table.Column width={130} align="center" fixed="right">
+                <Table.Column width={200} align="center" fixed="right">
                     <Table.HeaderCell>Actions</Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(gallery: GalleryDto) => (
@@ -194,8 +195,8 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                 <ToolTip placement="left" text={"View emails"}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Icon icon="trash2" />}
-                                        onClick={() => this.props.onDelete(gallery.id)}
+                                        icon={<Icon icon="envelope-o" />}
+                                        onClick={() => this.props.onViewEmails(gallery.id)}
                                     />
                                 </ToolTip>
                             </ButtonToolbar>

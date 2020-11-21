@@ -12,7 +12,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
     { route: routes.home, icon: "home", text: 'Home' },
     { route: routes.stats, icon: "signal", text: 'Stats' },
-    { route: routes.emails, icon: "envelope-o", text: 'Emails' },
+    // { route: routes.emails, icon: "envelope-o", text: 'Emails' },
     { route: routes.galleries, icon: "leaf", text: 'Galleries' },
     { route: routes.blogs, icon: "flag", text: 'Blogs' },
     { route: routes.comments, icon: "comments", text: 'Comments' },
@@ -20,7 +20,7 @@ const menuItems: MenuItem[] = [
 ];
 
 const styles = {
-    display: 'inline-table',
+    // display: 'inline-table',
     marginRight: 10,
     height: '100%'
 };
