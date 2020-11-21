@@ -23,7 +23,6 @@ import {
     changeBlogAssetAlt
 } from "@pp/api/panel/blog";
 import { range, union, distinctBy } from "@pp/utils/array";
-import { inRange } from "@pp/utils/number";
 import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
 import { debounce } from "@pp/utils/function";
@@ -137,15 +136,16 @@ const AssetUploadingThumb = ({
     blogId: number;
     onUpload(id: number, url: string, oldURL: string): void;
 }) => {
-    const [processing, setProcessing] = React.useState<{processing: boolean, progress: number}>({processing: false, progress: 0});
+    const [processing, setProcessing] = React.useState<{ processing: boolean, progress: number }>({ processing: false, progress: 0 });
 
     React.useEffect(() => {
         uploadBlogAsset(
             blogId,
             item.file!,
-            setProcessing,
+            (p) => { console.log(p); setProcessing(p) },
             (res) => {
-                setProcessing({processing: false, progress: 0});
+                console.log('load=end');
+                setProcessing({ processing: false, progress: 0 });
                 res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
             }
         );
@@ -154,7 +154,7 @@ const AssetUploadingThumb = ({
     return (
         <AssetsListItem className="thumb">
             {processing.processing && <Loader inverse center />}
-            {inRange(0, 100, processing.progress) && (
+            {!processing.processing && (
                 <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={processing.progress} />
             )}
         </AssetsListItem>
@@ -174,7 +174,7 @@ const AssetUploadButton = ({ onAssetsChosen }: AssetUploadButtonProps) => {
 
     const handleFilesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files ?? new FileList();
-        const res = range(files.length).map(i => ({file: files[i], url: files[i].name}));//await Promise.all(range(files.length).map((x) => read(files[x])));
+        const res = range(files.length).map(i => ({ file: files[i], url: files[i].name }));//await Promise.all(range(files.length).map((x) => read(files[x])));
         onAssetsChosen(res);
     };
 
@@ -213,28 +213,28 @@ const AssetsList = ({
     onDelete: (assetId: number) => void;
     onAltChange: (assetId: number, alt: string) => void;
 }) => (
-    <div className="assets-list">
-        {items.map((item) =>
-            item.id !== undefined ? (
-                <AssetThumb
-                    onAltChange={onAltChange}
-                    onDelete={onDelete}
-                    onSetAsMain={onSetAsMain}
-                    item={item}
-                    key={item.id}
-                />
-            ) : (
-                <AssetUploadingThumb
-                    blogId={blogId}
-                    item={item}
-                    key={item.url}
-                    onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
-                />
-            )
-        )}
-        <AssetUploadButton onAssetsChosen={onAssetsChosen} />
-    </div>
-);
+        <div className="assets-list">
+            {items.map((item) =>
+                item.id !== undefined ? (
+                    <AssetThumb
+                        onAltChange={onAltChange}
+                        onDelete={onDelete}
+                        onSetAsMain={onSetAsMain}
+                        item={item}
+                        key={item.id}
+                    />
+                ) : (
+                        <AssetUploadingThumb
+                            blogId={blogId}
+                            item={item}
+                            key={item.url}
+                            onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
+                        />
+                    )
+            )}
+            <AssetUploadButton onAssetsChosen={onAssetsChosen} />
+        </div>
+    );
 
 export class BlogAssignAssets extends React.Component<Props, State> {
     constructor(props: Props) {

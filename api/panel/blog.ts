@@ -103,7 +103,7 @@ const checkAliasIsUniqueRoute = "/api/panel/blog-alias-unique/:alias/:blogId?";
 export const checkAliasIsUnique = (blogId?: number) => (alias: string): Promise<boolean> =>
     fetch(
         endpoint +
-            checkAliasIsUniqueRoute.replace(":alias", alias).replace(":blogId?", blogId?.toString() ?? "")
+        checkAliasIsUniqueRoute.replace(":alias", alias).replace(":blogId?", blogId?.toString() ?? "")
     ).then((resp) => resp.json());
 checkAliasIsUnique.route = checkAliasIsUniqueRoute;
 
@@ -166,13 +166,13 @@ const uploadBlogAssetRoute = "/api/panel/upload-blog-asset";
 export const uploadBlogAsset = (
     id: number,
     asset: File,
-    onProgress: (progress: {processing: boolean, progress: number}) => void,
+    onProgress: (progress: { processing: boolean, progress: number }) => void,
     onEnd: (result: UploadBlogAssetResult) => void
 ) => {
     const request = new XMLHttpRequest();
 
     request.upload.onloadend = () => {
-        onProgress({processing: true, progress: 100});
+        onProgress({ processing: true, progress: 100 });
     };
 
     request.upload.onprogress = (event: ProgressEvent) => {
@@ -180,10 +180,10 @@ export const uploadBlogAsset = (
         if (event.lengthComputable) {
             percent = (event.loaded / event.total) * 100;
         }
-        onProgress({processing: false, progress: percent});
+        onProgress({ processing: percent === 100, progress: percent });
     };
     request.responseType = "json";
-    request.upload.onloadstart = () => onProgress({processing: false, progress: 0});
+    request.upload.onloadstart = () => onProgress({ processing: false, progress: 0 });
     request.onload = () => onEnd(request.response);
 
     const payload = new FormData();
