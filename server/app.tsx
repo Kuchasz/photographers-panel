@@ -11,7 +11,6 @@ import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
 import * as privateGalleryModel from "./src/models/private-gallery";
 import * as emailModel from "./src/models/email";
-import * as notificationModel from "./src/models/notification";
 import * as page from "./src/models/page";
 import { All as Root } from "@pp/site";
 import * as blog from "@pp/api/site/blog";
@@ -19,12 +18,11 @@ import * as blogPanel from "@pp/api/panel/blog";
 import fs from "fs";
 import { routes } from "@pp/api/site/routes";
 import * as message from "@pp/api/site/message";
-import * as notification from "@pp/api/site/notification";
 import * as privateGallery from "@pp/api/site/private-gallery";
 import * as privateGalleryPanel from "@pp/api/panel/private-gallery";
 import * as authPanel from "@pp/api/panel/auth";
 import { ResultType, setEndpoint } from "@pp/api/common";
-import { sendEmail } from "./src/messages";
+import { notifySubscribers, sendEmail } from "./src/messages";
 import { allowCrossDomain, processImage } from "./src/core";
 import { runPhotoGalleryServer } from "@pp/gallery-server";
 import * as config from "./src/config";
@@ -133,8 +131,8 @@ app.post(message.send.route, async (req, res) => {
     }
 });
 
-app.post(notification.subscribeForNotification.route, async (req, res) => {
-    let result: notification.SubscribtionResult | undefined = undefined;
+app.post(privateGallery.subscribeForNotification.route, async (req, res) => {
+    let result: privateGallery.SubscribtionResult | undefined = undefined;
 
     var emailIsValid = emailModel.validate(req.body.email);
     if (!emailIsValid) result = { type: ResultType.Error, error: "EmailInvalid" };
@@ -142,11 +140,11 @@ app.post(notification.subscribeForNotification.route, async (req, res) => {
     const galleryExists = await privateGalleryModel.exists(req.body.privateGalleryId);
     if (galleryExists === false) result = { type: ResultType.Error, error: "GalleryDoesNotExists" };
 
-    const subscribtionExists = await notificationModel.alreadySubscribed(req.body);
+    const subscribtionExists = await privateGalleryModel.alreadySubscribed(req.body);
     if (subscribtionExists === true) result = { type: ResultType.Error, error: "AlreadySubscribed" };
 
     if (result == undefined) {
-        await notificationModel.subscribe(req.body);
+        await privateGalleryModel.subscribe(req.body);
         result = { type: ResultType.Success };
     }
 
@@ -438,12 +436,26 @@ app.post(privateGalleryPanel.createGallery.route, verify, async (req, res) => {
     res.json(result);
 });
 
+app.post(privateGalleryPanel.notifySubscribers.route, verify, async (req, res) => {
+    let result: privateGalleryPanel.NotifySubscribersResult | undefined = undefined;
+
+    try {
+        var { id }: { id: number } = req.body;
+        const emails = await privateGalleryModel.getEmails(id);
+        await notifySubscribers(emails.emails.map(e => e.address));
+        result = { type: ResultType.Success };
+    } catch (err) {
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileNotifyingSubsribers", errorMessage: JSON.stringify(err) };
+    }
+
+    res.json(result);
+});
+
 app.post(privateGalleryPanel.editGallery.route, verify, async (req, res) => {
     let result: privateGalleryPanel.EditGalleryResult | undefined = undefined;
 
-    var { id, gallery }: { id: number; gallery: privateGalleryPanel.GalleryEditDto } = req.body;
-
     try {
+        var { id, gallery }: { id: number; gallery: privateGalleryPanel.GalleryEditDto } = req.body;
         await privateGalleryModel.editGallery(id, gallery);
         result = { type: ResultType.Success };
     } catch (err) {

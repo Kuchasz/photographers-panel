@@ -1,5 +1,5 @@
 import { connection } from "../db";
-import { PrivateGalleryUrlCheckResult } from "@pp/api/site/private-gallery";
+import { PrivateGalleryUrlCheckResult, Subscription } from "@pp/api/site/private-gallery";
 import { getDateString, getDateRange } from "@pp/utils/date";
 import { GalleryEditDto, GalleryDto, GalleryVisitsDto, VisitsSummaryDto, GalleryEmailsDto } from "@pp/api/panel/private-gallery";
 import { PrivateGalleryState } from "@pp/api/private-gallery";
@@ -55,6 +55,30 @@ export const exists = async (id: number): Promise<boolean> => {
     const rows = await connection("PrivateGallery")
         .where({ Id: id })
         .select("Id")
+        .limit(1);
+
+    return rows.length !== 0;
+}
+
+export const subscribe = async (subscribtion: Subscription): Promise<void> => {
+    try {
+
+        await connection("PrivateGalleryEmail")
+            .insert({
+                PrivateGallery_id: subscribtion.privateGalleryId,
+                Address: subscribtion.email
+            });
+
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}
+
+export const alreadySubscribed = async (subscribtion: Subscription): Promise<boolean> => {
+
+    const rows = await connection("PrivateGalleryEmail")
+        .where({ PrivateGallery_id: subscribtion.privateGalleryId, Address: subscribtion.email })
+        .select("PrivateGallery_id")
         .limit(1);
 
     return rows.length !== 0;

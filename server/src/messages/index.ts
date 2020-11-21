@@ -16,7 +16,7 @@ export const sendEmail = async (from: string, email: string, content: string) =>
         const message = {
             from: notifications.message.from,
             to: notifications.message.target,
-            subject: `Pyszstudio - Nowa wiadomość od ${from}`,
+            subject: `Nowa wiadomość od ${from}`,
             html: `<html>
                 <p><strong>Imie:</strong> ${from}</p>
                 <p><strong>E-mail:</strong> ${email}</p>
@@ -31,4 +31,21 @@ export const sendEmail = async (from: string, email: string, content: string) =>
             } else { res(); }
         });
 
+    });
+
+export const notifySubscribers = async (subscribers: string[]) =>
+    new Promise<void>((res, rej) => {
+        const message = {
+            from: notifications.message.from,
+            bcc: subscribers,
+            subject: `Galeria jest gotowa`,
+            html: `<html><p>Na galerie mozna juz wchodzic</p></html>`,
+            replyTo: `${notifications.message.from} <${notifications.message.target}>`
+        };
+
+        transporter.sendMail(message, (err) => {
+            if (err) {
+                rej(err)
+            } else { res(); }
+        });
     });

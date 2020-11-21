@@ -60,6 +60,9 @@ export type EditGalleryResult = Result<EditGalleryError>;
 export type DeleteGalleryError = "ErrorOccuredWhileDeletingGallery";
 export type DeleteGalleryResult = Result<DeleteGalleryError>;
 
+export type NotifySubscribersError = "ErrorOccuredWhileNotifyingSubsribers";
+export type NotifySubscribersResult = Result<NotifySubscribersError>;
+
 const getGalleriesListRoute = "/api/panel/galleries-list";
 export const getGalleriesList = () =>
     fetch(endpoint + getGalleriesListRoute).then(resp => resp.json() as Promise<GalleryDto[]>);
@@ -152,3 +155,18 @@ export const getGalleryEmails = (
             .replace(":galleryId", selectedGallery.toString())
     ).then(resp => resp.json());
 getGalleryEmails.route = getGalleryEmailsRoute;
+
+const notifySubscribersRoute = "/api/panel/notify-subscribers";
+export const notifySubscribers = (
+    selectedGallery: number
+): Promise<NotifySubscribersResult> =>
+    fetch(
+        endpoint + notifySubscribersRoute, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: selectedGallery })
+    }).then(resp => resp.json());
+notifySubscribers.route = notifySubscribersRoute;

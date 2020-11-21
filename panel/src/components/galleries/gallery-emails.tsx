@@ -18,6 +18,7 @@ import {
 } from "rsuite";
 
 import {
+    notifySubscribers,
     getGalleryEmails,
     GalleryEmailDto
 } from "@pp/api/panel/private-gallery";
@@ -33,6 +34,7 @@ interface Props {
 }
 interface State {
     emails: GalleryEmailDto[];
+    isLoading: boolean;
 }
 
 const formatEmail = (address: string) => {
@@ -55,7 +57,7 @@ const EmailsList = ({ emails }: { emails: GalleryEmailDto[] }) => (
 export class GalleryEmails extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = { emails: [] };
+        this.state = { emails: [], isLoading: false };
     }
 
     componentDidMount() {
@@ -75,6 +77,12 @@ export class GalleryEmails extends React.Component<Props, State> {
         this.props.close();
     };
 
+    notifySubscribers = async () => {
+        this.setState({ isLoading: true });
+        await notifySubscribers(this.props.id);
+        this.setState({ isLoading: false });
+    }
+
     render() {
         return (
             <Modal
@@ -91,11 +99,11 @@ export class GalleryEmails extends React.Component<Props, State> {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.close} appearance="primary">
-                        Save
+                    <Button onClick={this.notifySubscribers} appearance="primary" loading={this.state.isLoading}>
+                        Notify users
                     </Button>
                     <Button onClick={this.handleModalHide} appearance="subtle">
-                        Cancel
+                        Close
                     </Button>
                 </Modal.Footer>
             </Modal>
