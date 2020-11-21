@@ -82,7 +82,7 @@ const raiseErr = (err: Error, req: any, res: any) => {
     const youch = new Youch(err, req);
 
     youch.toHTML().then((html: string) => {
-        res.writeHead(200, { "content-type": "text/html" });
+        res.writeHead(500, { "content-type": "text/html" });
         res.write(html);
         res.end();
     });
@@ -417,6 +417,11 @@ app.get(privateGalleryPanel.checkPasswordIsUnique.route, verify, async (req, res
 
 app.get(privateGalleryPanel.getGalleryForEdit.route, verify, async (req, res) => {
     const gallery = await privateGalleryModel.getForEdit(Number(req.params.galleryId));
+    res.json(gallery);
+});
+
+app.get(privateGalleryPanel.getGalleryEmails.route, verify, async (req, res) => {
+    const gallery = await privateGalleryModel.getEmails(Number(req.params.galleryId));
     res.json(gallery);
 });
 

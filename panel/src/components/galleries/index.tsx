@@ -18,6 +18,7 @@ import {
 import { GalleryEdit } from "./gallery-edit";
 import { confirm } from "../common/confirmation";
 import { ResultType } from "@pp/api/common";
+import { GalleryEmails } from "./gallery-emails";
 
 const getStats = (x: GalleryVisitsDto): ChartStat[] => [
     { label: "Today visits", value: x.todayVisits },
@@ -28,7 +29,7 @@ const getStats = (x: GalleryVisitsDto): ChartStat[] => [
     { label: "Emails", value: x.emails },
 ];
 
-interface Props {}
+interface Props { }
 
 interface State {
     isLoading: boolean;
@@ -42,6 +43,7 @@ interface State {
     disableAutoDate: boolean;
     showCreateForm: boolean;
     showEditForm: boolean;
+    showGalleryViewEmails: boolean;
     galleryToEditId?: number;
 }
 
@@ -60,6 +62,7 @@ export class Galleries extends React.Component<Props, State> {
             disableAutoDate: false,
             showCreateForm: false,
             showEditForm: false,
+            showGalleryViewEmails: false,
             galleryToEditId: undefined
         };
     }
@@ -94,10 +97,11 @@ export class Galleries extends React.Component<Props, State> {
             }));
 
             getGalleryVisits(startDate, endDate, this.state.selectedGallery).then((resp) =>
-                this.setState({ 
-                    isLoading: false, 
-                    stats: getStats(resp), 
-                    visits: resp.dailyVisits })
+                this.setState({
+                    isLoading: false,
+                    stats: getStats(resp),
+                    visits: resp.dailyVisits
+                })
             );
         }
     };
@@ -147,8 +151,15 @@ export class Galleries extends React.Component<Props, State> {
     };
 
     onGalleryViewEmails = (selectedGallery: number) => {
-        Alert.info("SHOW ME THE EMAILS");
+        this.setState({
+            galleryToEditId: selectedGallery,
+            showGalleryViewEmails: true
+        });
     }
+
+    closeGalleryViewEmails = () => {
+        this.setState({ showGalleryViewEmails: false });
+    };
 
     closeCreateForm = () => {
         this.setState({ showCreateForm: false });
@@ -181,8 +192,8 @@ export class Galleries extends React.Component<Props, State> {
                             />
                             <span>
                                 {this.state.stats != null ? (
-                                    <ChartStats 
-                                        isLoading={this.state.isLoading} 
+                                    <ChartStats
+                                        isLoading={this.state.isLoading}
                                         stats={this.state.stats} />
                                 ) : null}
                             </span>
@@ -218,6 +229,13 @@ export class Galleries extends React.Component<Props, State> {
                         onSaved={this.fetchGalleries}
                         showEditForm={this.state.showEditForm}
                         closeEditForm={this.closeEditForm}
+                        id={this.state.galleryToEditId}
+                    />
+                ) : null}
+                {this.state.galleryToEditId ? (
+                    <GalleryEmails
+                        show={this.state.showGalleryViewEmails}
+                        close={this.closeGalleryViewEmails}
                         id={this.state.galleryToEditId}
                     />
                 ) : null}

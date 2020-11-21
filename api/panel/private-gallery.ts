@@ -43,6 +43,14 @@ export interface GalleryEditDto {
     blog?: number;
 }
 
+export interface GalleryEmailDto {
+    address: string;
+}
+
+export interface GalleryEmailsDto {
+    emails: GalleryEmailDto[];
+}
+
 export type CreateGalleryError = "ErrorOccuredWhileCreatingGallery";
 export type CreateGalleryResult = Result<CreateGalleryError>;
 
@@ -133,3 +141,14 @@ export const deleteGallery = (id: number) =>
             .then(resolve);
     });
 deleteGallery.route = deleteGalleryRoute;
+
+const getGalleryEmailsRoute = "/api/panel/gallery-emails/:galleryId";
+export const getGalleryEmails = (
+    selectedGallery: number
+): Promise<GalleryEmailsDto> =>
+    fetch(
+        endpoint +
+        getGalleryEmailsRoute
+            .replace(":galleryId", selectedGallery.toString())
+    ).then(resp => resp.json());
+getGalleryEmails.route = getGalleryEmailsRoute;
