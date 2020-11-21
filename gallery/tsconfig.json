@@ -3,7 +3,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "module": "ES2015",
     "baseUrl": ".",
     "emitDecoratorMetadata": true,

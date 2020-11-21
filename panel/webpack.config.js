@@ -21,11 +21,11 @@ module.exports = (env, argv) => ({
             {
                 test: /\.ts|\.tsx$/,
                 use: "ts-loader",
-                include: [
-                    path.join(__dirname, "src"), 
-                    path.join(__dirname, "../node_modules/@pp/utils"), 
-                    path.join(__dirname, "../node_modules/@pp/api")
-                ]
+                // include: [
+                //     path.join(__dirname, "src"), 
+                //     path.join(__dirname, "../node_modules/@pp/utils"), 
+                //     path.join(__dirname, "../node_modules/@pp/api")
+                // ]
             },
             {
                 test: /\.scss$/,

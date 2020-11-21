@@ -166,15 +166,13 @@ const uploadBlogAssetRoute = "/api/panel/upload-blog-asset";
 export const uploadBlogAsset = (
     id: number,
     asset: File,
-    onProgress: (progress: number) => void,
-    onUploadEnd: () => void,
+    onProgress: (progress: {processing: boolean, progress: number}) => void,
     onEnd: (result: UploadBlogAssetResult) => void
 ) => {
     const request = new XMLHttpRequest();
 
     request.upload.onloadend = () => {
-        onProgress(100);
-        onUploadEnd();
+        onProgress({processing: true, progress: 100});
     };
 
     request.upload.onprogress = (event: ProgressEvent) => {
@@ -182,11 +180,11 @@ export const uploadBlogAsset = (
         if (event.lengthComputable) {
             percent = (event.loaded / event.total) * 100;
         }
-        onProgress(percent);
+        onProgress({processing: false, progress: percent});
     };
     request.responseType = "json";
-    request.upload.onloadstart = () => onProgress(0);
-    request.onloadend = () => onEnd(request.response);
+    request.upload.onloadstart = () => onProgress({processing: false, progress: 0});
+    request.onload = () => onEnd(request.response);
 
     const payload = new FormData();
     payload.append("asset", asset);

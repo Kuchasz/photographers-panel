@@ -137,17 +137,15 @@ const AssetUploadingThumb = ({
     blogId: number;
     onUpload(id: number, url: string, oldURL: string): void;
 }) => {
-    const [processing, setProcessing] = React.useState<boolean>(false);
-    const [uploadProgress, setUploadProgress] = React.useState<number>(0);
+    const [processing, setProcessing] = React.useState<{processing: boolean, progress: number}>({processing: false, progress: 0});
 
     React.useEffect(() => {
         uploadBlogAsset(
             blogId,
             item.file!,
-            (p) => setUploadProgress(p),
-            () => setProcessing(true),
+            setProcessing,
             (res) => {
-                setProcessing(false);
+                setProcessing({processing: false, progress: 0});
                 res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
             }
         );
@@ -155,9 +153,9 @@ const AssetUploadingThumb = ({
 
     return (
         <AssetsListItem className="thumb">
-            {processing && <Loader inverse backdrop center />}
-            {inRange(0, 100, uploadProgress) && (
-                <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={uploadProgress} />
+            {processing.processing && <Loader inverse center />}
+            {inRange(0, 100, processing.progress) && (
+                <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={processing.progress} />
             )}
         </AssetsListItem>
     );
