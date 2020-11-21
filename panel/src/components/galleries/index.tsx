@@ -2,7 +2,7 @@ import * as React from "react";
 import { GalleriesList } from "./galleries-list";
 import { GalleryCreate } from "./gallery-create";
 import { Panel, Icon, Button, Alert } from "rsuite";
-import { GalleryStats } from "./gallery-stats";
+import { ChartStat, ChartStats } from "./chart-stats";
 import { GalleryChart } from "./gallery-chart";
 import { GalleryVisitRange } from "./gallery-visit-range";
 import { addMonths } from "@pp/utils/date";
@@ -19,15 +19,14 @@ import { GalleryEdit } from "./gallery-edit";
 import { confirm } from "../common/confirmation";
 import { ResultType } from "@pp/api/common";
 
-const getStats = (x: GalleryVisitsDto) => ({
-    todayVisits: x.todayVisits,
-    totalVisits: x.totalVisits,
-    bestDay: x.bestDay.date,
-    bestDayVisits: x.bestDay.visits,
-    rangeDays: x.rangeDays,
-    rangeVisits: x.rangeVisits,
-    emails: x.emails
-});
+const getStats = (x: GalleryVisitsDto): ChartStat[] => [
+    { label: "Today visits", value: x.todayVisits },
+    { label: "Total visits", value: x.totalVisits },
+    { label: "Range visits", value: x.rangeVisits },
+    { label: "Best day", value: x.bestDay.date || '---' },
+    { label: "Best day visits", value: x.bestDay.visits },
+    { label: "Emails", value: x.emails },
+];
 
 interface Props {}
 
@@ -37,15 +36,7 @@ interface State {
     visits: VisitsSummaryDto[];
     galleries: GalleryDto[];
     selectedGallery?: number;
-    stats?: {
-        todayVisits: number;
-        totalVisits: number;
-        bestDay: string;
-        bestDayVisits: number;
-        rangeDays: number;
-        rangeVisits: number;
-        emails: number;
-    };
+    stats: ChartStat[];
     startDate: Date;
     endDate: Date;
     disableAutoDate: boolean;
@@ -62,7 +53,7 @@ export class Galleries extends React.Component<Props, State> {
             isLoading: false,
             isLoadingGalleries: false,
             galleries: [],
-            stats: undefined,
+            stats: [],
             selectedGallery: undefined,
             startDate: addMonths(new Date(), -1),
             endDate: new Date(),
@@ -103,7 +94,10 @@ export class Galleries extends React.Component<Props, State> {
             }));
 
             getGalleryVisits(startDate, endDate, this.state.selectedGallery).then((resp) =>
-                this.setState({ isLoading: false, stats: getStats(resp), visits: resp.dailyVisits })
+                this.setState({ 
+                    isLoading: false, 
+                    stats: getStats(resp), 
+                    visits: resp.dailyVisits })
             );
         }
     };
@@ -183,7 +177,9 @@ export class Galleries extends React.Component<Props, State> {
                             />
                             <span>
                                 {this.state.stats != null ? (
-                                    <GalleryStats isLoading={this.state.isLoading} {...this.state.stats} />
+                                    <ChartStats 
+                                        isLoading={this.state.isLoading} 
+                                        stats={this.state.stats} />
                                 ) : null}
                             </span>
                         </header>

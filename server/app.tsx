@@ -533,7 +533,7 @@ app.get("*", async (req, res, next) => {
 
 const runApp = async () => {
 
-    await runPhotoGalleryServer(app, __dirname + "/databases");
+    await runPhotoGalleryServer(app, resolve(__dirname + "/databases"));
 
     await runMigrations();
 

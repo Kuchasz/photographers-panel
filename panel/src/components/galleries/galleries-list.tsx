@@ -190,6 +190,14 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                         onClick={() => this.props.onDelete(gallery.id)}
                                     />
                                 </ToolTip>
+                                <Divider vertical />
+                                <ToolTip placement="left" text={"View emails"}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="trash2" />}
+                                        onClick={() => this.props.onDelete(gallery.id)}
+                                    />
+                                </ToolTip>
                             </ButtonToolbar>
                         )}
                     </Table.Cell>
