@@ -27,4 +27,5 @@ jobs:
             mv server public_nodejs
             cd public_nodejs
             npm install sqlite3
-            npm install sharp 
+            npm install sharp
+            devil www restart kuchasz.usermd.net
