@@ -43,8 +43,6 @@ xmlns:v="urn:schemas-microsoft-com:vml">
 
     .logo {
         color: #232323;
-        /* font-family: "Century Gothic"; */
-
         font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;
         flex-grow: 1;
         display: flex;
@@ -61,6 +59,7 @@ xmlns:v="urn:schemas-microsoft-com:vml">
 
     .logo .bottom {
         font-size: 18px;
+        margin-top: -12px;
     }
 
 </style>
@@ -329,11 +328,11 @@ xmlns:v="urn:schemas-microsoft-com:vml">
                 </div>
                 <div style="background-color:transparent;">
                     <div class="block-grid"
-                        style="min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; background-color: #d12420;">
+                        style="min-width: 320px; max-width: 640px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; background-color:#363131;">
                         <div
-                            style="border-collapse: collapse;display: table;width: 100%;background-color:#d12420;background-image:url('https://www.panel.songoandzuza.pl/ps-email-images/logo.jpg');background-position:top left;background-repeat:no-repeat">
-                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#d12420"><![endif]-->
-                            <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#d12420;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top:60px; padding-bottom:60px;"><![endif]-->
+                            style="border-collapse: collapse;display: table;width: 100%;background-color:#363131;background-image:url('https://www.panel.songoandzuza.pl/ps-email-images/logo.jpg');background-position:top left;background-repeat:no-repeat">
+                            <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:640px"><tr class="layout-full-width" style="background-color:#363131"><![endif]-->
+                            <!--[if (mso)|(IE)]><td align="center" width="640" style="background-color:#363131;width:640px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 20px; padding-left: 20px; padding-top:60px; padding-bottom:60px;"><![endif]-->
                             <div class="col num12"
                                 style="min-width: 320px; max-width: 640px; display: table-cell; vertical-align: top; width: 640px;">
                                 <div class="col_cont" style="width:100% !important;">
