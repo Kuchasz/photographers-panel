@@ -59,7 +59,7 @@ xmlns:v="urn:schemas-microsoft-com:vml">
 
     .logo .bottom {
         font-size: 18px;
-        margin-top: -12px;
+        margin-top: -8px;
     }
 
 </style>

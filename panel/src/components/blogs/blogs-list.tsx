@@ -75,7 +75,7 @@ export class BlogsList extends React.Component<Props, State> {
                 data={this.props.blogs}
             >
                 <Table.Column width={100} align="center">
-                    <Table.HeaderCell>Visibility</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => <VisibilityIcon onVisibilityChange={(visibility) => this.props.onVisibilityChange(blog.id, visibility)} id={blog.id} initialVisibility={blog.visible} />}
                     </Table.Cell>
@@ -107,7 +107,7 @@ export class BlogsList extends React.Component<Props, State> {
                 </Table.Column>
 
                 <Table.Column width={200} align="center" fixed="right">
-                    <Table.HeaderCell>Actions</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
