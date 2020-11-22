@@ -13,7 +13,7 @@ interface Props {
     galleries: GalleryDto[];
     loadingGalleries: boolean;
 }
-interface State {}
+interface State { }
 
 const getColorFromGalleryState = (galleryState: PrivateGalleryState): any => {
     switch (galleryState) {
@@ -23,6 +23,18 @@ const getColorFromGalleryState = (galleryState: PrivateGalleryState): any => {
             return "#F44336";
         case PrivateGalleryState.NotReady:
             return "#FFC107";
+        default:
+            throw new Error("Not handled GalleryState!");
+    }
+};
+
+const getIconFromGalleryState = (galleryState: PrivateGalleryState): any => {
+    switch (galleryState) {
+        case PrivateGalleryState.Available:
+            return "btn-on";
+        case PrivateGalleryState.TurnedOff:
+        case PrivateGalleryState.NotReady:
+            return "btn-off";
         default:
             throw new Error("Not handled GalleryState!");
     }
@@ -111,25 +123,25 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 rowHeight={50}
                 virtualized={true}
                 shouldUpdateScroll={true}
-                onDataUpdated={() => {}}
+                onDataUpdated={() => { }}
                 loading={this.props.loadingGalleries}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item.id)}
                 data={this.props.galleries}
             >
                 <Table.Column width={50} align="center">
-                    <Table.HeaderCell>State</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                     <Table.Cell dataKey="state">
                         {(gallery: GalleryDto) => (
                             <ToolTip text={stateTooltips[gallery.state]}>
-                                <Icon icon="info" style={{ color: getColorFromGalleryState(gallery.state) }} />
+                                <Icon icon={getIconFromGalleryState(gallery.state)} style={{ fontSize: "24px", marginTop: "-2px", color: getColorFromGalleryState(gallery.state) }} />
                             </ToolTip>
                         )}
                     </Table.Cell>
                 </Table.Column>
 
                 <Table.Column width={50} align="center">
-                    <Table.HeaderCell>Blog</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                     <Table.Cell dataKey="blog">
                         {(gallery: GalleryDto) => (
                             <ToolTip text={gallery.blogId ? blogTooltips.Available : blogTooltips.None}>
@@ -144,7 +156,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.Cell dataKey="place" />
                 </Table.Column>
 
-                <Table.Column flexGrow={0.5}>
+                <Table.Column flexGrow={1}>
                     <Table.HeaderCell>Last Name</Table.HeaderCell>
                     <Table.Cell dataKey="lastName" />
                 </Table.Column>
@@ -161,18 +173,13 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     </Table.Cell>
                 </Table.Column>
 
-                <Table.Column flexGrow={2} width={350}>
-                    <Table.HeaderCell>Direct path</Table.HeaderCell>
-                    <Table.Cell dataKey="url" />
-                </Table.Column>
-
                 <Table.Column width={100} align="center">
                     <Table.HeaderCell>Total Visits</Table.HeaderCell>
                     <Table.Cell dataKey="visits" />
                 </Table.Column>
 
                 <Table.Column width={200} align="center" fixed="right">
-                    <Table.HeaderCell>Actions</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(gallery: GalleryDto) => (
                             <ButtonToolbar>
@@ -192,9 +199,10 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                     />
                                 </ToolTip>
                                 <Divider vertical />
-                                <ToolTip placement="left" text={"View emails"}>
+                                <ToolTip placement="left" text={gallery.pendingNotification ? "Notifications not send" : "View emails"}>
                                     <IconButton
                                         appearance="subtle"
+                                        style={gallery.pendingNotification ? { color: "#FFC107" } : {}}
                                         icon={<Icon icon="envelope-o" />}
                                         onClick={() => this.props.onViewEmails(gallery.id)}
                                     />

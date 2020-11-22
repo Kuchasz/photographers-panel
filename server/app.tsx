@@ -430,6 +430,7 @@ app.post(privateGalleryPanel.createGallery.route, verify, async (req, res) => {
         await privateGalleryModel.createGallery(req.body as privateGalleryPanel.GalleryEditDto);
         result = { type: ResultType.Success };
     } catch (err) {
+        console.log(err);
         result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingGallery", errorMessage: JSON.stringify(err) };
     }
 
@@ -445,6 +446,8 @@ app.post(privateGalleryPanel.notifySubscribers.route, verify, async (req, res) =
         const gallery = await privateGalleryModel.getForEdit(id);
 
         await notifySubscribers(emails.emails.map(e => e.address), gallery.password);
+        await privateGalleryModel.markAsNotified(id);
+
         result = { type: ResultType.Success };
     } catch (err) {
         result = { type: ResultType.Error, error: "ErrorOccuredWhileNotifyingSubsribers", errorMessage: JSON.stringify(err) };

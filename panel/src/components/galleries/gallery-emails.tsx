@@ -4,11 +4,11 @@ import React
 import {
     Modal,
     Button,
-    List
-    // Icon,
+    List,
+    Icon,
     // Loader,
     // Progress,
-    // Alert,
+    Alert,
     // Whisper,
     // Popover,
     // FormGroup,
@@ -22,18 +22,21 @@ import {
     getGalleryEmails,
     GalleryEmailDto
 } from "@pp/api/panel/private-gallery";
+import { ToolTip } from "../common/tooltip";
+import { ResultType } from "@pp/api/common";
 // import { range, union, distinctBy } from "@pp/utils/array";
 // import { ResultType } from "@pp/api/common";
 // import { ToolTip } from "../common/tooltip";
-// import { debounce } from "@pp/utils/function";
 
 interface Props {
     id: number;
     show: boolean;
     close: () => void;
+    onNotified: () => void;
 }
 interface State {
     emails: GalleryEmailDto[];
+    pendingNotification: boolean;
     isLoading: boolean;
 }
 
@@ -57,19 +60,19 @@ const EmailsList = ({ emails }: { emails: GalleryEmailDto[] }) => (
 export class GalleryEmails extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = { emails: [], isLoading: false };
+        this.state = { emails: [], pendingNotification: false, isLoading: false };
     }
 
     componentDidMount() {
-        getGalleryEmails(this.props.id).then(({ emails }) => {
-            this.setState({ emails });
+        getGalleryEmails(this.props.id).then(({ emails, pendingNotification }) => {
+            this.setState({ emails, pendingNotification });
         });
     }
 
     componentDidUpdate(prevProps: Props) {
         if (this.props.id === prevProps.id) return;
-        getGalleryEmails(this.props.id).then(({ emails }) => {
-            this.setState({ emails });
+        getGalleryEmails(this.props.id).then(({ emails, pendingNotification }) => {
+            this.setState({ emails, pendingNotification });
         });
     }
 
@@ -79,8 +82,17 @@ export class GalleryEmails extends React.Component<Props, State> {
 
     notifySubscribers = async () => {
         this.setState({ isLoading: true });
-        await notifySubscribers(this.props.id);
-        this.setState({ isLoading: false });
+        const result = await notifySubscribers(this.props.id);
+
+        if (result.type === ResultType.Success) {
+            Alert.success("Subscribers notified.");
+            this.handleModalHide();
+            this.props.onNotified();
+        } else {
+            Alert.error("An error occured while editing gallery.");
+        }
+        
+        this.setState({ isLoading: false, pendingNotification: false });
     }
 
     render() {
@@ -99,9 +111,11 @@ export class GalleryEmails extends React.Component<Props, State> {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.notifySubscribers} appearance="primary" loading={this.state.isLoading}>
-                        Notify users
+                    <ToolTip placement="left" text="Click to notify subscribers about gallery being available">
+                        <Button onClick={this.notifySubscribers} disabled={!this.state.pendingNotification} appearance="primary" loading={this.state.isLoading}>
+                            <Icon icon="bell-o" /> Send notification
                     </Button>
+                    </ToolTip>
                     <Button onClick={this.handleModalHide} appearance="subtle">
                         Close
                     </Button>

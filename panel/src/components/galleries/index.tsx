@@ -158,7 +158,7 @@ export class Galleries extends React.Component<Props, State> {
     }
 
     closeGalleryViewEmails = () => {
-        this.setState({ showGalleryViewEmails: false });
+        this.setState({ showGalleryViewEmails: false, galleryToEditId: undefined });
     };
 
     closeCreateForm = () => {
@@ -170,7 +170,17 @@ export class Galleries extends React.Component<Props, State> {
     };
 
     closeEditForm = () => {
-        this.setState({ showEditForm: false });
+        this.setState({ showEditForm: false, galleryToEditId: undefined });
+    };
+
+    gallerySave = () => {
+        this.setState({ showEditForm: false, galleryToEditId: undefined });
+        this.fetchGalleries();
+    };
+
+    onNotified = () => {
+        this.setState({ showGalleryViewEmails: false, galleryToEditId: undefined });
+        this.fetchGalleries();
     };
 
     showEditForm = () => {
@@ -220,13 +230,13 @@ export class Galleries extends React.Component<Props, State> {
                     </Panel>
                 </div>
                 <GalleryCreate
-                    onAdded={this.fetchGalleries}
+                    onAdded={() => this.fetchGalleries()}
                     showCreateForm={this.state.showCreateForm}
                     closeCreateForm={this.closeCreateForm}
                 />
                 {this.state.galleryToEditId ? (
                     <GalleryEdit
-                        onSaved={this.fetchGalleries}
+                        onSaved={this.gallerySave}
                         showEditForm={this.state.showEditForm}
                         closeEditForm={this.closeEditForm}
                         id={this.state.galleryToEditId}
@@ -236,6 +246,7 @@ export class Galleries extends React.Component<Props, State> {
                     <GalleryEmails
                         show={this.state.showGalleryViewEmails}
                         close={this.closeGalleryViewEmails}
+                        onNotified={this.onNotified}
                         id={this.state.galleryToEditId}
                     />
                 ) : null}

@@ -14,6 +14,6 @@ interface Props {
 export const ChartStats = ({ isLoading, stats }: Props) => <>
     <div className="stats">
         <Loader className={isLoading ? 'visible' : 'collapsed'} />
-        {stats.map(s => <span>{s.label}: <strong>{s.value}</strong></span>)}
+        {stats.map(s => <span key={s.label}>{s.label}: <strong>{s.value}</strong></span>)}
     </div>
 </>;

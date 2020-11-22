@@ -88,6 +88,7 @@ export const getList = async (): Promise<GalleryDto[]> => {
 
     const galleries = await connection("PrivateGallery")
         .leftJoin("PrivateGalleryVisit", "PrivateGalleryVisit.PrivateGallery_id", "PrivateGallery.Id")
+        // .leftJoin("PrivateGalleryEmail", "PrivateGalleryEmail.PrivateGallery_id", "PrivateGallery.Id")
         .groupBy("PrivateGallery.Id")
         .orderBy("PrivateGallery.Date", "desc")
         .select(
@@ -99,9 +100,10 @@ export const getList = async (): Promise<GalleryDto[]> => {
             "PrivateGallery.LastName",
             "PrivateGallery.State",
             "PrivateGallery.Password",
-            "PrivateGallery.DirectPath",
             "PrivateGallery.Blog_id",
-            connection.raw(`COUNT("PrivateGallery"."Id") AS "Visits"`));
+            "PrivateGallery.SubscribersNotified",
+            connection.raw(`COUNT("PrivateGallery"."Id") AS "Visits"`),
+            connection.raw(`(SELECT COUNT("Id") FROM "PrivateGalleryEmail" WHERE "PrivateGallery_id" = "PrivateGallery"."Id") as "Emails"`));
 
     return galleries.map((g: any) => ({
         id: g.Id,
@@ -112,9 +114,9 @@ export const getList = async (): Promise<GalleryDto[]> => {
         lastName: g.LastName,
         state: Number(g.State),
         password: g.Password,
-        url: g.DirectPath,
         blogId: g.Blog_id ? Number(g.Blog_id) : undefined,
-        visits: g.Visits ? Number(g.Visits) : 0
+        visits: g.Visits ? Number(g.Visits) : 0,
+        pendingNotification: !g.SubscribersNotified && Number(g.State) === 1 && Number(g.Emails) > 0
     }));
 }
 
@@ -211,7 +213,7 @@ export const getForEdit = async (galleryId: number): Promise<GalleryEditDto> => 
         state: Number(gallery.State),
         password: gallery.Password,
         directPath: gallery.DirectPath,
-        blog: Number(gallery.Blog_id)
+        blog: gallery.Blog_id ? Number(gallery.Blog_id) : null
     });
 }
 
@@ -228,10 +230,11 @@ export const createGallery = async (gallery: GalleryEditDto) => {
                 State: gallery.state,
                 Password: gallery.password,
                 DirectPath: gallery.directPath,
-                Blog_id: gallery.blog
+                Blog_id: gallery.blog,
+                SubscribersNotified: false
             });
     } catch (err) {
-        return Promise.reject();
+        return Promise.reject(err);
     }
 }
 
@@ -253,7 +256,7 @@ export const editGallery = async (id: number, gallery: GalleryEditDto) => {
             .where({ Id: id });
 
     } catch (err) {
-        return Promise.reject();
+        return Promise.reject(err);
     }
 }
 
@@ -281,8 +284,31 @@ export const deleteGallery = async (id: number) => {
 export const getEmails = async (galleryId: number): Promise<GalleryEmailsDto> => {
 
     const emails = await connection("PrivateGalleryEmail")
-        .where({PrivateGallery_id: galleryId})
+        .where({ PrivateGallery_id: galleryId })
         .select("Address");
 
-    return {emails: emails.map(e => ({address: e.Address}))};
+    const [{ SubscribersNotified, State, Emails }] = await connection("PrivateGallery")
+        .where({ Id: galleryId })
+        .select(
+            "SubscribersNotified",
+            "State",
+            connection.raw(`(SELECT COUNT("Id") FROM "PrivateGalleryEmail" WHERE "PrivateGallery_id" = "PrivateGallery"."Id") as "Emails"`));
+
+    return { 
+        pendingNotification: !SubscribersNotified && Number(State) === 1 && Number(Emails) > 0, 
+        emails: emails.map(e => ({ address: e.Address })) };
+}
+
+export const markAsNotified = async (id: number) => {
+    try {
+
+        await connection("PrivateGallery")
+            .update({
+                SubscribersNotified: true
+            })
+            .where({ Id: id });
+
+    } catch (err) {
+        return Promise.reject(err);
+    }
 }

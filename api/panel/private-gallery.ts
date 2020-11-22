@@ -16,9 +16,9 @@ export interface GalleryDto {
     lastName: string;
     state: PrivateGalleryState;
     password: string;
-    url: string;
     blogId: number;
     visits: number;
+    pendingNotification: boolean;
 }
 
 export interface GalleryVisitsDto {
@@ -49,6 +49,7 @@ export interface GalleryEmailDto {
 
 export interface GalleryEmailsDto {
     emails: GalleryEmailDto[];
+    pendingNotification: boolean;
 }
 
 export type CreateGalleryError = "ErrorOccuredWhileCreatingGallery";
