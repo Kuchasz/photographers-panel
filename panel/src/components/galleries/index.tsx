@@ -7,10 +7,10 @@ import { ChartStat } from "../stats-chart/stats";
 import "./styles.less";
 import {
     GalleryDto,
-    // getGalleryVisits,
+    getGalleryVisits,
     VisitsSummaryDto,
     getGalleriesList,
-    // GalleryVisitsDto,
+    GalleryVisitsDto,
     deleteGallery
 } from "@pp/api/panel/private-gallery";
 import { GalleryEdit } from "./gallery-edit";
@@ -19,14 +19,14 @@ import { ResultType } from "@pp/api/common";
 import { GalleryEmails } from "./gallery-emails";
 import { StatsChart } from "../stats-chart";
 
-// const getStats = (x: GalleryVisitsDto): ChartStat[] => [
-//     { label: "Today visits", value: x.todayVisits },
-//     { label: "Total visits", value: x.totalVisits },
-//     { label: "Range visits", value: x.rangeVisits },
-//     { label: "Best day", value: x.bestDay.date || '---' },
-//     { label: "Best day visits", value: x.bestDay.visits },
-//     { label: "Emails", value: x.emails },
-// ];
+const getStats = (x: GalleryVisitsDto): ChartStat[] => [
+    { label: "Today visits", value: x.todayVisits },
+    { label: "Total visits", value: x.totalVisits },
+    { label: "Range visits", value: x.rangeVisits },
+    { label: "Best day", value: x.bestDay.date || '---' },
+    { label: "Best day visits", value: x.bestDay.visits },
+    { label: "Emails", value: x.emails },
+];
 
 interface Props { }
 
@@ -156,9 +156,13 @@ export class Galleries extends React.Component<Props, State> {
         return (
             <div className="galleries">
                 <Panel>
-                    <StatsChart fetchChartStatsData={(s, e, i) => {
-                        console.log(s, e, i);
-                        return Promise.resolve({ data: [], stats: [] });
+                    <StatsChart fetchChartStatsData={async (s, e, i) => {
+                        const result = await getGalleryVisits(s, e, i);
+                        const stats = getStats(result);
+                        const data = result.dailyVisits.map(dv => ({date: dv.date, value: dv.visits}));
+                        // console.log(result);
+                        // console.log(s, e, i);
+                        return { data, stats };
                     }} selectedItem={this.state.selectedGallery!} />
                 </Panel>
                 <div className="list">

@@ -18,7 +18,7 @@ const formatDateToDayAndMonth = (dateString: string) => getDayAndMonth(new Date(
 
 const getData = (items: ChartData[]) => ({
     labels: items.map((item) => formatDateToDayAndMonth(item.date)),
-    series: [items.map((item) => Number(item.date))]
+    series: [items.map((item) => Number(item.value))]
 });
 
 export const Chart = ({ items }: { items: ChartData[] }) => (

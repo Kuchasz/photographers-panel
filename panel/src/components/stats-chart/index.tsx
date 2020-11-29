@@ -3,9 +3,11 @@ import { StatsRange } from "./stats-range";
 import { Chart, ChartData } from "./chart";
 import { ChartStat, ChartStats } from "./stats";
 import { addMonths } from "@pp/utils/date";
+import "./styles.less";
 
 type StatsItem = {
     id: number;
+    date: string;
 };
 
 type ChartStatsData = {
@@ -45,26 +47,49 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
         this.setState(({ disableAutoDate }) => ({ disableAutoDate: !disableAutoDate }));
     };
 
+    componentDidUpdate?(prevProps: Readonly<Props<T>>) {
+        if (prevProps.selectedItem?.id === this.props.selectedItem?.id) return;
+
+        this.setState({ isLoading: true });
+
+        const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(this.props.selectedItem.date);
+        const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(this.props.selectedItem.date), 1);
+
+        this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
+            console.log(resp.data);
+            this.setState({
+                isLoading: false,
+                stats: resp.stats,
+                items: resp.data,
+                startDate,
+                endDate
+            })
+        }
+        );
+    }
+
     onDateRangeChanged = ([startDate, endDate]: [(Date | undefined)?, (Date | undefined)?]) => {
         if (startDate === undefined || endDate === undefined) return;
         this.setState(() => ({ disableAutoDate: true, startDate, endDate }));
         if (this.props.selectedItem) {
-            this.setState((_state) => ({
+            this.setState(() => ({
                 isLoading: true
             }));
 
-            this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) =>
+            this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
+                console.log(resp.data);
                 this.setState({
                     isLoading: false,
                     stats: resp.stats,
                     items: resp.data
                 })
+            }
             );
         }
     };
 
     render() {
-        return <div>
+        return <div className="stats-chart">
             <header>
                 <StatsRange
                     onAutoChanged={this.toggleAutoDate}
