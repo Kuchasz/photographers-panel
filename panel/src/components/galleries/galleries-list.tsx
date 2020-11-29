@@ -126,7 +126,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 onDataUpdated={() => { }}
                 loading={this.props.loadingGalleries}
                 height={400}
-                onRowClick={(item: any) => this.props.onSelect(item.id)}
+                onRowClick={(item: any) => this.props.onSelect(item)}
                 data={this.props.galleries}
             >
                 <Table.Column width={50} align="center">

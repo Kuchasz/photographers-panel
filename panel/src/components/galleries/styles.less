@@ -1,79 +1,10 @@
 .galleries {
-    .visits {
-        position: relative;
-        height: 350px;
-
-        .rs-panel {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            .rs-panel-body {
-                flex-grow: 1;
-                display: flex;
-                flex-direction: column;
-
-                header {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-
-                .chart {
-                    flex-grow: 1;
-                    margin-top: 4px;
-                }
-                .stats {
-                    display: flex;
-                    height: 36px;
-                    margin-top: 0px;
-                    align-items: center;
-                    margin-right: 18px;
-                    .rs-loader-wrapper {
-                        transition: opacity 0.5s linear;
-                        &.collapsed {
-                            opacity: 0;
-                        }
-                    }
-                    span {
-                        &:first-child {
-                            margin-left: 0px;
-                        }
-                        margin-left: 32px;
-                    }
-                }
-                .range {
-                    display: flex;
-                    align-items: center;
-                    .auto {
-                        display: flex;
-                        background: transparent;
-                        transition: none;
-                        align-items: center;
-                        i {
-                            color: #34c3ff;
-                            &.disabled {
-                                color: #575757;
-                            }
-                        }
-                        &:hover {
-                            background: #f7f7fa;
-                        }
-                    }
-                    .rs-picker-daterange {
-                        .rs-picker-toggle {
-                            z-index: auto;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     .list {
         .password {
             position: relative;
             cursor: pointer;
             display: block;
+
             .cover {
                 position: absolute;
                 width: 100%;
@@ -84,41 +15,48 @@
                 text-align: center;
                 opacity: 0;
             }
+
             &.not-revealed {
                 &:hover {
                     .cover {
                         opacity: 1;
                     }
+
                     .text {
                         opacity: 0.25;
                     }
                 }
             }
+
             .text {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 justify-content: center;
+
                 .rs-progress {
                     margin-left: 8px;
                     display: inline;
                     width: 15px;
                     height: 15px;
+
                     .rs-progress-circle-info {
                         display: none;
                     }
                 }
             }
         }
+
         .link-group .rs-table-cell-content {
             padding: 5px;
         }
+
         .rs-btn-toolbar {
-            > .rs-btn {
+            >.rs-btn {
                 margin-left: 0px !important;
             }
 
-            > .rs-divider {
+            >.rs-divider {
                 margin: 0px 6px;
             }
         }

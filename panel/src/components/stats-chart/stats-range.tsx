@@ -13,7 +13,7 @@ interface Props {
 const enabledTooltip = <>Date <i>will</i> be set automatically</>;
 const disabledTooltip = <>Date <i>will not</i> be set automatically</>;
 
-export const GalleryVisitRange = (props: Props) => <div className="range">
+export const StatsRange = (props: Props) => <div className="range">
     <ToolTip placement="topStart" text={props.autoDisabled ? disabledTooltip : enabledTooltip}>
         <Button size="lg" onClick={props.onAutoChanged} className="auto">
             <Icon className={props.autoDisabled ? "disabled" : ""} icon="magic" />
