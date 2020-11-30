@@ -1,11 +1,7 @@
 import { getDateString } from "@pp/utils/date";
 import { PrivateGalleryState } from "../private-gallery";
 import { endpoint, Result } from "../common";
-
-export interface VisitsSummaryDto {
-    date: string;
-    visits: number;
-}
+import { VisitsSummaryDto } from "./visits";
 
 export interface GalleryDto {
     id: number;

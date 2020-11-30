@@ -1,7 +1,8 @@
 import { connection } from "../db";
-import { getDateString } from "@pp/utils/date";
+import { getDateRange, getDateString } from "@pp/utils/date";
 import * as site from "@pp/api/site/blog";
 import * as panel from "@pp/api/panel/blog";
+import { sum } from "@pp/utils/array";
 
 export const getMostRecent = async (): Promise<site.LastBlog> => {
     const [mostRecent] = await connection("Blog").where({ IsHidden: 0 }).orderBy("Date", "desc").limit(1);
@@ -181,6 +182,64 @@ export const getTags = async (blogId: number): Promise<string> => {
 
     return blog.Tags;
 }
+
+export const getStats = async (blogId: number, startDate: Date, endDate: Date): Promise<panel.BlogVisitsDto> => {
+    const days = getDateRange(startDate, endDate);
+    const today = getDateString(new Date());
+
+    const visits = await connection("BlogVisit")
+        .where({ Blog_id: blogId })
+        .whereBetween("Date", [getDateString(startDate), getDateString(endDate)])
+        .groupBy("Date")
+        .select("Date", connection.raw(`COUNT("Date") as "Count"`));
+
+    const dayVisits = visits.reduce(
+        (prv, cur) => ({ [getDateString(cur.Date)]: Number.parseInt(cur.Count), ...prv }),
+        {}
+    );
+
+    const dailyVisits = days.map(getDateString).map((x) => ({ date: x, visits: dayVisits[x] ?? 0 }));
+
+    const bestDayVisits = await connection("BlogVisit")
+        .select("Date", connection.raw(`COUNT("Date") as "Count"`))
+        .groupBy("Date")
+        .where({ Blog_id: blogId })
+        .orderBy("Count", "desc")
+        .limit(1);
+
+    const bestDay = (bestDayVisits && bestDayVisits.length > 0)
+        ? { date: getDateString(bestDayVisits[0].Date), visits: bestDayVisits[0].Count }
+        : { date: "", visits: 0 };
+
+    const totalVisitsResult = await connection("BlogVisit")
+        .where({ Blog_id: blogId })
+        .count("Id", { as: 'Visits' })
+        .first();
+
+    const totalVisits = (totalVisitsResult)
+        ? totalVisitsResult.Visits as number
+        : 0;
+
+    const todayVisitsResult = await connection("BlogVisit")
+        .count("Id", { as: 'Count' })
+        .where({ Blog_id: blogId, Date: today })
+        .first();
+
+    const todayVisits = todayVisitsResult
+        ? todayVisitsResult.Count as number
+        : 0;
+
+    const rangeVisits = sum(dailyVisits, (d) => d.visits);
+
+    return {
+        bestDay,
+        dailyVisits,
+        totalVisits,
+        rangeDays: days.length,
+        rangeVisits,
+        todayVisits
+    };
+};
 
 export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => {
 

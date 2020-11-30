@@ -8,7 +8,6 @@ import "./styles.less";
 import {
     GalleryDto,
     getGalleryVisits,
-    VisitsSummaryDto,
     getGalleriesList,
     GalleryVisitsDto,
     deleteGallery
@@ -18,6 +17,7 @@ import { confirm } from "../common/confirmation";
 import { ResultType } from "@pp/api/common";
 import { GalleryEmails } from "./gallery-emails";
 import { StatsChart } from "../stats-chart";
+import { VisitsSummaryDto } from "@pp/api/panel/visits";
 
 const getStats = (x: GalleryVisitsDto): ChartStat[] => [
     { label: "Today visits", value: x.todayVisits },

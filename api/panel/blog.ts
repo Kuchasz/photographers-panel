@@ -1,4 +1,6 @@
+import { getDateString } from "@pp/utils/date";
 import { endpoint, Result } from "../common";
+import { VisitsSummaryDto } from "./visits";
 
 export interface BlogSelectItem {
     label: string;
@@ -39,6 +41,15 @@ export interface BlogAssetsListItemDto {
 export interface MainBlogAssetDto {
     id: number;
     mainBlogAsset: number;
+}
+
+export interface BlogVisitsDto {
+    todayVisits: number;
+    totalVisits: number;
+    rangeDays: number;
+    rangeVisits: number;
+    bestDay: VisitsSummaryDto;
+    dailyVisits: VisitsSummaryDto[];
 }
 
 export type CreateBlogError = "ErrorOccuredWhileCreatingBlog";
@@ -250,3 +261,18 @@ export const changeBlogAssetAlt = (id: number, alt: string) =>
             .then(resolve);
     });
 changeBlogAssetAlt.route = changeBlogAssetAltRoute;
+
+const getBlogVisitsRoute = "/api/panel/blog-stats/:start/:end/:blogId";
+export const getBlogVisits = (
+    startDate: Date,
+    endDate: Date,
+    selectedGallery: number
+): Promise<BlogVisitsDto> =>
+    fetch(
+        endpoint +
+        getBlogVisitsRoute
+            .replace(":start", getDateString(startDate))
+            .replace(":end", getDateString(endDate))
+            .replace(":blogId", selectedGallery.toString())
+    ).then(resp => resp.json());
+getBlogVisits.route = getBlogVisitsRoute;

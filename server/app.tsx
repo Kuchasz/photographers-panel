@@ -391,18 +391,27 @@ app.post(blogPanel.changeBlogAssetAlt.route, verify, async (req, res) => {
     res.json(result);
 });
 
+app.get(blogPanel.getBlogVisits.route, verify, async (req, res) => {
+    const blogStats = await blogModel.getStats(
+        Number.parseInt(req.params.blogId),
+        new Date(req.params.start),
+        new Date(req.params.end)
+    );
+    res.json(blogStats);
+});
+
 app.get(privateGalleryPanel.getGalleriesList.route, verify, async (req, res) => {
     const galleries = await privateGalleryModel.getList();
     res.json(galleries);
 });
 
 app.get(privateGalleryPanel.getGalleryVisits.route, verify, async (req, res) => {
-    const galleries = await privateGalleryModel.getStats(
+    const galleryStats = await privateGalleryModel.getStats(
         Number.parseInt(req.params.galleryId),
         new Date(req.params.start),
         new Date(req.params.end)
     );
-    res.json(galleries);
+    res.json(galleryStats);
 });
 
 app.get(privateGalleryPanel.checkPasswordIsUnique.route, verify, async (req, res) => {
