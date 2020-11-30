@@ -1,84 +1,15 @@
 .blogs {
-    // .visits {
-    //     position: relative;
-    //     height: 350px;
-
-    //     .rs-panel {
-    //         display: flex;
-    //         flex-direction: column;
-    //         height: 100%;
-    //         .rs-panel-body {
-    //             flex-grow: 1;
-    //             display: flex;
-    //             flex-direction: column;
-
-    //             header {
-    //                 display: flex;
-    //                 align-items: center;
-    //                 justify-content: space-between;
-    //             }
-
-    //             .chart {
-    //                 flex-grow: 1;
-    //                 margin-top: 4px;
-    //             }
-    //             .stats {
-    //                 display: flex;
-    //                 height: 36px;
-    //                 margin-top: 0px;
-    //                 align-items: center;
-    //                 margin-right: 18px;
-    //                 .rs-loader-wrapper {
-    //                     transition: opacity 0.5s linear;
-    //                     &.collapsed {
-    //                         opacity: 0;
-    //                     }
-    //                 }
-    //                 span {
-    //                     &:first-child {
-    //                         margin-left: 0px;
-    //                     }
-    //                     margin-left: 32px;
-    //                 }
-    //             }
-    //             .range {
-    //                 display: flex;
-    //                 align-items: center;
-    //                 .auto {
-    //                     display: flex;
-    //                     background: transparent;
-    //                     transition: none;
-    //                     align-items: center;
-    //                     i {
-    //                         color: #34c3ff;
-    //                         &.disabled {
-    //                             color: #575757;
-    //                         }
-    //                     }
-    //                     &:hover {
-    //                         background: #f7f7fa;
-    //                     }
-    //                 }
-    //                 .rs-picker-daterange {
-    //                     .rs-picker-toggle {
-    //                         z-index: auto;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
     .list {
         .link-group .rs-table-cell-content {
             padding: 5px;
         }
+
         .rs-btn-toolbar {
-            > .rs-btn {
+            >.rs-btn {
                 margin-left: 0px !important;
             }
 
-            > .rs-divider {
+            >.rs-divider {
                 margin: 0px 6px;
             }
         }
@@ -89,38 +20,46 @@
     .rs-modal-body {
         overflow: hidden !important;
     }
+
     .assets-list {
         display: flex;
         flex-wrap: wrap;
+
         .item {
             margin: 8px;
             width: 80px;
             height: 80px;
             border-radius: 6px;
+
             &.add-btn {
                 border: 2px dotted #e5e5ea;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 button {
                     height: 100%;
                     width: 100%;
                 }
             }
+
             input[type="file"] {
                 position: absolute !important;
                 clip: rect(1px 1px 1px 1px);
             }
+
             &.thumb {
                 position: relative;
                 overflow: hidden;
                 background-color: rgba(39, 44, 54, 0.83);
+
                 .rs-progress {
                     width: 100%;
                     height: 100%;
                     position: absolute;
                     top: 0px;
                 }
+
                 &:hover {
                     .overlay-button {
                         .hideable {
@@ -128,12 +67,14 @@
                         }
                     }
                 }
+
                 img {
                     height: 100%;
                     width: 100%;
                     object-fit: cover;
                     object-position: center;
                 }
+
                 .overlay-button {
                     position: absolute;
                     width: 100%;
@@ -143,11 +84,13 @@
                     margin: 0px;
                     justify-content: space-around;
                     color: white;
+
                     .hideable {
                         transition: opacity linear 0.25s;
                         opacity: 0;
                         cursor: pointer;
                     }
+
                     .rs-icon {
                         margin: 4px;
                         font-size: 20px;

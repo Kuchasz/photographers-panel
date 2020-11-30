@@ -4,7 +4,7 @@ import { Table, Icon, IconButton, ButtonToolbar, Divider } from "rsuite";
 import { ToolTip } from "../common/tooltip";
 
 interface Props {
-    onSelect: (id: number) => void;
+    onSelect: (item: any) => void;
     onEdit: (id: number) => void;
     onAssignAssets: (id: number) => void;
     onVisibilityChange: (id: number, visibility: boolean) => void;
@@ -71,7 +71,7 @@ export class BlogsList extends React.Component<Props, State> {
                 onDataUpdated={() => { }}
                 loading={this.props.loadingBlogs}
                 height={700}
-                onRowClick={(item: any) => this.props.onSelect(item.id)}
+                onRowClick={(item: any) => this.props.onSelect(item)}
                 data={this.props.blogs}
             >
                 <Table.Column width={100} align="center">

@@ -160,8 +160,6 @@ export class Galleries extends React.Component<Props, State> {
                         const result = await getGalleryVisits(s, e, i);
                         const stats = getStats(result);
                         const data = result.dailyVisits.map(dv => ({date: dv.date, value: dv.visits}));
-                        // console.log(result);
-                        // console.log(s, e, i);
                         return { data, stats };
                     }} selectedItem={this.state.selectedGallery!} />
                 </Panel>

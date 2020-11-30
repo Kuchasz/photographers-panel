@@ -1,35 +1,30 @@
 import * as React from "react";
 import { Panel, Icon, Alert, Button } from "rsuite";
-import { addMonths } from "@pp/utils/date";
 import "./styles.less";
 import { confirm } from "../common/confirmation";
-import { getBlogsList, BlogListItem, deleteBlog } from "@pp/api/panel/blog";
+import { getBlogsList, BlogListItem, deleteBlog, getBlogVisits, BlogVisitsDto } from "@pp/api/panel/blog";
 import { BlogsList } from "./blogs-list";
 import { BlogCreate } from "./blog-create";
 import { BlogEdit } from "./blog-edit";
 import { ResultType } from "@pp/api/common";
 import { BlogAssignAssets } from "./blog-assign-assets";
+import { StatsChart } from "../stats-chart";
+import { ChartStat } from "../stats-chart/stats";
 
-interface Props {}
+const getStats = (x: BlogVisitsDto): ChartStat[] => [
+    { label: "Today visits", value: x.todayVisits },
+    { label: "Total visits", value: x.totalVisits },
+    { label: "Range visits", value: x.rangeVisits },
+    { label: "Best day", value: x.bestDay.date || '---' },
+    { label: "Best day visits", value: x.bestDay.visits }
+];
+
+interface Props { }
 
 interface State {
-    isLoading: boolean;
     isLoadingBlogs: boolean;
-    // visits: VisitsSummary[];
     blogs: BlogListItem[];
-    selectedBlog?: number;
-    stats?: {
-        todayVisits: number;
-        totalVisits: number;
-        bestDay: string;
-        bestDayVisits: number;
-        rangeDays: number;
-        rangeVisits: number;
-        emails: number;
-    };
-    startDate: Date;
-    endDate: Date;
-    disableAutoDate: boolean;
+    selectedBlog?: BlogListItem;
     showCreateForm: boolean;
     showEditForm: boolean;
     showAssignAssets: boolean;
@@ -40,15 +35,9 @@ export class Blogs extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            // visits: [],
-            isLoading: false,
             isLoadingBlogs: false,
             blogs: [],
-            stats: undefined,
             selectedBlog: undefined,
-            startDate: addMonths(new Date(), -1),
-            endDate: new Date(),
-            disableAutoDate: false,
             showCreateForm: false,
             showEditForm: false,
             showAssignAssets: false,
@@ -65,7 +54,7 @@ export class Blogs extends React.Component<Props, State> {
             () => ({ isLoadingBlogs: true }),
             () => {
                 getBlogsList().then((blogs) => {
-                    const selectedBlog = blogs[0].id;
+                    const selectedBlog = blogs[0];//.id;
                     this.setState({
                         blogs,
                         isLoadingBlogs: false
@@ -76,42 +65,13 @@ export class Blogs extends React.Component<Props, State> {
         );
     };
 
-    onDateRangeChanged = ([startDate, endDate]: [(Date | undefined)?, (Date | undefined)?]) => {
-        if (startDate === undefined || endDate === undefined) return;
-        this.setState(() => ({ disableAutoDate: true, startDate, endDate }));
-        if (this.state.selectedBlog) {
-            this.setState((_state) => ({
-                isLoading: true
-            }));
-
-            // getGalleryVisits(startDate, endDate, this.state.selectedBlog).then(resp =>
-            //     this.setState({ isLoading: false, stats: getStats(resp), visits: resp.dailyVisits })
-            // );
-        }
-    };
-
-    toggleRandom = () => {
-        this.setState(({ disableAutoDate: autoDate }) => ({ disableAutoDate: !autoDate }));
-    };
-
-    onBlogSelected = (selectedBlog: number) => {
+    onBlogSelected = (selectedBlog: BlogListItem) => {
         if (selectedBlog === this.state.selectedBlog) return;
 
-        const blog = this.state.blogs.filter((x) => x.id === selectedBlog)[0];
-
-        const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(blog.date);
-        const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(blog.date), 1);
-
         this.setState((_state) => ({
-            isLoading: true,
-            startDate,
-            endDate,
             selectedBlog
         }));
 
-        // getGalleryVisits(startDate, endDate, selectedBlog).then(resp =>
-        //     this.setState({ isLoading: false, stats: getStats(resp), visits: resp.dailyVisits })
-        // );
     };
 
     onBlogEdit = (selectedBlog: number) => {
@@ -123,7 +83,7 @@ export class Blogs extends React.Component<Props, State> {
 
     onVisibilityChange = (selectedBlog: number, visibility: boolean) => {
         const blog = this.state.blogs.find(b => b.id === selectedBlog);
-        if(blog){
+        if (blog) {
             blog.visible = visibility;
         }
     };
@@ -167,25 +127,14 @@ export class Blogs extends React.Component<Props, State> {
     render() {
         return (
             <div className="blogs">
-                <div className="visits">
-                    {/* <Panel>
-                        <header>
-                            <GalleryVisitRange
-                                onAutoChanged={this.toggleRandom}
-                                autoDisabled={this.state.disableAutoDate}
-                                startDate={this.state.startDate}
-                                endDate={this.state.endDate}
-                                onRangeChange={this.onDateRangeChanged}
-                            />
-                            <span>
-                                {this.state.stats != null ? (
-                                    <GalleryStats isLoading={this.state.isLoading} {...this.state.stats} />
-                                ) : null}
-                            </span>
-                        </header>
-                        <GalleryChart visits={this.state.visits}></GalleryChart>
-                    </Panel> */}
-                </div>
+                <Panel>
+                    <StatsChart fetchChartStatsData={async (s, e, i) => {
+                        const result = await getBlogVisits(s, e, i);
+                        const stats = getStats(result);
+                        const data = result.dailyVisits.map(dv => ({ date: dv.date, value: dv.visits }));
+                        return { data, stats };
+                    }} selectedItem={this.state.selectedBlog!} />
+                </Panel>
                 <div className="list">
                     <Panel
                         header={
@@ -220,7 +169,6 @@ export class Blogs extends React.Component<Props, State> {
                 ) : null}
                 {this.state.blogToEditId ? (
                     <BlogAssignAssets
-                        // onSaved={this.fetchBlogs}
                         showBlogAssignAssets={this.state.showAssignAssets}
                         closeAssignAssets={this.closeAssignAssets}
                         id={this.state.blogToEditId}
