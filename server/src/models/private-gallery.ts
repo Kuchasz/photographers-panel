@@ -1,7 +1,7 @@
 import { connection } from "../db";
 import { PrivateGalleryUrlCheckResult, Subscription } from "@pp/api/site/private-gallery";
 import { getDateString, getDateRange } from "@pp/utils/date";
-import { GalleryEditDto, GalleryDto, GalleryVisitsDto, VisitsSummaryDto, GalleryEmailsDto } from "@pp/api/panel/private-gallery";
+import { GalleryEditDto, GalleryDto, GalleryVisitsDto, GalleryEmailsDto } from "@pp/api/panel/private-gallery";
 import { PrivateGalleryState } from "@pp/api/private-gallery";
 import { sum } from "@pp/utils/array";
 
