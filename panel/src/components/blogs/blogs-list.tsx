@@ -70,7 +70,7 @@ export class BlogsList extends React.Component<Props, State> {
                 shouldUpdateScroll={true}
                 onDataUpdated={() => { }}
                 loading={this.props.loadingBlogs}
-                height={700}
+                height={400}
                 onRowClick={(item: any) => this.props.onSelect(item)}
                 data={this.props.blogs}
             >
