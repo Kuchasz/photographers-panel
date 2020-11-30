@@ -20,7 +20,7 @@ interface State {
 type VisibilityIconProps = { id: number; initialVisibility: boolean, onVisibilityChange: (visibility: boolean) => void };
 
 const VisibilityIcon = ({ id, initialVisibility, onVisibilityChange }: VisibilityIconProps) => {
-    const [visible, setVisible] = useState<boolean>();
+    const [visible, setVisible] = useState<boolean>(initialVisibility);
     const [isLoading, setIsLoading] = useState(false);
 
     React.useEffect(() => {
