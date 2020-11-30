@@ -39,7 +39,7 @@ class MenuComponent extends React.Component<Props, State> {
     handleItemClick = (route: string) => { this.props.history.push(route); }
 
     render() {
-        const activeItem = this.props.location.pathname.toLowerCase().substr(1);
+        const activeItem = this.props.location.pathname.toLowerCase();
 
         return <div style={styles}>
             <Sidenav style={{ height: '100%' }} onSelect={this.handleItemClick} activeKey={activeItem} expanded={false}>

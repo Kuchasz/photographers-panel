@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Icon, Alert } from "rsuite";
 import * as security from "../../security";
-
+import "./styles.less";
 
 interface Props {
   canLogOut: boolean;
@@ -15,10 +15,10 @@ export const NavBarInstance = (props: Props) => {
   }
 
   return (
-    <Navbar appearance="inverse">
+    <Navbar className="top-bar" appearance="inverse">
       <Navbar.Header>
         <a href="#" className="navbar-brand logo">
-          PP
+          Photographers Panel
           </a>
       </Navbar.Header>
       <Navbar.Body>
