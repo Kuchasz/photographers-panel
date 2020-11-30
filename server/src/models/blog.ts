@@ -16,13 +16,14 @@ export const getList = async (): Promise<site.BlogListItem[]> => {
         .where({ IsHidden: 0 })
         .whereNotNull("BlogAsset.Id")
         .orderBy("Blog.Date", "desc")
-        .select("Blog.Id", "BlogAsset.Url", "Blog.Title", "Blog.Date", "Blog.Alias");
+        .select("Blog.Id", "BlogAsset.Url", "Blog.Title", "Blog.Date", "Blog.Alias", "Blog.Content");
 
     const blogListItems = blogs.map((b: any) => ({
         title: b.Title,
         date: getDateString(new Date(b.Date)),
         alias: b.Alias,
-        photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`
+        photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`,
+        content: b.Content
     }));
 
     return blogListItems;

@@ -27,8 +27,8 @@ export const run = async (connection: Knex): Promise<boolean> => {
         type result = { id: number; date: Date; photourl: string };
 
         const results = await connection("blogentryphoto")
-            .select<result[]>("blogentryphoto.id", "blogentryphoto.date", "blogentry.photourl")
-            .innerJoin("blogentry", "blogentry.id", "blogentryphoto.BlogEntryId");
+            .innerJoin("blogentry", "blogentry.id", "blogentryphoto.BlogEntryId")
+            .select<result[]>("blogentry.id", "blogentry.date", "blogentryphoto.photourl");
 
         const allPaths = results.map((p) => ({
             old: oldPath(getDateString(p.date))(p.photourl),

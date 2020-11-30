@@ -5,4 +5,4 @@ export const connection = knex({
     client: "pg",
     connection: db,
     searchPath: "jarvis_pstudio"
-});
+})
