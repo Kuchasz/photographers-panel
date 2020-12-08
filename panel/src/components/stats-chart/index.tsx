@@ -47,9 +47,17 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
         this.setState(({ disableAutoDate }) => ({ disableAutoDate: !disableAutoDate }));
     };
 
+    componentDidMount() {
+        if (!this.props.selectedItem) return;
+        this.fetchStats();
+    }
+
     componentDidUpdate?(prevProps: Readonly<Props<T>>) {
         if (prevProps.selectedItem?.id === this.props.selectedItem?.id) return;
+        this.fetchStats();
+    }
 
+    fetchStats() {
         this.setState({ isLoading: true });
 
         const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(this.props.selectedItem.date);

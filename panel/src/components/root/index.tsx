@@ -11,6 +11,7 @@ import { routes } from "../../routes";
 import { LogIn } from "../login";
 import { isLoggedIn } from "../../security";
 import { Soon } from "../soon";
+import { SiteStats } from "../site-stats";
 // import { doesHttpOnlyCookieExist } from "../../../../utils/auth";
 
 interface Props extends RouteComponentProps {
@@ -32,7 +33,7 @@ class RootComponent extends React.Component<Props, State> {
                     </div>}
                     <div id="content" className={fullPageView ? "full-page" : ""}>
                         <Route exact path={routes.home} component={Soon} />
-                        <Route exact path={routes.stats} component={Soon} />
+                        <Route exact path={routes.stats} component={SiteStats} />
                         <Route exact path={routes.galleries} component={Galleries} />
                         <Route exact path={routes.emails} component={Soon} />
                         <Route exact path={routes.comments} component={Soon} />

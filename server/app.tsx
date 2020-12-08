@@ -11,10 +11,11 @@ import * as blogModel from "./src/models/blog";
 import * as messageModel from "./src/models/message";
 import * as privateGalleryModel from "./src/models/private-gallery";
 import * as emailModel from "./src/models/email";
-import * as page from "./src/models/page";
+import * as siteModel from "./src/models/site";
 import { All as Root } from "@pp/site";
 import * as blog from "@pp/api/site/blog";
 import * as blogPanel from "@pp/api/panel/blog";
+import * as sitePanel from "@pp/api/panel/site";
 import fs from "fs";
 import { routes } from "@pp/api/site/routes";
 import * as message from "@pp/api/site/message";
@@ -217,6 +218,13 @@ app.get([`${authPanel.viewLogIn.route}`, `${authPanel.viewLogIn.route}/*`], asyn
     });
 });
 
+app.get(sitePanel.getSiteVisits.route, verify, async (req, res) => {
+    const siteStats = await siteModel.getStats(
+        new Date(req.params.start),
+        new Date(req.params.end)
+    );
+    res.json(siteStats);
+});
 
 app.get(blogPanel.getBlogSelectList.route, verify, async (req, res) => {
     const blogs = await blogModel.getSelectList();
@@ -520,7 +528,7 @@ app.get("*", async (req, res, next) => {
         return;
     }
 
-    fs.readFile(requireModule("@pp/site/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(requireModule("@pp/site/dist/index.html"), "utf8", async (err, template) => {
         if (err) {
             console.error(err);
             return res.status(500);
@@ -547,8 +555,7 @@ app.get("*", async (req, res, next) => {
 
         const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "");
 
-        page.registerVisit(new Date(), address);
-        console.log(address);
+        await siteModel.registerVisit(new Date(), address);
 
         return res.send(
             template.replace('<div id="root"></div>', `<div id="root">${siteContent}</div>`).replace(
