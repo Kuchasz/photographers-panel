@@ -14,6 +14,7 @@ import { BlogEditDto, createBlog } from "@pp/api/panel/blog";
 import { ResultType } from "@pp/api/common";
 import { blogModel, emptyBlog } from "./blog-model";
 import { FormInstance } from "rsuite/lib/Form/index.d.ts";
+import { translations } from "../../i18n";
 
 interface Props {
     showCreateForm: boolean;
@@ -33,12 +34,12 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
             setIsLoading(true);
             createBlog(formState).then((result) => {
                 if (result.type === ResultType.Success) {
-                    Alert.success("Blog successfully added.");
+                    Alert.success(translations.blog.create.created);
                     setFormState(emptyBlog());
                     closeCreateForm();
                     onAdded();
                 } else {
-                    Alert.error("An error occured while adding blog.");
+                    Alert.error(translations.blog.create.notCreated);
                 }
                 setIsLoading(false);
             });
@@ -48,7 +49,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
     return (
         <Drawer size="sm" placement="right" show={showCreateForm} onHide={closeCreateForm}>
             <Drawer.Header>
-                <Drawer.Title>Create new blog</Drawer.Title>
+                <Drawer.Title>{translations.blog.create.title}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
                 <Form
@@ -58,34 +59,34 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                     onChange={(x) => setFormState(x as BlogEditDto)}
                 >
                     <FormGroup>
-                        <ControlLabel>Title</ControlLabel>
-                        <FormControl style={{width: 500}} name="title" />
-                        <HelpBlock tooltip>Title of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.create.details.title.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="title" />
+                        <HelpBlock tooltip>{translations.blog.create.details.title.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Alias</ControlLabel>
-                        <FormControl style={{width: 500}} name="alias" checkAsync />
-                        <HelpBlock tooltip>Alias of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.create.details.alias.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="alias" checkAsync />
+                        <HelpBlock tooltip>{translations.blog.create.details.alias.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Date</ControlLabel>
-                        <FormControl style={{width: 500}} name="date" type="date" />
-                        <HelpBlock tooltip>Date of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.create.details.date.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="date" type="date" />
+                        <HelpBlock tooltip>{translations.blog.create.details.date.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Content</ControlLabel>
-                        <FormControl style={{width: 500, height: 300}} name="content" componentClass="textarea" />
-                        <HelpBlock tooltip>Content of blog</HelpBlock>
+                        <ControlLabel>{translations.blog.create.details.content.label}</ControlLabel>
+                        <FormControl style={{ width: 500, height: 300 }} name="content" componentClass="textarea" />
+                        <HelpBlock tooltip>{translations.blog.create.details.content.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Tags</ControlLabel>
-                        <FormControl style={{width: 500}} name="tags" />
-                        <HelpBlock tooltip>Tags of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.create.details.tags.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="tags" />
+                        <HelpBlock tooltip>{translations.blog.create.details.tags.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
                             <Button onClick={submitCreateBlog} appearance="primary" loading={isLoading}>
-                                Save
+                                {translations.blog.create.save}
                             </Button>
                             <Button
                                 onClick={() => {
@@ -95,7 +96,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                                 }}
                                 appearance="default"
                             >
-                                Cancel
+                                {translations.blog.create.cancel}
                             </Button>
                         </ButtonToolbar>
                     </FormGroup>

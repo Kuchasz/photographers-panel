@@ -4,6 +4,7 @@ import { BlogEditDto, editBlog, getBlogForEdit } from "@pp/api/panel/blog";
 import { ResultType } from "@pp/api/common";
 import { blogModel, emptyBlog } from "./blog-model";
 import { FormInstance } from "rsuite/lib/Form/index.d.ts";
+import { translations } from "../../i18n";
 
 interface Props {
     id: number;
@@ -28,11 +29,11 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
             setIsLoading(true);
             editBlog(id, formState).then((result) => {
                 if (result.type === ResultType.Success) {
-                    Alert.success("Blog successfully edited.");
+                    Alert.success(translations.blog.edit.edited);
                     closeEditForm();
                     onSaved();
                 } else {
-                    Alert.error("An error occured while editing blog.");
+                    Alert.error(translations.blog.edit.notEdited);
                 }
                 setIsLoading(false);
             });
@@ -42,7 +43,7 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
     return (
         <Drawer size="sm" placement="right" show={showEditForm} onHide={closeEditForm}>
             <Drawer.Header>
-                <Drawer.Title>Edit blog</Drawer.Title>
+                <Drawer.Title>{translations.blog.edit.title}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
                 <Form
@@ -52,34 +53,34 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
                     onChange={(x) => setFormState(x as BlogEditDto)}
                 >
                     <FormGroup>
-                        <ControlLabel>Title</ControlLabel>
-                        <FormControl style={{width: 500}} name="title" />
-                        <HelpBlock tooltip>Title of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.edit.details.title.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="title" />
+                        <HelpBlock tooltip>{translations.blog.create.details.title.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Alias</ControlLabel>
-                        <FormControl style={{width: 500}} name="alias" checkAsync />
-                        <HelpBlock tooltip>Alias of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.edit.details.alias.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="alias" checkAsync />
+                        <HelpBlock tooltip>{translations.blog.create.details.alias.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Date</ControlLabel>
-                        <FormControl style={{width: 500}} name="date" type="date" />
-                        <HelpBlock tooltip>Date of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.edit.details.date.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="date" type="date" />
+                        <HelpBlock tooltip>{translations.blog.create.details.date.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Content</ControlLabel>
-                        <FormControl style={{width: 500, height: 300}} name="content" componentClass="textarea" />
-                        <HelpBlock tooltip>Content of blog</HelpBlock>
+                        <ControlLabel>{translations.blog.edit.details.content.label}</ControlLabel>
+                        <FormControl style={{ width: 500, height: 300 }} name="content" componentClass="textarea" />
+                        <HelpBlock tooltip>{translations.blog.create.details.content.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Tags</ControlLabel>
-                        <FormControl style={{width: 500}} name="tags" disabled={formState.hasAssignments} />
-                        <HelpBlock tooltip>Tags of the blog</HelpBlock>
+                        <ControlLabel>{translations.blog.edit.details.tags.label}</ControlLabel>
+                        <FormControl style={{ width: 500 }} name="tags" />
+                        <HelpBlock tooltip>{translations.blog.create.details.tags.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
                             <Button onClick={submitEditBlog} appearance="primary" loading={isLoading}>
-                                Save
+                                {translations.blog.edit.save}
                             </Button>
                             <Button
                                 onClick={() => {
@@ -88,7 +89,7 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
                                 }}
                                 appearance="default"
                             >
-                                Cancel
+                                {translations.blog.edit.cancel}
                             </Button>
                         </ButtonToolbar>
                     </FormGroup>

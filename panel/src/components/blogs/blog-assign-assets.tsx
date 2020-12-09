@@ -26,6 +26,7 @@ import { range, union, distinctBy } from "@pp/utils/array";
 import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
 import { debounce } from "@pp/utils/function";
+import { translations } from "../../i18n";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
 
@@ -46,7 +47,7 @@ interface OverlayButtonProps {
 
 const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) => (
     <div className="overlay-button">
-        <ToolTip text={isMain ? "Asset is main" : "Set asset as main"}>
+        <ToolTip text={isMain ? translations.blog.assignAssets.isMain : translations.blog.assignAssets.setAsMain}>
             <Icon
                 onClick={(e: MouseEvent) => {
                     if (!isMain) onSetAsMain();
@@ -56,7 +57,7 @@ const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) =
                 icon={isMain ? "star" : "star-o"}
             />
         </ToolTip>
-        <ToolTip text="Delete asset">
+        <ToolTip text={translations.blog.assignAssets.delete}>
             <Icon
                 onClick={(e: MouseEvent) => {
                     onDelete();
@@ -92,11 +93,11 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
     render() {
         const { item, onAltChanged, ...props } = this.props;
         return (
-            <Popover {...props} title="Describe the asset">
+            <Popover {...props} title={translations.blog.assignAssets.describeAsset}>
                 <img style={{ width: "400px", height: "400px", objectFit: "cover" }} src={item.url}></img>
                 <Form fluid>
                     <FormGroup>
-                        <ControlLabel>Description</ControlLabel>
+                        <ControlLabel>{translations.blog.assignAssets.description}</ControlLabel>
                         <FormControl onChange={this.changeAlt} value={this.state.altText} name="description" />
                     </FormGroup>
                 </Form>
@@ -323,10 +324,10 @@ export class BlogAssignAssets extends React.Component<Props, State> {
     handleDelete = (assetId: number) => {
         deleteBlogAsset(assetId).then((result) => {
             if (result.type === ResultType.Success) {
-                Alert.success("Blog asset removed.");
+                Alert.success(translations.blog.assignAssets.assetRemoved);
                 this.setState((state) => ({ assets: state.assets.filter((a) => a.id !== assetId) }));
             } else {
-                Alert.error("An error ocurred while removing blog asset.");
+                Alert.error(translations.blog.assignAssets.assetNotRemoved);
             }
         });
     };
@@ -344,7 +345,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                 onHide={this.handleModalHide}
             >
                 <Modal.Header>
-                    <Modal.Title>Assign blog assets</Modal.Title>
+                    <Modal.Title>{translations.blog.assignAssets.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <AssetsList
@@ -359,10 +360,10 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.closeAssignAssets} appearance="primary">
-                        Save
+                        {translations.blog.assignAssets.save}
                     </Button>
                     <Button onClick={this.handleModalHide} appearance="subtle">
-                        Cancel
+                        {translations.blog.assignAssets.cancel}
                     </Button>
                 </Modal.Footer>
             </Modal>
