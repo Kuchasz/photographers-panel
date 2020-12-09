@@ -12,7 +12,7 @@ export default {
             isMain: "Asset is main",
             setAsMain: "Set asset as main"
         },
-        create:{
+        create: {
             created: "Blog successfully added.",
             notCreated: "An error occured while adding blog.",
             title: "Create new blog",
@@ -41,7 +41,7 @@ export default {
             save: "Save",
             cancel: "Cancel"
         },
-        edit:{
+        edit: {
             edited: "Blog successfully edited.",
             notEdited: "An error occured while editing blog.",
             title: "Edit blog",

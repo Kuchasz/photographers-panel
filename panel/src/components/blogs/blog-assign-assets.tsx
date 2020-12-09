@@ -145,7 +145,6 @@ const AssetUploadingThumb = ({
             item.file!,
             (p) => { console.log(p); setProcessing(p) },
             (res) => {
-                console.log('load=end');
                 setProcessing({ processing: false, progress: 0 });
                 res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
             }

@@ -12,7 +12,7 @@ export default {
             isMain: "Zdjecie jest glowne",
             setAsMain: "Ustaw jako glowne zdjecie"
         },
-        create:{
+        create: {
             created: "Blog dodany pomyslnie",
             notCreated: "Wystapil blad podczas dodawania bloga",
             title: "Utworz nowego bloga",
@@ -41,7 +41,7 @@ export default {
             save: "Zapisz",
             cancel: "Anuluj"
         },
-        edit:{
+        edit: {
             edited: "Blog zapisany",
             notEdited: "Wystapil blad podczas edycji bloga",
             title: "Edytuj bloga",
