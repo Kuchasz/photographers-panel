@@ -65,6 +65,7 @@ export const LogIn = ({ }: Props) => {
             <FormGroup>
                 <ButtonToolbar>
                     <Button onClick={submitLogIn} appearance="primary" loading={isLoading}>Log In</Button>
+                    <button onClick={submitLogIn} style={{ visibility: "hidden" }} type="submit"></button>
                 </ButtonToolbar>
             </FormGroup>
         </Form>
