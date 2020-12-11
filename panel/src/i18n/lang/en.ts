@@ -145,6 +145,29 @@ export default {
             bestDay: "Best Day",
             bestDayVisits: "Best Day Visits",
             emails: "Emails"
+        },
+        states: {
+            state: "Gallery is",
+            available: "available",
+            turnedOff: "turned off",
+            notReady: "not ready"
+        },
+        list: {
+            notAvailablePre: "There is",
+            notAvailablePost: "no blog",
+            headers: {
+                place: "Place",
+                lastName: "Last Name",
+                date: "Date",
+                password: "Password",
+                totalVisits: "Total Visits"
+            },
+            actions: {
+                edit: "Edit gallery",
+                delete: "Delete gallery",
+                notificationsNotSend: "Notifications not send",
+                viewEmails: "View emails"
+            }
         }
     }
 }

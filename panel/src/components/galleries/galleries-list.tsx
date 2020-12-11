@@ -4,6 +4,7 @@ import { range } from "@pp/utils/array";
 import { GalleryDto } from "@pp/api/panel/private-gallery";
 import { PrivateGalleryState } from "@pp/api/private-gallery";
 import { ToolTip } from "../common/tooltip";
+import { translations } from "../../i18n";
 
 interface Props {
     onSelect: (item: any) => void;
@@ -45,17 +46,17 @@ const getColorFromBlogEntry = (blogId: number) => (blogId ? "#4caf50" : "#f44336
 const stateTooltips = {
     [PrivateGalleryState.Available]: (
         <>
-            Gallery is <i>available</i>.
+            {translations.gallery.states.state} <i>{translations.gallery.states.available}</i>.
         </>
     ),
     [PrivateGalleryState.TurnedOff]: (
         <>
-            Gallery is <i>turned off</i>.
+            {translations.gallery.states.state} <i>{translations.gallery.states.turnedOff}</i>.
         </>
     ),
     [PrivateGalleryState.NotReady]: (
         <>
-            Gallery is <i>not ready yet</i>.
+            {translations.gallery.states.state} <i>{translations.gallery.states.notReady}</i>.
         </>
     )
 };
@@ -63,12 +64,12 @@ const stateTooltips = {
 const blogTooltips = {
     Available: (
         <>
-            Blog is <i>available</i>.
+            {translations.gallery.states.state} <i>{translations.gallery.states.available}</i>.
         </>
     ),
     None: (
         <>
-            There is <i>no blog</i>.
+            {translations.gallery.list.notAvailablePre} <i>{translations.gallery.list.notAvailablePost}</i>.
         </>
     )
 };
@@ -152,29 +153,29 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 </Table.Column>
 
                 <Table.Column flexGrow={1}>
-                    <Table.HeaderCell>Wedding</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.gallery.list.headers.place}</Table.HeaderCell>
                     <Table.Cell dataKey="place" />
                 </Table.Column>
 
                 <Table.Column flexGrow={1}>
-                    <Table.HeaderCell>Last Name</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.gallery.list.headers.lastName}</Table.HeaderCell>
                     <Table.Cell dataKey="lastName" />
                 </Table.Column>
 
                 <Table.Column width={100} align="center">
-                    <Table.HeaderCell>Date</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.gallery.list.headers.date}</Table.HeaderCell>
                     <Table.Cell dataKey="date" />
                 </Table.Column>
 
                 <Table.Column width={120} align="center">
-                    <Table.HeaderCell>Password</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.gallery.list.headers.password}</Table.HeaderCell>
                     <Table.Cell dataKey="password">
                         {(gallery: GalleryDto) => <Password password={gallery.password} />}
                     </Table.Cell>
                 </Table.Column>
 
                 <Table.Column width={100} align="center">
-                    <Table.HeaderCell>Total Visits</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.gallery.list.headers.totalVisits}</Table.HeaderCell>
                     <Table.Cell dataKey="visits" />
                 </Table.Column>
 
@@ -183,7 +184,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.Cell className="link-group">
                         {(gallery: GalleryDto) => (
                             <ButtonToolbar>
-                                <ToolTip placement="left" text={"Edit gallery"}>
+                                <ToolTip placement="left" text={translations.gallery.list.actions.edit}>
                                     <IconButton
                                         appearance="subtle"
                                         icon={<Icon icon="edit2" />}
@@ -191,7 +192,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                     />
                                 </ToolTip>
                                 <Divider vertical />
-                                <ToolTip placement="left" text={"Delete gallery"}>
+                                <ToolTip placement="left" text={translations.gallery.list.actions.delete}>
                                     <IconButton
                                         appearance="subtle"
                                         icon={<Icon icon="trash2" />}
@@ -199,7 +200,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                     />
                                 </ToolTip>
                                 <Divider vertical />
-                                <ToolTip placement="left" text={gallery.pendingNotification ? "Notifications not send" : "View emails"}>
+                                <ToolTip placement="left" text={gallery.pendingNotification ? translations.gallery.list.actions.notificationsNotSend : translations.gallery.list.actions.viewEmails}>
                                     <IconButton
                                         appearance="subtle"
                                         style={gallery.pendingNotification ? { color: "#FFC107" } : {}}

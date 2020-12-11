@@ -145,6 +145,29 @@ export default {
             bestDay: "Najlepszy dzien",
             bestDayVisits: "Odwiedziny najlepszego dnia",
             emails: "Adresy email"
+        },
+        states: {
+            state: "Galleria jest",
+            available: "dostepna",
+            turnedOff: "wylaczona",
+            notReady: "nie przygotowana"
+        },
+        list: {
+            notAvailablePre: "Bloga",
+            notAvailablePost: "niema",
+            headers: {
+                place: "Miejsce wesela",
+                lastName: "Nazwisko",
+                date: "Data wesela",
+                password: "Haslo",
+                totalVisits: "Wszystkich odwiedzin"
+            },
+            actions: {
+                edit: "Edytuj galerie",
+                delete: "Usun galerie",
+                notificationsNotSend: "Powiadomienia nie zostaly wyslany",
+                viewEmails: "Zobacz adresy email"
+            }
         }
     }
 }
