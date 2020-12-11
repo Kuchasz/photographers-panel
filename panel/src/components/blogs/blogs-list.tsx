@@ -111,7 +111,7 @@ export class BlogsList extends React.Component<Props, State> {
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
-                                <ToolTip placement="left" text={"Edit blog"}>
+                                <ToolTip placement="left" text={translations.blog.list.actions.edit}>
                                     <IconButton
                                         appearance="subtle"
                                         icon={<Icon icon="edit2" />}
@@ -119,7 +119,7 @@ export class BlogsList extends React.Component<Props, State> {
                                     />
                                 </ToolTip>
                                 <Divider vertical />
-                                <ToolTip placement="left" text={"Delete blog"}>
+                                <ToolTip placement="left" text={translations.blog.list.actions.delete}>
                                     <IconButton
                                         appearance="subtle"
                                         icon={<Icon icon="trash2" />}
@@ -127,7 +127,7 @@ export class BlogsList extends React.Component<Props, State> {
                                     />
                                 </ToolTip>
                                 <Divider vertical />
-                                <ToolTip placement="left" text={"Assign assets"}>
+                                <ToolTip placement="left" text={translations.blog.list.actions.assignAssets}>
                                     <IconButton
                                         appearance="subtle"
                                         icon={<Icon icon="th-large" />}

@@ -87,6 +87,11 @@ export default {
                 date: "Date",
                 title: "Title",
                 content: "Content"
+            },
+            actions: {
+                edit: "Edit blog",
+                delete: "Delete blog",
+                assignAssets: "Assign assets"
             }
         },
         stats: {

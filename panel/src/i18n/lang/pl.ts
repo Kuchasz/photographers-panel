@@ -87,6 +87,11 @@ export default {
                 date: "Data dodania",
                 title: "Tytul",
                 content: "Tresc"
+            },
+            actions: {
+                edit: "Edytuj bloga",
+                delete: "Usun bloga",
+                assignAssets: "Dodaj zdjecia"
             }
         },
         stats: {
