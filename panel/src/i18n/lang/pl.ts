@@ -104,5 +104,12 @@ export default {
         minLength: (min: number) => `Musi miec conajmniej ${min} znakow`,
         maxLength: (max: number) => `Moze miec maksymalnie ${max} znakow`,
         pattern: (pattern: string) => `Musi spelniac wzorzec: ${pattern}`
+    },
+    menu:{
+        home: "Ekran domowy",
+        stats: "Statystyki strony",
+        galleries: "Galerie",
+        blogs: "Blogi",
+        comments: "Komentarze"
     }
 }

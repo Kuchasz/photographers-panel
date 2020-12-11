@@ -2,6 +2,7 @@ import * as React from "react";
 import { Sidenav, Nav, Icon } from "rsuite";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { routes } from "../../routes";
+import { translations } from "../../i18n";
 
 interface MenuItem {
     icon: any;
@@ -10,12 +11,12 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-    { route: routes.home, icon: "home", text: 'Home' },
-    { route: routes.stats, icon: "signal", text: 'Stats' },
+    { route: routes.home, icon: "home", text: translations.menu.home },
+    { route: routes.stats, icon: "signal", text: translations.menu.stats },
     // { route: routes.emails, icon: "envelope-o", text: 'Emails' },
-    { route: routes.galleries, icon: "leaf", text: 'Galleries' },
-    { route: routes.blogs, icon: "flag", text: 'Blogs' },
-    { route: routes.comments, icon: "comments", text: 'Comments' },
+    { route: routes.galleries, icon: "leaf", text: translations.menu.galleries },
+    { route: routes.blogs, icon: "flag", text: translations.menu.blogs },
+    { route: routes.comments, icon: "comments", text: translations.menu.comments },
     // { route: routes.login, icon: "trash", text: 'LogIn' }
 ];
 

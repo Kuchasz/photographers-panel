@@ -104,5 +104,12 @@ export default {
         minLength: (min: number) => `Must be at least ${min} character long`,
         maxLength: (max: number) => `Must not be longer than ${max} characters`,
         pattern: (pattern: string) => `Must match the pattern: ${pattern}`
+    },
+    menu:{
+        home: "Homescreen",
+        stats: "Site statistics",
+        galleries: "Galleries",
+        blogs: "Blogs",
+        comments: "Comments"
     }
 }
