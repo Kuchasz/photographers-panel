@@ -12,7 +12,6 @@ import { LogIn } from "../login";
 import { isLoggedIn } from "../../security";
 import { Soon } from "../soon";
 import { SiteStats } from "../site-stats";
-// import { doesHttpOnlyCookieExist } from "../../../../utils/auth";
 
 interface Props extends RouteComponentProps {
 }

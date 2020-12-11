@@ -5,13 +5,14 @@ import { getSiteVisits, SiteVisitsDto } from "@pp/api/panel/site";
 import { StatsChart } from "../stats-chart";
 import { ChartStat } from "../stats-chart/stats";
 import { addMonths } from "@pp/utils/date";
+import { translations } from "../../i18n";
 
 const getStats = (x: SiteVisitsDto): ChartStat[] => [
-    { label: "Today visits", value: x.todayVisits },
-    { label: "Total visits", value: x.totalVisits },
-    { label: "Range visits", value: x.rangeVisits },
-    { label: "Best day", value: x.bestDay.date || '---' },
-    { label: "Best day visits", value: x.bestDay.visits }
+    { label: translations.site.stats.todayVisits, value: x.todayVisits },
+    { label: translations.site.stats.totalVisits, value: x.totalVisits },
+    { label: translations.site.stats.rangeVisits, value: x.rangeVisits },
+    { label: translations.site.stats.bestDay, value: x.bestDay.date || '---' },
+    { label: translations.site.stats.bestDayVisits, value: x.bestDay.visits }
 ];
 
 interface Props { }

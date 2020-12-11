@@ -18,14 +18,15 @@ import { ResultType } from "@pp/api/common";
 import { GalleryEmails } from "./gallery-emails";
 import { StatsChart } from "../stats-chart";
 import { VisitsSummaryDto } from "@pp/api/panel/visits";
+import { translations } from "../../i18n";
 
 const getStats = (x: GalleryVisitsDto): ChartStat[] => [
-    { label: "Today visits", value: x.todayVisits },
-    { label: "Total visits", value: x.totalVisits },
-    { label: "Range visits", value: x.rangeVisits },
-    { label: "Best day", value: x.bestDay.date || '---' },
-    { label: "Best day visits", value: x.bestDay.visits },
-    { label: "Emails", value: x.emails },
+    { label: translations.gallery.stats.todayVisits, value: x.todayVisits },
+    { label: translations.gallery.stats.totalVisits, value: x.totalVisits },
+    { label: translations.gallery.stats.rangeVisits, value: x.rangeVisits },
+    { label: translations.gallery.stats.bestDay, value: x.bestDay.date || '---' },
+    { label: translations.gallery.stats.bestDayVisits, value: x.bestDay.visits },
+    { label: translations.gallery.stats.emails, value: x.emails },
 ];
 
 interface Props { }
@@ -159,7 +160,7 @@ export class Galleries extends React.Component<Props, State> {
                     <StatsChart fetchChartStatsData={async (s, e, i) => {
                         const result = await getGalleryVisits(s, e, i);
                         const stats = getStats(result);
-                        const data = result.dailyVisits.map(dv => ({date: dv.date, value: dv.visits}));
+                        const data = result.dailyVisits.map(dv => ({ date: dv.date, value: dv.visits }));
                         return { data, stats };
                     }} selectedItem={this.state.selectedGallery!} />
                 </Panel>

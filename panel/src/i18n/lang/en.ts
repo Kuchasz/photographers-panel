@@ -71,7 +71,7 @@ export default {
             save: "Save",
             cancel: "Cancel"
         },
-        delete:{
+        delete: {
             deleted: "Blog deleted.",
             notDeleted: "An error occured while deleting blog.",
             confirmationHeader: "Removing of blog",
@@ -110,7 +110,7 @@ export default {
         maxLength: (max: number) => `Must not be longer than ${max} characters`,
         pattern: (pattern: string) => `Must match the pattern: ${pattern}`
     },
-    menu:{
+    menu: {
         home: "Homescreen",
         stats: "Site statistics",
         galleries: "Galleries",
@@ -124,6 +124,27 @@ export default {
         loginLabel: "Username",
         loginTooltip: "Username needed to Login",
         passwordLabel: "Password",
-        passwordTooltip: "Password needed to Login"
+        passwordTooltip: "Password needed to Login",
+        logoutButton: "Logout",
+        loggedOut: "Successfully logged-out!"
+    },
+    site: {
+        stats: {
+            todayVisits: "Today Visits",
+            totalVisits: "Total Visits",
+            rangeVisits: "Range Visits",
+            bestDay: "Best Day",
+            bestDayVisits: "Best Day Visits"
+        }
+    },
+    gallery: {
+        stats: {
+            todayVisits: "Today Visits",
+            totalVisits: "Total Visits",
+            rangeVisits: "Range Visits",
+            bestDay: "Best Day",
+            bestDayVisits: "Best Day Visits",
+            emails: "Emails"
+        }
     }
 }

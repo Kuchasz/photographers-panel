@@ -1,5 +1,6 @@
 import React from "react";
 import { Navbar, Nav, Icon, Alert } from "rsuite";
+import { translations } from "../../i18n";
 import * as security from "../../security";
 import "./styles.less";
 
@@ -11,7 +12,7 @@ export const NavBarInstance = (props: Props) => {
 
   const logOut = () => {
     security.logOut();
-    Alert.success("Successfully logged-out!");
+    Alert.success(translations.login.loggedOut);
   }
 
   return (
@@ -23,7 +24,7 @@ export const NavBarInstance = (props: Props) => {
       </Navbar.Header>
       <Navbar.Body>
         <Nav pullRight>
-          {props.canLogOut && <Nav.Item onClick={logOut} icon={<Icon icon="power-off" />}>Logout</Nav.Item>}
+          {props.canLogOut && <Nav.Item onClick={logOut} icon={<Icon icon="power-off" />}>{translations.login.logoutButton}</Nav.Item>}
         </Nav>
       </Navbar.Body>
     </Navbar>

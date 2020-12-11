@@ -4,8 +4,8 @@ export default {
             title: "Dodaj zdjecia do bloga",
             save: "Zapisz",
             cancel: "Anuluj",
-            assetRemoved: "Zdjecie dodane prawidlowo",
-            assetNotRemoved: "Wystapil blad podczas dodawania zdjecia",
+            assetRemoved: "Zdjecie usuniete prawidlowo",
+            assetNotRemoved: "Wystapil blad podczas usuwania zdjecia",
             description: "Opis zdjecia",
             describeAsset: "Opisz zdjecie",
             delete: "Usun zdjecie",
@@ -110,7 +110,7 @@ export default {
         maxLength: (max: number) => `Moze miec maksymalnie ${max} znakow`,
         pattern: (pattern: string) => `Musi spelniac wzorzec: ${pattern}`
     },
-    menu:{
+    menu: {
         home: "Ekran domowy",
         stats: "Statystyki strony",
         galleries: "Galerie",
@@ -124,6 +124,27 @@ export default {
         loginLabel: "Nazwa uzytkownika",
         loginTooltip: "Nazwa uzytkownika jest potrzebna zeby sie zalogowac",
         passwordLabel: "Haslo",
-        passwordTooltip: "Haslo jest potrzebne zeby sie zalogowac"
+        passwordTooltip: "Haslo jest potrzebne zeby sie zalogowac",
+        logoutButton: "Wyloguj sie",
+        loggedOut: "Pomyslnie wylogowano!"
+    },
+    site: {
+        stats: {
+            todayVisits: "Dzisiejsze odwiedziny",
+            totalVisits: "Wszystkich odwiedzin",
+            rangeVisits: "Odwiedziny z zakresu",
+            bestDay: "Najlepszy dzien",
+            bestDayVisits: "Odwiedziny najlepszego dnia"
+        }
+    },
+    gallery: {
+        stats: {
+            todayVisits: "Dzisiejsze odwiedziny",
+            totalVisits: "Wszystkich odwiedzin",
+            rangeVisits: "Odwiedziny z zakresu",
+            bestDay: "Najlepszy dzien",
+            bestDayVisits: "Odwiedziny najlepszego dnia",
+            emails: "Adresy email"
+        }
     }
 }
