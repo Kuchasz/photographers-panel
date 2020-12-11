@@ -13,6 +13,7 @@ export default {
             setAsMain: "Ustaw jako glowne zdjecie"
         },
         create: {
+            button: "Dodaj bloga",
             created: "Blog dodany pomyslnie",
             notCreated: "Wystapil blad podczas dodawania bloga",
             title: "Utworz nowego bloga",
@@ -69,6 +70,39 @@ export default {
             },
             save: "Zapisz",
             cancel: "Anuluj"
+        },
+        delete: {
+            deleted: "Blog zostal usuniety.",
+            notDeleted: "Wystapil blad podczas usuwania bloga.",
+            confirmationHeader: "Usuwanie bloga",
+            confirmationContent: "Jestes pewien ze chcesz usunac bloga?"
+        },
+        list: {
+            visible: "Widoczny",
+            hidden: "Niewidoczny",
+            visibilityTooltip: "Blog jest",
+            headers: {
+                visits: "Odwiedziny",
+                comments: "Komentarze",
+                date: "Data dodania",
+                title: "Tytul",
+                content: "Tresc"
+            }
+        },
+        stats: {
+            todayVisits: "Dzisiejsze odwiedziny",
+            totalVisits: "Wszystkich odwiedzin",
+            rangeVisits: "Odwiedziny z zakresu",
+            bestDay: "Najlepszy dzien",
+            bestDayVisits: "Odwiedziny najlepszego dnia"
         }
+    },
+    validation: {
+        required: "Wymagane",
+        unique: "Musi byc unikalne",
+        lowercaseAndNumbers: "Moze zawierac tylko male litery i numery",
+        minLength: (min: number) => `Musi miec conajmniej ${min} znakow`,
+        maxLength: (max: number) => `Moze miec maksymalnie ${max} znakow`,
+        pattern: (pattern: string) => `Musi spelniac wzorzec: ${pattern}`
     }
 }

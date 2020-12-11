@@ -13,6 +13,7 @@ export default {
             setAsMain: "Set asset as main"
         },
         create: {
+            button: "Create Blog",
             created: "Blog successfully added.",
             notCreated: "An error occured while adding blog.",
             title: "Create new blog",
@@ -69,6 +70,39 @@ export default {
             },
             save: "Save",
             cancel: "Cancel"
+        },
+        delete:{
+            deleted: "Blog deleted.",
+            notDeleted: "An error occured while deleting blog.",
+            confirmationHeader: "Removing of blog",
+            confirmationContent: "You are sure you want to remove the blog?"
+        },
+        list: {
+            visible: "Visible",
+            hidden: "Hidden",
+            visibilityTooltip: "Blog is",
+            headers: {
+                visits: "Visits",
+                comments: "Comments",
+                date: "Date",
+                title: "Title",
+                content: "Content"
+            }
+        },
+        stats: {
+            todayVisits: "Today Visits",
+            totalVisits: "Total Visits",
+            rangeVisits: "Range Visits",
+            bestDay: "Best Day",
+            bestDayVisits: "Best Day Visits"
         }
+    },
+    validation: {
+        required: "Must be set",
+        unique: "Must be unique",
+        lowercaseAndNumbers: "May contain only lowercase letters and numbers",
+        minLength: (min: number) => `Must be at least ${min} character long`,
+        maxLength: (max: number) => `Must not be longer than ${max} characters`,
+        pattern: (pattern: string) => `Must match the pattern: ${pattern}`
     }
 }

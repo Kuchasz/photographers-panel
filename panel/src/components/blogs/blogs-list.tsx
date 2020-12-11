@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BlogListItem, changeBlogVisibility } from "@pp/api/panel/blog";
 import { Table, Icon, IconButton, ButtonToolbar, Divider } from "rsuite";
 import { ToolTip } from "../common/tooltip";
+import { translations } from "../../i18n";
 
 interface Props {
     onSelect: (item: any) => void;
@@ -40,8 +41,7 @@ const VisibilityIcon = ({ id, initialVisibility, onVisibilityChange }: Visibilit
         <ToolTip
             text={
                 <>
-                    Blog is {visible}
-                    <i>{visible ? "visible" : "hidden"}</i>
+                    {translations.blog.list.visibilityTooltip} <i>{visible ? translations.blog.list.visible : translations.blog.list.hidden}</i>
                 </>
             }
         >
@@ -82,27 +82,27 @@ export class BlogsList extends React.Component<Props, State> {
                 </Table.Column>
 
                 <Table.Column width={100} align="center">
-                    <Table.HeaderCell>Visits</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.blog.list.headers.visits}</Table.HeaderCell>
                     <Table.Cell dataKey="visits" />
                 </Table.Column>
 
                 <Table.Column width={100} align="center">
-                    <Table.HeaderCell>Comments</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.blog.list.headers.comments}</Table.HeaderCell>
                     <Table.Cell dataKey="comments" />
                 </Table.Column>
 
                 <Table.Column width={100} align="center">
-                    <Table.HeaderCell>Date</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.blog.list.headers.date}</Table.HeaderCell>
                     <Table.Cell dataKey="date" />
                 </Table.Column>
 
                 <Table.Column flexGrow={1} width={200}>
-                    <Table.HeaderCell>Title</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.blog.list.headers.title}</Table.HeaderCell>
                     <Table.Cell dataKey="title" />
                 </Table.Column>
 
                 <Table.Column flexGrow={1} width={200}>
-                    <Table.HeaderCell>Content</Table.HeaderCell>
+                    <Table.HeaderCell>{translations.blog.list.headers.content}</Table.HeaderCell>
                     <Table.Cell dataKey="content" />
                 </Table.Column>
 

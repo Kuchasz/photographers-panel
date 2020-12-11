@@ -10,13 +10,14 @@ import { ResultType } from "@pp/api/common";
 import { BlogAssignAssets } from "./blog-assign-assets";
 import { StatsChart } from "../stats-chart";
 import { ChartStat } from "../stats-chart/stats";
+import { translations } from "../../i18n";
 
 const getStats = (x: BlogVisitsDto): ChartStat[] => [
-    { label: "Today visits", value: x.todayVisits },
-    { label: "Total visits", value: x.totalVisits },
-    { label: "Range visits", value: x.rangeVisits },
-    { label: "Best day", value: x.bestDay.date || '---' },
-    { label: "Best day visits", value: x.bestDay.visits }
+    { label: translations.blog.stats.todayVisits, value: x.todayVisits },
+    { label: translations.blog.stats.totalVisits, value: x.totalVisits },
+    { label: translations.blog.stats.rangeVisits, value: x.rangeVisits },
+    { label: translations.blog.stats.bestDay, value: x.bestDay.date || '---' },
+    { label: translations.blog.stats.bestDayVisits, value: x.bestDay.visits }
 ];
 
 interface Props { }
@@ -96,14 +97,14 @@ export class Blogs extends React.Component<Props, State> {
     };
 
     onBlogDelete = async (selectedBlog: number) => {
-        const confirmed = await confirm("You are sure you want to remove the blog?", "Removing of blog");
+        const confirmed = await confirm(translations.blog.delete.confirmationContent, translations.blog.delete.confirmationHeader);
         if (confirmed) {
             const result = await deleteBlog(selectedBlog);
             if (result.type === ResultType.Success) {
-                Alert.success("Blog deleted.");
+                Alert.success(translations.blog.delete.deleted);
                 this.fetchBlogs();
             } else {
-                Alert.error("Blog not deleted.");
+                Alert.error(translations.blog.delete.notDeleted);
             }
         }
     };
@@ -139,7 +140,7 @@ export class Blogs extends React.Component<Props, State> {
                     <Panel
                         header={
                             <Button onClick={this.showCreateForm} color="green">
-                                <Icon icon="plus" /> Create Blog
+                                <Icon icon="plus" /> {translations.blog.create.button}
                             </Button>
                         }
                     >
