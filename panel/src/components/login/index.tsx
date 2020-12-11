@@ -9,6 +9,7 @@ import { Redirect } from "react-router-dom";
 import { logIn as stateLogIn } from "../../security";
 import { routes } from "../../routes";
 import { isLoggedIn } from "../../security";
+import { translations } from "../../i18n";
 
 const emptyLogin = () => ({ username: "", password: "" });
 
@@ -22,19 +23,18 @@ export const LogIn = ({ }: Props) => {
     const formRef = React.useRef<FormInstance>();
 
     const submitLogIn = async () => {
-        console.log('submitLogIn');
         if (formRef.current) {
             const result = await formRef.current.checkAsync();
             if (result.hasError) return;
             setIsLoading(true);
             logIn(formState).then((result) => {
                 if (result.type === ResultType.Success) {
-                    Alert.success("Successfully logged-in!");
+                    Alert.success(translations.login.logged);
                     stateLogIn(new Date().getTime() + (result.result!.expireDate - result.result!.issuedAt) * 1000);
                     setIsLoading(false);
                     setHasLoggedIn(true);
                 } else {
-                    Alert.error("An error occured while logging-in.");
+                    Alert.error(translations.login.notLogged);
 
                     setIsLoading(false);
                 }
@@ -49,18 +49,18 @@ export const LogIn = ({ }: Props) => {
             formValue={formState}
             onChange={(x) => setFormState(x as UserCredentials)}>
             <FormGroup>
-                <ControlLabel>Login</ControlLabel>
+                <ControlLabel>{translations.login.loginLabel}</ControlLabel>
                 <FormControl style={{ width: 350 }} name="username" />
-                <HelpBlock tooltip>Username needed to Login</HelpBlock>
+                <HelpBlock tooltip>{translations.login.loginTooltip}</HelpBlock>
             </FormGroup>
             <FormGroup>
-                <ControlLabel>Password</ControlLabel>
+                <ControlLabel>{translations.login.passwordLabel}</ControlLabel>
                 <FormControl style={{ width: 350 }} name="password" type="password" />
-                <HelpBlock tooltip>Password needed to Login</HelpBlock>
+                <HelpBlock tooltip>{translations.login.passwordTooltip}</HelpBlock>
             </FormGroup>
             <FormGroup>
                 <ButtonToolbar>
-                    <Button onClick={submitLogIn} appearance="primary" loading={isLoading}>Log In</Button>
+                    <Button onClick={submitLogIn} appearance="primary" loading={isLoading}>{translations.login.button}</Button>
                     <button onClick={submitLogIn} style={{ visibility: "hidden" }} type="submit"></button>
                 </ButtonToolbar>
             </FormGroup>

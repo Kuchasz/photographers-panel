@@ -116,5 +116,14 @@ export default {
         galleries: "Galleries",
         blogs: "Blogs",
         comments: "Comments"
+    },
+    login: {
+        button: "Log in",
+        logged: "Successfully logged-in!",
+        notLogged: "An error occured while logging-in.",
+        loginLabel: "Username",
+        loginTooltip: "Username needed to Login",
+        passwordLabel: "Password",
+        passwordTooltip: "Password needed to Login"
     }
 }

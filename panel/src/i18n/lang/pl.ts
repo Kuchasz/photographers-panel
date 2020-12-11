@@ -116,5 +116,14 @@ export default {
         galleries: "Galerie",
         blogs: "Blogi",
         comments: "Komentarze"
+    },
+    login: {
+        button: "Zaloguj",
+        logged: "Pomyslnie zalogowano!",
+        notLogged: "Wystapil blad podczas proby zalogowania.",
+        loginLabel: "Nazwa uzytkownika",
+        loginTooltip: "Nazwa uzytkownika jest potrzebna zeby sie zalogowac",
+        passwordLabel: "Haslo",
+        passwordTooltip: "Haslo jest potrzebne zeby sie zalogowac"
     }
 }
