@@ -8,6 +8,7 @@ import { TweenLite, Expo } from "gsap";
 import { ActivatedRoute } from "@angular/router";
 import { Observable, fromEvent } from "rxjs";
 import { switchMap, flatMap, tap, map, first } from "rxjs/operators";
+import { warn } from 'console';
 
 @Component({
     selector: "gallery-image",
@@ -26,7 +27,7 @@ export class GalleryImageComponent implements OnInit {
     currentImage$: Observable<[GalleryImage, GalleryImage, GalleryImage]>;
     currentDirectory: Observable<GalleryDirectory>;
 
-    constructor(public gallery: GalleryService, private el: ElementRef, private route: ActivatedRoute) {}
+    constructor(public gallery: GalleryService, private el: ElementRef, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.currentDirectoryId = this.route.parent.paramMap.pipe(map((x) => x.get("id")));
@@ -36,7 +37,7 @@ export class GalleryImageComponent implements OnInit {
         );
 
         this.currentImage$ = this.gallery.state.pipe(
-            map((x) =>({ images: x.images, currId: x.currId, prevId: x.prevId, nextId: x.nextId})),
+            map((x) => ({ images: x.images, currId: x.currId, prevId: x.prevId, nextId: x.nextId })),
             map(x => [x.images.find(xx => xx.id === x.prevId), x.images.find(xx => xx.id === x.currId), x.images.find(xx => xx.id === x.nextId)])
         );
 
@@ -47,7 +48,8 @@ export class GalleryImageComponent implements OnInit {
         // console.log(el);
 
         const mc = new Hammer.Manager(el);
-        mc.add(new Hammer.Pan({}));
+        mc.add(new Hammer.Pan({ enable: true, threshold: 10, pointers: 1 }));
+        mc.add(new Hammer.Pinch({ enable: true }));
 
         // TweenLite.set(this.elContainer, { x: -this.config.width / 2 });
 
@@ -79,40 +81,117 @@ export class GalleryImageComponent implements OnInit {
         //     console.log(ev.type +" gesture detected.");
         // });
 
-        let screenWidth = 0;
+        const clamp = (min, max) => (numb) => Math.min(Math.max(numb, min), max);
 
-        fromEvent(mc, "panstart").subscribe((e: any) => {
+        let screenWidth = 0;
+        let screenHeight = 0;
+        let prevScale = 1;
+        let prevY = 0;
+        let prevX = 0;
+        let posX = 0;
+        let posY = 0;
+        // let centerPoint = { x: 0, y: 0 };
+        let pinchProgress = false;
+        // let prevPosX = 0;
+        // let prevPosY = 0;
+        //awdawd
+        fromEvent(mc, "panstart").subscribe((e: HammerInput) => {
             screenWidth = window.innerWidth;
+            screenHeight = window.innerHeight;
         });
 
-        fromEvent(mc, "panleft press panright").subscribe((e: any) => {
-            const ratio = (e.deltaX / screenWidth) * 100;
+        fromEvent(mc, "pinchstart").subscribe((e: HammerInput) => {
+            // mc.get(pan).set({ enable: false });
+            // const p1 = e.pointers[0];
+            // const p2 = e.pointers[0];
 
-            TweenLite.set(elToMove, { translateX: `${ratio}%` });
+            // const desiredCenterPoint = {
+            //     x: (p1.x + p2.x) / 2,
+            //     y: (p1.y + p2.y) / 2
+            // };
+
+            // centerPoint = desiredCenterPoint;
+        });
+
+        // fromEvent(mc, "pan").subscribe((e: HammerInput) => {
+        //     const clampX = clamp((screenWidth - screenWidth * prevScale) / 2, (screenWidth * prevScale - screenWidth) / 2);
+        //     const clampY = clamp((screenHeight - screenHeight * prevScale) / 2, (screenHeight * prevScale - screenHeight) / 2);
+        //     const ratioX = prevScale === 1 ? e.deltaX : clampX(prevX + e.deltaX);
+        //     const ratioY = prevScale === 1 ? 0 : clampY(prevY + e.deltaY);
+
+        //     TweenLite.set(elToMove, { translateX: `${ratioX}px`, translateY: `${ratioY}px` });
+        // });
+
+        // fromEvent(mc, "pinch").subscribe((e: HammerInput) => {
+        //     if (e.scale < 1)
+        //         return;
+        //     TweenLite.set(elToMove, { scaleX: `${e.scale}`, scaleY: `${e.scale}` });
+        // });
+
+        fromEvent(mc, "pan pinch").subscribe((e: HammerInput) => {
+            const scale = Math.max(1, prevScale * e.scale);
+            const clampX = clamp((screenWidth - screenWidth * scale) / 2, (screenWidth * scale - screenWidth) / 2);
+            const clampY = clamp((screenHeight - screenHeight * scale) / 2, (screenHeight * scale - screenHeight) / 2);
+            let ratioX = prevScale === 1 ? e.deltaX : clampX(prevX + e.deltaX);
+            let ratioY = prevScale === 1 ? 0 : clampY(prevY + e.deltaY);
+
+            TweenLite.to(elToMove, .25, { scaleX: scale, scaleY: scale, translateX: `${ratioX}px`, translateY: `${ratioY}px` });
+        });
+
+        fromEvent(mc, "pinchend").subscribe((e: HammerInput) => {
+            // alert(JSON.stringify(centerPoint));
+            prevScale = Math.max(1, prevScale * e.scale);
+            const clampX = clamp((screenWidth - screenWidth * prevScale) / 2, (screenWidth * prevScale - screenWidth) / 2);
+            const clampY = clamp((screenHeight - screenHeight * prevScale) / 2, (screenHeight * prevScale - screenHeight) / 2);
+            prevX = prevScale === 1 ? prevX : clampX(prevX);
+            prevY = prevScale === 1 ? 0 : clampY(prevY);
+            // mc.get(pan).set({ enable: true });
         });
 
         let currentDirectoryId = "";
-
         this.currentDirectoryId.subscribe((v) => {
             currentDirectoryId = v;
         });
 
-        fromEvent(mc, "panend").subscribe((e: any) => {
-            const ratio = (e.deltaX / screenWidth) * 100;
-            // elToMove.style.transform = `translateX(${ratio}%)`;
-            const toVars =
-                e.deltaX > 50
-                    ? { translateX: "100%", onComplete: () => this.gallery.prev(currentDirectoryId) }
-                    : e.deltaX < -50
-                    ? { translateX: "-100%", onComplete: () => this.gallery.next(currentDirectoryId) }
-                    : { translateX: "0%" };
+        fromEvent(mc, "panend").subscribe((e: HammerInput) => {
+            // alert(JSON.stringify(e.changedPointers));
+            // alert();
+            // alert(e.eventType);
+            if(e.pointers.length > 1) return;
+            const clampX = clamp((screenWidth - screenWidth * prevScale) / 2, (screenWidth * prevScale - screenWidth) / 2);
+            const clampY = clamp((screenHeight - screenHeight * prevScale) / 2, (screenHeight * prevScale - screenHeight) / 2);
+            let ratioX = prevScale === 1 ? prevX + e.deltaX : clampX(prevX + e.deltaX);
+            let ratioY = prevScale === 1 ? 0 : clampY(prevY + e.deltaY);
+            const requiredDelta = 50;
+            // // elToMove.style.transform = `translateX(${ratio}%)`;
+            const toVars = prevScale === 1 ?
+                e.deltaX > requiredDelta
+                    ? { translateX: `${screenWidth}px`, translateY: '0px', onComplete: () => this.gallery.prev(currentDirectoryId) }
+                    : e.deltaX < -requiredDelta
+                        ? { translateX: `-${screenWidth}px`, translateY: '0px', onComplete: () => this.gallery.next(currentDirectoryId) }
+                        : { translateX: "0px" }
+                : { translateX: `${ratioX}px`, translateY: `${ratioY}px` };
             // { translateX: e.deltaX > 0 ? "100%" : "-100%" }
-            TweenLite.fromTo(elToMove, 0.25, { translateX: `${ratio}%` }, {...toVars, ease: Expo.easeOut});
-            // elToMove.style.transform = `translate(${e.deltaX}px, 0px)`;
+
+            if (toVars.translateX === `${screenWidth}px` || toVars.translateX === `-${screenWidth}px`) {
+                TweenLite.to(elToMove, 0.25, { scaleY: 1, scaleX: 1, ease: Expo.easeOut });
+                ratioX = 0;
+                ratioY = 0;
+            }
+
+            prevX = ratioX;
+            prevY = ratioY;
+
+            TweenLite.to(elToMove, 0.25, { ...toVars, ease: Expo.easeOut });
+            elToMove.style.transform = `translate(${e.deltaX}px, 0px)`;
         });
 
         this.currentImage$.subscribe(() => {
-            TweenLite.set(elToMove, { translateX: `0%` });
+            prevScale = 1;
+            prevX = 0;
+            prevY = 0;
+            TweenLite.to(elToMove, 0.25, { scaleY: `1`, scaleX: `1`, ease: Expo.easeOut });
+            TweenLite.set(elToMove, { translateX: `0px`, translateY: `0px` });
         });
 
         // fromEvent(mc, "swiperight")
@@ -129,6 +208,9 @@ export class GalleryImageComponent implements OnInit {
         //         // this.gallery.next(g.id);
         //     });
         // }
+
+
+
     }
 
     imageLoad(done: boolean) {
