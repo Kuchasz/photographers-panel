@@ -13,6 +13,7 @@ interface Props {
     onViewEmails: (item: any) => void;
     galleries: GalleryDto[];
     loadingGalleries: boolean;
+    selectedGalleryId?: number;
 }
 interface State { }
 
@@ -128,6 +129,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 loading={this.props.loadingGalleries}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item)}
+                rowClassName={(row: GalleryDto) => this.props.selectedGalleryId && row?.id === this.props.selectedGalleryId ? "selected" : ""}
                 data={this.props.galleries}
             >
                 <Table.Column width={50} align="center">

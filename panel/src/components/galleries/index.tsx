@@ -179,6 +179,7 @@ export class Galleries extends React.Component<Props, State> {
                             onEdit={this.onGalleryEdit}
                             onDelete={this.onGalleryDelete}
                             onViewEmails={this.onGalleryViewEmails}
+                            selectedGalleryId={this.state.selectedGallery?.id}
                         />
                     </Panel>
                 </div>
