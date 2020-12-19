@@ -27,11 +27,9 @@ interface Props {
 }
 
 export const emptyGallery = (): GalleryEditDto => ({
-    place: "",
     date: "",
-    bride: "",
-    groom: "",
-    lastName: "",
+    title: "",
+    notes: "",
     state: PrivateGalleryState.NotReady,
     password: "",
     directPath: "",
@@ -89,29 +87,19 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                     onChange={(x) => setFormState(x as GalleryEditDto)}
                 >
                     <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.place.label}</ControlLabel>
-                        <FormControl name="place" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.place.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
                         <ControlLabel>{translations.gallery.edit.details.date.label}</ControlLabel>
                         <FormControl name="date" type="date" />
                         <HelpBlock tooltip>{translations.gallery.edit.details.date.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.bride.label}</ControlLabel>
-                        <FormControl name="bride" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.bride.hint}</HelpBlock>
+                        <ControlLabel>{translations.gallery.edit.details.title.label}</ControlLabel>
+                        <FormControl name="title" />
+                        <HelpBlock tooltip>{translations.gallery.edit.details.title.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.groom.label}</ControlLabel>
-                        <FormControl name="groom" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.groom.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.lastName.label}</ControlLabel>
-                        <FormControl name="lastName" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.lastName.hint}</HelpBlock>
+                        <ControlLabel>{translations.gallery.edit.details.notes.label}</ControlLabel>
+                        <FormControl name="notes" />
+                        <HelpBlock tooltip>{translations.gallery.edit.details.notes.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ControlLabel>{translations.gallery.edit.details.state.label}</ControlLabel>

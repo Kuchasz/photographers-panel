@@ -9,10 +9,7 @@ export interface PrivateGalleryUrlCheckResult {
 export interface PrivateGalleryDetails {
     id: number;
     state: PrivateGalleryState;
-    bride: string;
-    groom: string;
-    place: string;
-    lastName: string;
+    title: string;
     url: string;
     date: string;
 }

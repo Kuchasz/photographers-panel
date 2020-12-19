@@ -4,20 +4,14 @@ import { PrivateGalleryState } from "@pp/api/private-gallery";
 import { translations } from "../../i18n";
 
 export const galleryModel = (galleryId?: number) => Schema.Model({
-    place: Schema.Types.StringType()
-        .isRequired(translations.validation.required)
-        .minLength(2, translations.validation.minLength(2)),
     date: Schema.Types.DateType()
         .isRequired(translations.validation.required),
-    bride: Schema.Types.StringType()
+    title: Schema.Types.StringType()
         .isRequired(translations.validation.required)
-        .minLength(3, translations.validation.minLength(3)),
-    groom: Schema.Types.StringType()
+        .minLength(10, translations.validation.minLength(10)),
+    notes: Schema.Types.StringType()
         .isRequired(translations.validation.required)
-        .minLength(3, translations.validation.minLength(3)),
-    lastName: Schema.Types.StringType()
-        .isRequired(translations.validation.required)
-        .minLength(3, translations.validation.minLength(3)),
+        .minLength(10, translations.validation.minLength(10)),
     state: Schema.Types.NumberType()
         .isRequired(translations.validation.required)
         .isOneOf(

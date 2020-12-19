@@ -161,8 +161,8 @@ export default {
             notAvailablePre: "There is",
             notAvailablePost: "no blog",
             headers: {
-                place: "Place",
-                lastName: "Last Name",
+                title: "Title",
+                notes: "Notes",
                 date: "Date",
                 password: "Password",
                 totalVisits: "Total Visits"
@@ -188,25 +188,17 @@ export default {
             title: "Create new gallery",
             button: "Create gallery",
             details: {
-                place: {
-                    label: "Place",
-                    hint: "Place of the wedding"
-                },
                 date: {
                     label: "Date",
                     hint: "Date of the wedding"
                 },
-                bride: {
-                    label: "Bride",
-                    hint: "Name of the Bride"
+                title: {
+                    label: "Title",
+                    hint: "Title of the gallery"
                 },
-                groom: {
-                    label: "Groom",
-                    hint: "Name of the Groom"
-                },
-                lastName: {
-                    label: "Last Name",
-                    hint: "Last Name of the Groom"
+                notes: {
+                    label: "Notes",
+                    hint: "Notes about the gallery"
                 },
                 state: {
                     label: "State",
@@ -239,25 +231,17 @@ export default {
             notEdited: "An error occured while editing gallery.",
             title: "Edit gallery",
             details: {
-                place: {
-                    label: "Place",
-                    hint: "Place of the wedding"
-                },
                 date: {
                     label: "Date",
                     hint: "Date of the wedding"
                 },
-                bride: {
-                    label: "Bride",
-                    hint: "Name of the Bride"
+                title: {
+                    label: "Title",
+                    hint: "Title of the gallery"
                 },
-                groom: {
-                    label: "Groom",
-                    hint: "Name of the Groom"
-                },
-                lastName: {
-                    label: "Last Name",
-                    hint: "Last Name of the Groom"
+                notes: {
+                    label: "Notes",
+                    hint: "Notes about the gallery"
                 },
                 state: {
                     label: "State",

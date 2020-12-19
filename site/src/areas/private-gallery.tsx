@@ -25,24 +25,21 @@ const getContent = (
     if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available)
         return {
             title: strings.privateGallery.available.title
-                .replace(":bride", result.gallery.bride)
-                .replace(":groom", result.gallery.groom),
+                .replace(":title", result.gallery.title),
             description: strings.privateGallery.available.description
         };
 
     if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.TurnedOff)
         return {
             title: strings.privateGallery.turnedOff.title
-                .replace(":bride", result.gallery.bride)
-                .replace(":groom", result.gallery.groom),
+                .replace(":title", result.gallery.title),
             description: strings.privateGallery.turnedOff.description
         };
 
     if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.NotReady)
         return {
             title: strings.privateGallery.notReady.title
-                .replace(":bride", result.gallery.bride)
-                .replace(":groom", result.gallery.groom),
+                .replace(":title", result.gallery.title),
             description: strings.privateGallery.notReady.description
         };
 

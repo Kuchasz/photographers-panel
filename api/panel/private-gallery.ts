@@ -6,10 +6,8 @@ import { VisitsSummaryDto } from "./visits";
 export interface GalleryDto {
     id: number;
     date: string;
-    place: string;
-    bride: string;
-    groom: string;
-    lastName: string;
+    title: string;
+    notes: string;
     state: PrivateGalleryState;
     password: string;
     blogId: number;
@@ -28,11 +26,9 @@ export interface GalleryVisitsDto {
 }
 
 export interface GalleryEditDto {
-    place: string;
     date: string;
-    bride: string;
-    groom: string;
-    lastName: string;
+    title: string;
+    notes: string;
     state: PrivateGalleryState;
     password: string;
     directPath: string;

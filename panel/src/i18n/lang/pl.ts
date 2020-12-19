@@ -161,8 +161,8 @@ export default {
             notAvailablePre: "Bloga",
             notAvailablePost: "niema",
             headers: {
-                place: "Miejsce wesela",
-                lastName: "Nazwisko",
+                title: "Tytul",
+                notes: "Notatki",
                 date: "Data wesela",
                 password: "Haslo",
                 totalVisits: "Wszystkich odwiedzin"
@@ -188,25 +188,17 @@ export default {
             title: "Utworz nowa galerie",
             button: "Dodaj galerie",
             details: {
-                place: {
-                    label: "Miejsce wesela",
-                    hint: "Miejsce w ktorym odbylo sie wesele"
-                },
                 date: {
                     label: "Data wesela",
                     hint: "Data, kiedy odbylo sie wesele"
                 },
-                bride: {
-                    label: "Imie Mlodej Pani",
-                    hint: "Imie Mlodej Pani"
+                title: {
+                    label: "Tytul",
+                    hint: "Tytul wyswietlany gosciom galerii"
                 },
-                groom: {
-                    label: "Imie Mlodego Pana",
-                    hint: "Imie Mlodego Pana"
-                },
-                lastName: {
-                    label: "Nazwisko",
-                    hint: "Nazwisko Mlodego Pana"
+                notes: {
+                    label: "Notatki",
+                    hint: "Notatki o weselu"
                 },
                 state: {
                     label: "Stan",
@@ -239,25 +231,17 @@ export default {
             notEdited: "Wystapil blad podczas edycji galerii",
             title: "Edytuj galerie",
             details: {
-                place: {
-                    label: "Miejsce wesela",
-                    hint: "Miejsce w ktorym odbylo sie wesele"
-                },
                 date: {
                     label: "Data wesela",
                     hint: "Data, kiedy odbylo sie wesele"
                 },
-                bride: {
-                    label: "Imie Mlodej Pani",
-                    hint: "Imie Mlodej Pani"
+                title: {
+                    label: "Tytul",
+                    hint: "Tytul wyswietlany gosciom galerii"
                 },
-                groom: {
-                    label: "Imie Mlodego Pana",
-                    hint: "Imie Mlodego Pana"
-                },
-                lastName: {
-                    label: "Nazwisko",
-                    hint: "Nazwisko Mlodego Pana"
+                notes: {
+                    label: "Notatki",
+                    hint: "Notatki o weselu"
                 },
                 state: {
                     label: "Stan",

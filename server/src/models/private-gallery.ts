@@ -13,13 +13,10 @@ export const getUrl = async (password: string): Promise<PrivateGalleryUrlCheckRe
         .select(
             "PrivateGallery.Id",
             "PrivateGallery.State",
-            "PrivateGallery.Bride",
-            "PrivateGallery.Groom",
-            "PrivateGallery.Place",
-            "PrivateGallery.LastName",
+            "PrivateGallery.Title",
             "PrivateGallery.DirectPath",
             "PrivateGallery.Date",
-            "Blog.Title",
+            connection.raw(`"Blog"."Title" AS "BlogTitle"`),
             "Blog.Alias");
 
     return gallery == undefined
@@ -28,16 +25,13 @@ export const getUrl = async (password: string): Promise<PrivateGalleryUrlCheckRe
             gallery: {
                 id: gallery.Id,
                 state: gallery.State,
-                bride: gallery.Bride,
-                groom: gallery.Groom,
-                place: gallery.Place,
-                lastName: gallery.LastName,
+                title: gallery.Title,
                 url: gallery.DirectPath,
                 date: getDateString(new Date(gallery.Date))
             },
-            blog: gallery.Title == undefined
+            blog: gallery.BlogTitle == undefined
                 ? undefined
-                : { title: gallery.Title, alias: gallery.Alias }
+                : { title: gallery.BlogTitle, alias: gallery.Alias }
         };
 }
 
@@ -88,16 +82,13 @@ export const getList = async (): Promise<GalleryDto[]> => {
 
     const galleries = await connection("PrivateGallery")
         .leftJoin("PrivateGalleryVisit", "PrivateGalleryVisit.PrivateGallery_id", "PrivateGallery.Id")
-        // .leftJoin("PrivateGalleryEmail", "PrivateGalleryEmail.PrivateGallery_id", "PrivateGallery.Id")
         .groupBy("PrivateGallery.Id")
         .orderBy("PrivateGallery.Date", "desc")
         .select(
             "PrivateGallery.Id",
             "PrivateGallery.Date",
-            "PrivateGallery.Place",
-            "PrivateGallery.Bride",
-            "PrivateGallery.Groom",
-            "PrivateGallery.LastName",
+            "PrivateGallery.Title",
+            "PrivateGallery.Notes",
             "PrivateGallery.State",
             "PrivateGallery.Password",
             "PrivateGallery.Blog_id",
@@ -108,10 +99,8 @@ export const getList = async (): Promise<GalleryDto[]> => {
     return galleries.map((g: any) => ({
         id: g.Id,
         date: getDateString(new Date(g.Date)),
-        place: g.Place,
-        bride: g.Bride,
-        groom: g.Groom,
-        lastName: g.LastName,
+        title: g.Title,
+        notes: g.Notes,
         state: Number(g.State),
         password: g.Password,
         blogId: g.Blog_id ? Number(g.Blog_id) : undefined,
@@ -200,16 +189,14 @@ export const checkPasswordIsUnique = async (password: string, galleryId?: number
 export const getForEdit = async (galleryId: number): Promise<GalleryEditDto> => {
 
     const [gallery] = await connection("PrivateGallery")
-        .select("Place", "Date", "Bride", "Groom", "LastName", "State", "Password", "DirectPath", "Blog_id")
+        .select("Date", "Title", "Notes", "State", "Password", "DirectPath", "Blog_id")
         .where({ Id: galleryId })
         .limit(1);
 
     return ({
-        place: gallery.Place,
         date: getDateString(gallery.Date),
-        bride: gallery.Bride,
-        groom: gallery.Groom,
-        lastName: gallery.LastName,
+        title: gallery.Title,
+        notes: gallery.Notes,
         state: Number(gallery.State),
         password: gallery.Password,
         directPath: gallery.DirectPath,
@@ -223,10 +210,8 @@ export const createGallery = async (gallery: GalleryEditDto) => {
         await connection("PrivateGallery")
             .insert({
                 Date: gallery.date,
-                Place: gallery.place,
-                Bride: gallery.bride,
-                Groom: gallery.groom,
-                LastName: gallery.lastName,
+                Title: gallery.title,
+                Notes: gallery.notes,
                 State: gallery.state,
                 Password: gallery.password,
                 DirectPath: gallery.directPath,
@@ -244,10 +229,8 @@ export const editGallery = async (id: number, gallery: GalleryEditDto) => {
         await connection("PrivateGallery")
             .update({
                 Date: gallery.date,
-                Place: gallery.place,
-                Bride: gallery.bride,
-                Groom: gallery.groom,
-                LastName: gallery.lastName,
+                Title: gallery.title,
+                Notes: gallery.notes,
                 State: gallery.state,
                 Password: gallery.password,
                 DirectPath: gallery.directPath,

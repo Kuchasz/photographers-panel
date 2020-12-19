@@ -83,15 +83,15 @@ export const pl = {
             description: "Nie istnieje galeria pod takim hasłem, spróbuj wpisać je ponownie."
         },
         available: {
-            title: "Galeria :bride i :groom",
+            title: "Galeria :title",
             description: "Galeria jest już gotowa, kliknij przycisk poniżej aby obejrzeć zdjęcia."
         },
         turnedOff: {
-            title: "Galeria :bride i :groom nie jest już dostępna",
+            title: "Galeria :title nie jest już dostępna",
             description: "Przepraszamy, ale ta galeria nie jest już dostępna."
         },
         notReady: {
-            title: "Galeria :bride i :groom już wkrótce...",
+            title: "Galeria :title już wkrótce...",
             description:
                 "Galeria nie jest jeszcze dostępna. Zostaw nam swój adres email lub polub nas na facebooku a poinformujemy Cię kiedy galeria będzie gotowa."
         },

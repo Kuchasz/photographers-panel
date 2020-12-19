@@ -155,13 +155,13 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 </Table.Column>
 
                 <Table.Column flexGrow={1}>
-                    <Table.HeaderCell>{translations.gallery.list.headers.place}</Table.HeaderCell>
-                    <Table.Cell dataKey="place" />
+                    <Table.HeaderCell>{translations.gallery.list.headers.title}</Table.HeaderCell>
+                    <Table.Cell dataKey="title" />
                 </Table.Column>
 
                 <Table.Column flexGrow={1}>
-                    <Table.HeaderCell>{translations.gallery.list.headers.lastName}</Table.HeaderCell>
-                    <Table.Cell dataKey="lastName" />
+                    <Table.HeaderCell>{translations.gallery.list.headers.notes}</Table.HeaderCell>
+                    <Table.Cell dataKey="notes" />
                 </Table.Column>
 
                 <Table.Column width={100} align="center">
