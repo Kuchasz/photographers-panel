@@ -16,7 +16,7 @@ import {
 
 import {
     BlogAssetsListItemDto,
-    uploadBlogAsset,
+    // uploadBlogAsset,
     getBlogAssets,
     changeMainBlogAsset,
     deleteBlogAsset,
@@ -137,24 +137,25 @@ const AssetUploadingThumb = ({
     blogId: number;
     onUpload(id: number, url: string, oldURL: string): void;
 }) => {
-    const [processing, setProcessing] = React.useState<{ processing: boolean, progress: number }>({ processing: false, progress: 0 });
+    const [processing] = React.useState<{ queued: boolean, processing: boolean, progress?: number }>({ queued: true, processing: false, progress: undefined });
 
-    React.useEffect(() => {
-        uploadBlogAsset(
-            blogId,
-            item.file!,
-            (p) => { console.log(p); setProcessing(p) },
-            (res) => {
-                setProcessing({ processing: false, progress: 0 });
-                res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
-            }
-        );
-    }, []);
+    // React.useEffect(() => {
+    //     uploadBlogAsset(
+    //         blogId,
+    //         item.file!,
+    //         (p) => { setProcessing(p) },
+    //         (res) => {
+    //             setProcessing({ processing: false, progress: 0 });
+    //             res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
+    //         }
+    //     );
+    // }, []);
 
     return (
         <AssetsListItem className="thumb">
             {processing.processing && <Loader inverse center />}
-            {!processing.processing && (
+            {processing.queued &&   <Icon style={{color: "white"}} icon="upload" size="lg"></Icon>}
+            {!processing.processing && !!processing.progress && (
                 <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={processing.progress} />
             )}
         </AssetsListItem>
