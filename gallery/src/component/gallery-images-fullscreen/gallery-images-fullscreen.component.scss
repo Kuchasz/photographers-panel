@@ -29,6 +29,7 @@ gallery-images-fullscreen {
   flex-direction: column;
   overflow: hidden;
   position: absolute;
+  background-color: rgba(255, 199, 29, 0.5);
 
   .g-image-box {
     position: relative;

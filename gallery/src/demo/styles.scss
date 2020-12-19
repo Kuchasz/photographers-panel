@@ -4,13 +4,16 @@ $mdi-font-path: '../../../node_modules/@mdi/font/fonts/';
 
 html,
 body {
-  height: 100%;
+  // height: 100vh;
   padding: 0px;
   margin: 0px;
   font-family: 'Roboto', sans-serif;
   background: #444;
-  // min-height: 100%;//100vh;
-  // min-height: -webkit-fill-available;
+  
+  height: 100vh; /* Use vh as a fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+  // height: -webkit-fill-available;
+  // height: 100%;//100vh;
 }
 
 html {
@@ -23,7 +26,7 @@ app-root {
 
   gallery {
     display: flex;
-
+    position: relative;
     height: 100%;
 
     >div {
