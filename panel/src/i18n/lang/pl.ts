@@ -158,8 +158,8 @@ export default {
             notReady: "nie przygotowana"
         },
         list: {
-            notAvailablePre: "Bloga",
-            notAvailablePost: "niema",
+            blogNotAvailable: "Bloga niema",
+            blogAvailable: "Blog jest dostepny",
             headers: {
                 title: "Tytul",
                 notes: "Notatki",

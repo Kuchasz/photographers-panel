@@ -63,16 +63,8 @@ const stateTooltips = {
 };
 
 const blogTooltips = {
-    Available: (
-        <>
-            {translations.gallery.states.state} <i>{translations.gallery.states.available}</i>.
-        </>
-    ),
-    None: (
-        <>
-            {translations.gallery.list.notAvailablePre} <i>{translations.gallery.list.notAvailablePost}</i>.
-        </>
-    )
+    Available: translations.gallery.list.blogAvailable,
+    None: translations.gallery.list.blogNotAvailable
 };
 
 const passHash = (password: string) =>
