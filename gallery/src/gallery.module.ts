@@ -19,6 +19,7 @@ import { GalleryImagesGridComponent } from "./component/gallery-images-grid/gall
 import { RatingRequestWindowComponent } from "./component/rating-request-window/rating-request-window.component";
 
 import { LazyDirective } from "./directive/lazy.directive";
+import { LazySrcDirective } from "./directive/lazy-src.directive";
 import { TapDirective } from "./directive/tap.directive";
 import { GalleryDirectoriesComponent } from "./component/gallery-directories/gallery-directories.component";
 import { ApiService } from "./service/api.service";
@@ -47,7 +48,8 @@ export const CONFIG = new InjectionToken<GalleryConfig>("config");
         GalleryImagesGridComponent,
         RatingRequestWindowComponent,
         TapDirective,
-        LazyDirective
+        LazyDirective,
+        LazySrcDirective
     ],
     exports: [GalleryComponent]
 })

@@ -2,22 +2,24 @@
   <div class="g-container" [style.flexDirection]="thumbDirection" [ngStyle]="gallery.config.style">
     <gallery-state (onBack)="goBack()" [config]="gallery.config" [state]="state"></gallery-state>
 
-    <div class="g-box">
+    <div class="g-image-box">
 
-      <div class="g-image-box">
+      <gallery-image 
+        [state]="state" 
+        [config]="gallery.config" 
+        (loading)="loading = $event"></gallery-image>
 
-        <gallery-image [state]="state" [config]="gallery.config" (loading)="loading = $event"></gallery-image>
+      <gallery-nav 
+        *ngIf="gallery.config.navigation && gallery.config.displayMode === 0"
+        [currentDirectoryId]="currentDirectoryId$ | async" 
+        [state]="state"></gallery-nav>
 
-        <gallery-nav *ngIf="gallery.config.navigation && gallery.config.displayMode === 0"
-          [currentDirectoryId]="currentDirectoryId$ | async" [state]="state"></gallery-nav>
-
-        <!--<div class="g-layer" *ngIf="state.images.find(s => s.id === state.currId).layer" [innerHtml]="state.images.find(s => s.id === state.currId).layer"></div>-->
-
-      </div>
-
-      <!--<gallery-player *ngIf="config.player" [state]="state" [config]="config.player"></gallery-player>-->
+      <!--<div class="g-layer" *ngIf="state.images.find(s => s.id === state.currId).layer" [innerHtml]="state.images.find(s => s.id === state.currId).layer"></div>-->
 
     </div>
+
+    <!--<gallery-player *ngIf="config.player" [state]="state" [config]="config.player"></gallery-player>-->
+
     <gallery-thumb *ngIf="isFullView" [images]="images$ | async" [directoryId]="currentDirectoryId$ | async"
       [state]="state" [directory]="currentDirectory | async" [config]="gallery.config.thumbnails"></gallery-thumb>
   </div>

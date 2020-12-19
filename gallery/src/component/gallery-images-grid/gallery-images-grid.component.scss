@@ -3,7 +3,7 @@ gallery-images-grid {
     overflow-y: auto;
     overflow-x: hidden;
     width: 100vw;
-    height: 100vh;
+    height: 100%;//100vh;
 }
 
 .images-container {
@@ -102,7 +102,7 @@ gallery-images-fullscreen {
     // background: rgba(255, 100, 100, .5);
     width: 100vw;
     overflow-x: hidden;
-    height: 100vh;
+    height: 100%;//100vh;
     position: absolute;
     top: 0;
 }

@@ -105,8 +105,8 @@ module.exports = {
     },
     plugins: plugins,
     devServer: {
-        port: 8080,
-        host: "192.168.56.102",
+        port: 8081,
+        host: "192.168.1.68",
         historyApiFallback: true,
         watchOptions: {
             aggregateTimeout: 300,

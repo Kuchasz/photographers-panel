@@ -21,8 +21,8 @@ document.querySelector("#state-initializer")?.remove();
         GalleryModule.forRoot({
             style: {
                 background: "rgba(0, 0, 0, 0.9)",
-                width: "100vw",
-                height: "100vh"
+                width: "100%",
+                height: "100%"
             },
             description: {
                 position: "bottom",
