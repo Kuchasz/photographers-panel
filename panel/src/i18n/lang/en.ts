@@ -185,7 +185,8 @@ export default {
         create: {
             created: "Gallery successfully added.",
             notCreated: "An error occured while adding gallery.",
-            title: "Create gallery",
+            title: "Create new gallery",
+            button: "Create gallery",
             details: {
                 place: {
                     label: "Place",
@@ -226,6 +227,12 @@ export default {
             },
             save: "Save",
             cancel: "Cancel"
+        },
+        delete: {
+            deleted: "Gallery deleted.",
+            notDeleted: "An error occured while deleting gallery.",
+            confirmationHeader: "Removing of gallery",
+            confirmationContent: "You are sure you want to remove the gallery?"
         },
         edit: {
             edited: "Gallery successfully edited.",

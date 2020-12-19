@@ -104,14 +104,14 @@ export class Galleries extends React.Component<Props, State> {
     };
 
     onGalleryDelete = async (selectedGallery: number) => {
-        const confirmed = await confirm("You are sure you want to remove the gallery?", "Removing of gallery");
+        const confirmed = await confirm(translations.gallery.delete.confirmationContent, translations.gallery.delete.confirmationHeader);
         if (confirmed) {
             const result = await deleteGallery(selectedGallery);
             if (result.type === ResultType.Success) {
-                Alert.success("Gallery deleted.");
+                Alert.success(translations.gallery.delete.deleted);
                 this.fetchGalleries();
             } else {
-                Alert.error("Gallery not deleted.");
+                Alert.error(translations.gallery.delete.notDeleted);
             }
         }
     };
@@ -168,7 +168,7 @@ export class Galleries extends React.Component<Props, State> {
                     <Panel
                         header={
                             <Button onClick={this.showCreateForm} color="green">
-                                <Icon icon="plus" /> Create Gallery
+                                <Icon icon="plus" /> {translations.gallery.create.button}
                             </Button>
                         }
                     >

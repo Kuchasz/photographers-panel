@@ -186,6 +186,7 @@ export default {
             created: "Galeria dodana pomyslnie",
             notCreated: "Wystapil blad podczas dodawania galerii",
             title: "Utworz nowa galerie",
+            button: "Dodaj galerie",
             details: {
                 place: {
                     label: "Miejsce wesela",
@@ -226,6 +227,12 @@ export default {
             },
             save: "Zapisz",
             cancel: "Anuluj"
+        },
+        delete: {
+            deleted: "Galeria zostala usunieta.",
+            notDeleted: "Wystapil blad podczas usuwania galerii.",
+            confirmationHeader: "Usuwanie galerii",
+            confirmationContent: "Jestes pewien ze chcesz usunac galerie?"
         },
         edit: {
             edited: "Galeria zapisana.",
