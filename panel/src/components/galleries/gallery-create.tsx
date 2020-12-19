@@ -17,6 +17,7 @@ import { GalleryEditDto, createGallery } from "@pp/api/panel/private-gallery";
 import { ResultType } from "@pp/api/common";
 import { galleryModel } from "./gallery-model";
 import { FormInstance } from "rsuite/lib/Form/index.d.ts";
+import { translations } from "../../i18n";
 
 interface Props {
     showCreateForm: boolean;
@@ -59,12 +60,12 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
             setIsLoading(true);
             createGallery(formState).then((result) => {
                 if (result.type === ResultType.Success) {
-                    Alert.success("Gallery successfully added.");
+                    Alert.success(translations.gallery.create.created);
                     setFormState(emptyGallery());
                     closeCreateForm();
                     onAdded();
                 } else {
-                    Alert.error("An error occured while adding gallery.");
+                    Alert.error(translations.gallery.create.notCreated);
                 }
                 setIsLoading(false);
             });
@@ -74,7 +75,7 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
     return (
         <Drawer size="xs" placement="right" show={showCreateForm} onHide={closeCreateForm}>
             <Drawer.Header>
-                <Drawer.Title>Create new gallery</Drawer.Title>
+                <Drawer.Title>{translations.gallery.create.title}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
                 <Form
@@ -84,32 +85,32 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                     onChange={(x) => setFormState(x as GalleryEditDto)}
                 >
                     <FormGroup>
-                        <ControlLabel>Place</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.place.label}</ControlLabel>
                         <FormControl name="place" />
-                        <HelpBlock tooltip>Place of the wedding</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.place.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Date</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.date.label}</ControlLabel>
                         <FormControl name="date" type="date" />
-                        <HelpBlock tooltip>Date of the wedding</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.date.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Bride</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.bride.label}</ControlLabel>
                         <FormControl name="bride" />
-                        <HelpBlock tooltip>Bride name</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.bride.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Groom</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.groom.label}</ControlLabel>
                         <FormControl name="groom" />
-                        <HelpBlock tooltip>Groom name</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.groom.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Last Name</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.lastName.label}</ControlLabel>
                         <FormControl name="lastName" />
-                        <HelpBlock tooltip>Last name</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.lastName.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>State</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.state.label}</ControlLabel>
                         <FormControl
                             name="state"
                             style={{ width: 300 }}
@@ -117,22 +118,20 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                             searchable={false}
                             data={states}
                         />
-                        <HelpBlock tooltip>State of the gallery</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.state.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Password</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.password.label}</ControlLabel>
                         <FormControl name="password" checkAsync />
-                        <HelpBlock tooltip>
-                            Password must be min 8 characters with numbers, upper and lowercases
-                        </HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.password.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Direct path</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.directPath.label}</ControlLabel>
                         <FormControl name="directPath" />
-                        <HelpBlock tooltip>Direct path to the gallery</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.directPath.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Blog</ControlLabel>
+                        <ControlLabel>{translations.gallery.create.details.blog.label}</ControlLabel>
                         <FormControl
                             name="blog"
                             style={{ width: 300 }}
@@ -141,12 +140,12 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                             searchable={true}
                             data={blogs}
                         />
-                        <HelpBlock tooltip>Blog for the wedding</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.create.details.blog.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
                             <Button onClick={submitCreateGallery} appearance="primary" loading={isLoading}>
-                                Save
+                                {translations.gallery.create.save}
                             </Button>
                             <Button
                                 onClick={() => {
@@ -154,9 +153,8 @@ export const GalleryCreate = ({ showCreateForm, closeCreateForm, onAdded }: Prop
                                     setIsLoading(false);
                                     closeCreateForm();
                                 }}
-                                appearance="default"
-                            >
-                                Cancel
+                                appearance="default">
+                                {translations.gallery.create.cancel}
                             </Button>
                         </ButtonToolbar>
                     </FormGroup>

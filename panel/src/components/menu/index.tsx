@@ -43,7 +43,7 @@ class MenuComponent extends React.Component<Props, State> {
         const activeItem = this.props.location.pathname.toLowerCase();
 
         return <div style={styles}>
-            <Sidenav style={{ height: '100%' }} onSelect={this.handleItemClick} activeKey={activeItem} expanded={false}>
+            <Sidenav style={{ height: '100%' }} onSelect={this.handleItemClick} activeKey={activeItem} expanded={true}>
                 <Sidenav.Body>
                     <Nav>
                         {menuItems.map((mi, id) => <Nav.Item key={id} eventKey={mi.route} active={activeItem === mi.route} icon={<Icon icon={mi.icon} />}>{mi.text}

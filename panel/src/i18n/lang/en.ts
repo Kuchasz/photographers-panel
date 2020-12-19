@@ -105,14 +105,19 @@ export default {
     validation: {
         required: "Must be set",
         unique: "Must be unique",
+        containLowercaseLetter: "Should contain lowercase letter",
+        containUppercaseLetter: "Should contain uppercase  letter",
+        containNumber: "Should contain number",
         lowercaseAndNumbers: "May contain only lowercase letters and numbers",
         minLength: (min: number) => `Must be at least ${min} character long`,
         maxLength: (max: number) => `Must not be longer than ${max} characters`,
-        pattern: (pattern: string) => `Must match the pattern: ${pattern}`
+        pattern: (pattern: string) => `Must match the pattern: ${pattern}`,
+        url: "Must be an URL",
+        oneOf: "Must be one of the specifiec values"
     },
     menu: {
-        home: "Homescreen",
-        stats: "Site statistics",
+        home: "Home",
+        stats: "Statistics",
         galleries: "Galleries",
         blogs: "Blogs",
         comments: "Comments"
@@ -168,6 +173,104 @@ export default {
                 notificationsNotSend: "Notifications not send",
                 viewEmails: "View emails"
             }
+        },
+        emailNotifications: {
+            notified: "Subscribers notified.",
+            notNotified: "An error occured while notifying subscribers.",
+            title: "Send email notifications",
+            send: "Send notification",
+            cancel: "Cancel",
+            notifyTooltip: "Click to notify subscribers about gallery being available"
+        },
+        create: {
+            created: "Gallery successfully added.",
+            notCreated: "An error occured while adding gallery.",
+            title: "Create gallery",
+            details: {
+                place: {
+                    label: "Place",
+                    hint: "Place of the wedding"
+                },
+                date: {
+                    label: "Date",
+                    hint: "Date of the wedding"
+                },
+                bride: {
+                    label: "Bride",
+                    hint: "Name of the Bride"
+                },
+                groom: {
+                    label: "Groom",
+                    hint: "Name of the Groom"
+                },
+                lastName: {
+                    label: "Last Name",
+                    hint: "Last Name of the Groom"
+                },
+                state: {
+                    label: "State",
+                    hint: "State of the gallery"
+                },
+                password: {
+                    label: "Password",
+                    hint: "Password for the gallery"
+                },
+                directPath: {
+                    label: "Direct Path",
+                    hint: "Direct Path to the gallery"
+                },
+                blog: {
+                    label: "Blog",
+                    hint: "Blog of the wedding"
+                }
+            },
+            save: "Save",
+            cancel: "Cancel"
+        },
+        edit: {
+            edited: "Gallery successfully edited.",
+            notEdited: "An error occured while editing gallery.",
+            title: "Edit gallery",
+            details: {
+                place: {
+                    label: "Place",
+                    hint: "Place of the wedding"
+                },
+                date: {
+                    label: "Date",
+                    hint: "Date of the wedding"
+                },
+                bride: {
+                    label: "Bride",
+                    hint: "Name of the Bride"
+                },
+                groom: {
+                    label: "Groom",
+                    hint: "Name of the Groom"
+                },
+                lastName: {
+                    label: "Last Name",
+                    hint: "Last Name of the Groom"
+                },
+                state: {
+                    label: "State",
+                    hint: "State of the gallery"
+                },
+                password: {
+                    label: "Password",
+                    hint: "Password for the gallery"
+                },
+                directPath: {
+                    label: "Direct Path",
+                    hint: "Direct Path to the gallery"
+                },
+                blog: {
+                    label: "Blog",
+                    hint: "Blog of the wedding"
+                }
+            },
+            save: "Save",
+            cancel: "Cancel"
         }
     }
 }

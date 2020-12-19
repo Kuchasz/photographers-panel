@@ -105,14 +105,19 @@ export default {
     validation: {
         required: "Wymagane",
         unique: "Musi byc unikalne",
+        containLowercaseLetter: "Musi zawierac mala litere",
+        containUppercaseLetter: "Musi zawierac duza litere",
+        containNumber: "Musi zawierac cyfre",
         lowercaseAndNumbers: "Moze zawierac tylko male litery i numery",
         minLength: (min: number) => `Musi miec conajmniej ${min} znakow`,
         maxLength: (max: number) => `Moze miec maksymalnie ${max} znakow`,
-        pattern: (pattern: string) => `Musi spelniac wzorzec: ${pattern}`
+        pattern: (pattern: string) => `Musi spelniac wzorzec: ${pattern}`,
+        url: "Musi byc URLem",
+        oneOf: "Musi byc jedna z zdefiniowanych wartosci"
     },
     menu: {
-        home: "Ekran domowy",
-        stats: "Statystyki strony",
+        home: "Start",
+        stats: "Statystyki",
         galleries: "Galerie",
         blogs: "Blogi",
         comments: "Komentarze"
@@ -168,6 +173,104 @@ export default {
                 notificationsNotSend: "Powiadomienia nie zostaly wyslany",
                 viewEmails: "Zobacz adresy email"
             }
+        },  
+        emailNotifications: {
+            notified: "Wyslano powiadomienie.",
+            notNotified: "Wystapil blad podczas wysylania powiadomienia.",
+            title: "Wyslij powiadomienia",
+            send: "Wyslij powiadomienie",
+            cancel: "Anuluj",
+            notifyTooltip: "Kliknij aby powiadomic uzytkownikow ze galeria zostala uruchomiona"
+        },
+        create: {
+            created: "Galeria dodana pomyslnie",
+            notCreated: "Wystapil blad podczas dodawania galerii",
+            title: "Utworz nowa galerie",
+            details: {
+                place: {
+                    label: "Miejsce wesela",
+                    hint: "Miejsce w ktorym odbylo sie wesele"
+                },
+                date: {
+                    label: "Data wesela",
+                    hint: "Data, kiedy odbylo sie wesele"
+                },
+                bride: {
+                    label: "Imie Mlodej Pani",
+                    hint: "Imie Mlodej Pani"
+                },
+                groom: {
+                    label: "Imie Mlodego Pana",
+                    hint: "Imie Mlodego Pana"
+                },
+                lastName: {
+                    label: "Nazwisko",
+                    hint: "Nazwisko Mlodego Pana"
+                },
+                state: {
+                    label: "Stan",
+                    hint: "Stan uruchomienia galerii"
+                },
+                password: {
+                    label: "Haslo",
+                    hint: "Haslo do galerii"
+                },
+                directPath: {
+                    label: "URL",
+                    hint: "Bezwgledna sciezka do galerii"
+                },
+                blog: {
+                    label: "Blog",
+                    hint: "Blog przypisany do galerii"
+                }
+            },
+            save: "Zapisz",
+            cancel: "Anuluj"
+        },
+        edit: {
+            edited: "Galeria zapisana.",
+            notEdited: "Wystapil blad podczas edycji galerii",
+            title: "Edytuj galerie",
+            details: {
+                place: {
+                    label: "Miejsce wesela",
+                    hint: "Miejsce w ktorym odbylo sie wesele"
+                },
+                date: {
+                    label: "Data wesela",
+                    hint: "Data, kiedy odbylo sie wesele"
+                },
+                bride: {
+                    label: "Imie Mlodej Pani",
+                    hint: "Imie Mlodej Pani"
+                },
+                groom: {
+                    label: "Imie Mlodego Pana",
+                    hint: "Imie Mlodego Pana"
+                },
+                lastName: {
+                    label: "Nazwisko",
+                    hint: "Nazwisko Mlodego Pana"
+                },
+                state: {
+                    label: "Stan",
+                    hint: "Stan uruchomienia galerii"
+                },
+                password: {
+                    label: "Haslo",
+                    hint: "Haslo do galerii"
+                },
+                directPath: {
+                    label: "URL",
+                    hint: "Bezwgledna sciezka do galerii"
+                },
+                blog: {
+                    label: "Blog",
+                    hint: "Blog przypisany do galerii"
+                }
+            },
+            save: "Zapisz",
+            cancel: "Anuluj"
         }
     }
 }

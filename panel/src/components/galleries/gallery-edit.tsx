@@ -17,6 +17,7 @@ import { GalleryEditDto, editGallery, getGalleryForEdit } from "@pp/api/panel/pr
 import { ResultType } from "@pp/api/common";
 import { galleryModel } from "./gallery-model";
 import { FormInstance } from "rsuite/lib/Form/index.d.ts";
+import { translations } from "../../i18n";
 
 interface Props {
     id: number;
@@ -64,11 +65,11 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
             setIsLoading(true);
             editGallery(id, formState).then((result) => {
                 if (result.type === ResultType.Success) {
-                    Alert.success("Gallery successfully edited.");
+                    Alert.success(translations.gallery.edit.edited);
                     closeEditForm();
                     onSaved();
                 } else {
-                    Alert.error("An error occured while editing gallery.");
+                    Alert.error(translations.gallery.edit.notEdited);
                 }
                 setIsLoading(false);
             });
@@ -78,7 +79,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
     return (
         <Drawer size="xs" placement="right" show={showEditForm} onHide={closeEditForm}>
             <Drawer.Header>
-                <Drawer.Title>Edit gallery</Drawer.Title>
+                <Drawer.Title>{translations.gallery.edit.title}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
                 <Form
@@ -88,32 +89,32 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                     onChange={(x) => setFormState(x as GalleryEditDto)}
                 >
                     <FormGroup>
-                        <ControlLabel>Place</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.place.label}</ControlLabel>
                         <FormControl name="place" />
-                        <HelpBlock tooltip>Place of the wedding</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.place.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Date</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.date.label}</ControlLabel>
                         <FormControl name="date" type="date" />
-                        <HelpBlock tooltip>Date of the wedding</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.date.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Bride</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.bride.label}</ControlLabel>
                         <FormControl name="bride" />
-                        <HelpBlock tooltip>Bride name</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.bride.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Groom</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.groom.label}</ControlLabel>
                         <FormControl name="groom" />
-                        <HelpBlock tooltip>Groom name</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.groom.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Last Name</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.lastName.label}</ControlLabel>
                         <FormControl name="lastName" />
-                        <HelpBlock tooltip>Last name</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.lastName.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>State</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.state.label}</ControlLabel>
                         <FormControl
                             name="state"
                             style={{ width: 300 }}
@@ -121,22 +122,20 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                             searchable={false}
                             data={states}
                         />
-                        <HelpBlock tooltip>State of the gallery</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.state.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Password</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.password.label}</ControlLabel>
                         <FormControl name="password" checkAsync />
-                        <HelpBlock tooltip>
-                            Password must be min 8 characters with numbers, upper and lowercases
-                        </HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.password.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Direct path</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.directPath.label}</ControlLabel>
                         <FormControl name="directPath" />
-                        <HelpBlock tooltip>Direct path to the gallery</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.directPath.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
-                        <ControlLabel>Blog</ControlLabel>
+                        <ControlLabel>{translations.gallery.edit.details.blog.label}</ControlLabel>
                         <FormControl
                             name="blog"
                             style={{ width: 300 }}
@@ -145,12 +144,12 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                             searchable={true}
                             data={blogs}
                         />
-                        <HelpBlock tooltip>Blog for the wedding</HelpBlock>
+                        <HelpBlock tooltip>{translations.gallery.edit.details.blog.hint}</HelpBlock>
                     </FormGroup>
                     <FormGroup>
                         <ButtonToolbar>
                             <Button onClick={submitEditGallery} appearance="primary" loading={isLoading}>
-                                Save
+                                {translations.gallery.edit.save}
                             </Button>
                             <Button
                                 onClick={() => {
@@ -159,7 +158,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                                 }}
                                 appearance="default"
                             >
-                                Cancel
+                                {translations.gallery.edit.cancel}
                             </Button>
                         </ButtonToolbar>
                     </FormGroup>

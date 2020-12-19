@@ -1,20 +1,10 @@
-import React
-    // , { ChangeEvent } 
-    from "react";
+import React from "react";
 import {
     Modal,
     Button,
     List,
     Icon,
-    // Loader,
-    // Progress,
     Alert,
-    // Whisper,
-    // Popover,
-    // FormGroup,
-    // ControlLabel,
-    // FormControl,
-    // Form
 } from "rsuite";
 
 import {
@@ -24,9 +14,7 @@ import {
 } from "@pp/api/panel/private-gallery";
 import { ToolTip } from "../common/tooltip";
 import { ResultType } from "@pp/api/common";
-// import { range, union, distinctBy } from "@pp/utils/array";
-// import { ResultType } from "@pp/api/common";
-// import { ToolTip } from "../common/tooltip";
+import { translations } from "../../i18n";
 
 interface Props {
     id: number;
@@ -85,11 +73,11 @@ export class GalleryEmails extends React.Component<Props, State> {
         const result = await notifySubscribers(this.props.id);
 
         if (result.type === ResultType.Success) {
-            Alert.success("Subscribers notified.");
+            Alert.success(translations.gallery.emailNotifications.notified);
             this.handleModalHide();
             this.props.onNotified();
         } else {
-            Alert.error("An error occured while editing gallery.");
+            Alert.error(translations.gallery.emailNotifications.notNotified);
         }
         
         this.setState({ isLoading: false, pendingNotification: false });
@@ -103,7 +91,7 @@ export class GalleryEmails extends React.Component<Props, State> {
                 onHide={this.handleModalHide}
             >
                 <Modal.Header>
-                    <Modal.Title>Send email notifications</Modal.Title>
+        <Modal.Title>{translations.gallery.emailNotifications.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <EmailsList
@@ -111,13 +99,13 @@ export class GalleryEmails extends React.Component<Props, State> {
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <ToolTip placement="left" text="Click to notify subscribers about gallery being available">
+                    <ToolTip placement="left" text={translations.gallery.emailNotifications.notifyTooltip}>
                         <Button onClick={this.notifySubscribers} disabled={!this.state.pendingNotification} appearance="primary" loading={this.state.isLoading}>
-                            <Icon icon="bell-o" /> Send notification
+                            <Icon icon="bell-o" /> {translations.gallery.emailNotifications.send}
                     </Button>
                     </ToolTip>
                     <Button onClick={this.handleModalHide} appearance="subtle">
-                        Close
+                    {translations.gallery.emailNotifications.cancel}
                     </Button>
                 </Modal.Footer>
             </Modal>
