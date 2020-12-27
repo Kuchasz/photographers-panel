@@ -16,7 +16,7 @@ export const zip = <T1, T2, T3>(left: T1[], right: T2[], map: (l: T1, r: T2) => 
     return left.map((value, index) => map(value, right[index]));
 };
 
-export const sum = <T>(arr: T[], selector: (item:T) => number) => arr.reduce((sum, curr) => sum + selector(curr), 0);
+export const sum = <T>(arr: T[], selector: (item: T) => number) => arr.reduce((sum, curr) => sum + selector(curr), 0);
 
 export const first = <T>(items: T[], predicate: (item: T) => boolean = () => true) => items.filter(predicate)[0];
 
@@ -43,3 +43,13 @@ export const distinctBy = <T, U>(items: T[], by: (item: T) => U) => {
 
     return result;
 };
+
+export const replace = <T, U>(items: T[], oldItem: T, newItem: T, comparator: (item: T) => U) => {
+    const realItem = items.filter(i => comparator(oldItem) === comparator(i))[0];
+    
+    if (!realItem)
+        return items;
+    
+    const index = items.indexOf(realItem);
+    return Object.assign(items.slice(), { [index]: newItem });
+}

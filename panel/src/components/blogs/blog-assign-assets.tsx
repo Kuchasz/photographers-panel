@@ -22,13 +22,14 @@ import {
     deleteBlogAsset,
     changeBlogAssetAlt
 } from "@pp/api/panel/blog";
-import { range, union, distinctBy } from "@pp/utils/array";
+import { range } from "@pp/utils/array";
 import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
 import { debounce } from "@pp/utils/function";
 import { translations } from "../../i18n";
+import { UploadedImage, useUploadedImages } from "../../state/uploaded-images";
 
-type BlogAssetsListItem = Partial<BlogAssetsListItemDto & { file: File }>;
+type BlogAssetsListItem = Partial<BlogAssetsListItemDto>;// & { file: File }>;
 
 interface Props {
     id: number;
@@ -133,11 +134,11 @@ const AssetUploadingThumb = ({
     blogId,
     onUpload
 }: {
-    item: BlogAssetsListItem;
+    item: UploadedImage;
     blogId: number;
     onUpload(id: number, url: string, oldURL: string): void;
 }) => {
-    const [processing] = React.useState<{ queued: boolean, processing: boolean, progress?: number }>({ queued: true, processing: false, progress: undefined });
+    // const [processing] = React.useState<{ queued: boolean, processing: boolean, progress?: number }>({ queued: true, processing: false, progress: undefined });
 
     // React.useEffect(() => {
     //     uploadBlogAsset(
@@ -153,11 +154,9 @@ const AssetUploadingThumb = ({
 
     return (
         <AssetsListItem className="thumb">
-            {processing.processing && <Loader inverse center />}
-            {processing.queued &&   <Icon style={{color: "white"}} icon="upload" size="lg"></Icon>}
-            {!processing.processing && !!processing.progress && (
-                <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={processing.progress} />
-            )}
+            {item.processing && item.error && <Loader inverse center />}
+            {!item.processing && <Icon style={{ color: "white" }} icon="upload" size="lg"></Icon>}
+            {item.current && <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={item.progress} />}
         </AssetsListItem>
     );
 };
@@ -213,29 +212,29 @@ const AssetsList = ({
     onSetAsMain: (assetId: number) => void;
     onDelete: (assetId: number) => void;
     onAltChange: (assetId: number, alt: string) => void;
-}) => (
+}) => {
+    const uploadedImages = useUploadedImages(s => s.images.filter(i => i.blogId === blogId));
+
+    return (
         <div className="assets-list">
-            {items.map((item) =>
-                item.id !== undefined ? (
-                    <AssetThumb
-                        onAltChange={onAltChange}
-                        onDelete={onDelete}
-                        onSetAsMain={onSetAsMain}
-                        item={item}
-                        key={item.id}
-                    />
-                ) : (
-                        <AssetUploadingThumb
-                            blogId={blogId}
-                            item={item}
-                            key={item.url}
-                            onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
-                        />
-                    )
+            {items.map((item) => <AssetThumb
+                onAltChange={onAltChange}
+                onDelete={onDelete}
+                onSetAsMain={onSetAsMain}
+                item={item}
+                key={item.id}
+            />
             )}
+            {uploadedImages.map((item) => <AssetUploadingThumb
+                blogId={blogId}
+                item={item}
+                key={item.id}
+                onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
+            />)}
             <AssetUploadButton onAssetsChosen={onAssetsChosen} />
         </div>
-    );
+    )
+};
 
 export class BlogAssignAssets extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -257,17 +256,21 @@ export class BlogAssignAssets extends React.Component<Props, State> {
     }
 
     handleNewAssets = (assets: { url: string; file: File }[]) => {
-        this.setState((state) => {
-            const finalAssets = distinctBy(
-                union(
-                    state.assets,
-                    assets //.map((x) => ({ url: x.url }))
-                ),
-                (x) => x.url
-            );
+        const uploadImages = useUploadedImages.getState().uploadImages;
+        const images = assets.map(i => ({ id: i.url, blogId: this.props.id, file: i.file }));
+        uploadImages(images);
 
-            return { assets: finalAssets };
-        });
+        // this.setState((state) => {
+        //     const finalAssets = distinctBy(
+        //         union(
+        //             state.assets,
+        //             assets //.map((x) => ({ url: x.url }))
+        //         ),
+        //         (x) => x.url
+        //     );
+
+        //     return { assets: finalAssets };
+        // });
     };
 
     handleAssetsUploaded = (id: number, url: string, oldURL: string) => {

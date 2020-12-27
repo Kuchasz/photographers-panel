@@ -297,6 +297,7 @@ export const deleteBlog = async (id: number) => {
 export const createBlogAsset = async (blogId: number, assetId: string, alt: string): Promise<number> => {
     try {
 
+        console.log(blogId, assetId, alt);
         return (await connection("BlogAsset")
             .insert({ Blog_id: blogId, Url: assetId, Alt: alt }, "Id"))[0];
 
