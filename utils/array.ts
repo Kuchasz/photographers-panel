@@ -27,6 +27,8 @@ export const includesAny = <T>(left: T[], right: T[]): boolean =>
 
 export const includesAll = <T>(left: T[], right: T[]): boolean => right.every(l => left.includes(l));
 
+export const all = <T>(items: T[], predicate: (item: T) => boolean) => items.reduce((acc, cur) => acc && predicate(cur), true);
+
 export const union = <T>(left: T[], right: T[]): T[] => [...new Set<T>([...left, ...right])];
 
 export const distinctBy = <T, U>(items: T[], by: (item: T) => U) => {
@@ -46,10 +48,10 @@ export const distinctBy = <T, U>(items: T[], by: (item: T) => U) => {
 
 export const replace = <T, U>(items: T[], oldItem: T, newItem: T, comparator: (item: T) => U) => {
     const realItem = items.filter(i => comparator(oldItem) === comparator(i))[0];
-    
+
     if (!realItem)
         return items;
-    
+
     const index = items.indexOf(realItem);
     return Object.assign(items.slice(), { [index]: newItem });
 }

@@ -1,10 +1,13 @@
-import { replace } from "@pp/utils/array";
+import { distinctBy, replace, union } from "@pp/utils/array";
+import { v4 } from "@pp/utils/uuid";
 import create from "zustand";
 
 type Id = string;
 
 export type UploadedImage = {
-    id: Id;
+    id?: number;
+    url?: string;
+    originId: Id;
     blogId: number;
     processed: boolean;
     current: boolean;
@@ -12,28 +15,44 @@ export type UploadedImage = {
     progress?: number;
     file: File;
     error?: string;
+    name: string;
+    size: number;
+    batchId: string;
 }
 
 export type State = {
     images: UploadedImage[],
-    uploadImages: (image: { id: Id, blogId: number, file: File }[]) => void,
-    updateImage: (id: Id) => (changes: Partial<UploadedImage>) => void
+    uploadImages: (images: { id: Id, blogId: number, file: File, name: string, size: number }[]) => void,
+    updateImage: (originId: Id) => (changes: Partial<UploadedImage>) => void
 }
 
 export const useUploadedImages = create<State>(set => ({
     images: [],
-    uploadImages: (images) => set(state => ({
-        images: [...state.images, ...images.map(i => ({ ...i, error: undefined, current: false, processed: false, processing: false, progress: undefined }))]
-    })),
+    uploadImages: (images) => set(state => {
+        const batchId = v4();
+        const newImages = union(state.images, images.map(i => ({
+            ...i,
+            id: undefined,
+            url: undefined,
+            originId: `${i.id}${i.blogId}${batchId}`,
+            error: undefined,
+            current: false,
+            processed: false,
+            processing: false,
+            progress: undefined,
+            batchId
+        })));
+        return { images: distinctBy(newImages, x => x.originId) }
+    }),
     updateImage: (id) => (changes) => set(state => {
-        const image = state.images.find(x => x.id === id);
+        const image = state.images.find(x => x.originId === id);
         if (!image) return state;
         return ({
             images: replace(
                 state.images,
                 image,
-                { ...image, ...changes }, 
-                x => x.id)
+                { ...image, ...changes },
+                x => x.originId)
         });
     })
 }));

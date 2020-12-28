@@ -26,7 +26,7 @@ const processImages = ({ images, updateImage }: State) => {
 
     console.log("Starting new upload");
 
-    const updateImageToProcess = updateImage(imageToProcess.id);
+    const updateImageToProcess = updateImage(imageToProcess.originId);
 
     updateImageToProcess({ current: true });
 
@@ -36,7 +36,7 @@ const processImages = ({ images, updateImage }: State) => {
         updateImageToProcess,
         (res) => {
             if (res.type === ResultType.Success) {
-                updateImageToProcess({ current: false, progress: 100, processed: true });
+                updateImageToProcess({ id: res.result?.id, url: res.result?.url, current: false, progress: 100, processed: true });
             } else {
                 updateImageToProcess({ current: false, progress: 0, processed: true, error: res.error });
                 console.error("An issue occured while uploading image", res.error)
@@ -50,5 +50,5 @@ useUploadedImages.subscribe(processImages);
 export const ImagesUploader = () => {
     const uploadedImages = useUploadedImages(x => x.images).filter(x => x.processed === false).length;
 
-    return (<div>{uploadedImages}</div>);
+    return (<span>{uploadedImages}</span>);
 };

@@ -22,7 +22,7 @@ import {
     deleteBlogAsset,
     changeBlogAssetAlt
 } from "@pp/api/panel/blog";
-import { range } from "@pp/utils/array";
+import { distinctBy, range, union } from "@pp/utils/array";
 import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
 import { debounce } from "@pp/utils/function";
@@ -155,7 +155,7 @@ const AssetUploadingThumb = ({
     return (
         <AssetsListItem className="thumb">
             {item.processing && item.error && <Loader inverse center />}
-            {!item.processing && <Icon style={{ color: "white" }} icon="upload" size="lg"></Icon>}
+            {!item.current && !item.processing && <Icon style={{ color: "white" }} icon="clock-o" size="lg"></Icon>}
             {item.current && <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={item.progress} />}
         </AssetsListItem>
     );
@@ -213,11 +213,25 @@ const AssetsList = ({
     onDelete: (assetId: number) => void;
     onAltChange: (assetId: number, alt: string) => void;
 }) => {
+
     const uploadedImages = useUploadedImages(s => s.images.filter(i => i.blogId === blogId));
+
+    const processingImages = uploadedImages.filter(x => x.processed === false);
+    const processedImages = uploadedImages.filter(x => x.processed && !x.error);
+
+    //images not processed by error will disappear!
+
+    const finalImages = distinctBy(
+        union(
+            items,
+            processedImages//.map((x) => ({ url: x.url }))
+        ),
+        (x) => x.id
+    );
 
     return (
         <div className="assets-list">
-            {items.map((item) => <AssetThumb
+            {finalImages.map((item) => <AssetThumb
                 onAltChange={onAltChange}
                 onDelete={onDelete}
                 onSetAsMain={onSetAsMain}
@@ -225,10 +239,10 @@ const AssetsList = ({
                 key={item.id}
             />
             )}
-            {uploadedImages.map((item) => <AssetUploadingThumb
+            {processingImages.map((item) => <AssetUploadingThumb
                 blogId={blogId}
                 item={item}
-                key={item.id}
+                key={item.originId}
                 onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
             />)}
             <AssetUploadButton onAssetsChosen={onAssetsChosen} />
@@ -250,14 +264,15 @@ export class BlogAssignAssets extends React.Component<Props, State> {
 
     componentDidUpdate(prevProps: Props) {
         if (this.props.id === prevProps.id) return;
+        this.setState({ assets: [] });
         getBlogAssets(this.props.id).then((assets) => {
             this.setState({ assets });
         });
     }
 
     handleNewAssets = (assets: { url: string; file: File }[]) => {
-        const uploadImages = useUploadedImages.getState().uploadImages;
-        const images = assets.map(i => ({ id: i.url, blogId: this.props.id, file: i.file }));
+        const {uploadImages} = useUploadedImages.getState();
+        const images = assets.map(i => ({ id: i.url, blogId: this.props.id, file: i.file, size: i.file.size, name: i.file.name }));
         uploadImages(images);
 
         // this.setState((state) => {
