@@ -9905,7 +9905,7 @@ roboto-fontface@0.10.0:
   resolved "https://registry.yarnpkg.com/roboto-fontface/-/roboto-fontface-0.10.0.tgz#7eee40cfa18b1f7e4e605eaf1a2740afb6fd71b0"
   integrity sha512-OlwfYEgA2RdboZohpldlvJ1xngOins5d7ejqnIBWr9KaMxsnBqotpptRXTyfNRLnFpqzX6sTDt+X+a+6udnU8g==
 
-rsuite-table@^3.14.1:
+rsuite-table@^3.13.3:
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/rsuite-table/-/rsuite-table-3.14.1.tgz#2bb682a2b7bae7a94f990b6aa8e667a0dc4f96c6"
   integrity sha512-4XidYEG21gAiezBz+2HqOSf+hkjZsuM6EMqglcHAUPcxvj1/uWPKHkpL7PCyLzP3uVvr2dNzj4Z/p/Io9XSjDQ==
@@ -9916,10 +9916,10 @@ rsuite-table@^3.14.1:
     element-resize-event "^3.0.2"
     lodash "^4.17.5"
 
-rsuite@^4.5.0:
-  version "4.8.6"
-  resolved "https://registry.yarnpkg.com/rsuite/-/rsuite-4.8.6.tgz#51090caf73c5f9a827bd0ff9a2d462365dbd2726"
-  integrity sha512-tOIQyduKbSrRyVb3IH2qTnRH69uzvhCb1ak2EDAIYoB2EgmGEXnGYp7nT7VwWHIF/hs3HY6E01KToMfvtwmwaA==
+rsuite@4.8.3:
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/rsuite/-/rsuite-4.8.3.tgz#6b998ea5b03ef4e061488dff226baeef3a16fba4"
+  integrity sha512-3vpQqeVuQFxgNniJiX/NjKSTqieUJX8xitHIrUmN/NG527XUa3NemzE9ixZjyw0YjSVJ7Lbcf4/DDFc4pYRj1A==
   dependencies:
     "@babel/runtime" "^7.8.4"
     classnames ">=2.0.0"
@@ -9931,7 +9931,7 @@ rsuite@^4.5.0:
     react-lifecycles-compat "^3.0.4"
     react-virtualized "^9.21.0"
     recompose "^0.30.0"
-    rsuite-table "^3.14.1"
+    rsuite-table "^3.13.3"
     schema-typed "^1.5.1"
 
 run-parallel@^1.1.9:

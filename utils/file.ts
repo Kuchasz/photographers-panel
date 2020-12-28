@@ -48,3 +48,9 @@ export const read = (file: File): Promise<ReadResult> => {
         // res({ url: file.name, file });
     });
 };
+
+export const formatFileSize = (size: number) => {
+    const i = size === 0 ? 0 : Math.floor( Math.log(size) / Math.log(1024) );
+    const formattedSize = ( size / Math.pow(1024, i) );
+    return `${formattedSize.toFixed(2)} ${['B', 'kB', 'MB', 'GB', 'TB'][i]}`;
+};

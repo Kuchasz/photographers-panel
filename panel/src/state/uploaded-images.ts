@@ -12,12 +12,13 @@ export type UploadedImage = {
     processed: boolean;
     current: boolean;
     processing: boolean;
-    progress?: number;
+    progress: number;
     file: File;
     error?: string;
     name: string;
     size: number;
     batchId: string;
+    loaded: number;
 }
 
 export type State = {
@@ -39,7 +40,8 @@ export const useUploadedImages = create<State>(set => ({
             current: false,
             processed: false,
             processing: false,
-            progress: undefined,
+            progress: 0,
+            loaded: 0,
             batchId
         })));
         return { images: distinctBy(newImages, x => x.originId) }
