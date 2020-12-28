@@ -53,7 +53,7 @@ useUploadedImages.subscribe(processImages);
 const UploadHeader = ({ items }: { items: UploadedImage[] }) => {
 
     const loadedBytes = items.reduce((acc, cur) => acc + cur.loaded, 0);
-    const totalBytes = items.reduce((acc, cur) => acc + cur.size, 0);
+    const totalBytes = items.reduce((acc, cur) => acc + cur.size, 1);
     const leftImages = items.filter(x => !x.processed).length;
 
     const totalProgress = Math.floor(loadedBytes / totalBytes * 100);
@@ -86,18 +86,11 @@ const UploadsPopup = ({ ...props }) => {
                     </List.Item>
                 ))}
             </List>
-
-
-
-
-            {/* {proper.map(ui => <div key={ui.originId}>{ui.name} <span> | {formatFileSize(ui.size)}</span> {ui.progress} </div>)} */}
         </Popover>
     );
 };
 
 export const ImagesUploader = () => {
-    // const _uploadedImages = useUploadedImages(x => x.images).filter(x => x.processed === false).length;
-
     return (<Whisper trigger="click" placement="rightEnd" speaker={<UploadsPopup />}>
         {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>
         </Nav.Item>}
