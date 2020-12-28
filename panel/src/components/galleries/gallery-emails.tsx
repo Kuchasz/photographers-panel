@@ -15,6 +15,7 @@ import {
 import { ToolTip } from "../common/tooltip";
 import { ResultType } from "@pp/api/common";
 import { translations } from "../../i18n";
+import { trim } from "@pp/utils/string";
 
 interface Props {
     id: number;
@@ -30,7 +31,7 @@ interface State {
 
 const formatEmail = (address: string) => {
     const [userPart, domainPart] = address.split("@");
-    return [userPart.slice(0, 3) + "*".repeat(userPart.length - 3), domainPart].join("@");
+    return [trim(3, userPart) + "*".repeat(userPart.length - 3), domainPart].join("@");
 };
 
 const EmailsList = ({ emails }: { emails: GalleryEmailDto[] }) => (

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Icon, Progress, ButtonToolbar, IconButton, Divider } from "rsuite";
 import { range } from "@pp/utils/array";
+import { trim } from "@pp/utils/string";
 import { GalleryDto } from "@pp/api/panel/private-gallery";
 import { PrivateGalleryState } from "@pp/api/private-gallery";
 import { ToolTip } from "../common/tooltip";
@@ -72,7 +73,7 @@ const passHash = (password: string) =>
         .map((x) => "*")
         .reduce((agg, cur) => agg + cur, "");
 
-const obfuscatePassword = (password: string) => password.slice(0, 1) + passHash(password);
+const obfuscatePassword = (password: string) => trim(1, password) + passHash(password);
 
 const Password = ({ password }: { password: string }) => {
     const [passwordRevealed, revealPassword] = useState(false);

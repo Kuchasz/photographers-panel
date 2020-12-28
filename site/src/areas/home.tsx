@@ -5,6 +5,7 @@ import { getLastBlog, LastBlog } from "@pp/api/site/blog";
 import { Link } from "react-router-dom";
 import { routes } from "@pp/api/site/routes";
 import { strings } from "../resources";
+import { truncate } from "@pp/utils/string";
 
 type HomeProps = { initialState?: LastBlog };
 type HomeState = { lastBlog?: LastBlog };
@@ -60,7 +61,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                 {this.state.lastBlog !== undefined ? (
                                     <Link to={`/blog/${this.state.lastBlog.alias}`}>
                                         <h1>{this.state.lastBlog.title}</h1>
-                                        <h2>{this.state.lastBlog.content.slice(0, 220)}...</h2>
+                                        <h2>{truncate(220, this.state.lastBlog.content)}...</h2>
                                     </Link>
                                 ) : null}
                             </span>
