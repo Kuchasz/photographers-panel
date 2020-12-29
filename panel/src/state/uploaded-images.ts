@@ -4,20 +4,34 @@ import create from "zustand";
 
 type Id = string;
 
+type ActiveStatus = "uploading" | "processing";
+type QueuedStatus = "queued";
+type EndedStatus = "successful" | "failed";
+type Status = QueuedStatus | ActiveStatus | EndedStatus;
+
+export const isProcessed = (status: Status): status is EndedStatus => status === "successful" || status === "failed";
+export const isQueued = (status: Status): status is QueuedStatus => status === "queued";
+export const isActive = (status: Status): status is ActiveStatus => status === "uploading" || status === "processing";
+
 export type UploadedImage = {
-    id?: number;
-    url?: string;
     originId: Id;
     blogId: number;
-    processed: boolean;
-    current: boolean;
-    processing: boolean;
-    progress: number;
     file: File;
-    error?: string;
     name: string;
-    size: number;
+
+    id?: number;
+    url?: string;
+    
+    status: Status;
+    // processed: boolean;
+    // current: boolean;
+    // processing: boolean;
+
+    // error?: string;
     batchId: string;
+
+    progress: number;
+    size: number;
     loaded: number;
     lastBytesPerSecond: number;
 }
@@ -36,11 +50,8 @@ export const useUploadedImages = create<State>(set => ({
             ...i,
             id: undefined,
             url: undefined,
-            originId: `${i.id}${i.blogId}${batchId}`,
-            error: undefined,
-            current: false,
-            processed: false,
-            processing: false,
+            originId: v4(),
+            status: "queued" as Status,
             progress: 0,
             lastBytesPerSecond: 0,
             loaded: 0,

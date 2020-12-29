@@ -27,7 +27,7 @@ import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
 import { debounce } from "@pp/utils/function";
 import { translations } from "../../i18n";
-import { UploadedImage, useUploadedImages } from "../../state/uploaded-images";
+import { isActive, isProcessed, isQueued, UploadedImage, useUploadedImages } from "../../state/uploaded-images";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto>;// & { file: File }>;
 
@@ -154,9 +154,9 @@ const AssetUploadingThumb = ({
 
     return (
         <AssetsListItem className="thumb">
-            {item.processing && item.error && <Loader inverse center />}
-            {!item.current && !item.processing && <Icon style={{ color: "white" }} icon="clock-o" size="lg"></Icon>}
-            {item.current && <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={item.progress} />}
+            {item.status === "failed" && <Loader inverse center />}
+            {isQueued(item.status) && <Icon style={{ color: "white" }} icon="clock-o" size="lg"></Icon>}
+            {isActive(item.status) && <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={item.progress} />}
         </AssetsListItem>
     );
 };
@@ -216,15 +216,15 @@ const AssetsList = ({
 
     const uploadedImages = useUploadedImages(s => s.images.filter(i => i.blogId === blogId));
 
-    const processingImages = uploadedImages.filter(x => x.processed === false);
-    const processedImages = uploadedImages.filter(x => x.processed && !x.error);
+    const processingImages = uploadedImages.filter(x => !isProcessed(x.status));
+    const successfulImages = uploadedImages.filter(x => x.status === "successful");
 
-    //images not processed by error will disappear!
+    //images not processed with error will disappear!
 
     const finalImages = distinctBy(
         union(
             items,
-            processedImages//.map((x) => ({ url: x.url }))
+            successfulImages
         ),
         (x) => x.id
     );
@@ -271,7 +271,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
     }
 
     handleNewAssets = (assets: { url: string; file: File }[]) => {
-        const {uploadImages} = useUploadedImages.getState();
+        const { uploadImages } = useUploadedImages.getState();
         const images = assets.map(i => ({ id: i.url, blogId: this.props.id, file: i.file, size: i.file.size, name: i.file.name }));
         uploadImages(images);
 
