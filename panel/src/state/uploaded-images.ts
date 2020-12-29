@@ -19,6 +19,7 @@ export type UploadedImage = {
     size: number;
     batchId: string;
     loaded: number;
+    lastBytesPerSecond: number;
 }
 
 export type State = {
@@ -41,6 +42,7 @@ export const useUploadedImages = create<State>(set => ({
             processed: false,
             processing: false,
             progress: 0,
+            lastBytesPerSecond: 0,
             loaded: 0,
             batchId
         })));

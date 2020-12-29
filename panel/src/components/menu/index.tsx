@@ -45,6 +45,7 @@ class MenuComponent extends React.Component<Props, State> {
                         </Nav.Item>)}
                     </Nav>
                     <Nav>
+                        {/* {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>Transfers</Nav.Item>} */}
                         <ImagesUploader />
                     </Nav>
                 </Sidenav.Body>

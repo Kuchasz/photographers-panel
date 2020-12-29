@@ -177,24 +177,34 @@ const uploadBlogAssetRoute = "/api/panel/upload-blog-asset";
 export const uploadBlogAsset = (
     id: number,
     asset: File,
-    onProgress: (progress: { processing: boolean, progress: number, loaded: number }) => void,
+    onProgress: (progress: { processing: boolean, progress: number, loaded: number, lastBytesPerSecond: number }) => void,
     onEnd: (result: UploadBlogAssetResult) => void
 ) => {
     const request = new XMLHttpRequest();
 
+    let lastNow = new Date().getTime();
+    let lastBytes = 0;
+
     request.upload.onloadend = (event: ProgressEvent) => {
-        onProgress({ processing: true, progress: 100, loaded: event.loaded  });
+        onProgress({ processing: true, progress: 100, loaded: event.loaded, lastBytesPerSecond: 0 });
     };
 
     request.upload.onprogress = (event: ProgressEvent) => {
+        const now = new Date().getTime();
+        const elapsed = (now - lastNow) / 1000;
+        var uploadedBytes = event.loaded - lastBytes;
+        const lastBytesPerSecond = elapsed ? uploadedBytes / elapsed : 0;
+        lastBytes = event.loaded;
+        lastNow = now;
+
         let percent = 0;
         if (event.lengthComputable) {
             percent = (event.loaded / event.total) * 100;
         }
-        onProgress({ processing: percent === 100, progress: percent, loaded: event.loaded });
+        onProgress({ processing: percent === 100, progress: percent, loaded: event.loaded, lastBytesPerSecond });
     };
     request.responseType = "json";
-    request.upload.onloadstart = () => onProgress({ processing: false, progress: 0, loaded: 0 });
+    request.upload.onloadstart = () => onProgress({ processing: false, progress: 0, loaded: 0, lastBytesPerSecond: 0 });
     request.onload = () => onEnd(request.response);
 
     const payload = new FormData();

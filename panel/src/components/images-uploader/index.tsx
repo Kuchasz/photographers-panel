@@ -1,10 +1,10 @@
 import { ResultType } from "@pp/api/common";
 import { uploadBlogAsset } from "@pp/api/panel/blog";
-// import { all } from "@pp/utils/array";
-import { formatFileSize } from "@pp/utils/file";
+import { all } from "@pp/utils/array";
+import { formatFileSize, formatTransfer } from "@pp/utils/file";
 import { truncate } from "@pp/utils/string";
 import React from "react";
-import { Badge, FlexboxGrid, Icon, List, Loader, Nav, Popover, Progress, Whisper } from "rsuite";
+import { Badge, FlexboxGrid, Icon, List, Nav, Popover, Progress, Whisper } from "rsuite";
 import { useUploadedImages, State, UploadedImage } from "../../state/uploaded-images";
 import "./styles.less";
 // const queuedImages = [];
@@ -62,15 +62,28 @@ const UploadHeader = ({ items }: { items: UploadedImage[] }) => {
     return <header><Badge content={<span><Icon icon="sort-up" /> {totalProgress}%</span>} /><span>{leftImages} left</span></header>
 }
 
+const getStatusIcon = (image: UploadedImage) => {
+    if (!image.processed && !image.current)
+        return <Icon icon="clock-o" size="lg"></Icon>;
+
+    if (image.processed && !image.error)
+        return <Icon style={{ color: "#4caf50" }} icon="check" size="lg"></Icon>;
+
+    if (image.processed && image.error)
+        return <Icon style={{ color: "#f44336" }} icon="close" size="lg"></Icon>;
+
+    return formatTransfer(image.lastBytesPerSecond);
+}
+
 const UploadsPopup = ({ ...props }) => {
-    // const uploadedImages = useUploadedImages(x => x.images);
-    // const imagesByBatches: { [key: string]: UploadedImage[] } = uploadedImages.reduce((acc: any, cur) => ({ ...acc, [cur.batchId]: [...(acc[cur.batchId] || []), cur] }), {});
+    const uploadedImages = useUploadedImages(x => x.images);
+    const imagesByBatches: { [key: string]: UploadedImage[] } = uploadedImages.reduce((acc: any, cur) => ({ ...acc, [cur.batchId]: [...(acc[cur.batchId] || []), cur] }), {});
 
     //when no uploads then show all finnished uploads
     //if some uploads are in progress then show all uploads (even completed) from the same batches
-    // const proper = Object.values(imagesByBatches).filter(images => !all(images, img => img.processed)).reduce((acc, cur) => [...acc, ...cur], []);
+    const proper = Object.values(imagesByBatches).filter(images => !all(images, img => img.processed)).reduce((acc, cur) => [...acc, ...cur], []);
 
-    const proper: any[] = JSON.parse(`[{"blogId":"304","file":{},"size":20592894,"name":"PF7B4400a.jpg","originId":"PF7B4400a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":true,"processed":false,"processing":false,"progress":7.631575267058614,"loaded":1571588,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17102851,"name":"PF7B4404-adawdawdaw-adawda.jpg","originId":"PF7B4404a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":100,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17484072,"name":"PF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410a.jpg","originId":"PF7B4410a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":50,"error":"Sineting went wrong", "loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":18416382,"name":"PF7B4412a.jpg","originId":"PF7B4412a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15054983,"name":"PF7B4419a.jpg","originId":"PF7B4419a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19282284,"name":"PF7B4422a.jpg","originId":"PF7B4422a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":23073856,"name":"PF7B4425a.jpg","originId":"PF7B4425a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":14300644,"name":"PF7B4431a.jpg","originId":"PF7B4431a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15274610,"name":"PF7B4435a.jpg","originId":"PF7B4435a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15279244,"name":"PF7B4437a.jpg","originId":"PF7B4437a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":16170972,"name":"PF7B4443a.jpg","originId":"PF7B4443a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19577973,"name":"PF7B4448a.jpg","originId":"PF7B4448a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":12073713,"name":"PF7B4453a.jpg","originId":"PF7B4453a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":8275481,"name":"PF7B4458a.jpg","originId":"PF7B4458a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19041735,"name":"PF7B4465a.jpg","originId":"PF7B4465a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13898841,"name":"PF7B4474a.jpg","originId":"PF7B4474a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13385373,"name":"PF7B4480a.jpg","originId":"PF7B4480a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"}]`);
+    // const proper: any[] = JSON.parse(`[{"blogId":"304","file":{},"size":20592894,"name":"PF7B4400a.jpg","lastBytesPerSecond": 856924, "originId":"PF7B4400a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":true,"processed":false,"processing":false,"progress":7.631575267058614,"loaded":1571588,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17102851,"name":"PF7B4404-adawdawdaw-adawda.jpg","originId":"PF7B4404a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":100,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17484072,"name":"PF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410a.jpg","originId":"PF7B4410a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":50,"error":"Sineting went wrong", "loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":18416382,"name":"PF7B4412a.jpg","originId":"PF7B4412a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15054983,"name":"PF7B4419a.jpg","originId":"PF7B4419a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19282284,"name":"PF7B4422a.jpg","originId":"PF7B4422a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":23073856,"name":"PF7B4425a.jpg","originId":"PF7B4425a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":14300644,"name":"PF7B4431a.jpg","originId":"PF7B4431a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15274610,"name":"PF7B4435a.jpg","originId":"PF7B4435a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15279244,"name":"PF7B4437a.jpg","originId":"PF7B4437a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":16170972,"name":"PF7B4443a.jpg","originId":"PF7B4443a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19577973,"name":"PF7B4448a.jpg","originId":"PF7B4448a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":12073713,"name":"PF7B4453a.jpg","originId":"PF7B4453a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":8275481,"name":"PF7B4458a.jpg","originId":"PF7B4458a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19041735,"name":"PF7B4465a.jpg","originId":"PF7B4465a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13898841,"name":"PF7B4474a.jpg","originId":"PF7B4474a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13385373,"name":"PF7B4480a.jpg","originId":"PF7B4480a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"}]`);
     // console.log(JSON.stringify(proper));
 
     return (
@@ -80,8 +93,8 @@ const UploadsPopup = ({ ...props }) => {
                     <List.Item key={item.originId} index={index}>
                         <FlexboxGrid>
                             <FlexboxGrid.Item colspan={2}><Icon icon="sort-up" /></FlexboxGrid.Item>
-                            <FlexboxGrid.Item colspan={20}>{truncate(30, item.name)} <span className="file-size-separator">|</span><span className="file-size-text">{formatFileSize(item.size)}</span></FlexboxGrid.Item>
-                            <FlexboxGrid.Item colspan={2}>{!item.processed && !item.current && <Loader speed={"slow"} size={"xs"} />}</FlexboxGrid.Item>
+                            <FlexboxGrid.Item colspan={18}>{truncate(30, item.name)} <span className="file-size-separator">|</span><span className="file-size-text">{formatFileSize(item.size)}</span></FlexboxGrid.Item>
+                            <FlexboxGrid.Item className="status" colspan={4}>{getStatusIcon(item)}</FlexboxGrid.Item>
                         </FlexboxGrid>
                         <Progress.Line strokeWidth={3} status={item.processed ? item.error ? "fail" : "success" : "active"} showInfo={false} percent={item.progress}></Progress.Line>
                     </List.Item>
@@ -92,8 +105,8 @@ const UploadsPopup = ({ ...props }) => {
 };
 
 export const ImagesUploader = () => {
-    return (<Whisper trigger="click" placement="rightEnd" speaker={<UploadsPopup />}>
-        {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>
-        </Nav.Item>}
+    const uploadedImages = useUploadedImages(x => x.images);
+    return (<Whisper open={!all(uploadedImages, x => x.processed)} trigger="click" placement="rightEnd" speaker={<UploadsPopup />}>
+        {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>Transfers</Nav.Item>}
     </Whisper>);
 };
