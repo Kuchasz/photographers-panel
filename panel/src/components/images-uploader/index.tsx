@@ -53,7 +53,7 @@ const processImages = ({ images, updateImage }: State) => {
 useUploadedImages.subscribe(processImages);
 
 const UploadHeader = () => {
-    const uploadedItems = useUploadedImages(x => getProper(x.images), (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === n.reduce((acc, cur) => acc + cur.loaded, 0));
+    const uploadedItems = useUploadedImages(x => getProper(x.images), (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === (n as any[]).reduce((acc, cur) => acc + cur.loaded, 0));
 
     const items = uploadedItems;
 
@@ -117,7 +117,7 @@ const getProper = (images: UploadedImage[]) => {
 }
 
 export const ImagesUploader = () => {
-    const uploadedImages = useUploadedImages(x => getProper(x.images), (p, n) => "".concat(...p.map(pi => pi.originId)) === "".concat(...n.map(ni => ni.originId)));
+    const uploadedImages = useUploadedImages(x => getProper(x.images), (p, n) => "".concat(...p.map(pi => pi.originId)) === "".concat(...(n as any[]).map(ni => ni.originId)));
 
     //when no uploads then show all finnished uploads
     //if some uploads are in progress then show all uploads (even completed) from the same batches
