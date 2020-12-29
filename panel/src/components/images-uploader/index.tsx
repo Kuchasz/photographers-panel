@@ -85,13 +85,13 @@ const getStatus = (image: UploadedImage) => {
         return "fail";
     if (image.status === "successful")
         return "success";
-    return "active";
+    return undefined;
 }
 
 const UploadsListItem = ({ id }: { id: string }) => {
     const item = useUploadedImages(x => x.images.filter(xx => xx.originId === id)[0]);
 
-    return <List.Item key={item.originId}>
+    return <List.Item className={isActive(item.status) ? "active" : ""} style={{ willChange: isActive(item.status) ? "transform" : "auto" }} key={item.originId}>
         <FlexboxGrid>
             <FlexboxGrid.Item colspan={1}><Icon icon="sort-up" /></FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={20}>{truncate(40, item.name)} <span className="file-size-separator">|</span><span className="file-size-text">{formatFileSize(item.size)}</span></FlexboxGrid.Item>

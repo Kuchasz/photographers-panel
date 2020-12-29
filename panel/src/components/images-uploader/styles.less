@@ -1,4 +1,6 @@
 .uploads-popup {
+    will-change: transform;
+
     header {
         display: flex;
         align-items: center;
@@ -23,9 +25,18 @@
         overflow-y: scroll;
     }
 
+    .rs-list {
+        will-change: transform;
+    }
+
     .rs-list-item {
         box-shadow: none;
 
+        &.active{
+            .rs-progress-line-bg{
+                will-change: transform;
+            }
+        }
         .file-size-separator {
             color: #AAA;
             margin: 0px 10px;
