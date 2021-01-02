@@ -306,6 +306,9 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                 const newMainIndex = state.assets.map((x) => x.id).indexOf(assetId);
                 const oldMainIndex = state.assets.indexOf(state.assets.filter((x) => x.isMain)[0]);
 
+                if (newMainIndex === -1 || oldMainIndex === -1)
+                    return;
+
                 const newMain = state.assets[newMainIndex];
                 const oldMain = state.assets[oldMainIndex];
 
