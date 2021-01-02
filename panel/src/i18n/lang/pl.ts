@@ -2,8 +2,7 @@ export default {
     blog: {
         assignAssets: {
             title: "Dodaj zdjecia do bloga",
-            save: "Zapisz",
-            cancel: "Anuluj",
+            ok: "OK",
             assetRemoved: "Zdjecie usuniete prawidlowo",
             assetNotRemoved: "Wystapil blad podczas usuwania zdjecia",
             description: "Opis zdjecia",

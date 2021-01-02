@@ -123,7 +123,7 @@ const AssetThumb = ({ item, onSetAsMain, onDelete, onAltChange }: AssetThumbProp
                     onDelete={() => onDelete(item.id!)}
                     onSetAsMain={() => onSetAsMain(item.id!)}
                 />
-                <img src={item.url}></img>
+                <img src={item.url} loading="lazy"></img>
             </AssetsListItem>
         </Whisper>
     );
@@ -220,7 +220,7 @@ const AssetsList = ({
     const successfulImages = uploadedImages.filter(x => x.status === "successful");
 
     //images not processed with error will disappear!
-
+    console.log("successfulImages", successfulImages);
     const finalImages = distinctBy(
         union(
             items,
@@ -378,10 +378,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.closeAssignAssets} appearance="primary">
-                        {translations.blog.assignAssets.save}
-                    </Button>
-                    <Button onClick={this.handleModalHide} appearance="subtle">
-                        {translations.blog.assignAssets.cancel}
+                        {translations.blog.assignAssets.ok}
                     </Button>
                 </Modal.Footer>
             </Modal>

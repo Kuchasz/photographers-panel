@@ -2,8 +2,7 @@ export default {
     blog: {
         assignAssets: {
             title: "Assign blog assets",
-            save: "Save",
-            cancel: "Cancel",
+            ok: "OK",
             assetRemoved: "Blog asset removed.",
             assetNotRemoved: "An error ocurred while removing blog asset.",
             description: "Description",

@@ -55,4 +55,13 @@ export const formatFileSize = (size: number, precision: number = 2) => {
     return `${formattedSize.toFixed(precision)} ${['B', 'KB', 'MB', 'GB', 'TB'][i]}`;
 };
 
+export const getLastBytesPerSecond = (lastBytes: number, lastNow: number, loaded: number) => {
+    const calculationTime = new Date().getTime();
+    const elapsed = (calculationTime - lastNow) / 1000;
+    var uploadedBytes = loaded - lastBytes;
+    const lastBytesPerSecond = elapsed ? uploadedBytes / elapsed : 0;
+
+    return { calculationTime, lastBytesPerSecond };
+}
+
 export const formatTransfer = (bytesPerSecond: number) => `${formatFileSize(bytesPerSecond, 1)}/s`;

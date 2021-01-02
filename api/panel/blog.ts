@@ -1,4 +1,5 @@
 import { getDateString } from "@pp/utils/date";
+import { getLastBytesPerSecond } from "@pp/utils/file";
 import { endpoint, Result } from "../common";
 import { VisitsSummaryDto } from "./visits";
 
@@ -186,25 +187,27 @@ export const uploadBlogAsset = (
     let lastBytes = 0;
 
     request.upload.onloadend = (event: ProgressEvent) => {
-        onProgress({ processing: true, progress: 100, loaded: event.loaded, lastBytesPerSecond: 0 });
+        const r = getLastBytesPerSecond(lastBytes, lastNow, event.loaded);
+        onProgress({ processing: true, progress: 100, loaded: event.loaded, lastBytesPerSecond: r.lastBytesPerSecond });
     };
 
     request.upload.onprogress = (event: ProgressEvent) => {
-        const now = new Date().getTime();
-        const elapsed = (now - lastNow) / 1000;
-        var uploadedBytes = event.loaded - lastBytes;
-        const lastBytesPerSecond = elapsed ? uploadedBytes / elapsed : 0;
+
+        const r = getLastBytesPerSecond(lastBytes, lastNow, event.loaded);
+
         lastBytes = event.loaded;
-        lastNow = now;
+        lastNow = r.calculationTime;
 
         let percent = 0;
         if (event.lengthComputable) {
             percent = (event.loaded / event.total) * 100;
         }
-        onProgress({ processing: percent === 100, progress: percent, loaded: event.loaded, lastBytesPerSecond });
+        onProgress({ processing: percent === 100, progress: percent, loaded: event.loaded, lastBytesPerSecond: r.lastBytesPerSecond });
     };
     request.responseType = "json";
-    request.upload.onloadstart = () => onProgress({ processing: false, progress: 0, loaded: 0, lastBytesPerSecond: 0 });
+    request.upload.onloadstart = (e) => {
+        onProgress({ processing: false, progress: 0, loaded: 0, lastBytesPerSecond: 0 });
+    }
     request.onload = () => onEnd(request.response);
 
     const payload = new FormData();
