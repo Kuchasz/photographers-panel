@@ -130,27 +130,18 @@ const AssetThumb = ({ item, onSetAsMain, onDelete, onAltChange }: AssetThumbProp
 };
 
 const AssetUploadingThumb = ({
-    item,
+    id,
     blogId,
     onUpload
 }: {
-    item: UploadedImage;
+    id: string;
     blogId: number;
     onUpload(id: number, url: string, oldURL: string): void;
 }) => {
-    // const [processing] = React.useState<{ queued: boolean, processing: boolean, progress?: number }>({ queued: true, processing: false, progress: undefined });
+    const item = useUploadedImages(x => x.images.find(xx => xx.originId === id));
 
-    // React.useEffect(() => {
-    //     uploadBlogAsset(
-    //         blogId,
-    //         item.file!,
-    //         (p) => { setProcessing(p) },
-    //         (res) => {
-    //             setProcessing({ processing: false, progress: 0 });
-    //             res.type === ResultType.Success && onUpload(res.result!.id, res.result!.url, item.url!);
-    //         }
-    //     );
-    // }, []);
+    if (!item)
+        throw "that should not hapeen";
 
     return (
         <AssetsListItem className="thumb">
@@ -196,6 +187,8 @@ const AssetsListItem: React.FC<{ className: string; onClick?: () => void }> = ({
     </div>
 );
 
+const getImagesForBlog = (blogId: number, images: UploadedImage[]) => images.filter(i => i.blogId === blogId);
+
 const AssetsList = ({
     items,
     onAssetsChosen,
@@ -214,13 +207,11 @@ const AssetsList = ({
     onAltChange: (assetId: number, alt: string) => void;
 }) => {
 
-    const uploadedImages = useUploadedImages(s => s.images.filter(i => i.blogId === blogId));
+    const uploadedImages = useUploadedImages(x => getImagesForBlog(blogId, x.images), (p, n) => "".concat(...p.map(pi => pi.originId + pi.status)) === "".concat(...(n as any[]).map(ni => ni.originId + ni.status)));
 
     const processingImages = uploadedImages.filter(x => !isProcessed(x.status));
     const successfulImages = uploadedImages.filter(x => x.status === "successful");
 
-    //images not processed with error will disappear!
-    console.log("successfulImages", successfulImages);
     const finalImages = distinctBy(
         union(
             items,
@@ -241,7 +232,7 @@ const AssetsList = ({
             )}
             {processingImages.map((item) => <AssetUploadingThumb
                 blogId={blogId}
-                item={item}
+                id={item.originId}
                 key={item.originId}
                 onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
             />)}

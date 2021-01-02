@@ -93,7 +93,6 @@ const UploadsListItem = ({ id }: { id: string }) => {
 
     if (!item)
         throw "that should not hapeen";
-    // 
 
     return <List.Item className={isActive(item.status) ? "active" : ""} key={item.originId}>
         <FlexboxGrid>
