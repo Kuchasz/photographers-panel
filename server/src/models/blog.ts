@@ -296,10 +296,19 @@ export const deleteBlog = async (id: number) => {
 
 export const createBlogAsset = async (blogId: number, assetId: string, alt: string): Promise<number> => {
     try {
-
-        console.log(blogId, assetId, alt);
-        return (await connection("BlogAsset")
+        const potentialMainAsset = (await connection("BlogAsset")
             .insert({ Blog_id: blogId, Url: assetId, Alt: alt }, "Id"))[0];
+
+        const blogAssets = await connection("BlogAsset").where({ Blog_id: blogId }).count("Id", { as: "AssetsNumber" });
+
+        console.log(blogAssets);
+
+        if (Number(blogAssets[0].AssetsNumber) === 1) {
+            await connection("Blog")
+                .update({ MainBlogAsset_id: potentialMainAsset })
+                .where({ Id: blogId });
+        }
+        return potentialMainAsset;
 
     } catch (err) {
         return Promise.reject(err);

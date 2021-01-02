@@ -58,7 +58,7 @@ const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) =
                 icon={isMain ? "star" : "star-o"}
             />
         </ToolTip>
-        <ToolTip text={translations.blog.assignAssets.delete}>
+        {!isMain && <ToolTip text={translations.blog.assignAssets.delete}>
             <Icon
                 onClick={(e: MouseEvent) => {
                     onDelete();
@@ -67,7 +67,7 @@ const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) =
                 className="hideable"
                 icon="trash-o"
             />
-        </ToolTip>
+        </ToolTip>}
     </div>
 );
 
