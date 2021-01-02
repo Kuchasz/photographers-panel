@@ -34,6 +34,7 @@ export const get = async (alias: string): Promise<site.Blog> => {
     const blogWithAssets = await connection("Blog")
         .join("BlogAsset", "BlogAsset.Blog_id", "Blog.Id")
         .where({ Alias: alias })
+        .orderBy("BlogAsset.Id", "asc")
         .select("Blog.Id", "Blog.Title", "Blog.Date", "Blog.Content", "BlogAsset.Url", "BlogAsset.Alt");
 
     const [first] = blogWithAssets;
@@ -301,8 +302,6 @@ export const createBlogAsset = async (blogId: number, assetId: string, alt: stri
 
         const blogAssets = await connection("BlogAsset").where({ Blog_id: blogId }).count("Id", { as: "AssetsNumber" });
 
-        console.log(blogAssets);
-
         if (Number(blogAssets[0].AssetsNumber) === 1) {
             await connection("Blog")
                 .update({ MainBlogAsset_id: potentialMainAsset })
@@ -320,6 +319,7 @@ export const getAssetsForBlog = async (blogId: number): Promise<panel.BlogAssets
     const blogAssets = await connection("BlogAsset")
         .join("Blog", "Blog.Id", "BlogAsset.Blog_id")
         .where({ Blog_id: blogId })
+        .orderBy("Id", "asc")
         .select("Blog.MainBlogAsset_id", "BlogAsset.Id", "BlogAsset.Url", "BlogAsset.Alt");
 
     return blogAssets.map(
