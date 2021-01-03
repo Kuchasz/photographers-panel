@@ -20,12 +20,12 @@
     .rs-modal-body {
         // overflow: hidden !important;
         margin-bottom: 30px !important;
+        will-change: transform;
     }
 
     .assets-list {
         display: flex;
         flex-wrap: wrap;
-        will-change: transform;
 
         .item {
             margin: 8px;
@@ -90,6 +90,7 @@
                     margin: 0px;
                     justify-content: space-around;
                     color: white;
+                    display: none;
 
                     .hideable {
                         transition: opacity linear 0.25s;
