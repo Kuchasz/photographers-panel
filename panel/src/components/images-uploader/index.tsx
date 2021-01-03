@@ -5,7 +5,7 @@ import { formatFileSize, formatTransfer, } from "@pp/utils/file";
 import { truncate } from "@pp/utils/string";
 // import { stringify } from "querystring";
 import React from "react";
-import { Badge, FlexboxGrid, Icon, List, Loader, Nav, Popover, Progress, Whisper } from "rsuite";
+import { Badge, FlexboxGrid, Icon, IconProps, List, Loader, Nav, Popover, Progress, Whisper } from "rsuite";
 import { useUploadedImages, State, UploadedImage, isQueued, isActive, isProcessed } from "../../state/uploaded-images";
 import "./styles.less";
 // const queuedImages = [];
@@ -49,16 +49,18 @@ const processImages = ({ images, updateImage, finalizeUpload }: State) => {
 
 useUploadedImages.subscribe(processImages);
 
-const UploadHeader = () => {
-    const uploadedItems = useUploadedImages(x => getProper(x.images), (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === (n as any[]).reduce((acc, cur) => acc + cur.loaded, 0));
-
-    const items = uploadedItems;
-
+const calculateTotalItemsProgress = (items: UploadedImage[]) => {
     const loadedBytes = items.reduce((acc, cur) => acc + cur.loaded, 0);
     const totalBytes = items.reduce((acc, cur) => acc + cur.size, 1);
-    const leftImages = items.filter(x => isActive(x.status) || isQueued(x.status)).length;
 
-    const totalProgress = Math.floor(loadedBytes / totalBytes * 100);
+    return Math.floor(loadedBytes / totalBytes * 100);
+}
+
+const UploadHeader = () => {
+    const items = useUploadedImages(x => getProper(x.images), (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === (n as any[]).reduce((acc, cur) => acc + cur.loaded, 0));
+
+    const leftImages = items.filter(x => isActive(x.status) || isQueued(x.status)).length;
+    const totalProgress = calculateTotalItemsProgress(items);
 
     return <header><Badge content={<span><Icon icon="sort-up" /> {totalProgress}%</span>} /><span>{leftImages} left</span></header>
 }
@@ -128,6 +130,19 @@ const getProper = (images: UploadedImage[]) => {
     return Object.values(imagesByBatches).filter(images => !all(images, img => isProcessed(img.status))).reduce((acc, cur) => [...acc, ...cur], []);;
 }
 
+const LoaderIcon = (props: Omit<IconProps, "icon">) => {
+    const items = useUploadedImages(x => getProper(x.images), (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === (n as any[]).reduce((acc, cur) => acc + cur.loaded, 0));
+
+    const totalProgress = calculateTotalItemsProgress(items);
+
+    return (<div className="images-uploader-status">
+        <Icon style={{ fontSize: "16px", marginRight: "20px", position: "absolute", left: "20px", top: "15px", lineHeight: 1.25 }}
+            icon="arrow-circle-o-up"
+            {...props} />
+        <Progress.Circle percent={totalProgress} strokeWidth={8} showInfo={false} />
+    </div>)
+};
+
 export const ImagesUploader = () => {
     const uploadedImages = useUploadedImages(x => getProper(x.images), (p, n) => "".concat(...p.map(pi => pi.originId)) === "".concat(...(n as any[]).map(ni => ni.originId)));
 
@@ -138,6 +153,6 @@ export const ImagesUploader = () => {
     // const proper: any[] = JSON.parse(`[{"blogId":"304","file":{},"size":20592894,"name":"PF7B4400a.jpg","lastBytesPerSecond": 856924, "originId":"PF7B4400a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":true,"processed":false,"processing":false,"progress":7.631575267058614,"loaded":1571588,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17102851,"name":"PF7B4404-adawdawdaw-adawda.jpg","originId":"PF7B4404a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":100,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17484072,"name":"PF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410a.jpg","originId":"PF7B4410a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":50,"error":"Sineting went wrong", "loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":18416382,"name":"PF7B4412a.jpg","originId":"PF7B4412a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15054983,"name":"PF7B4419a.jpg","originId":"PF7B4419a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19282284,"name":"PF7B4422a.jpg","originId":"PF7B4422a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":23073856,"name":"PF7B4425a.jpg","originId":"PF7B4425a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":14300644,"name":"PF7B4431a.jpg","originId":"PF7B4431a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15274610,"name":"PF7B4435a.jpg","originId":"PF7B4435a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15279244,"name":"PF7B4437a.jpg","originId":"PF7B4437a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":16170972,"name":"PF7B4443a.jpg","originId":"PF7B4443a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19577973,"name":"PF7B4448a.jpg","originId":"PF7B4448a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":12073713,"name":"PF7B4453a.jpg","originId":"PF7B4453a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":8275481,"name":"PF7B4458a.jpg","originId":"PF7B4458a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19041735,"name":"PF7B4465a.jpg","originId":"PF7B4465a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13898841,"name":"PF7B4474a.jpg","originId":"PF7B4474a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13385373,"name":"PF7B4480a.jpg","originId":"PF7B4480a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"}]`);
 
     return (<Whisper trigger="click" placement="rightEnd" speaker={<UploadsPopup images={proper} />}>
-        {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>Transfers</Nav.Item>}
+        {<Nav.Item icon={<LoaderIcon />}>Transfers</Nav.Item>}
     </Whisper>);
 };
