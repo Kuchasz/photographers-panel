@@ -295,20 +295,23 @@ export const deleteBlog = async (id: number) => {
     }
 }
 
-export const createBlogAsset = async (blogId: number, assetId: string, alt: string): Promise<number> => {
+export const createBlogAsset = async (blogId: number, assetId: string, alt: string): Promise<{ id: number, isMain: boolean }> => {
     try {
-        const potentialMainAsset = (await connection("BlogAsset")
+        const potentialMainAsset: number = (await connection("BlogAsset")
             .insert({ Blog_id: blogId, Url: assetId, Alt: alt }, "Id"))[0];
 
         const blogAssets = await connection("BlogAsset").where({ Blog_id: blogId }).count("Id", { as: "AssetsNumber" });
+
+        let isMain = false;
 
         if (Number(blogAssets[0].AssetsNumber) === 1) {
             await connection("Blog")
                 .update({ MainBlogAsset_id: potentialMainAsset })
                 .where({ Id: blogId });
+            isMain = true;
         }
-        return potentialMainAsset;
 
+        return { id: potentialMainAsset, isMain };
     } catch (err) {
         return Promise.reject(err);
     }

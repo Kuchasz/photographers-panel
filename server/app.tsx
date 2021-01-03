@@ -161,7 +161,7 @@ app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
 app.post([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.route}/*`], async (req, res) => {
     const { galleryUrl, galleryId } = req.body;
     const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
-    
+
     const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "");
     await privateGalleryModel.registerVisit(galleryId, address, new Date());
 
@@ -346,11 +346,11 @@ app.post(blogPanel.uploadBlogAsset.route, verify, upload.single("asset"), async 
 
         await processImage(req.file.buffer)(finalPath);
 
-        const id = await blogModel.createBlogAsset(blogId, assetId, "");
+        const blogAseet = await blogModel.createBlogAsset(blogId, assetId, "");
 
         result = {
             type: ResultType.Success,
-            result: { id, url: `/${finalPath}` }
+            result: { id: blogAseet.id, isMain: blogAseet.isMain, url: `/${finalPath}` }
         };
     } catch (err) {
         console.log(err);

@@ -17,17 +17,17 @@ import {
 import {
     BlogAssetsListItemDto,
     // uploadBlogAsset,
-    getBlogAssets,
+    // getBlogAssets,
     changeMainBlogAsset,
     deleteBlogAsset,
     changeBlogAssetAlt
 } from "@pp/api/panel/blog";
-import { distinctBy, range, union } from "@pp/utils/array";
+import { range } from "@pp/utils/array";
 import { ResultType } from "@pp/api/common";
 import { ToolTip } from "../common/tooltip";
 import { debounce } from "@pp/utils/function";
 import { translations } from "../../i18n";
-import { isActive, isProcessed, isQueued, UploadedImage, useUploadedImages } from "../../state/uploaded-images";
+import { isActive, isQueued, useUploadedImages } from "../../state/uploaded-images";
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto>;// & { file: File }>;
 
@@ -37,7 +37,6 @@ interface Props {
     closeAssignAssets: () => void;
 }
 interface State {
-    assets: BlogAssetsListItem[];
 }
 
 interface OverlayButtonProps {
@@ -108,13 +107,18 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
 }
 
 interface AssetThumbProps {
-    item: BlogAssetsListItem;
+    id: number
     onSetAsMain: (assetId: number) => void;
     onDelete: (assetId: number) => void;
     onAltChange: (assetId: number, alt: string) => void;
 }
 
-const AssetThumb = ({ item, onSetAsMain, onDelete, onAltChange }: AssetThumbProps) => {
+const AssetThumb = React.memo(({ id, onSetAsMain, onDelete, onAltChange }: AssetThumbProps) => {
+    const item = useUploadedImages(x => x.assets.find(xx => xx.id === id));
+
+    if (!item)
+        throw "that should not hapeen";
+
     return (
         <Whisper placement="auto" speaker={<AssetDescriptor onAltChanged={onAltChange} item={item} />} trigger="click">
             <AssetsListItem className="thumb">
@@ -127,17 +131,9 @@ const AssetThumb = ({ item, onSetAsMain, onDelete, onAltChange }: AssetThumbProp
             </AssetsListItem>
         </Whisper>
     );
-};
+});
 
-const AssetUploadingThumb = ({
-    id,
-    blogId,
-    onUpload
-}: {
-    id: string;
-    blogId: number;
-    onUpload(id: number, url: string, oldURL: string): void;
-}) => {
+const AssetUploadingThumb = React.memo(({id}: {id: string}) => {
     const item = useUploadedImages(x => x.images.find(xx => xx.originId === id));
 
     if (!item)
@@ -150,7 +146,7 @@ const AssetUploadingThumb = ({
             {isActive(item.status) && <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={item.progress} />}
         </AssetsListItem>
     );
-};
+});
 
 interface AssetUploadButtonProps {
     onAssetsChosen: (assets: { url: string; file: File }[]) => void;
@@ -187,10 +183,10 @@ const AssetsListItem: React.FC<{ className: string; onClick?: () => void }> = ({
     </div>
 );
 
-const getImagesForBlog = (blogId: number, images: UploadedImage[]) => images.filter(i => i.blogId === blogId);
+const getItemsForBlog = <T extends { blogId: number }>(blogId: number, items: T[]) => items.filter(i => i.blogId === blogId);
 
 const AssetsList = ({
-    items,
+    // items,
     onAssetsChosen,
     blogId,
     onUploaded,
@@ -199,7 +195,7 @@ const AssetsList = ({
     onAltChange
 }: {
     blogId: number;
-    items: BlogAssetsListItem[];
+    // items: BlogAssetsListItem[];
     onAssetsChosen: (assets: { url: string; file: File }[]) => void;
     onUploaded: (id: number, url: string, oldURL: string) => void;
     onSetAsMain: (assetId: number) => void;
@@ -207,34 +203,42 @@ const AssetsList = ({
     onAltChange: (assetId: number, alt: string) => void;
 }) => {
 
-    const uploadedImages = useUploadedImages(x => getImagesForBlog(blogId, x.images), (p, n) => "".concat(...p.map(pi => pi.originId + pi.status)) === "".concat(...(n as any[]).map(ni => ni.originId + ni.status)));
+    const { uploaded, assets } = useUploadedImages(
+        x => ({
+            uploaded: getItemsForBlog(blogId, x.images).filter(x => x.status !== "successful").map(x => x.originId),
+            assets: getItemsForBlog(blogId, x.assets).map(x => x.id)
+        }),
+        (p, n: any) => p.assets.length === n.assets.length && p.uploaded.length === n.uploaded.length);
+    // const assets = useUploadedImages(
+    //     x => getItemsForBlog(blogId, x.assets).map(x => x.id),
+    //     (p, n) => "".concat(...p.map(pi => String(pi.id))) === "".concat(...(n as any[]).map(ni => String(ni.id))));
 
-    const processingImages = uploadedImages.filter(x => !isProcessed(x.status));
-    const successfulImages = uploadedImages.filter(x => x.status === "successful");
+    console.log("render assets");
 
-    const finalImages = distinctBy(
-        union(
-            items,
-            successfulImages
-        ),
-        (x) => x.id
-    );
+    // const processingImages = uploadedImages.filter(x => !isProcessed(x.status));
+    // const successfulImages = uploadedImages.filter(x => x.status === "successful").map(x => x.asset!);
+
+    // const finalImages = distinctBy(
+    //     union(
+    //         items,
+    //         successfulImages
+    //     ),
+    //     (x) => x.id
+    // );
 
     return (
         <div className="assets-list">
-            {finalImages.map((item) => <AssetThumb
+            {assets.map((item) => <AssetThumb
                 onAltChange={onAltChange}
                 onDelete={onDelete}
                 onSetAsMain={onSetAsMain}
-                item={item}
-                key={item.id}
+                id={item}
+                key={item}
             />
             )}
-            {processingImages.map((item) => <AssetUploadingThumb
-                blogId={blogId}
-                id={item.originId}
-                key={item.originId}
-                onUpload={(id, url, oldURL) => onUploaded(id, url, oldURL)}
+            {uploaded.map((item) => <AssetUploadingThumb
+                id={item}
+                key={item}
             />)}
             <AssetUploadButton onAssetsChosen={onAssetsChosen} />
         </div>
@@ -244,48 +248,39 @@ const AssetsList = ({
 export class BlogAssignAssets extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = { assets: [] };
     }
 
     componentDidMount() {
-        getBlogAssets(this.props.id).then((assets) => {
-            this.setState({ assets });
-        });
+        const { fetchAssets } = useUploadedImages.getState();
+        fetchAssets(this.props.id);
+        // getBlogAssets(this.props.id).then((assets) => {
+        //     this.setState({ assets });
+        // });
     }
 
     componentDidUpdate(prevProps: Props) {
         if (this.props.id === prevProps.id) return;
-        this.setState({ assets: [] });
-        getBlogAssets(this.props.id).then((assets) => {
-            this.setState({ assets });
-        });
+        const { fetchAssets } = useUploadedImages.getState();
+        fetchAssets(this.props.id);
+        // this.setState({ assets: [] });
+        // getBlogAssets(this.props.id).then((assets) => {
+        //     this.setState({ assets });
+        // });
     }
 
     handleNewAssets = (assets: { url: string; file: File }[]) => {
         const { uploadImages } = useUploadedImages.getState();
         const images = assets.map(i => ({ id: i.url, blogId: this.props.id, file: i.file, size: i.file.size, name: i.file.name }));
         uploadImages(images);
-
-        // this.setState((state) => {
-        //     const finalAssets = distinctBy(
-        //         union(
-        //             state.assets,
-        //             assets //.map((x) => ({ url: x.url }))
-        //         ),
-        //         (x) => x.url
-        //     );
-
-        //     return { assets: finalAssets };
-        // });
     };
 
     handleAssetsUploaded = (id: number, url: string, oldURL: string) => {
-        this.setState((state) => {
-            const cindex = state.assets.map((x) => x.url).indexOf(oldURL);
-            const assets = [...state.assets.slice(0, cindex), { id, url }, ...state.assets.slice(cindex + 1)];
+        // this.setState((state) => {
+        //     const cindex = state.assets.map((x) => x.url).indexOf(oldURL);
+        //     const assets = [...state.assets.slice(0, cindex), { id, url }, ...state.assets.slice(cindex + 1)];
 
-            return { assets };
-        });
+        //     return { assets };
+        // });
     };
 
     handleMarkAsMain = (assetId: number) => {
@@ -293,51 +288,66 @@ export class BlogAssignAssets extends React.Component<Props, State> {
             id: this.props.id,
             mainBlogAsset: assetId
         }).then(() => {
-            this.setState((state) => {
-                const newMainIndex = state.assets.map((x) => x.id).indexOf(assetId);
-                const oldMainIndex = state.assets.indexOf(state.assets.filter((x) => x.isMain)[0]);
+            const { assets, updateAsset } = useUploadedImages.getState();
 
-                if (newMainIndex === -1 || oldMainIndex === -1)
-                    return;
+            // const allAssets = [...assets, ...images.filter(x => x.asset != undefined).map(x => x.asset!)];
 
-                const newMain = state.assets[newMainIndex];
-                const oldMain = state.assets[oldMainIndex];
 
-                let assets = [
-                    ...state.assets.slice(0, newMainIndex),
-                    { ...newMain, isMain: true },
-                    ...state.assets.slice(newMainIndex + 1)
-                ];
 
-                if (oldMain)
-                    assets = [
-                        ...assets.slice(0, oldMainIndex),
-                        { ...oldMain, isMain: false },
-                        ...assets.slice(oldMainIndex + 1)
-                    ];
+            // this.setState((state) => {
+            // const newMainIndex = state.assets.map((x) => x.id).indexOf(assetId);
+            const newMain = assets.find(x => x.id === assetId);
+            const oldMain = assets.find(x => x.isMain);
 
-                return { assets };
-            });
+            if (newMain === undefined || oldMain === undefined || newMain === oldMain)
+                return;
+
+            updateAsset(newMain.id)({ isMain: true });
+            updateAsset(oldMain.id)({ isMain: false });
+
+            //     const newMain = state.assets[newMainIndex];
+            //     const oldMain = state.assets[oldMainIndex];
+
+            //     let assets = [
+            //         ...state.assets.slice(0, newMainIndex),
+            //         { ...newMain, isMain: true },
+            //         ...state.assets.slice(newMainIndex + 1)
+            //     ];
+
+            //     if (oldMain)
+            //         assets = [
+            //             ...assets.slice(0, oldMainIndex),
+            //             { ...oldMain, isMain: false },
+            //             ...assets.slice(oldMainIndex + 1)
+            //         ];
+
+            //     return { assets };
+            // });
         });
     };
 
     handleAltChange = (assetId: number, alt: string) => {
-        this.setState((state) => {
-            const index = state.assets.map((x) => x.id).indexOf(assetId);
+        const { updateAsset } = useUploadedImages.getState();
+        updateAsset(assetId)({ alt });
+        // this.setState((state) => {
+        //     const index = state.assets.map((x) => x.id).indexOf(assetId);
 
-            const item = state.assets[index];
+        //     const item = state.assets[index];
 
-            let assets = [...state.assets.slice(0, index), { ...item, alt }, ...state.assets.slice(index + 1)];
+        //     let assets = [...state.assets.slice(0, index), { ...item, alt }, ...state.assets.slice(index + 1)];
 
-            return { assets };
-        });
+        //     return { assets };
+        // });
     };
 
     handleDelete = (assetId: number) => {
         deleteBlogAsset(assetId).then((result) => {
             if (result.type === ResultType.Success) {
+                const { deleteAsset } = useUploadedImages.getState();
+
                 Alert.success(translations.blog.assignAssets.assetRemoved);
-                this.setState((state) => ({ assets: state.assets.filter((a) => a.id !== assetId) }));
+                // this.setState((state) => ({ assets: state.assets.filter((a) => a.id !== assetId) }));
+                deleteAsset(assetId);
             } else {
                 Alert.error(translations.blog.assignAssets.assetNotRemoved);
             }
@@ -367,7 +377,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
                         onSetAsMain={this.handleMarkAsMain}
                         onDelete={this.handleDelete}
                         onAltChange={this.handleAltChange}
-                        items={this.state.assets}
+                    // items={this.state.assets}
                     />
                 </Modal.Body>
                 <Modal.Footer>

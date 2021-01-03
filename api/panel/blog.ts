@@ -66,7 +66,7 @@ export type DeleteBlogError = "ErrorOccuredWhileDeletingBlog";
 export type DeleteBlogResult = Result<DeleteBlogError>;
 
 export type UploadBlogAssetError = "ErrorOccuredWhileUploadingBlogAsset";
-export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number; url: string }>;
+export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number; url: string, isMain: boolean }>;
 
 export type ChangeMainBlogAssetError = "ErrorOccuredWhileChangingMainBlogAsset";
 export type ChangeMainBlogAssetResult = Result<ChangeMainBlogAssetError>;

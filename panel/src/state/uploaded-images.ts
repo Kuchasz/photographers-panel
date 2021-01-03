@@ -1,3 +1,4 @@
+import { getBlogAssets } from "@pp/api/panel/blog";
 import { distinctBy, replace, union } from "@pp/utils/array";
 import { v4 } from "@pp/utils/uuid";
 import create from "zustand";
@@ -14,36 +15,43 @@ export const isQueued = (status: Status): status is QueuedStatus => status === "
 export const isActive = (status: Status): status is ActiveStatus => status === "uploading" || status === "processing";
 
 export type UploadedImage = {
-    originId: Id;
     blogId: number;
+
+    originId: Id;
     file: File;
     name: string;
-
-    id?: number;
-    url?: string;
-    
     status: Status;
-    // processed: boolean;
-    // current: boolean;
-    // processing: boolean;
-
-    // error?: string;
     batchId: string;
-
     progress: number;
     size: number;
     loaded: number;
     lastBytesPerSecond: number;
 }
 
-export type State = {
-    images: UploadedImage[],
-    uploadImages: (images: { id: Id, blogId: number, file: File, name: string, size: number }[]) => void,
-    updateImage: (originId: Id) => (changes: Partial<UploadedImage>) => void
+export interface BlogAsset {
+    id: number;
+    blogId: number;
+    url: string;
+    isMain: boolean;
+    alt: string;
 }
 
-export const useUploadedImages = create<State>(set => ({
+export type State = {
+    images: UploadedImage[],
+    assets: BlogAsset[],
+    imagesFetchedForBlogs: number[],
+    uploadImages: (images: { id: Id, blogId: number, file: File, name: string, size: number }[]) => void,
+    updateImage: (originId: Id) => (changes: Partial<UploadedImage>) => void,
+    fetchAssets: (blogId: number) => void,
+    updateAsset: (assetId: number) => (changes: Partial<BlogAsset>) => void,
+    deleteAsset: (assetId: number) => void,
+    finalizeUpload: (originId: Id, changes: Partial<UploadedImage>, asset: BlogAsset) => void;
+}
+
+export const useUploadedImages = create<State>((set, get) => ({
     images: [],
+    assets: [],
+    imagesFetchedForBlogs: [],
     uploadImages: (images) => set(state => {
         const batchId = v4();
         const newImages = union(state.images, images.map(i => ({
@@ -69,5 +77,40 @@ export const useUploadedImages = create<State>(set => ({
                 { ...image, ...changes },
                 x => x.originId)
         });
-    })
+    }),
+    fetchAssets: async (blogId) => {
+        const state = get();
+        if (state.imagesFetchedForBlogs.includes(blogId))
+            return;
+
+        const fetchedAssets = await getBlogAssets(blogId);
+        const assets = fetchedAssets.map(a => ({ ...a, blogId }));
+        set({ assets: [...state.assets, ...assets] });
+    },
+    updateAsset: (id) => (changes) => set(state => {
+        const asset = state.assets.find(x => x.id === id);
+        if (!asset) return state;
+        return ({
+            assets: replace(
+                state.assets,
+                asset,
+                { ...asset, ...changes },
+                x => x.id)
+        });
+    }),
+    deleteAsset: (id) => set(state => ({
+        assets: state.assets.filter(a => a.id !== id)
+    })),
+    finalizeUpload: (originId, changes, asset) => set(state => {
+        const image = state.images.find(x => x.originId === originId);
+        if (!image) return state;
+        return ({
+            images: replace(
+                state.images,
+                image,
+                { ...image, ...changes },
+                x => x.originId),
+            assets: [...state.assets, asset]
+        });
+    }),
 }));

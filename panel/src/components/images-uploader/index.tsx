@@ -16,7 +16,7 @@ import "./styles.less";
 //     const newImage = {...image, processing: processing};
 // }
 
-const processImages = ({ images, updateImage }: State) => {
+const processImages = ({ images, updateImage, finalizeUpload }: State) => {
 
     if (images.filter(x => isActive(x.status)).length >= 1) {
         return;
@@ -37,7 +37,8 @@ const processImages = ({ images, updateImage }: State) => {
         (params) => updateImageToProcess({ ...params, status: params.processing ? "processing" : "uploading" }),
         (res) => {
             if (res.type === ResultType.Success) {
-                updateImageToProcess({ id: res.result?.id, url: res.result?.url, status: "successful", progress: 100 });
+                const asset = { ...res.result!, alt: "", blogId: imageToProcess.blogId };
+                finalizeUpload(imageToProcess.originId, { status: "successful", progress: 100 }, asset);
             } else {
                 updateImageToProcess({ status: "failed" });
                 console.error("An issue occured while uploading image", res.error)
