@@ -85,7 +85,7 @@ export const useUploadedImages = create<State>((set, get) => ({
 
         const fetchedAssets = await getBlogAssets(blogId);
         const assets = fetchedAssets.map(a => ({ ...a, blogId }));
-        set({ assets: [...state.assets, ...assets] });
+        set({ imagesFetchedForBlogs: [...state.imagesFetchedForBlogs, blogId], assets: [...state.assets, ...assets] });
     },
     updateAsset: (id) => (changes) => set(state => {
         const asset = state.assets.find(x => x.id === id);
