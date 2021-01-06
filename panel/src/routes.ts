@@ -3,7 +3,10 @@ export const routes = {
     stats: "/stats", 
     emails: "/emails", 
     galleries: "/galleries", 
-    blogs: "/blogs", 
+    blog: {
+        list: "/blog",
+        assets: "/blog/:id/assets"
+    }, 
     comments: "/comments", 
     login: "/login" 
 };

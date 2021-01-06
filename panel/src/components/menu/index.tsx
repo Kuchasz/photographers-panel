@@ -16,7 +16,7 @@ const menuItems: MenuItem[] = [
     { route: routes.stats, icon: "signal", text: translations.menu.stats },
     // { route: routes.emails, icon: "envelope-o", text: 'Emails' },
     { route: routes.galleries, icon: "leaf", text: translations.menu.galleries },
-    { route: routes.blogs, icon: "flag", text: translations.menu.blogs },
+    { route: routes.blog.list, icon: "flag", text: translations.menu.blogs },
     { route: routes.comments, icon: "comments", text: translations.menu.comments },
     // { route: routes.login, icon: "trash", text: 'LogIn' }
 ];

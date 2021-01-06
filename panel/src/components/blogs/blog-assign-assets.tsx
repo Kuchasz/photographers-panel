@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from "react";
 import {
-    Modal,
     Button,
     Icon,
     Loader,
@@ -16,8 +15,6 @@ import {
 
 import {
     BlogAssetsListItemDto,
-    // uploadBlogAsset,
-    // getBlogAssets,
     changeMainBlogAsset,
     deleteBlogAsset,
     changeBlogAssetAlt
@@ -29,15 +26,7 @@ import { debounce } from "@pp/utils/function";
 import { translations } from "../../i18n";
 import { isActive, isQueued, useUploadedImages } from "../../state/uploaded-images";
 
-type BlogAssetsListItem = Partial<BlogAssetsListItemDto>;// & { file: File }>;
-
-interface Props {
-    id: number;
-    showBlogAssignAssets: boolean;
-    closeAssignAssets: () => void;
-}
-interface State {
-}
+type BlogAssetsListItem = Partial<BlogAssetsListItemDto>;
 
 interface OverlayButtonProps {
     onSetAsMain: () => void;
@@ -94,7 +83,7 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
         const { item, onAltChanged, ...props } = this.props;
         return (
             <Popover {...props} title={translations.blog.assignAssets.describeAsset}>
-                <img style={{ width: "400px", height: "400px", objectFit: "cover" }} src={item.url}></img>
+                <img style={{ maxWidth: "400px", maxHeight: "400px", objectFit: "contain" }} loading="lazy" src={item.url}></img>
                 <Form fluid>
                     <FormGroup>
                         <ControlLabel>{translations.blog.assignAssets.description}</ControlLabel>
@@ -133,7 +122,7 @@ const AssetThumb = React.memo(({ id, onSetAsMain, onDelete, onAltChange }: Asset
     );
 });
 
-const AssetUploadingThumb = React.memo(({id}: {id: string}) => {
+const AssetUploadingThumb = React.memo(({ id }: { id: string }) => {
     const item = useUploadedImages(x => x.images.find(xx => xx.originId === id));
 
     if (!item)
@@ -183,7 +172,10 @@ const AssetsListItem: React.FC<{ className: string; onClick?: () => void }> = ({
     </div>
 );
 
-const getItemsForBlog = <T extends { blogId: number }>(blogId: number, items: T[]) => items.filter(i => i.blogId === blogId);
+const getItemsForBlog = <T extends { blogId: number }>(blogId: number, items: T[]) => {
+    console.log("number of assets:", items.length);
+    return items.filter(i => i.blogId === blogId);
+}
 
 const AssetsList = ({
     onAssetsChosen,
@@ -206,6 +198,8 @@ const AssetsList = ({
         }),
         (p, n: any) => p.assets.length === n.assets.length && p.uploaded.length === n.uploaded.length);
 
+        console.log(assets);
+
     return (
         <div className="assets-list">
             {assets.map((item) => <AssetThumb
@@ -225,8 +219,14 @@ const AssetsList = ({
     )
 };
 
-export class BlogAssignAssets extends React.Component<Props, State> {
-    constructor(props: Props) {
+export interface BlogAssignAssetsProps {
+    id: number;
+}
+interface BlogAssignAssetsState {
+}
+
+export class BlogAssignAssets extends React.Component<BlogAssignAssetsProps, BlogAssignAssetsState> {
+    constructor(props: BlogAssignAssetsProps) {
         super(props);
     }
 
@@ -235,7 +235,7 @@ export class BlogAssignAssets extends React.Component<Props, State> {
         fetchAssets(this.props.id);
     }
 
-    componentDidUpdate(prevProps: Props) {
+    componentDidUpdate(prevProps: BlogAssignAssetsProps) {
         if (this.props.id === prevProps.id) return;
         const { fetchAssets } = useUploadedImages.getState();
         fetchAssets(this.props.id);
@@ -284,37 +284,17 @@ export class BlogAssignAssets extends React.Component<Props, State> {
         });
     };
 
-    handleModalHide = () => {
-        this.props.closeAssignAssets();
-    };
-
     render() {
         return (
-            <Modal
-                className="blog-assign-assets"
-                full
-                show={this.props.showBlogAssignAssets}
-                onHide={this.handleModalHide}
-            >
-                <Modal.Header>
-                    <Modal.Title>{translations.blog.assignAssets.title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <AssetsList
-                        blogId={this.props.id}
-                        onAssetsChosen={this.handleNewAssets}
-                        onSetAsMain={this.handleMarkAsMain}
-                        onDelete={this.handleDelete}
-                        onAltChange={this.handleAltChange}
-                    // items={this.state.assets}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.props.closeAssignAssets} appearance="primary">
-                        {translations.blog.assignAssets.ok}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <div className="blog-assign-assets">
+                <AssetsList
+                    blogId={this.props.id}
+                    onAssetsChosen={this.handleNewAssets}
+                    onSetAsMain={this.handleMarkAsMain}
+                    onDelete={this.handleDelete}
+                    onAltChange={this.handleAltChange}
+                />
+            </div>
         );
     }
 }

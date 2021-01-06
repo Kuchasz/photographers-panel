@@ -12,6 +12,7 @@ import { LogIn } from "../login";
 import { isLoggedIn } from "../../security";
 import { Soon } from "../soon";
 import { SiteStats } from "../site-stats";
+import { BlogAssignAssets } from "../blogs/blog-assign-assets";
 
 interface Props extends RouteComponentProps {
 }
@@ -36,7 +37,8 @@ class RootComponent extends React.Component<Props, State> {
                         <Route exact path={routes.galleries} component={Galleries} />
                         <Route exact path={routes.emails} component={Soon} />
                         <Route exact path={routes.comments} component={Soon} />
-                        <Route exact path={routes.blogs} component={Blogs} />
+                        <Route exact path={routes.blog.list} component={Blogs} />
+                        <Route exact path={routes.blog.assets} render={x => { console.log(x); return <BlogAssignAssets id={x.match.params.id}/>}} />
                         <Route exact path={routes.login} component={LogIn} />
                     </div>
                 </div>

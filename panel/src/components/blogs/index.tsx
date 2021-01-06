@@ -7,10 +7,12 @@ import { BlogsList } from "./blogs-list";
 import { BlogCreate } from "./blog-create";
 import { BlogEdit } from "./blog-edit";
 import { ResultType } from "@pp/api/common";
-import { BlogAssignAssets } from "./blog-assign-assets";
+import { BlogAssignAssetsModal } from "./blog-assign-assets-modal";
 import { StatsChart } from "../stats-chart";
 import { ChartStat } from "../stats-chart/stats";
 import { translations } from "../../i18n";
+import { RouteComponentProps } from "react-router-dom";
+import { routes } from "../../routes";
 
 const getStats = (x: BlogVisitsDto): ChartStat[] => [
     { label: translations.blog.stats.todayVisits, value: x.todayVisits },
@@ -20,7 +22,7 @@ const getStats = (x: BlogVisitsDto): ChartStat[] => [
     { label: translations.blog.stats.bestDayVisits, value: x.bestDay.visits }
 ];
 
-interface Props { }
+interface Props extends RouteComponentProps { }
 
 interface State {
     isLoadingBlogs: boolean;
@@ -90,10 +92,13 @@ export class Blogs extends React.Component<Props, State> {
     };
 
     onAssignAssets = (selectedBlog: number) => {
-        this.setState({
-            blogToEditId: selectedBlog,
-            showAssignAssets: true
-        });
+        // this.setState({
+        //     blogToEditId: selectedBlog,
+        //     showAssignAssets: true
+        // });
+
+        //blog/:id/assets
+        this.props.history.push(routes.blog.assets.replace(":id", String(selectedBlog)));
     };
 
     onBlogDelete = async (selectedBlog: number) => {
@@ -169,7 +174,7 @@ export class Blogs extends React.Component<Props, State> {
                     />
                 ) : null}
                 {this.state.blogToEditId ? (
-                    <BlogAssignAssets
+                    <BlogAssignAssetsModal
                         showBlogAssignAssets={this.state.showAssignAssets}
                         closeAssignAssets={this.closeAssignAssets}
                         id={this.state.blogToEditId}
