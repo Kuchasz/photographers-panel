@@ -1,15 +1,24 @@
+html,
+body {
+    height: 100%;
+    overflow-y: hidden;
+}
+
 #root {
     height: 100%;
 }
 
 #layout {
     display: flex;
-    height: 100%;
+    flex-basis: 100%;
     flex-grow: 1;
+    flex-shrink: 1;
+    overflow-y: hidden;
 
     >#content {
         overflow-y: auto;
         flex: 1;
+        will-change: transform;
 
         &.full-page {
             display: flex;
