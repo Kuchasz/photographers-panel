@@ -41,7 +41,6 @@ export class GalleryImagesGridComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        console.log("RENDER: gallery-images-grid");
         const thumbPos = this.gallery.config.thumbnails.position;
 
         this.currentDirectoryId$ = this.route.paramMap.pipe(map((x) => x.get("id")));

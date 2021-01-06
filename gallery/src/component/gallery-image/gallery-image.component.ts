@@ -8,7 +8,8 @@ import { TweenLite, Expo } from "gsap";
 import { ActivatedRoute } from "@angular/router";
 import { Observable, fromEvent } from "rxjs";
 import { switchMap, flatMap, tap, map, first } from "rxjs/operators";
-import { warn } from 'console';
+import { DisplayModes } from '../../config/gallery.config';
+import { clamp } from "../../utils/number";
 
 @Component({
     selector: "gallery-image",
@@ -62,6 +63,8 @@ export class GalleryImageComponent implements OnInit {
 
         this.currentImage$.subscribe(ci => this.currentImage = ci);
 
+        if (this.config.displayMode !== DisplayModes.Compact)
+            return;
 
         // if (this.config.gestures) {
         // const _el = this.el.nativeElement;
@@ -77,8 +80,7 @@ export class GalleryImageComponent implements OnInit {
         mc.add(new Hammer.Pan({ enable: true, pointers: 1 }));
         mc.add(new Hammer.Pinch({ enable: true }));
 
-        const clamp = (a, b) => (num) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
-
+    
         // // let screenWidth = 0;
         // // let screenHeight = 0;
         let prevScale = 1;
@@ -254,7 +256,7 @@ export class GalleryImageComponent implements OnInit {
 
         this.currentImage$.subscribe(() => {
             currentViewport = defaultViewport();
-            TweenLite.set(elToMove, { translateX: `0px`, translateY: `0px`, scale: `1`});
+            TweenLite.set(elToMove, { translateX: `0px`, translateY: `0px`, scale: `1` });
         });
 
     }

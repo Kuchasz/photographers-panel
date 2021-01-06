@@ -69,7 +69,8 @@ module.exports = {
                 loader: "@ngtools/webpack",
                 include: [
                     join(__dirname, "src"),
-                    rootModuleDirectory("@pp/server")
+                    rootModuleDirectory("@pp/server"),
+                    rootModuleDirectory("@pp/utils")
                 ]
             },
             {
