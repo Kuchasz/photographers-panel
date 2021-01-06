@@ -87,10 +87,12 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
+const wildCard = (s: string) => `${s}*`;
+
 app.use(express.static(requireModule("@pp/site/dist"), { index: false }));
 
 app.use(privateGallery.viewGallery.route, express.static(requireModule("@pp/gallery/dist"), { index: false }));
-app.use(authPanel.viewLogIn.route, express.static(requireModule("@pp/panel/dist"), { index: false }));
+app.use([authPanel.viewLogIn.route, '/panel*', '/panel/*'], express.static(requireModule("@pp/panel/dist"), { index: false }));
 app.use("/public", express.static("public", { index: false }));
 
 // site related APIs
