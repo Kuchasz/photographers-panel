@@ -137,7 +137,7 @@ export const checkAliasIsUnique = async (alias: string, blogId?: number): Promis
         .select("Id")
         .first();
 
-    return !blog || blog.Id === blogId;
+    return !blog || Number(blog.Id) === blogId;
 }
 
 export const changeVisibility = async (blogVisibility: panel.BlogVisibilityDto) => {
