@@ -17,7 +17,8 @@ import {
     BlogAssetsListItemDto,
     changeMainBlogAsset,
     deleteBlogAsset,
-    changeBlogAssetAlt
+    changeBlogAssetAlt,
+    getBlogAssets
 } from "@pp/api/panel/blog";
 import { range } from "@pp/utils/array";
 import { ResultType } from "@pp/api/common";
@@ -173,7 +174,6 @@ const AssetsListItem: React.FC<{ className: string; onClick?: () => void }> = ({
 );
 
 const getItemsForBlog = <T extends { blogId: number }>(blogId: number, items: T[]) => {
-    console.log("number of assets:", items.length);
     return items.filter(i => i.blogId === blogId);
 }
 
@@ -197,8 +197,6 @@ const AssetsList = ({
             assets: getItemsForBlog(blogId, x.assets).map(x => x.id)
         }),
         (p, n: any) => p.assets.length === n.assets.length && p.uploaded.length === n.uploaded.length);
-
-        console.log(assets);
 
     return (
         <div className="assets-list">
@@ -254,15 +252,17 @@ export class BlogAssignAssets extends React.Component<BlogAssignAssetsProps, Blo
         }).then(() => {
             const { assets, updateAsset } = useUploadedImages.getState();
 
-            const newMain = assets.find(x => x.id === assetId);
-            const oldMain = assets.find(x => x.isMain);
+            const blogAssets = getItemsForBlog(this.props.id, assets);
+
+            console.log("Number of MAINs: ", blogAssets.filter(x => x.isMain).length);
+            const newMain = blogAssets.find(x => x.id === assetId);
+            const oldMain = blogAssets.find(x => x.isMain);
 
             if (newMain === undefined || oldMain === undefined || newMain === oldMain)
                 return;
 
-            updateAsset(newMain.id)({ isMain: true });
             updateAsset(oldMain.id)({ isMain: false });
-
+            updateAsset(newMain.id)({ isMain: true });
         });
     };
 
