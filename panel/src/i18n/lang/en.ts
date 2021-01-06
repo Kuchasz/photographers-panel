@@ -144,7 +144,8 @@ export default {
     },
     imagesUploader:{
         notUploaded: "An issue occured while uploading image",
-        leftImages: "left"
+        leftImages: "left",
+        noItemsLeft: "No uploads in progress"
     },
     gallery: {
         stats: {

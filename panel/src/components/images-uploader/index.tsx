@@ -55,7 +55,9 @@ const UploadHeader = () => {
     const leftImages = items.filter(x => isActive(x.status) || isQueued(x.status)).length;
     const totalProgress = calculateTotalItemsProgress(items);
 
-    return <header><Badge content={<span><Icon icon="sort-up" /> {totalProgress}%</span>} /><span>{leftImages} {translations.imagesUploader.leftImages}</span></header>
+    return <header>
+        <Badge content={<span><Icon icon="sort-up" /> {totalProgress}%</span>} /><span>{leftImages > 0 ? `${leftImages} ${translations.imagesUploader.leftImages}` : translations.imagesUploader.noItemsLeft}</span>
+        </header>
 }
 
 const getStatusIcon = (image: UploadedImage) => {
@@ -129,9 +131,7 @@ const LoaderIcon = (props: Omit<IconProps, "icon">) => {
     const totalProgress = calculateTotalItemsProgress(items);
 
     return (<div className="images-uploader-status">
-        <Icon style={{ fontSize: "16px", marginRight: "20px", position: "absolute", left: "20px", top: "15px", lineHeight: 1.25 }}
-            icon="arrow-circle-o-up"
-            {...props} />
+        <Icon icon="arrow-circle-o-up" {...props} />
         <Progress.Circle percent={totalProgress} strokeWidth={8} showInfo={false} />
     </div>)
 };

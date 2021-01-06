@@ -144,7 +144,8 @@ export default {
     },
     imagesUploader:{
         notUploaded: "Wystapil blad podczas przesylania zdjecia",
-        leftImages: "pozostalo"
+        leftImages: "pozostalo",
+        noItemsLeft: "Brak transferow w toku"
     },
     gallery: {
         stats: {
