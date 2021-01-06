@@ -119,7 +119,8 @@ export default {
         stats: "Statystyki",
         galleries: "Galerie",
         blogs: "Blogi",
-        comments: "Komentarze"
+        comments: "Komentarze",
+        transfers: "Transfery"
     },
     login: {
         button: "Zaloguj",
@@ -140,6 +141,10 @@ export default {
             bestDay: "Najlepszy dzien",
             bestDayVisits: "Odwiedziny najlepszego dnia"
         }
+    },
+    imagesUploader:{
+        notUploaded: "Wystapil blad podczas przesylania zdjecia",
+        leftImages: "pozostalo"
     },
     gallery: {
         stats: {

@@ -119,7 +119,8 @@ export default {
         stats: "Statistics",
         galleries: "Galleries",
         blogs: "Blogs",
-        comments: "Comments"
+        comments: "Comments",
+        transfers: "Transfers"
     },
     login: {
         button: "Log in",
@@ -140,6 +141,10 @@ export default {
             bestDay: "Best Day",
             bestDayVisits: "Best Day Visits"
         }
+    },
+    imagesUploader:{
+        notUploaded: "An issue occured while uploading image",
+        leftImages: "left"
     },
     gallery: {
         stats: {

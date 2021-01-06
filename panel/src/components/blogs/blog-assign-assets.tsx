@@ -17,8 +17,7 @@ import {
     BlogAssetsListItemDto,
     changeMainBlogAsset,
     deleteBlogAsset,
-    changeBlogAssetAlt,
-    getBlogAssets
+    changeBlogAssetAlt
 } from "@pp/api/panel/blog";
 import { range } from "@pp/utils/array";
 import { ResultType } from "@pp/api/common";
@@ -254,7 +253,6 @@ export class BlogAssignAssets extends React.Component<BlogAssignAssetsProps, Blo
 
             const blogAssets = getItemsForBlog(this.props.id, assets);
 
-            console.log("Number of MAINs: ", blogAssets.filter(x => x.isMain).length);
             const newMain = blogAssets.find(x => x.id === assetId);
             const oldMain = blogAssets.find(x => x.isMain);
 
