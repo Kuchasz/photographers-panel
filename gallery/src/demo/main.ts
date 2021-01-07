@@ -7,28 +7,25 @@ import 'roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from "./app.module";
+import { checkIfSafari } from '../utils/browser';
 
 platformBrowserDynamic().bootstrapModule(AppModule);
 
-// First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-// let vh = window.innerHeight * 0.01;
-// Then we set the value in the --vh custom property to the root of the document
-// document.documentElement.style.setProperty('--vh', `${vh}px`);
-
 const setViewport = () => {
-  const keepWidth = true;//window.innerHeight < window.innerWidth;
+
+  const isSafari = checkIfSafari();
 
   const { innerWidth, innerHeight } = window;
-  const { offsetWidth, offsetHeight } = document.body;
+  const { offsetWidth } = document.body;
 
-  const v = keepWidth
-    ? { vw: offsetWidth, vh: Math.round(offsetWidth / innerWidth * innerHeight) }
-    : { vw: Math.round(offsetHeight / innerHeight * innerWidth), vh: offsetHeight };
+  const v = !isSafari
+    ? { vw: `100%`, vh: `${Math.round(offsetWidth / innerWidth * innerHeight)}px` }
+    : { vw: '100%', vh: '100%' };
 
-  console.log(v);
+  // console.log(v);
 
-  document.documentElement.style.setProperty('--vh', `${v.vh}px`);
-  document.documentElement.style.setProperty('--vw', `${v.vw}px`);
+  document.documentElement.style.setProperty('--vh', v.vh);
+  document.documentElement.style.setProperty('--vw', v.vw);
 };
 
 setViewport();

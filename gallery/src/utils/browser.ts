@@ -8,3 +8,4 @@ export const checkIfMobile = function () {
     return isMobileBrowser;
 };
 
+export const checkIfSafari = () => /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
