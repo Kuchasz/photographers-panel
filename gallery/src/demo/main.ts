@@ -7,18 +7,18 @@ import 'roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from "./app.module";
-import { checkIfSafari } from '../utils/browser';
+import { checkIfMobile, checkIfSafari } from '../utils/browser';
 
 platformBrowserDynamic().bootstrapModule(AppModule);
 
 const setViewport = () => {
 
-  const isSafari = checkIfSafari();
+  const viewportTricks = !checkIfSafari() && checkIfMobile();
 
   const { innerWidth, innerHeight } = window;
   const { offsetWidth } = document.body;
 
-  const v = !isSafari
+  const v = viewportTricks
     ? { vw: `100%`, vh: `${Math.round(offsetWidth / innerWidth * innerHeight)}px` }
     : { vw: '100%', vh: '100%' };
 

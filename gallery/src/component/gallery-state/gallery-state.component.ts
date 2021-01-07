@@ -70,9 +70,11 @@ export class GalleryStateComponent {
         this.router.navigate(["/snapped"]);
     }
 
-    goBack() {
+    goBack(event: Event) {
         // this.onBack.emit();
         this.location.back();
+
+        event.stopPropagation();
     }
 
     orderPhotos() { }

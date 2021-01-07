@@ -40,7 +40,7 @@
     <span class="g-state-button" *ngIf="fullscreenEnabled" [tap] (tapClick)="toggleFullscreen()">
         <p>{{ translations.state.fullscreen }}</p><span class="mdi mdi-fullscreen"></span>
     </span>
-    <span [tap] (tapClick)="goBack()" class="g-state-button">
+    <span [tap] (tapClick)="goBack($event)" class="g-state-button">
         <p>{{ translations.state.close }}</p>
         <span class="mdi mdi-close"></span>
     </span>

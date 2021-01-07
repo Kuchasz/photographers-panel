@@ -32,8 +32,10 @@ export class TapDirective implements OnInit {
       }
     } else {
       /** Use normal click event */
-      this.renderer.setProperty(this.el.nativeElement, 'onclick', () => {
-        this.tapClick.emit(null);
+      this.renderer.setProperty(this.el.nativeElement, 'onclick', (e: Event) => {
+
+        e.stopImmediatePropagation();
+        this.tapClick.emit(e);
       });
     }
 

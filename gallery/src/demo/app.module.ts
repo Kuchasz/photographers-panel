@@ -37,7 +37,7 @@ document.querySelector("#state-initializer")?.remove();
                 space: 20
             },
             navigation: {},
-            gestures: true,
+            gestures: checkIfMobile(),
             displayMode: checkIfMobile() ? DisplayModes.Compact : DisplayModes.Full
         })
     ],

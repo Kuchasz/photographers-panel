@@ -49,6 +49,8 @@
         span {
             font-size: xx-large;
             color: white;
+            user-select: none;
+            -webkit-user-select: none;
         }
     }
 }
