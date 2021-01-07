@@ -16,7 +16,7 @@ platformBrowserDynamic().bootstrapModule(AppModule);
 // document.documentElement.style.setProperty('--vh', `${vh}px`);
 
 const setViewport = () => {
-  const keepWidth = window.innerHeight < window.innerWidth;
+  const keepWidth = true;//window.innerHeight < window.innerWidth;
 
   const { innerWidth, innerHeight } = window;
   const { offsetWidth, offsetHeight } = document.body;
@@ -32,12 +32,4 @@ const setViewport = () => {
 };
 
 setViewport();
-// We listen to the resize event
 window.addEventListener('resize', setViewport);
-
-// We listen to the resize event
-window.addEventListener('scroll', () => {
-  // We execute the same script as before
-  let scroll = document.documentElement.scrollTop || document.body.scrollTop;
-  document.documentElement.style.setProperty('--scrollTop', `${scroll}px`);
-});
