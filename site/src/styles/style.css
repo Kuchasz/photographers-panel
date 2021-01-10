@@ -175,7 +175,7 @@ nav li #current {
 }
 
 .slogan section {
-    width: 1000px;
+    width: 960px;
     height: 42px;
     margin: 0 auto;
 }
@@ -267,7 +267,7 @@ nav li #current {
 .contact_form section,
 .gallery_sub section,
 .sub_sub section {
-    width: 1000px;
+    width: 960px;
     margin: 0 auto;
 }
 
@@ -382,7 +382,7 @@ nav li #current {
 .gallery_sub article,
 .blog article,
 .sub_sub article {
-    width: 1000px;
+    width: 960px;
     margin-bottom: 20px;
 }
 
@@ -824,7 +824,7 @@ nav li #current {
 }
 
 .contact section {
-    width: 1000px;
+    width: 960px;
     height: 100px;
     margin: 0 auto;
 }
@@ -898,7 +898,7 @@ nav li #current {
 }
 
 .map section {
-    width: 1000px;
+    width: 960px;
     height: 420px;
     margin: 0 auto;
 }
@@ -951,7 +951,7 @@ footer {
 }
 
 footer section {
-    width: 1000px;
+    width: 960px;
     height: 100px;
     margin: 0 auto;
 }

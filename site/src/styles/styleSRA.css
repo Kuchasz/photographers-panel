@@ -10,7 +10,17 @@
 	font-display: swap;
 }
 
-article, aside, figure, footer, header, hgroup, menu, nav, section { display: block; }
+article,
+aside,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
 
 body {
 	margin: 0 auto;
@@ -36,7 +46,8 @@ small {
 header {
 	width: 100%;
 	height: 620px;
-	margin: 0; padding: 0;
+	margin: 0;
+	padding: 0;
 	background-repeat: repeat-x;
 	background-position: center center;
 	float: left;
@@ -86,10 +97,10 @@ nav li a {
 	float: left;
 	color: #035682;
 	font-size: 17px;
-    height: 48px;
-    margin-right: 29px;  
-    padding-top: 28px;  
-    text-transform:uppercase;
+	height: 48px;
+	margin-right: 29px;
+	padding-top: 28px;
+	text-transform: uppercase;
 }
 
 nav li a:hover {
@@ -108,7 +119,7 @@ nav li #current {
 	padding-right: 10px;
 	background: url('../images/header_red.png') no-repeat;
 	float: right;
-	clear:both;
+	clear: both;
 }
 
 #gallery a {
@@ -117,9 +128,9 @@ nav li #current {
 	color: #fff;
 	font-family: 'Century Gothic Bold';
 	font-size: 17px;
-    margin-right: 22px;
-    padding-top: 28px;  
-    text-transform:uppercase;
+	margin-right: 22px;
+	padding-top: 28px;
+	text-transform: uppercase;
 }
 
 #gallery a:hover {
@@ -137,8 +148,8 @@ nav li #current {
 	background-color: #fff;
 }
 
-.slogan section  {
-	width: 1000px;
+.slogan section {
+	width: 960px;
 	height: 139px;
 	margin: 0 auto;
 }
@@ -149,7 +160,7 @@ nav li #current {
 	font-weight: normal;
 	color: #888;
 	text-align: center;
-	margin: 0; 
+	margin: 0;
 	padding: 20px 90px 0px 90px;
 	line-height: 28px;
 }
@@ -175,14 +186,14 @@ nav li #current {
 }
 
 @media only screen and (min-width: 950px) and (max-width: 1030px) {
-		.slogan section  {
-			width: 890px;
-		}
-
-		.slogan h1 {
-			padding: 20px 60px 0 60px;
-		}
+	.slogan section {
+		width: 890px;
 	}
+
+	.slogan h1 {
+		padding: 20px 60px 0 60px;
+	}
+}
 
 .offer {
 	width: 100%;
@@ -199,7 +210,13 @@ nav li #current {
 	color: #035682;
 }
 
-.gallery, .offers, .link, .contact_form, .gallery_sub, .sub_sub, .blog {
+.gallery,
+.offers,
+.link,
+.contact_form,
+.gallery_sub,
+.sub_sub,
+.blog {
 	width: 100%;
 	float: left;
 	background: #0f415a url('../images/gallery_bg.jpg') top center repeat-x;
@@ -212,29 +229,39 @@ nav li #current {
 	padding-top: 60px;
 }
 
-.offer section, .article section, .gallery section, .offers section, .link section, .contact_form section, .gallery_sub section, .sub_sub section {
-	width: 1000px;
+.offer section,
+.article section,
+.gallery section,
+.offers section,
+.link section,
+.contact_form section,
+.gallery_sub section,
+.sub_sub section {
+	width: 960px;
 	margin: 0 auto;
 }
 
-@media only screen and (min-width: 1800px){
-		.gallery section, .offers section {
-			width: 1645px;
-			margin: 0 auto;
-		}
+@media only screen and (min-width: 1800px) {
 
-		.gallery_sub section {
-			width: 1570px;
-			margin: 0 auto;
-		}
+	.gallery section,
+	.offers section {
+		width: 1645px;
+		margin: 0 auto;
 	}
+
+	.gallery_sub section {
+		width: 1570px;
+		margin: 0 auto;
+	}
+}
 
 .blog section {
 	width: 960px;
 	margin: 0 auto;
 }
 
-.link a, .link a:hover {
+.link a,
+.link a:hover {
 	color: #fff;
 	text-decoration: none;
 }
@@ -254,12 +281,13 @@ nav li #current {
 	font-weight: normal;
 }
 
-.offer h1, .article h1 {
+.offer h1,
+.article h1 {
 	font-size: 46px;
 	font-family: 'Century Gothic';
 	text-align: center;
 	font-weight: normal;
-	margin-bottom: 0; 
+	margin-bottom: 0;
 	padding: 30px 0 0 0;
 }
 
@@ -267,11 +295,13 @@ nav li #current {
 	padding: 24px 0 0 0;
 }
 
-.offer span, .article span {
+.offer span,
+.article span {
 	font-family: 'Century Gothic Bold';
 }
 
-.offer h2, .article h2 {
+.offer h2,
+.article h2 {
 	font-size: 18px;
 	font-family: 'Century Gothic';
 	font-weight: normal;
@@ -281,41 +311,54 @@ nav li #current {
 	line-height: 28px;
 }
 
-.offer article, .article article, .link article, .contact_form article, .gallery_sub article, .blog article, .sub_sub article {
+.offer article,
+.article article,
+.link article,
+.contact_form article,
+.gallery_sub article,
+.blog article,
+.sub_sub article {
 	width: 410px;
 	float: left;
 	margin-left: 0px;
 }
 
-.link article, .contact_form article {
+.link article,
+.contact_form article {
 	width: 530px;
 	float: left;
 }
 
-.gallery_sub article, .blog article, .sub_sub article {
-	width: 1000px;
+.gallery_sub article,
+.blog article,
+.sub_sub article {
+	width: 960px;
 	margin-bottom: 20px;
 }
 
-@media only screen and (min-width: 1800px){
-		.gallery_sub article {
-			width: 1550px;
-			margin-bottom: 20px;
-		}
+@media only screen and (min-width: 1800px) {
+	.gallery_sub article {
+		width: 1550px;
+		margin-bottom: 20px;
 	}
+}
 
-.link hgroup, .contact_form hgroup {
+.link hgroup,
+.contact_form hgroup {
 	float: right;
 	margin: 40px 0 40px 0;
 }
 
-.gallery ul, .offers ul {
+.gallery ul,
+.offers ul {
 	width: 100%;
-	margin: 0; padding: 0;
+	margin: 0;
+	padding: 0;
 	margin-left: 20px;
 }
 
-.gallery li, .offers li {
+.gallery li,
+.offers li {
 	width: 305px;
 	list-style-type: none;
 	float: left;
@@ -336,24 +379,40 @@ nav li #current {
 	width: 500px;
 }
 
-.gallery_sub article a, .gallery_sub article a:hover, .blog article a, .blog article a:hover, .sub_sub article a, .sub_sub article a:hover {
+.gallery_sub article a,
+.gallery_sub article a:hover,
+.blog article a,
+.blog article a:hover,
+.sub_sub article a,
+.sub_sub article a:hover {
 	color: #fff;
 	text-decoration: none;
 }
 
-.offer article h1, .article article h1, .link article h1, .contact_form article h1, .gallery_sub article h1, .blog article h1, .sub_sub article h1 {
+.offer article h1,
+.article article h1,
+.link article h1,
+.contact_form article h1,
+.gallery_sub article h1,
+.blog article h1,
+.sub_sub article h1 {
 	font-size: 38px;
 	text-align: left;
 	margin-top: 0px;
 	font-weight: normal;
 }
 
-.article article a, .article article a:hover {
+.article article a,
+.article article a:hover {
 	color: #035682;
 	text-decoration: none;
 }
 
-.link article h1, .contact_form article h1, .gallery_sub article h1, .blog article h1, .sub_sub article h1 {
+.link article h1,
+.contact_form article h1,
+.gallery_sub article h1,
+.blog article h1,
+.sub_sub article h1 {
 	margin: 0;
 }
 
@@ -374,13 +433,15 @@ nav li #current {
 	margin-bottom: 40px;
 }
 
-.link article li, .link article li a {
+.link article li,
+.link article li a {
 	font-size: 15px;
 	color: #62becc;
 	margin-top: 7px;
 }
 
-.gallery li h1, .offers li h1 {
+.gallery li h1,
+.offers li h1 {
 	color: #fff;
 	font-size: 21px;
 	font-weight: normal;
@@ -394,7 +455,8 @@ nav li #current {
 	color: #62becc;
 	font-size: 12px;
 	font-weight: normal;
-	margin-bottom: -15px; padding: 10px 0 0 15px;
+	margin-bottom: -15px;
+	padding: 10px 0 0 15px;
 }
 
 .offers li h1 {
@@ -403,7 +465,8 @@ nav li #current {
 	text-align: left;
 }
 
-.gallery li h2, .offers li h2 {
+.gallery li h2,
+.offers li h2 {
 	color: #fff;
 	font-size: 13px;
 	font-weight: normal;
@@ -427,19 +490,25 @@ nav li #current {
 }
 
 .category {
-  -webkit-transition: all 1s ease;
-     -moz-transition: all 1s ease;
-       -o-transition: all 1s ease;
-      -ms-transition: all 1s ease;
-          transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+	transition: all 1s ease;
 }
 
 .category:hover {
-  -webkit-filter: grayscale(50%);
-  background-color: #1f698e;
+	-webkit-filter: grayscale(50%);
+	background-color: #1f698e;
 }
 
-.offer article h2, .article article h2, .link article h2, .contact_form article h2, .gallery_sub article h2, .blog article h2, .sub_sub article h2 {
+.offer article h2,
+.article article h2,
+.link article h2,
+.contact_form article h2,
+.gallery_sub article h2,
+.blog article h2,
+.sub_sub article h2 {
 	font-size: 16px;
 	font-weight: normal;
 	text-align: left;
@@ -448,14 +517,21 @@ nav li #current {
 	padding: 17px 0 0 0;
 }
 
-.link article h2, .contact_form article h2, .gallery_sub article h2, .blog article h2, .sub_sub article h2 {
+.link article h2,
+.contact_form article h2,
+.gallery_sub article h2,
+.blog article h2,
+.sub_sub article h2 {
 	margin-top: 15px;
-	margin-bottom: 40px; 
+	margin-bottom: 40px;
 	padding: 0;
 	line-height: 28px;
 }
 
-.contact_form article h2, .gallery_sub article h2, .blog article h2, .sub_sub article h2 {
+.contact_form article h2,
+.gallery_sub article h2,
+.blog article h2,
+.sub_sub article h2 {
 	margin-bottom: 50px;
 }
 
@@ -474,14 +550,15 @@ nav li #current {
 	text-decoration: underline;
 }
 
-.offer article a.button, .link article a.button {
+.offer article a.button,
+.link article a.button {
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	background-color: #ff4643;
-	-webkit-box-shadow: 0 0 7px 3px rgba(252,252,252,.1);
-	-moz-box-shadow: 0 0 7px 3px rgba(252,252,252,.1);
-	box-shadow: 0 0 7px 3px rgba(252,252,252,.1);
+	-webkit-box-shadow: 0 0 7px 3px rgba(252, 252, 252, .1);
+	-moz-box-shadow: 0 0 7px 3px rgba(252, 252, 252, .1);
+	box-shadow: 0 0 7px 3px rgba(252, 252, 252, .1);
 	font-size: 16px;
 	font-family: 'Century Gothic Bold';
 	text-align: center;
@@ -498,18 +575,25 @@ nav li #current {
 	clear: both;
 }
 
-.offer article a.button:hover, .article article a.button:hover, .link article a.button:hover {
+.offer article a.button:hover,
+.article article a.button:hover,
+.link article a.button:hover {
 	text-decoration: none;
 	color: #620200;
 }
 
-.article article a.button, .contact_form article input[type=submit], .contact_form article input[type=text], .contact_form article input[type=email], .contact_form article input[type=password], .contact_form article textarea {
+.article article a.button,
+.contact_form article input[type=submit],
+.contact_form article input[type=text],
+.contact_form article input[type=email],
+.contact_form article input[type=password],
+.contact_form article textarea {
 	width: 224px;
 	height: 50px;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
-	background-color: rgba(255,70,67,0);
+	background-color: rgba(255, 70, 67, 0);
 	border: solid 1px #ff4643;
 	font-size: 16px;
 	font-family: 'Century Gothic Bold';
@@ -523,7 +607,10 @@ nav li #current {
 	margin-bottom: 40px;
 }
 
-.contact_form article input[type=text], .contact_form article input[type=password], .contact_form article input[type=email], .contact_form article textarea {
+.contact_form article input[type=text],
+.contact_form article input[type=password],
+.contact_form article input[type=email],
+.contact_form article textarea {
 	width: 370px;
 	height: 20px;
 	background-color: #124b67;
@@ -535,28 +622,30 @@ nav li #current {
 }
 
 ::-webkit-input-placeholder {
-   color: #62becc;
-   font-weight: normal;
+	color: #62becc;
+	font-weight: normal;
 }
 
 ::-webkit-input-placeholder:hover {
-   color: #62becc;
-   font-weight: normal;
+	color: #62becc;
+	font-weight: normal;
 }
 
-:-moz-placeholder { /* Firefox 18- */
-   color: #62becc;
-   font-weight: normal;
+:-moz-placeholder {
+	/* Firefox 18- */
+	color: #62becc;
+	font-weight: normal;
 }
 
-::-moz-placeholder {  /* Firefox 19+ */
-   color: #62becc;
-   font-weight: normal;
+::-moz-placeholder {
+	/* Firefox 19+ */
+	color: #62becc;
+	font-weight: normal;
 }
 
-:-ms-input-placeholder {  
-   color: #62becc;
-   font-weight: normal;
+:-ms-input-placeholder {
+	color: #62becc;
+	font-weight: normal;
 }
 
 .contact_form article textarea {
@@ -591,65 +680,74 @@ nav li #current {
 	float: right;
 }
 
-.offer .left li, .offer .right li {
-	width: 200px; height: 50px;
+.offer .left li,
+.offer .right li {
+	width: 200px;
+	height: 50px;
 	list-style-type: none;
-	padding: 3px 0 0 70px; 
+	padding: 3px 0 0 70px;
 	margin: 0 0 25px 0;
-	background: url('../images/check.png') no-repeat; 
+	background: url('../images/check.png') no-repeat;
 }
 
 @media only screen and (min-width: 950px) and (max-width: 1030px) {
-		.offer section, .article section {
-			width: 925px;
-			margin: 0 auto;
-		}
 
-		.offer article, .article article {
-			width: 360px;
-			float: left;
-			margin-left: 20px;
-			clear: both;
-		}
-
-		.article article {
-			width: 420px;
-		}
-
-		.offer h2, .article h2 {
-			font-size: 18px;
-			margin: 30px 10px 50px 40px;
-		}
-
-		.offer article h2, .article article h2 {
-			margin-bottom: 40px;
-		}
-
-		.offer hgroup {
-			width: 530px;
-			float: right;
-			margin-top: 20px;
-			font-size: 16px;
-		}
-
-		.offer .left {
-			width: 225px;
-			float: left;
-		}
-
-		.offer .right {
-			width: 225px;
-			float: right;
-		}
-
-		.offer .left li, .offer .right li {
-			width: 150px; height: 50px;
-			list-style-type: none;
-			padding: 3px 0 0 70px; 
-			margin: 0 0 25px 0;
-			background: url('../images/check.png') no-repeat; 
-		}
+	.offer section,
+	.article section {
+		width: 925px;
+		margin: 0 auto;
 	}
+
+	.offer article,
+	.article article {
+		width: 360px;
+		float: left;
+		margin-left: 20px;
+		clear: both;
+	}
+
+	.article article {
+		width: 420px;
+	}
+
+	.offer h2,
+	.article h2 {
+		font-size: 18px;
+		margin: 30px 10px 50px 40px;
+	}
+
+	.offer article h2,
+	.article article h2 {
+		margin-bottom: 40px;
+	}
+
+	.offer hgroup {
+		width: 530px;
+		float: right;
+		margin-top: 20px;
+		font-size: 16px;
+	}
+
+	.offer .left {
+		width: 225px;
+		float: left;
+	}
+
+	.offer .right {
+		width: 225px;
+		float: right;
+	}
+
+	.offer .left li,
+	.offer .right li {
+		width: 150px;
+		height: 50px;
+		list-style-type: none;
+		padding: 3px 0 0 70px;
+		margin: 0 0 25px 0;
+		background: url('../images/check.png') no-repeat;
+	}
+}
 
 
 
@@ -667,7 +765,7 @@ nav li #current {
 }
 
 .contact section {
-	width: 1000px;
+	width: 960px;
 	height: 100px;
 	margin: 0 auto;
 }
@@ -684,7 +782,7 @@ nav li #current {
 	font-family: 'Century Gothic Bold';
 	font-size: 22px;
 	float: left;
-	margin: 0; 
+	margin: 0;
 	padding: 25px 0 4px 0;
 }
 
@@ -706,7 +804,7 @@ nav li #current {
 .contact .right h1 {
 	font-family: 'Century Gothic Bold';
 	font-size: 22px;
-	margin: 0; 
+	margin: 0;
 	padding: 20px 0 4px 0;
 }
 
@@ -716,17 +814,11 @@ nav li #current {
 	margin: 0;
 }
 
-	@media only screen and (min-width: 950px) and (max-width: 1030px) {
-		.contact .right {
-			margin-right: 20px;
-		}
+@media only screen and (min-width: 950px) and (max-width: 1030px) {
+	.contact .right {
+		margin-right: 20px;
 	}
-
-
-
-
-
-
+}
 
 .map {
 	width: 100%;
@@ -736,7 +828,7 @@ nav li #current {
 }
 
 .map section {
-	width: 1000px;
+	width: 960px;
 	height: 420px;
 	margin: 0 auto;
 }
@@ -788,7 +880,7 @@ footer {
 }
 
 footer section {
-	width: 1000px;
+	width: 960px;
 	height: 100px;
 	margin: 0 auto;
 }
@@ -801,19 +893,25 @@ footer .left {
 	margin-left: 20px;
 }
 
-footer .left h1, footer .right h1 {
+footer .left h1,
+footer .right h1 {
 	width: 220px;
 	font-family: 'Century Gothic Bold';
 	font-size: 12px;
-	margin: 0; 
+	margin: 0;
 	padding: 30px 0 4px 0;
 }
 
-footer .left ul, footer .right ul {
-	margin: 0; padding: 0;
+footer .left ul,
+footer .right ul {
+	margin: 0;
+	padding: 0;
 }
 
-footer .left li, footer .right li, footer .left li a, footer .right li a {
+footer .left li,
+footer .right li,
+footer .left li a,
+footer .right li a {
 	list-style-type: none;
 	display: inline;
 	font-size: 12px;
@@ -831,11 +929,11 @@ footer .right {
 	text-align: right;
 }
 
-	@media only screen and (min-width: 950px) and (max-width: 1030px) {
-		footer .right {
-			margin-right: 20px;
-		}
+@media only screen and (min-width: 950px) and (max-width: 1030px) {
+	footer .right {
+		margin-right: 20px;
 	}
+}
 
 
 .fancybox-custom .fancybox-skin {
