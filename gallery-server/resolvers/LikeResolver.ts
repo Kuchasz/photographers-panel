@@ -40,13 +40,13 @@ export class LikeResolver {
     ) {
         const allLikes = await ctx.db.getRepository(Like).find();
 
-        const likes = allLikes.reduce((agg, curr) => {
-            const like = agg[curr.imageId];
-            agg[curr.imageId] = like
-                ? { ...like, likes: like.likes + 1, liked: curr.clientId === clientId || like.liked }
-                : ({ imageId: curr.imageId, likes: 1, liked: curr.clientId === clientId } as any);
+        const likes = allLikes.reduce((likesForImages, image) => {
+            const likes = likesForImages[image.imageId];
+            likesForImages[image.imageId] = likes
+                ? { ...likes, likes: likes.likes + 1, liked: image.clientId === clientId || likes.liked }
+                : ({ imageId: image.imageId, likes: 1, liked: image.clientId === clientId } as any);
 
-            return agg;
+            return likesForImages;
         }, {} as { [imageId: string]: Like });
 
         return Object.values(likes);
