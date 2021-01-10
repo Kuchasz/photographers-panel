@@ -1,5 +1,5 @@
 <div #container [@imgAnimate]="animate" class="g-image">
-    <div class="g-image-container">
+    <div class="g-image-container" [style.paddingBottom] = "config.displayMode === 1 ? '0px' : '24px'">
         <!-- <ng-container> -->
             <img
                 *ngIf="config.displayMode === 1"

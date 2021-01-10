@@ -1,23 +1,17 @@
 <div class="g-thumb-container" #container>
+    <div style="cursor: pointer;width: 30px;height: 30px;background: white;position: absolute;top: -15px;border-radius: 15px;">
+        <span class="mdi mdi-chevron-down" style="height: 12px;font-size: 24px;margin-left: -3px;margin-top: -2px;"></span>
+    </div>
     <div class="g-nav-prev" (mouseup)="gallery.prev(directoryId)">
         <span class="mdi mdi-chevron-left"></span>
     </div>
     <div class="g-thumbs-container">
         <div class="g-thumbs">
-            <div
-                class="g-thumb"
-                *ngFor="let image of images"
-                [class.g-thumb-current]="image.id === state.currId"
-                [style.width.px]="gallery.config.thumbnails.width"
-                [style.height.px]="gallery.config.thumbnails.height"
-                [tap]
-                (tapClick)="selectImage(image.id)"
-            >
-                <div
-                    class="g-thumb-image"
-                    [class.snapped]="image.snapped"
-                    [style.backgroundImage]="getThumbImage(image)"
-                >
+            <div class="g-thumb" *ngFor="let image of images" [class.g-thumb-current]="image.id === state.currId"
+                [style.width.px]="gallery.config.thumbnails.width" [style.height.px]="gallery.config.thumbnails.height"
+                [tap] (tapClick)="selectImage(image.id)">
+                <div class="g-thumb-image" [class.snapped]="image.snapped"
+                    [style.backgroundImage]="getThumbImage(image)">
                     <i *ngIf="image.snapped" class="material-icons">check</i>
                 </div>
             </div>
