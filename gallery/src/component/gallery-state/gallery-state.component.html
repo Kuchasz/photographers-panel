@@ -1,4 +1,16 @@
 <div class="gallery-state" *ngIf="currentImage$ | async as currentImage">
+
+
+    <!-- <span class="g-state-text">
+                <span class="g-snapped-count" *ngIf="snappedCount > 0" (click)="displaySnappedImages()"
+                    >{{ snappedCount }} selected</span
+                > -->
+    <!-- <span>{{ currentImage.text }}</span> -->
+    <!-- </span> -->
+    <span class="g-state-directory">
+        <!-- <div>{{ currentDirectory.name }}</div> -->
+    </span>
+    
     <ng-container *ngIf="!currentImage.liked">
         <span [tap] (tapClick)="likeImage(currentImage.id)" class="g-state-button like">
             <span class="mdi mdi-heart-outline"></span>
@@ -13,24 +25,6 @@
             </p>
         </span>
     </ng-container>
-    <!-- <span class="g-state-text">
-                <span class="g-snapped-count" *ngIf="snappedCount > 0" (click)="displaySnappedImages()"
-                    >{{ snappedCount }} selected</span
-                > -->
-    <!-- <span>{{ currentImage.text }}</span> -->
-    <!-- </span> -->
-    <span class="g-state-directory">
-        <!-- <div>{{ currentDirectory.name }}</div> -->
-    </span>
-
-
-    <!-- <a [href]="currentImage.src" download target="_blank" class="g-state-button" *ngIf="downloadEnabled">
-                <p>download</p><i class="material-icons">file_download</i>
-            </a> -->
-    <!-- <span class="g-state-button" *ngIf="fullscreenEnabled" (click)="orderPhotos()"><i
-                    class="material-icons">shopping_cart</i></span> -->
-    <!-- Bob lives in a <span class="mdi mdi-home"></span>. -->
-
     <span *ngIf="ratingRequestAvailable" class="g-state-button rate" [tap] (tapClick)="openDisplayRatingRequestDetails()">
         <p>{{ translations.state.reviewUs }}</p><span class="mdi mdi-message-text-outline"></span>
     </span>
