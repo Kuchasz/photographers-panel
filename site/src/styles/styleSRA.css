@@ -318,7 +318,7 @@ nav li #current {
 .gallery_sub article,
 .blog article,
 .sub_sub article {
-	width: 410px;
+	width: 380px;
 	float: left;
 	margin-left: 0px;
 }

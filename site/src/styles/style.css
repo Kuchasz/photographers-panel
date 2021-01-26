@@ -363,7 +363,7 @@ nav li #current {
 .gallery_sub article,
 .blog article,
 .sub_sub article {
-    width: 410px;
+    width: 380px;
     float: left;
     margin-left: 0px;
 }
@@ -420,7 +420,7 @@ nav li #current {
 }
 
 .article article {
-    width: 500px;
+    width: 480px;
 }
 
 .gallery_sub article a,
