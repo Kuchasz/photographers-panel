@@ -21,6 +21,10 @@
     display: flex;
     margin: 0px;
 
+    &.collapsed {
+        height: 0px;
+    }
+
     .g-thumb-collapse {
         cursor: pointer;
         width: 30px;

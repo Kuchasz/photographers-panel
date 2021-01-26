@@ -13,6 +13,7 @@ export interface GalleryState {
   displaySnappedImages: boolean;
   ratingRequestAvailable: boolean;
   displayRatingRequestDetails: boolean;
+  displayThumbs: boolean;
 }
 
 export interface GalleryImage {

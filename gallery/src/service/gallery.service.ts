@@ -140,6 +140,14 @@ export class GalleryService {
         });
     }
 
+    toggleThumbs() {
+        const state = this.state.getValue();
+        this.state.next({
+            ...state,
+            displayThumbs: !state.displayThumbs
+        });
+    }
+
     clearCurrentImage() {
         const state = this.state.getValue();
 

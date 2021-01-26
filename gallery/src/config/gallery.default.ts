@@ -12,7 +12,8 @@ export const defaultState: GalleryState = {
   orientation: undefined,
   displaySnappedImages: false,
   ratingRequestAvailable: false,
-  displayRatingRequestDetails: false
+  displayRatingRequestDetails: false,
+  displayThumbs: true
 };
 
 export const defaultConfig: GalleryConfig = {
