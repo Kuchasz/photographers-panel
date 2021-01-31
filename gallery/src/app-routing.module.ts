@@ -10,7 +10,7 @@ const routes: Routes = [
     { path: "", component: GalleryDirectoriesComponent },
     { path: "snapped", component: GallerySnappedImagesComponent },
     {
-        path: "directory/:id",
+        path: ":id",
         component: GalleryImagesGridComponent,
         children: [
             {

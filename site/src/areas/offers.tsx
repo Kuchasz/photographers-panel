@@ -8,39 +8,44 @@ import linkPhoto from "../images/page_offer_photo.png";
 
 const getOfferUrl = (alias: string) => `${routes.offers.route}/${alias}`;
 
-type TariffYears = 2020 | 2021 | 2022;
+type TariffYears = 2021 | 2022 | 2023;
 type TariffPositions = "WeddingPhotography" | "WeddingVideo" | "DvdPackage" | "Afters" | "WeddingSession";
 type TariffValues = { [P in TariffYears]: number };
 type Tariff = { type: TariffPositions; requires: TariffPositions[]; prices: TariffValues };
-type Discount = { requires: TariffPositions[]; appliesTo: TariffPositions; discounts: TariffValues };
+type PriceAdjustment = { requires?: TariffPositions[]; requiresAll?: TariffPositions[]; appliesTo: TariffPositions; adjustment: TariffValues };
 
 const tariffPositions: Tariff[] = [
-    { type: "WeddingPhotography", requires: [], prices: { 2020: 1700, 2021: 1800, 2022: 1900 } },
-    { type: "WeddingVideo", requires: [], prices: { 2020: 1700, 2021: 1800, 2022: 1900 } },
-    { type: "WeddingSession", requires: [], prices: { 2020: 600, 2021: 600, 2022: 600 } },
-    { type: "DvdPackage", requires: ["WeddingVideo"], prices: { 2020: 300, 2021: 300, 2022: 300 } },
-    { type: "Afters", requires: ["WeddingPhotography", "WeddingVideo"], prices: { 2020: 400, 2021: 400, 2022: 400 } }
+    { type: "WeddingPhotography", requires: [], prices: { 2021: 1800, 2022: 1900, 2023: 1900 } },
+    { type: "WeddingVideo", requires: [], prices: { 2021: 1800, 2022: 1900, 2023: 1900 } },
+    { type: "WeddingSession", requires: [], prices: { 2021: 600, 2022: 600, 2023: 600 } },
+    { type: "DvdPackage", requires: ["WeddingVideo"], prices: { 2021: 300, 2022: 300, 2023: 300 } },
+    { type: "Afters", requires: ["WeddingPhotography", "WeddingVideo"], prices: { 2021: 200, 2022: 200, 2023: 200 } }
 ];
 
-const discounts: Discount[] = [
+const priceAdjustments: PriceAdjustment[] = [
     {
         requires: ["WeddingPhotography", "WeddingVideo"],
         appliesTo: "WeddingPhotography",
-        discounts: { 2020: -1200, 2021: -1300, 2022: -1300 }
+        adjustment: { 2021: -1300, 2022: -1300, 2023: -1300 }
     },
     {
         requires: ["WeddingSession", "WeddingPhotography"],
         appliesTo: "WeddingSession",
-        discounts: { 2020: -300, 2021: -300, 2022: -300 }
+        adjustment: { 2021: -300, 2022: -300, 2023: -300 }
     },
     {
         requires: ["WeddingSession", "WeddingVideo"],
         appliesTo: "WeddingSession",
-        discounts: { 2020: -300, 2021: -300, 2022: -300 }
+        adjustment: { 2021: -300, 2022: -300, 2023: -300 }
+    },
+    {
+        requiresAll: ["WeddingPhotography", "WeddingVideo", "Afters"],
+        appliesTo: "Afters",
+        adjustment: { 2021: 200, 2022: 200, 2023: 200 }
     }
 ];
 
-const tariffYears: TariffYears[] = [2020, 2021, 2022];
+const tariffYears: TariffYears[] = [2021, 2022, 2023];
 
 const updateTariffs = (
     selectedTariffs: TariffPositions[],
@@ -64,14 +69,13 @@ const calculatePrice = (selectedTariffs: TariffPositions[], selectedYear: Tariff
         .map(tp => tp.prices[selectedYear])
         .reduce((acc, cur) => acc + cur, 0);
 
-    const applicableDiscounts = distinctBy(
-        discounts.filter(d => includesAll(selectedTariffs, d.requires)),
-        d => d.appliesTo
-    );
+    const applicablePriceAdjustments = distinctBy(
+        priceAdjustments.filter(d => d.requires ? includesAll(selectedTariffs, d.requires) : includesAll(selectedTariffs, d.requiresAll!)),
+        d => d.appliesTo);
 
-    const discount = applicableDiscounts.map(d => d.discounts[selectedYear]).reduce((acc, cur) => acc + cur, 0);
+    const priceAdjustment = applicablePriceAdjustments.map(d => d.adjustment[selectedYear]).reduce((acc, cur) => acc + cur, 0);
 
-    return { basePrice, finalPrice: basePrice + discount };
+    return { basePrice, finalPrice: basePrice + priceAdjustment };
 };
 
 const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
@@ -136,19 +140,19 @@ export const Offers = ({ initialState }: { initialState: OfferListItem[] }) => {
                                     Cena:<span className="final">{price.basePrice} zł</span>
                                 </span>
                             ) : (
-                                <>
-                                    <span>
-                                        Cena:<span className="old">{price.basePrice} zł</span>
-                                    </span>
-                                    <br />
-                                    <span>
-                                        Cena z rabatem:
-                                        <span className="final">
-                                            <strong>{price.finalPrice} zł</strong>
+                                    <>
+                                        <span>
+                                            Cena:<span className="old">{price.basePrice} zł</span>
                                         </span>
-                                    </span>
-                                </>
-                            )}
+                                        <br />
+                                        <span>
+                                            Cena z rabatem:
+                                        <span className="final">
+                                                <strong>{price.finalPrice} zł</strong>
+                                            </span>
+                                        </span>
+                                    </>
+                                )}
                         </div>
                     </div>
                 </article>
