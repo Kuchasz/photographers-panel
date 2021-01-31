@@ -16,6 +16,14 @@ export const zip = <T1, T2, T3>(left: T1[], right: T2[], map: (l: T1, r: T2) => 
     return left.map((value, index) => map(value, right[index]));
 };
 
+export const sort = <T>(arr: T[], fn: (x: T) => number) => {
+
+    const ar = [...arr];
+    ar.sort((a,b) => fn(b) - fn(a));
+
+    return ar;
+};
+
 export const sum = <T>(arr: T[], selector: (item: T) => number) => arr.reduce((sum, curr) => sum + selector(curr), 0);
 
 export const first = <T>(items: T[], predicate: (item: T) => boolean = () => true) => items.filter(predicate)[0];

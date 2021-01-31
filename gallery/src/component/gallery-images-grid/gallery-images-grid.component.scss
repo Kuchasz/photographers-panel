@@ -5,11 +5,14 @@ gallery-images-grid {
     // overflow: hidden;
     // overflow-x: hidden;
     width: 100%; //100vw;
+    display: flex;
+    justify-content: center;
+    background: white;
 }
 
 .images-container {
-    width: 100%;
-    overflow-y: scroll;
+    // width: 80%;
+    // overflow-y: scroll;
 
     background-color: white;
 
@@ -47,10 +50,10 @@ gallery-images-grid {
         display: none;
         visibility: hidden;
         opacity: 0;
-        transition: opacity 0.5s linear;
+        transition: opacity 0.25s linear;
         color: white;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.4);
         width: 100%;
         top: 0px;
         position: absolute;
@@ -70,7 +73,7 @@ gallery-images-grid {
 
     img {
         opacity: 0;
-        transition: opacity .5s linear, transform 5s linear;
+        transition: opacity .5s linear; //transform 5s linear;
 
         &.loaded {
             opacity: 1;
@@ -86,7 +89,7 @@ gallery-images-grid {
         &:hover {
             &:hover {
                 img {
-                    transform: scale(1.1);
+                    // transform: scale(1.1);
                 }
 
                 .background {

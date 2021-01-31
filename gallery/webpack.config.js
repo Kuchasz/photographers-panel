@@ -67,11 +67,11 @@ module.exports = {
             {
                 test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
                 loader: "@ngtools/webpack",
-                include: [
-                    join(__dirname, "src"),
-                    rootModuleDirectory("@pp/server"),
-                    rootModuleDirectory("@pp/utils")
-                ]
+                // include: [
+                //     join(__dirname, "src"),
+                //     rootModuleDirectory("@pp/server"),
+                //     rootModuleDirectory("@pp/utils")
+                // ]
             },
             {
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,

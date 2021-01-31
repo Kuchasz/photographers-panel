@@ -1,4 +1,4 @@
-import { Injectable, Optional } from "@angular/core";
+import { Directive, Injectable, Optional } from "@angular/core";
 
 import { GalleryState, GalleryImage, GalleryDirectory, ScreenOrientation } from "./gallery.state";
 import { GalleryConfig } from "../config/gallery.config";
@@ -10,6 +10,8 @@ import { Subject } from "rxjs/Subject";
 
 import { switchMap, take, takeWhile, map, filter, find, tap, finalize, publishLast } from "rxjs/operators";
 import { from, pipe, interval as fromInterval } from "rxjs";
+import { access } from 'fs';
+import { sort } from '@pp/utils/array';
 
 @Injectable()
 export class GalleryService {
@@ -45,13 +47,17 @@ export class GalleryService {
             liked: likes.filter((l) => i.id === l.imageId).map((l) => l.liked)[0] ?? false
         }));
 
+        const imagesLikes = images.reduce((acc, img) => ({...acc, [img.id]: img.likes}), {});
+
+        const dirImages = Object.entries(result.directoryImages).reduce((acc, [key, imgs]) => ({...acc, [key]: sort(imgs, i => imagesLikes[i])}), {});
+
         this.likedPhotos = likes.filter(l => l.liked).map(l => l.imageId);
 
         this.state.next({
             ...state,
             directories: result.directories,
-            images: images,
-            directoryImages: result.directoryImages,
+            images: sort(images, x => x.likes),
+            directoryImages: dirImages,
             currId: undefined,
             prevId: undefined,
             nextId: undefined,

@@ -5,12 +5,17 @@
     "declaration": false,
     "moduleResolution": "node",
     "module": "ES2015",
-    "baseUrl": ".",
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "downlevelIteration": true,
     "target": "es5",
+    "baseUrl": "./",   
+    "paths": {
+      "@pp/utils/*": ["../utils/*"],
+      "@pp/server/*": ["../server/*"]
+    },   
     "typeRoots": [
       "./node_modules/@types",
       "./../node_modules/@types"

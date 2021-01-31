@@ -9,8 +9,7 @@ import {
 } from "@angular/core";
 import { GalleryState, GalleryDirectory, GalleryImage } from "../../service/gallery.state";
 import { GalleryService } from "../../service/gallery.service";
-import { GalleryConfig } from "../../config";
-import { DisplayModes } from "../../config/gallery.config";
+import { DisplayModes, GalleryConfig } from "../../config/gallery.config";
 import { Observable } from "rxjs";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { switchMap, find, flatMap, map, tap, first, filter, pluck, distinctUntilChanged } from "rxjs/operators";
@@ -29,7 +28,7 @@ export class GalleryImagesGridComponent implements OnInit {
     currentDirectory: Observable<GalleryDirectory>;
 
     images$: Observable<GalleryImage[]>;
-
+    config: GalleryConfig;
     columnsImages: GalleryImage[][];
     fullscreenModeEnabled$: Observable<boolean>;
 
@@ -38,7 +37,9 @@ export class GalleryImagesGridComponent implements OnInit {
         public api: ApiService,
         private route: ActivatedRoute,
         private router: Router
-    ) { }
+    ) {
+        this.config = gallery.config;
+    }
 
     ngOnInit() {
         const thumbPos = this.gallery.config.thumbnails.position;
@@ -110,7 +111,7 @@ export class GalleryImagesGridComponent implements OnInit {
         );
     }
 
-    onImageLoad($event: Event){
+    onImageLoad($event: Event) {
         ($event.target as HTMLImageElement).className = "loaded";
     }
 

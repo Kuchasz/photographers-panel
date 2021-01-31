@@ -1,4 +1,4 @@
-<div class="images-container">
+<div class="images-container" [style.width] = "config.displayMode === 1 ? '100%' : '80%'">
     <div class="columns" *ngIf="images$ | async as images">
         <ng-container *ngIf="currentDirectoryId$ | async as directoryId">
             <div *ngFor="let columnImages of columnsImages" class="column">
