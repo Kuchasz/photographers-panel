@@ -45,7 +45,7 @@
 
         justify-content: space-between;
 
-        .g-state-directory {
+        .gallery-state {
             display: none;
         }
 
@@ -111,17 +111,18 @@ a {
     padding: 0px;
     align-items: center;
     color: white;
+    justify-content: flex-end;
 
     .g-snapped-count {
         height: 100%;
     }
 }
 
-.g-state-directory {
-    color: white;
-    flex-grow: 1;
-    align-self: center;
-}
+// .g-state-directory {
+//     color: white;
+//     flex-grow: 1;
+//     align-self: center;
+// }
 
 .g-state-button {
     @extend %state-button;

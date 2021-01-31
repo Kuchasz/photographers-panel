@@ -1,16 +1,9 @@
 <div class="gallery-state" *ngIf="currentImage$ | async as currentImage">
 
 
-    <!-- <span class="g-state-text">
-                <span class="g-snapped-count" *ngIf="snappedCount > 0" (click)="displaySnappedImages()"
-                    >{{ snappedCount }} selected</span
-                > -->
-    <!-- <span>{{ currentImage.text }}</span> -->
-    <!-- </span> -->
-    <span class="g-state-directory">
-        <!-- <div>{{ currentDirectory.name }}</div> -->
-    </span>
-    
+
+    <span class="g-state-text">{{ currentImage.text }}</span>
+
     <ng-container *ngIf="!currentImage.liked">
         <span [tap] (tapClick)="likeImage(currentImage.id)" class="g-state-button like">
             <span class="mdi mdi-heart-outline"></span>
