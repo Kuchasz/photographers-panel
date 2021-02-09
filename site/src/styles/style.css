@@ -225,6 +225,7 @@ nav li #current {
     width: 100%;
     float: left;
     background: url("../images/offer_bg.jpg") center center repeat-x;
+    background-size: cover;
     color: #fff;
 }
 
@@ -233,6 +234,7 @@ nav li #current {
     height: 590px;
     float: left;
     background: url("../images/article_bg.jpg") center center repeat-x;
+    background-size: cover;
     color: #035682;
 }
 
@@ -283,7 +285,7 @@ nav li #current {
     }
 }
 
-.blog > section {
+.blog>section {
     width: 960px;
     margin: 0 auto;
 }
@@ -374,6 +376,7 @@ nav li #current {
     width: 530px;
     float: left;
 }
+
 .offers article:nth-of-type(2) {
     width: 100%;
     float: left;
@@ -759,6 +762,7 @@ nav li #current {
 }
 
 @media only screen and (min-width: 950px) and (max-width: 1030px) {
+
     .offer section,
     .article section {
         width: 920px;
@@ -901,24 +905,29 @@ nav li #current {
     width: 960px;
     height: 420px;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .map address {
-    width: 398px;
-    height: 126px;
-    float: right;
-    background: url("../images/address_bg.png") no-repeat;
-    margin-top: 208px;
-    margin-right: 50px;
-    padding-top: 13px;
+    margin-left: 185px;
+    margin-top: -90px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgb(0 0 0 / 25%);
 }
 
-.map address ul {
-    width: 200px;
-    float: left;
+.map .address-pointer {
+    background: #035682;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 20px;
 }
 
-.map address li {
+.map address .address-line {
     list-style-type: none;
     font-size: 14px;
     color: #035682;
@@ -928,7 +937,7 @@ nav li #current {
     padding-left: 5px;
 }
 
-.map address li:first-child {
+.map address .address-line:first-child {
     font-family: "Century Gothic Bold";
 }
 

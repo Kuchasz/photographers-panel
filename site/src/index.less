@@ -257,6 +257,8 @@
         transition-property: opacity;
         opacity: 0;
         position: absolute;
+        margin: 20px;
+        text-align: center;
 
         &.current {
             transition-delay: 2s;
@@ -311,10 +313,36 @@
 }
 
 .background {
+    background-color: transparent;
+
+    picture {
+        width: 100%;
+        height: 100%;
+
+        img {
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0px;
+        }
+    }
+
     .current {
+        opacity: 0;
         animation-fill-mode: forwards;
         animation-name: pulse;
         animation-duration: 2s;
+        animation-timing-function: linear;
+
+        img {
+            opacity: 0;
+            animation-fill-mode: forwards;
+            animation-name: pulse;
+            animation-duration: 2s;
+            animation-timing-function: linear;
+        }
     }
 
     .previous {

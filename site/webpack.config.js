@@ -81,7 +81,7 @@ module.exports = {
             },
             // this rule handles images
             {
-                test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
+                test: /\.webp|\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
                 use: 'file-loader?name=[name].[ext]?[hash]'
             },
             //

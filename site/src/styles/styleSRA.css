@@ -833,22 +833,7 @@ nav li #current {
 	margin: 0 auto;
 }
 
-.map address {
-	width: 398px;
-	height: 126px;
-	float: right;
-	background: url('../images/address_bg.png') no-repeat;
-	margin-top: 208px;
-	margin-right: 50px;
-	padding-top: 13px;
-}
-
-.map address ul {
-	width: 200px;
-	float: left;
-}
-
-.map address li {
+.map address .address-line {
 	list-style-type: none;
 	font-size: 14px;
 	color: #035682;
@@ -858,7 +843,7 @@ nav li #current {
 	padding-left: 5px;
 }
 
-.map address li:first-child {
+.map address .address-line:first-child {
 	font-family: 'Century Gothic Bold';
 }
 

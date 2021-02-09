@@ -7,16 +7,16 @@ export const pl = {
     },
     main: {
         topPhotos: [
-            "pocalunek-na-lozku.jpg",
-            "spacer-po-parku.jpg",
-            "przytulanie-przy-fontannie.jpg",
-            "mloda-para-strobist-przytulanie.jpg",
-            "o-zachodzie-slonca.jpg",
-            "piknik-nad-rzeka.jpg",
-            "james-bond.jpg",
-            "spacer-po-lace.jpg",
-            "przytulanie-w-sadzie.jpg",
-            "pocalunek-na-lozku.jpg"
+            "pocalunek-na-lozku",
+            "spacer-po-parku",
+            "przytulanie-przy-fontannie",
+            "mloda-para-strobist-przytulanie",
+            "o-zachodzie-slonca",
+            "piknik-nad-rzeka",
+            "james-bond",
+            "spacer-po-lace",
+            "przytulanie-w-sadzie",
+            "pocalunek-na-lozku",
         ]
     },
     contact: {

@@ -13,6 +13,8 @@ const getHeaderBackgroundStyle = (photo: string) => {
     };
 };
 
+const getSrc = (photo: string, ext: string) => require(`../images/top/${photo}${ext}`);
+
 const selectedItem = (selectedPath: string, path: string) =>
     firstSegment(selectedPath) === path ? "current" : undefined;
 
@@ -34,18 +36,19 @@ export const Header = withRouter(props => {
     }, [currentAdvantage]);
 
     return (
-        <header
-            id={
-                first(menuItems, mi => firstSegment(props.location.pathname) === mi.route).fullPage ? "home" : "subpage"
-            }
-            // style={getHeaderBackgroundStyle(chosenPhoto)}
-        >
+        <header id={first(menuItems, mi => firstSegment(props.location.pathname) === mi.route).fullPage ? "home" : "subpage"}>
             <div className="background">
-                <div className="previous" style={getHeaderBackgroundStyle(prevPhoto)}></div>
-                <div key={currentPhoto} className="current" style={getHeaderBackgroundStyle(currentPhoto)}></div>
-                {/* {strings.main.topPhotos.map(p => (
-                    <div key={p} style={getHeaderBackgroundStyle(p)}></div>
-                ))} */}
+                {/* <div className="previous" style={getHeaderBackgroundStyle(prevPhoto)}> */}
+                <picture className="previous">
+                    <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, ".jpg")}></source>
+                    <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, "-600w.webp")}></source>
+                    <img src={getSrc(prevPhoto, ".jpg")}></img>
+                </picture>
+                <picture className="current">
+                    <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, ".jpg")}></source>
+                    <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, "-600w.webp")}></source>
+                    <img src={getSrc(currentPhoto, ".jpg")}></img>
+                </picture>
             </div>
 
             <span className="advantages">

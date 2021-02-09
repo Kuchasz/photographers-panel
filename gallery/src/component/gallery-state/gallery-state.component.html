@@ -1,9 +1,5 @@
 <div class="gallery-state" *ngIf="currentImage$ | async as currentImage">
-
-
-
     <span class="g-state-text">{{ currentImage.text }}</span>
-
     <ng-container *ngIf="!currentImage.liked">
         <span [tap] (tapClick)="likeImage(currentImage.id)" class="g-state-button like">
             <span class="mdi mdi-heart-outline"></span>

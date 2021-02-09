@@ -1,6 +1,5 @@
 import * as React from "react";
 import mapImage from "../images/map.png";
-import photographerImage from "../images/address_ph.png";
 import { getLastBlog, LastBlog } from "@pp/api/site/blog";
 import { Link } from "react-router-dom";
 import { routes } from "@pp/api/site/routes";
@@ -76,7 +75,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </hgroup>
                     </section>
                 </div>
-
                 <div className="contact">
                     <section>
                         <div className="left">
@@ -92,13 +90,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 </div>
                 <div className="map">
                     <section>
+                        <div className="address-pointer"></div>
                         <address>
-                            <ul>
-                                {strings.contact.address.map(addr => (
-                                    <li key={addr}>{addr}</li>
-                                ))}
-                            </ul>
-                            <img src={photographerImage} alt="Adres siedziby PyszStudio - Andrychów" />
+                            {strings.contact.address.map(addr => (
+                                <div className="address-line" key={addr}>{addr}</div>
+                            ))}
                         </address>
                     </section>
                 </div>
