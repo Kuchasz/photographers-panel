@@ -23,6 +23,10 @@
         padding-right: 0px;
     }
 
+    .logo {
+        display: none !important;
+    }
+
     .offer section,
     .article section,
     .blog section,
@@ -104,6 +108,10 @@
         margin-left: -70px; */
     }
 
+    .article article a.button {
+        height: auto;
+    }
+
     .offer h1,
     .article h1 {
         font-size: 34px;
@@ -131,7 +139,7 @@
     .gallery_sub article,
     .blog article,
     .sub_sub article {
-        width: 350px;
+        width: 100%;
         float: left;
         margin-left: 0px;
     }
@@ -166,7 +174,8 @@
     .blog article h1,
     .sub_sub article h1 {
         font-size: 30px;
-        text-align: left;
+        /* text-align: left; */
+        text-align: center;
         margin-top: 0px;
         font-weight: normal;
         padding: 70px 0 0 0;
@@ -181,7 +190,8 @@
     .sub_sub article h2 {
         font-size: 17px;
         font-weight: normal;
-        text-align: left;
+        text-align: center;
+        /* text-align: left; */
         margin: 0;
         margin-bottom: 35px;
         padding: 25px 0 0 0;
@@ -189,6 +199,13 @@
 
     .article article h2 {
         font-size: 15px;
+    }
+
+    .offer article,
+    .article article {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .link hgroup,
@@ -200,20 +217,50 @@
         margin: 0px 0 0px 0;
     }
 
+    .contact section .left {
+        display: none;
+    }
+
+    .contact section .right {
+        text-align: center;
+    }
+
+    .contact section {
+        display: flex;
+        justify-content: center;
+    }
+
+    .contact {
+        background: rgba(0, 51, 78, 1);
+    }
+
+    .offer section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .offer hgroup {
-        width: 240px;
+        width: auto;
         float: left;
         margin-top: 70px;
         margin-bottom: 20px;
         font-size: 18px;
     }
 
+
+
+    .offer article h2 {
+        text-align: center;
+    }
+
     .offer .left {
         padding-left: 50px;
+        width: auto;
     }
 
     .offer .left li {
-        width: 240px;
+        width: auto;
         height: 50px;
         list-style-type: none;
         padding: 3px 0 0 70px;
