@@ -223,11 +223,12 @@ a#gallery:hover {
 
 .article {
     width: 100%;
-    height: 590px;
+    /* height: 590px; */
     float: left;
     background: url("../images/article_bg.jpg") center center repeat-x;
     background-size: cover;
     color: #035682;
+    padding-bottom: 20px;
 }
 
 .gallery,
