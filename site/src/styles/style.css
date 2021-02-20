@@ -51,6 +51,8 @@ small {
 header {
     display: flex;
     flex-flow: row-reverse;
+    flex-wrap: wrap;
+    align-content: flex-start;
     box-shadow: inset 0 0 100px black;
     width: 100%;
     height: 100vh;
@@ -84,15 +86,9 @@ header .background div {
 }
 
 nav {
-    width: 642px;
     height: 55px;
     margin: 50px 0 0 0;
     float: right;
-    background-color: black;
-}
-
-nav ul {
-    padding-inline-start: 20px;
 }
 
 #menu_down {
@@ -112,58 +108,54 @@ nav ul {
     float: right;
 }
 
-nav ul {
+nav {
     font-family: "Century Gothic Bold";
-    list-style-type: none;
     margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
-nav li:first-child {
-    margin-left: 13px;
-}
-
-nav li a {
+nav a {
     float: left;
     color: #838384;
+    background-color: black;
     font-size: 17px;
-    height: 48px;
-    margin-right: 29px;
-    padding-top: 18px;
+    height: 100%;
     text-transform: uppercase;
+    padding: 0px 13px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
     transition: linear 0.25s color;
 }
 
-nav li a:hover {
+nav a:hover {
     color: #c7c7c7;
     text-decoration: none;
 }
 
-nav li #current {
+nav #current {
     color: white;
 }
 
 #gallery {
-    width: 205px;
-    height: 55px;
-    margin: 15px 0 0 0;
-    padding-right: 10px;
     background-color: #ff4643;
-    float: right;
-    clear: both;
 }
 
-#gallery a {
-    float: right;
-    height: 48px;
+a#gallery {
+    /* float: right; */
+    /* height: 48px; */
     color: #fff;
-    font-family: "Century Gothic Bold";
-    font-size: 17px;
+    /* font-family: "Century Gothic Bold"; */
+    /* font-size: 17px;
     margin-right: 22px;
-    padding-top: 18px;
-    text-transform: uppercase;
+    padding-top: 18px; */
+    /* text-transform: uppercase; */
 }
 
-#gallery a:hover {
+a#gallery:hover {
     color: #620200;
     text-decoration: none;
 }

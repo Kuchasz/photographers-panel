@@ -82,33 +82,32 @@ nav {
 	float: right;
 }
 
-nav ul {
+nav {
 	font-family: 'Century Gothic Bold';
-	list-style-type: none;
 	margin: 0;
+	display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
-
-nav li:first-child {
-	margin-left: 13px;
-}
-
-nav li a {
+nav a {
 	float: left;
 	color: #035682;
 	font-size: 17px;
-	height: 48px;
-	margin-right: 29px;
-	padding-top: 28px;
+	height: 100%;
+	display: flex;
+    align-items: center;
+	padding: 0px 13px;
 	text-transform: uppercase;
 }
 
-nav li a:hover {
+nav a:hover {
 	color: #62becc;
 	text-decoration: none;
 }
 
-nav li #current {
+nav #current {
 	color: #62becc;
 }
 

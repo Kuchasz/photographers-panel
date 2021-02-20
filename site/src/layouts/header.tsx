@@ -60,57 +60,44 @@ export const Header = withRouter(props => {
             </span>
             <div className="menu">
                 <nav>
-                    <ul>
-                        <li>
-                            <Link to={routes.home.route} id={selectedItem(props.location.pathname, routes.home.route)}>
-                                {strings.menu.home}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={routes.offers.route}
-                                id={selectedItem(props.location.pathname, routes.offers.route)}
-                            >
-                                {strings.menu.offer}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={routes.blogs.route}
-                                id={selectedItem(props.location.pathname, routes.blogs.route)}
-                            >
-                                {strings.menu.blog}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={routes.contact.route}
-                                id={selectedItem(props.location.pathname, routes.contact.route)}
-                            >
-                                {strings.menu.contact}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={routes.links.route}
-                                id={selectedItem(props.location.pathname, routes.links.route)}
-                            >
-                                {strings.menu.links}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                to={routes.videos.route}
-                                id={selectedItem(props.location.pathname, routes.videos.route)}
-                            >
-                                {strings.menu.videos}
-                            </Link>
-                        </li>
-                    </ul>
+                    <Link to={routes.home.route} id={selectedItem(props.location.pathname, routes.home.route)}>
+                        {strings.menu.home}
+                    </Link>
+                    <Link
+                        to={routes.offers.route}
+                        id={selectedItem(props.location.pathname, routes.offers.route)}
+                    >
+                        {strings.menu.offer}
+                    </Link>
+                    <Link
+                        to={routes.blogs.route}
+                        id={selectedItem(props.location.pathname, routes.blogs.route)}
+                    >
+                        {strings.menu.blog}
+                    </Link>
+                    <Link
+                        to={routes.contact.route}
+                        id={selectedItem(props.location.pathname, routes.contact.route)}
+                    >
+                        {strings.menu.contact}
+                    </Link>
+                    <Link
+                        to={routes.links.route}
+                        id={selectedItem(props.location.pathname, routes.links.route)}
+                    >
+                        {strings.menu.links}
+                    </Link>
+                    <Link
+                        to={routes.videos.route}
+                        id={selectedItem(props.location.pathname, routes.videos.route)}
+                    >
+                        {strings.menu.videos}
+                    </Link>
+                    <Link id="gallery" to={routes.private.route}>{strings.menu.private}</Link>
                 </nav>
-                <nav id="gallery">
-                    <Link to={routes.private.route}>{strings.menu.private}</Link>
-                </nav>
+                {/* <nav
+               
+                </nav> */}
             </div>
             <div className="logo">
                 <div className="top">
