@@ -823,7 +823,7 @@ nav li #current {
 .contact {
     width: 100%;
     float: left;
-    background: #fff url("../images/contact_bg.jpg") center center no-repeat;
+    background: linear-gradient(45deg, rgba(255,255,255,1) 49.9999%, rgba(0,51,78,1) 50%);
     color: #035682;
 }
 
@@ -834,7 +834,7 @@ nav li #current {
 }
 
 .contact .left {
-    width: 280px;
+    max-width: 220px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -860,11 +860,11 @@ nav li #current {
 }
 
 .contact .right {
-    width: 450px;
+    /* width: 450px; */
     float: right;
     margin-top: 0px;
     margin-bottom: 0px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     text-align: right;
     color: #fff;
 }
@@ -966,7 +966,7 @@ footer section {
 }
 
 footer .left {
-    width: 500px;
+    /* width: 500px; */
     float: left;
     margin-top: 0px;
     margin-bottom: 0px;

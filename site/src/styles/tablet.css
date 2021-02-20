@@ -32,7 +32,7 @@
 	}
 
 	.contact .left {
-		width: 245px;
+		width: 220px;
 		float: left;
 		margin-top: 0px;
 		margin-bottom: 0px;
@@ -48,7 +48,7 @@
 		float: right;
 		margin-top: 0px;
 		margin-bottom: 0px;
-		margin-left: 20px;
+		/* margin-left: 20px; */
 		text-align: right;
 		color: #fff;
 	}
@@ -280,7 +280,7 @@
 	}
 
 	.contact .left {
-		width: 260px;
+		/* width: 260px; */
 		float: left;
 		margin-top: 0px;
 		margin-bottom: 0px;
@@ -288,11 +288,11 @@
 	}
 
 	.contact .right {
-		width: 350px;
+		/* width: 350px; */
 		float: right;
 		margin-top: 0px;
 		margin-bottom: 0px;
-		margin-left: 20px;
+		/* margin-left: 20px; */
 		text-align: right;
 		color: #fff;
 	}
