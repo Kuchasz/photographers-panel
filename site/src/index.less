@@ -306,7 +306,7 @@
     }
 }
 
-@keyframes pulse {
+@keyframes appearIn {
     0% {
         opacity: 0;
     }
@@ -319,39 +319,30 @@
 .background {
     background-color: transparent;
 
-    picture {
+
+
+    img {
         width: 100%;
         height: 100%;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0px;
 
-        img {
-            object-fit: cover;
-            object-position: center;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0px;
-        }
-    }
-
-    .current {
-        opacity: 0;
-        animation-fill-mode: forwards;
-        animation-name: pulse;
-        animation-duration: 2s;
-        animation-timing-function: linear;
-
-        img {
-            opacity: 0;
+        &.current {
             animation-fill-mode: forwards;
-            animation-name: pulse;
+            animation-name: appearIn;
             animation-duration: 2s;
             animation-timing-function: linear;
         }
+
+        &.previous {
+            z-index: -1;
+        }
     }
 
-    .previous {
-        z-index: -1;
-    }
 }
 
 @media only screen and (max-width: 700px) {

@@ -38,16 +38,15 @@ export const Header = withRouter(props => {
     return (
         <header id={first(menuItems, mi => firstSegment(props.location.pathname) === mi.route).fullPage ? "home" : "subpage"}>
             <div className="background">
-                {/* <div className="previous" style={getHeaderBackgroundStyle(prevPhoto)}> */}
-                <picture className="previous">
+                <picture key={getSrc(prevPhoto, ".jpg")}>
                     <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, ".jpg")}></source>
                     <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, "-600w.webp")}></source>
-                    <img src={getSrc(prevPhoto, ".jpg")}></img>
+                    <img className="previous" src={getSrc(prevPhoto, ".jpg")}></img>
                 </picture>
-                <picture className="current">
+                <picture key={getSrc(currentPhoto, ".jpg")}>
                     <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, ".jpg")}></source>
                     <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, "-600w.webp")}></source>
-                    <img src={getSrc(currentPhoto, ".jpg")}></img>
+                    <img className="current" src={getSrc(currentPhoto, ".jpg")}></img>
                 </picture>
             </div>
 
