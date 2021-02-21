@@ -27,6 +27,7 @@
 	.link section,
 	.contact_form section,
 	.gallery_sub section,
+	.videos section,
 	.sub_sub section {
 		width: 660px;
 		margin: 0 auto;
@@ -310,6 +311,7 @@
 	.offers section,
 	.link section,
 	.contact_form section,
+	.videos section,
 	.gallery_sub section,
 	.sub_sub section {
 		width: 700px;
