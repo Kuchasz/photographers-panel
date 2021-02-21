@@ -5,7 +5,7 @@ export default {
         download: "pobierz",
         close: "zamknij",
         like: "lubi to",
-        reviewUs: "oceń nas",
+        reviewUs: "opinia",
     },
     review: {
         header: "Prosimy o wystawienie opinii",
