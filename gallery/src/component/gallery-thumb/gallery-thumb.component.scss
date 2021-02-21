@@ -52,13 +52,15 @@
     align-items: center;
     transition: transform ease-out 0.2s;
     transform: translate3d(0, 0, 0);
+    will-change: transform;
 }
 
 .g-thumb {
     // padding: 2px;
     padding: 8px;
     opacity: 0.5;
-    transition: all ease 0.2s;
+    transition: transform ease-out 0.2s, opacity ease 0.2s;
+    transform: scale(.9);
 }
 
 .g-thumb-image {
@@ -69,7 +71,6 @@
     background-size: cover;
     // box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
     color: #333;
-    transform: scale(.9);
 
     &.snapped {
         border: solid 5px #333;
@@ -78,7 +79,8 @@
 
 .g-thumb-current {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1);
+    will-change: transform;
     // padding: 10px;
     // margin: 10px 50px;
 }
