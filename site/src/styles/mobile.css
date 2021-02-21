@@ -152,7 +152,7 @@
 
     .link article,
     .contact_form article {
-        width: 530px;
+        width: 100%;
         margin-top: -50px;
     }
 
