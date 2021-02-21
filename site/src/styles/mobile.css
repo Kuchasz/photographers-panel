@@ -28,6 +28,7 @@
     }
 
     .offer section,
+    .offers section,
     .article section,
     .blog section,
     .gallery section,
@@ -133,6 +134,7 @@
     }
 
     .offer article,
+    .offers article,
     .article article,
     .link article,
     .contact_form article,
@@ -209,7 +211,8 @@
     }
 
     .link hgroup,
-    .contact_form hgroup {
+    .contact_form hgroup,
+    .offers hgroup {
         display: none;
         width: 1px;
         height: 1px;

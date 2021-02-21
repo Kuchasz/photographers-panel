@@ -39,7 +39,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                         <br />
                         <div className="photos">
                             {this.state.blog.assets.map(p => (
-                                <img key={p.url} src={p.url} alt={p.alt} />
+                                <img key={p.url} src={p.url} alt={p.alt} loading="lazy"/>
                             ))}
                         </div>
                     </article>

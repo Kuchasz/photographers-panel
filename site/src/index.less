@@ -355,7 +355,66 @@
 }
 
 @media only screen and (max-width: 700px) {
+    .menu {
+        margin-top: 0px;
+
+        nav {
+            height: 40px;
+
+            a {
+                flex-grow: 1;
+                font-size: 14px;
+                padding: 0px 10px;
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+    .blog {
+
+        article>a {
+            height: auto;
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .thumb {
+            width: 100%;
+        }
+
+        .blog-text:after {
+            width: 100%;
+        }
+
+        .photos {
+            img {
+                width: 100%;
+            }
+        }
+    }
+
     .advantages {
         font-size: 48px;
+    }
+
+    .offers {
+        .category {
+            flex-direction: column;
+
+            img {
+                object-fit: cover;
+            }
+        }
+
+        .tariffs {
+            .selector {
+                a {
+                    padding: 10px 0px;
+                    flex-grow: 1;
+                    text-align: center;
+                }
+            }
+        }
     }
 }

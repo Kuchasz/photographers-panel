@@ -130,13 +130,13 @@ export const pl = {
                 more: "ZOBACZ PEŁNĄ OFERTĘ"
             },
             advantages: [
-                "Pierwsze zdjęcia w dzień po weselu",
-                "Bezkonkurencyjna cena",
-                "Internetowa galeria zdjęć pod hasłem",
-                "Plener w dniu wesela gratis",
-                "Krótki czas realizacji",
-                "Bogaty pakiet podstawowy",
                 "Aparat i kamera w pakiecie",
+                "Bogaty pakiet podstawowy",
+                "Konkurencyjna cena",
+                "Krótki czas realizacji",
+                "Pierwsze zdjęcia w dzień po weselu",
+                "Plener w dniu wesela gratis",
+                "Internetowa galeria zdjęć pod hasłem",
                 "Film w FullHD na pendrive"
             ]
         },
