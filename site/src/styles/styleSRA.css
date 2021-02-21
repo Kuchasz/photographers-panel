@@ -556,7 +556,8 @@ nav #current {
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
-	background-color: #ff4643;
+	/* background-color: #ff4643; */
+	background-color: #ce2220;
 	-webkit-box-shadow: 0 0 7px 3px rgba(252, 252, 252, .1);
 	-moz-box-shadow: 0 0 7px 3px rgba(252, 252, 252, .1);
 	box-shadow: 0 0 7px 3px rgba(252, 252, 252, .1);
@@ -595,13 +596,15 @@ nav #current {
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	background-color: rgba(255, 70, 67, 0);
-	border: solid 1px #ff4643;
+	/* border: solid 1px #ff4643; */
+	border: solid 1px #ce2220;
 	font-size: 16px;
 	font-family: 'Century Gothic Bold';
 	text-align: center;
 	padding: 15px 25px 16px 25px;
 	outline: none;
-	color: #ff4643;
+	/* color: #ff4643; */
+	color: #ce2220;
 }
 
 .contact_form article input[type=submit] {

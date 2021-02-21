@@ -41,12 +41,12 @@ export const Header = withRouter(props => {
                 <picture key={getSrc(prevPhoto, ".jpg")}>
                     <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, ".jpg")}></source>
                     <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, "-600w.webp")}></source>
-                    <img className="previous" src={getSrc(prevPhoto, ".jpg")}></img>
+                    <img alt={prevPhoto.split("-").join(" ")} width="100%" height="100%" className="previous" src={getSrc(prevPhoto, ".jpg")}></img>
                 </picture>
                 <picture key={getSrc(currentPhoto, ".jpg")}>
                     <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, ".jpg")}></source>
                     <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, "-600w.webp")}></source>
-                    <img className="current" src={getSrc(currentPhoto, ".jpg")}></img>
+                    <img alt={currentPhoto.split("-").join(" ")} width="100%" height="100%" className="current" src={getSrc(currentPhoto, ".jpg")}></img>
                 </picture>
             </div>
 

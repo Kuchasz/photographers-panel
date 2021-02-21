@@ -71,7 +71,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </article>
 
                         <hgroup>
-                            <img src={mapImage} alt="mazowsze_map" id="map" />
+                            <img width="450" height="344" src={mapImage} alt="malopolskie_map" id="map" />
                         </hgroup>
                     </section>
                 </div>
