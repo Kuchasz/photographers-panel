@@ -108,7 +108,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "src/index.html",
             alwaysWriteToDisk: true,
-            cache: false
+            cache: false,
+            favicon: "src/images/favicon.ico"
         }),
         new MiniCssExtractPlugin({
             // Options similar to the same options in webpackOptions.output
