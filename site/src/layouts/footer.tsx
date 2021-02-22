@@ -17,8 +17,8 @@ export const Footer = () => <footer>
         <div className="right">
             <h1>{strings.footer.socialMedia.header}</h1>
             <ul>
-                <li><a href={strings.footer.socialMedia.url.facebook} target="_blank">{strings.footer.socialMedia.facebook}</a> /</li>
-                <li><a href={strings.footer.socialMedia.url.youtube} target="_blank">{strings.footer.socialMedia.youtube}</a></li>
+                <li><a href={strings.footer.socialMedia.url.facebook} rel="noopener" target="_blank">{strings.footer.socialMedia.facebook}</a> /</li>
+                <li><a href={strings.footer.socialMedia.url.youtube} rel="noopener" target="_blank">{strings.footer.socialMedia.youtube}</a></li>
             </ul>
         </div>
     </section>
