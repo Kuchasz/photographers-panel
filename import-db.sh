@@ -4,14 +4,14 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 #get variables from .env
-db_name="****"
-db_dump="****.sql"
-user_name="****"
-server_ip="****"
-user_password="****"
+db_name="db_name"
+db_dump="db_dump.sql"
+user_name="user_name"
+server_ip="server_ip"
+user_password="user_password"
 
 echo "PREPARE MySQL TO IMPORT"
-mysql "DROP DATABASE IF EXISTS $db_name; 
+mysql -e "DROP DATABASE IF EXISTS $db_name; 
           CREATE DATABASE $db_name;
           DROP USER IF EXISTS '$user_name'@'$server_ip'; 
           CREATE USER '$user_name'@'$server_ip' IDENTIFIED WITH mysql_native_password BY '$user_password';
