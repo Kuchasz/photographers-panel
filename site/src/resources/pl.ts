@@ -115,10 +115,10 @@ export const pl = {
     },
     offer: {
         title: "Najczęściej wykonywane usługi",
-        description: "Jeżeli czegoś nie ma w ofercie to zapraszamy do kontaktu.",
+        description: "Najczęściej świadczone przez nas usługi. Zapraszamy do kontaktu jeśli czegoś nie uda Ci się tutaj znaleźć.",
         calculator: {
             title: "Kalkulator ceny",
-            description: "Cena umówiona z klientem jest wiążąca, nie ulegnie zmianie wraz ze zmianą cennika. O cenę pozostałych usług proszę pytać przez facebook, mailowo lub telefonicznie."
+            description: "Cena umówiona z klientem jest wiążąca, nie ulegnie zmianie wraz ze zmianą cennika. O cenę pozostałych usług proszę pytać przez facebooka, mailowo lub telefonicznie."
         },
         slogan: {
             title: "Co <span>nas wyróżnia</span>?",
