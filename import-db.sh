@@ -4,11 +4,18 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 #get variables from .env
-db_name="db_name"
-db_dump="db_dump.sql"
-user_name="user_name"
-server_ip="server_ip"
-user_password="user_password"
+ set -o allexport; source .env; set +o allexport
+
+echo $DB_USER
+echo $DB_DATABASE
+echo $DB_HOST
+echo $DB_PASSWORD
+
+db_name=$DB_DATABASE
+db_dump="$DB_DATABASE.sql"
+user_name=$DB_USER
+server_ip=$DB_HOST
+user_password=$DB_PASSWORD
 
 echo "PREPARE MySQL TO IMPORT"
 mysql -e "DROP DATABASE IF EXISTS $db_name; 
@@ -40,5 +47,6 @@ echo "LOAD DATABASE
        type int when unsigned drop typemod;" > pgsql-migrate-command.cmd
 
 echo "MIGRATING FROM MySQL TO postgres"
+cat pgsql-migrate-command.cmd
 pgloader pgsql-migrate-command.cmd
-rm pgsql-migrate-command.cmd
+# rm pgsql-migrate-command.cmd
