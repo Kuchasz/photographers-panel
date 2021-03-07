@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: publish into staging
+      - name: publish into production
         uses: garygrossgarten/github-action-ssh@release
         with:
           host: ${{ secrets.ssh_host }}
@@ -31,5 +31,5 @@ jobs:
             mv databases_backup public_nodejs/databases
             cd public_nodejs
             npm install sqlite3
-            npm install sharp
+            npm install sharp@0.22.1
             devil www restart kuchasz.usermd.net

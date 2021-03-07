@@ -31,5 +31,5 @@ jobs:
             mv databases_backup public_nodejs/databases
             cd public_nodejs
             npm install sqlite3
-            npm install sharp
+            npm install sharp@0.22.1
             devil www restart www.pyszstudio.pl
