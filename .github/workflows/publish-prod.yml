@@ -15,9 +15,9 @@ jobs:
       - name: publish into staging
         uses: garygrossgarten/github-action-ssh@release
         with:
-          host: ${{ secrets.prod_ssh_host }}
-          username: ${{ secrets.prod_ssh_username }}
-          password: ${{ secrets.prod_ssh_password }}
+          host: ${{ secrets.ssh_host }}
+          username: ${{ secrets.ssh_username }}
+          password: ${{ secrets.ssh_password }}
           tryKeyboard: true
           command: |
             cd domains/www.pyszstudio.pl/
