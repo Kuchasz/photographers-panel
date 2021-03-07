@@ -555,7 +555,7 @@ app.get("*", async (req, res, next) => {
             return;
         }
 
-        const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "");
+        const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "").split(',')[0];
 
         await siteModel.registerVisit(new Date(), address);
 
