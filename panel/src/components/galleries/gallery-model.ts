@@ -27,6 +27,6 @@ export const galleryModel = (galleryId?: number) => Schema.Model({
         .addRule(checkPasswordIsUnique(galleryId), translations.validation.unique),
     directPath: Schema.Types.StringType()
         .isURL(translations.validation.url)
-        .pattern(/.*[^\/]$/, translations.validation.pattern("http://example.com")),
+        .pattern(/https:\/\/[\w.]+[^\/]$/, translations.validation.pattern("https://example.com")),
     blog: Schema.Types.NumberType()
 });

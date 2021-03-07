@@ -7,7 +7,7 @@ const videos = [
             "Członkowie zespołu poprosili nas o nagranie kilku utworów świątecznych w ich wykonaniu. Oto jeden z nich",
         descshort:
             "Członkowie zespołu poprosili nas o nagranie kilku utworów świątecznych w ich wykonaniu. Oto jeden z nich",
-        videourl: "http://www.youtube.com/embed/l7zMLDB-Eac",
+        videourl: "https://www.youtube.com/embed/l7zMLDB-Eac",
         photo: "kwintet-blaszany-trabka-andrychow.jpg",
         tags: "orkiestra dęta andrychów, rudolf czerwononosy, występ, na żywo, 5d mk iii, ex1r"
     },

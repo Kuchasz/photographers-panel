@@ -169,7 +169,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     </Table.Cell>
                 </Table.Column>
 
-                <Table.Column width={100} align="center">
+                <Table.Column width={140} align="center">
                     <Table.HeaderCell>{translations.gallery.list.headers.totalVisits}</Table.HeaderCell>
                     <Table.Cell dataKey="visits" />
                 </Table.Column>

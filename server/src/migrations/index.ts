@@ -11,6 +11,7 @@ import { run as run10 } from "./10-remove-trailing-slashes-from-direct-paths";
 import { run as run11 } from "./11-add-notified-to-private-gallery";
 import { run as run12 } from "./12-page-visits-to-site-visits"
 import { run as run13 } from "./13-add-private-gallery-title";
-import { run as run14 } from "./14-enlarge-blog-asset-url"
+import { run as run14 } from "./14-enlarge-blog-asset-url";
+import { run as run15 } from "./15-move-external-urls-to-https";
 
-export const migrations = [run, run2, run3, run4, run5, run6, run7, run8, run9, run10, run11, run12, run13, run14];
+export const migrations = [run, run2, run3, run4, run5, run6, run7, run8, run9, run10, run11, run12, run13, run14, run15];
