@@ -215,3 +215,12 @@ jobs:
           password: ${{ secrets.ftp_password }}
           local-dir: ./package/
           server-dir: domains/kuchasz.usermd.net/
+
+      - name: upload artifact to prod
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          local-dir: ./package/
+          server-dir: domains/www.pyszstudio.pl/
