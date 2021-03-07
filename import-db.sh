@@ -49,4 +49,4 @@ echo "LOAD DATABASE
 echo "MIGRATING FROM MySQL TO postgres"
 cat pgsql-migrate-command.cmd
 pgloader pgsql-migrate-command.cmd
-# rm pgsql-migrate-command.cmd
+rm pgsql-migrate-command.cmd

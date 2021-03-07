@@ -53,6 +53,7 @@ export const pl = {
     },
     menu: {
         home: "Strona główna",
+        pricing: "Cennik",
         offer: "Oferta",
         contact: "Kontakt",
         links: "Polecamy",
@@ -113,7 +114,7 @@ export const pl = {
         }
     },
     offer: {
-        title: "Usługi",
+        title: "Najczęściej wykonywane usługi",
         description: "Jeżeli czegoś nie ma w ofercie to zapraszamy do kontaktu.",
         calculator: {
             title: "Kalkulator ceny",
@@ -146,7 +147,8 @@ export const pl = {
             WeddingSession: "Ślubna sesja zdjęciowa",
             DvdPackage: "Komplet płyt DVD z filmem",
             Afters: "Obsługa imprezy poprawinowej"
-        }
+        },
+        readMore: "czytaj więcej"
     },
     footer: {
         copyrights: "PyszStudio. All rights reserved.",

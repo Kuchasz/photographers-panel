@@ -5,13 +5,14 @@ import { getOffersList, getOffer } from "./offer";
 const empty = () => Promise.resolve({});
 
 export const routes = {
-    home: { fullPage: true, route: "/", label: "Home", getData: getLastBlog },
-    offers: { fullPage: false, route: "/oferta", label: "Offer", getData: getOffersList },
-    offer: { fullPage: false, route: "/oferta/:alias", label: "Offer", getData: getOffer },
-    blogs: { fullPage: false, route: "/blog", label: "Blog", getData: getBlogsList },
-    blog: { fullPage: false, route: "/blog/:alias", label: "Blog", getData: getBlog },
-    contact: { fullPage: false, route: "/kontakt", label: "Contact", getData: empty },
-    videos: { fullPage: false, route: "/filmy", label: "Videos", getData: getVideosList },
-    links: { fullPage: false, route: "/linki", label: "Links", getData: empty },
-    private: { fullPage: false, route: "/prywatna", label: "Private", getData: empty }
+    home: { fullPage: true, route: "/", getData: getLastBlog },
+    pricing: { fullPage: false, route: "/cennik", getData: empty },
+    offers: { fullPage: false, route: "/oferta", getData: getOffersList },
+    offer: { fullPage: false, route: "/oferta/:alias", getData: getOffer },
+    blogs: { fullPage: false, route: "/blog", getData: getBlogsList },
+    blog: { fullPage: false, route: "/blog/:alias", getData: getBlog },
+    contact: { fullPage: false, route: "/kontakt", getData: empty },
+    videos: { fullPage: false, route: "/filmy", getData: getVideosList },
+    links: { fullPage: false, route: "/linki", getData: empty },
+    private: { fullPage: false, route: "/prywatna", getData: empty }
 };

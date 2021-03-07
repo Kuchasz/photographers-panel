@@ -13,6 +13,7 @@ import { PrivateGallery } from "./areas/private-gallery";
 import { Route, Switch } from "react-router-dom";
 import { routes } from "@pp/api/site/routes";
 import { Videos } from "./areas/videos";
+import { Pricing } from "./areas/pricing";
 
 export const Root = ({ initialState }: { initialState?: any }) => (
     <>
@@ -24,6 +25,7 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     path={routes.home.route}
                     render={() => <Home initialState={initialState[routes.home.route]} />}
                 />
+                <Route exact path={routes.pricing.route} render={() => <Pricing />} />
                 <Route
                     exact
                     path={routes.offers.route}

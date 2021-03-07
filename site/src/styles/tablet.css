@@ -24,6 +24,7 @@
 	.article section,
 	.gallery section,
 	.offers section,
+	.pricing section,
 	.link section,
 	.contact_form section,
 	.gallery_sub section,
@@ -204,7 +205,8 @@
 
 	.link hgroup,
 	.contact_form hgroup,
-	.offers hgroup {
+	.offers hgroup,
+	.pricing hgroup {
 		display: none;
 		width: 1px;
 		height: 1px;
@@ -309,6 +311,7 @@
 	.article section,
 	.gallery section,
 	.offers section,
+	.pricing section,
 	.link section,
 	.contact_form section,
 	.videos section,
@@ -480,7 +483,8 @@
 
 	.link hgroup,
 	.contact_form hgroup,
-	.offers hgroup {
+	.offers hgroup,
+	.pricing hgroup {
 		display: none;
 		width: 1px;
 		height: 1px;

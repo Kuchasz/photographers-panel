@@ -18,7 +18,7 @@ export const Offer = ({ alias, initialState }: OfferProps) => {
     }, []);
 
     return (
-        <div className="sub_sub offer">
+        <div className="sub_sub offer-details">
             <section>
                 <article>
                     <h1>{offer.title}</h1>

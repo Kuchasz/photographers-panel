@@ -234,6 +234,7 @@ a#gallery:hover {
 
 .gallery,
 .offers,
+.pricing,
 .link,
 .videos,
 .contact_form,
@@ -259,6 +260,7 @@ a#gallery:hover {
 .gallery section,
 .videos section,
 .offers section,
+.pricing section,
 .link section,
 .contact_form section,
 .videos section,
@@ -367,12 +369,13 @@ a#gallery:hover {
 
 .link article,
 .contact_form article,
+.pricing article, 
 .offers article {
     width: 530px;
     float: left;
 }
 
-.offers article:nth-of-type(2) {
+.offers article {
     width: 100%;
     float: left;
 }
@@ -393,6 +396,7 @@ a#gallery:hover {
 
 .link hgroup,
 .contact_form hgroup,
+.pricing hgroup, 
 .offers hgroup {
     float: right;
     margin: 40px 0 40px 0;
@@ -433,6 +437,7 @@ a#gallery:hover {
 
 .offer article h1,
 .offers article h1,
+.pricing article h1,
 .article article h1,
 .link article h1,
 .contact_form article h1,
@@ -455,6 +460,7 @@ a#gallery:hover {
 .contact_form article h1,
 .gallery_sub article h1,
 .offers article h1,
+.pricing article h1,
 .blog article h1,
 .sub_sub article h1 {
     margin: 0;
@@ -485,7 +491,8 @@ a#gallery:hover {
 }
 
 .gallery li h1,
-.offers li h1 {
+.offers li h1,
+.pricing li h1 {
     color: #fff;
     font-size: 21px;
     font-weight: normal;
@@ -501,7 +508,8 @@ a#gallery:hover {
 }
 
 .gallery li h3,
-.offers li h3 {
+.offers li h3,
+.pricing li h3 {
     color: #62becc;
     font-size: 12px;
     font-weight: normal;
@@ -510,7 +518,8 @@ a#gallery:hover {
 }
 
 .gallery li h2,
-.offers li h2 {
+.offers li h2,
+.pricing li h2 {
     color: #fff;
     font-size: 13px;
     font-weight: normal;
@@ -550,6 +559,7 @@ a#gallery:hover {
 
 .offer article h2,
 .offers article h2,
+.pricing article h2,
 .article article h2,
 .link article h2,
 .contact_form article h2,
@@ -569,6 +579,7 @@ a#gallery:hover {
 .gallery_sub article h2,
 .blog article h2,
 .offers article,
+.pricing article,
 .sub_sub article h2 {
     margin-top: 15px;
     margin-bottom: 40px;
@@ -580,6 +591,7 @@ a#gallery:hover {
 .gallery_sub article h2,
 .blog article h2,
 .offers article h2,
+.pricing article h2,
 .sub_sub article h2 {
     margin-bottom: 50px;
 }

@@ -170,3 +170,7 @@ export const getOffer = (alias: string) => {
     const result: OfferEntry = { title: offer.title, description: offer.desc, photos };
     return Promise.resolve(result);
 };
+
+export const offerExists = (alias?: string) => {
+    return offers.filter(o => o.alias === alias)[0] !== undefined;
+}

@@ -29,10 +29,10 @@
 
     .offer section,
     .offers section,
+    .pricing section,
     .article section,
     .blog section,
     .gallery section,
-    .offers section,
     .videos section,
     .link section,
     .contact_form section,
@@ -136,6 +136,7 @@
 
     .offer article,
     .offers article,
+    .pricing article,
     .article article,
     .link article,
     .contact_form article,
@@ -213,6 +214,7 @@
 
     .link hgroup,
     .contact_form hgroup,
+    .pricing hgroup,
     .offers hgroup {
         display: none;
         width: 1px;

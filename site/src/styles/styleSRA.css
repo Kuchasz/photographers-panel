@@ -212,6 +212,7 @@ nav #current {
 
 .gallery,
 .offers,
+.pricing,
 .link,
 .contact_form,
 .gallery_sub,
@@ -233,6 +234,7 @@ nav #current {
 .article section,
 .gallery section,
 .offers section,
+.pricing section,
 .link section,
 .videos section,
 .contact_form section,
@@ -245,7 +247,8 @@ nav #current {
 @media only screen and (min-width: 1800px) {
 
 	.gallery section,
-	.offers section {
+	.offers section,
+	.pricing section {
 		width: 1645px;
 		margin: 0 auto;
 	}
@@ -351,7 +354,8 @@ nav #current {
 }
 
 .gallery ul,
-.offers ul {
+.offers ul,
+.pricing ul {
 	width: 100%;
 	margin: 0;
 	padding: 0;
@@ -359,7 +363,8 @@ nav #current {
 }
 
 .gallery li,
-.offers li {
+.offers li,
+.pricing li {
 	width: 305px;
 	list-style-type: none;
 	float: left;
@@ -442,7 +447,8 @@ nav #current {
 }
 
 .gallery li h1,
-.offers li h1 {
+.offers li h1,
+.pricing li h1 {
 	color: #fff;
 	font-size: 21px;
 	font-weight: normal;
@@ -467,7 +473,8 @@ nav #current {
 }
 
 .gallery li h2,
-.offers li h2 {
+.offers li h2,
+.pricing li h2 {
 	color: #fff;
 	font-size: 13px;
 	font-weight: normal;
