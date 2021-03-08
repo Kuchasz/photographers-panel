@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: publish into production
+      - name: publish into staging
         uses: garygrossgarten/github-action-ssh@release
         with:
           host: ${{ secrets.ssh_host }}
@@ -25,7 +25,7 @@ jobs:
             mv public_nodejs/public images_backup
             mv public_nodejs/databases databases_backup
             rm -rf public_nodejs
-            unzip package.zip
+            unzip ../artifacts/package.zip
             mv server public_nodejs
             mv images_backup public_nodejs/public
             mv databases_backup public_nodejs/databases
