@@ -9,5 +9,5 @@ const mapToMenuItem = (v: { route: string; fullPage: boolean }, k: MenuItems): M
     return { route: v.route, fullPage: v.fullPage, label: strings.menu[k] };
 };
 
-console.log(zip(Object.values(routes), Object.keys(routes) as MenuItems[], mapToMenuItem));
+// console.log(zip(Object.values(routes), Object.keys(routes) as MenuItems[], mapToMenuItem));
 export const menuItems = zip(Object.values(routes), Object.keys(routes) as MenuItems[], mapToMenuItem);

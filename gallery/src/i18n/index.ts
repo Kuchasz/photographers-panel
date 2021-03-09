@@ -9,6 +9,6 @@ const browserLanguages = window.navigator.languages;
 const desiredLanguage = browserLanguages.find(l => availableTranslations[l] !== undefined);
 const translation = availableTranslations[desiredLanguage];
 
-console.log(browserLanguages, translation);
+// console.log(browserLanguages, translation);
 
 export const translations = translation || en;

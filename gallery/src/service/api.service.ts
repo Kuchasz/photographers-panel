@@ -12,7 +12,7 @@ export class ApiService {
     constructor() { }
 
     async connect(name: string, galleryId: number) {
-        console.log('connect: ', galleryId);
+        // console.log('connect: ', galleryId);
         this.sdk = getSdk(new GraphQLClient('/api', { headers: { galleryid: galleryId.toString() } }));
         this.galleryId = galleryId;
 

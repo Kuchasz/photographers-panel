@@ -64,7 +64,7 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
         const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(this.props.selectedItem.date), 1);
 
         this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
-            console.log(resp.data);
+            // console.log(resp.data);
             this.setState({
                 isLoading: false,
                 stats: resp.stats,
@@ -85,7 +85,7 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
             }));
 
             this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
-                console.log(resp.data);
+                // console.log(resp.data);
                 this.setState({
                     isLoading: false,
                     stats: resp.stats,
