@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit, NgZone } from "@angular/cor
 import { GalleryService } from "../../index";
 import { Router, NavigationStart, NavigationEnd } from "@angular/router";
 import { first } from "rxjs/operators";
+import { Title } from '@angular/platform-browser';
+import { translations } from '../../i18n';
 
 @Component({
     selector: "app-root",
@@ -10,7 +12,7 @@ import { first } from "rxjs/operators";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
-    constructor(public gallery: GalleryService, private router: Router) {
+    constructor(public gallery: GalleryService, private router: Router, private ts: Title) {
         //for app start on directory/..../fullscreen
         router.events.pipe(first()).subscribe((e) => {
             if (e instanceof NavigationStart) {
@@ -26,11 +28,13 @@ export class AppComponent implements OnInit {
                 }
             }
 
-            if (!(e instanceof NavigationEnd))
-                return;
-            else
+            if (e instanceof NavigationEnd && e.url === "/") {
                 document.querySelector("gallery :first-child").scrollTo(0, 0);
+            }
+
         });
+
+        ts.setTitle(translations.title);
     }
 
     ngOnInit() {

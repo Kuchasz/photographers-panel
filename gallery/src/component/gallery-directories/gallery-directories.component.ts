@@ -29,5 +29,6 @@ export class GalleryDirectoriesComponent {
 
     selectDirectory(directoryId: string) {
         this.router.navigate([`/${directoryId}`]);
+        document.querySelector("gallery :first-child").scrollTo(0, 0);
     }
 }
