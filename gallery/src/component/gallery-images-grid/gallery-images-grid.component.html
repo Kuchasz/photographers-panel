@@ -3,7 +3,7 @@
         <ng-container *ngIf="currentDirectoryId$ | async as directoryId">
             <div *ngFor="let columnImages of columnsImages" class="column">
                 <div *ngFor="let image of columnImages" (click)="enableFullscreenMode(image.id, directoryId)"
-                    [style.flex-basis]="image.height + 'px'" class="image-container">
+                    [style.flex-basis]="image.height/2 + 'px'" class="image-container">
                     <img [src]="image.src" (load)="onImageLoad($event)" loading="lazy" />
                     <div class="background">
                         <ng-container *ngIf="image.liked">

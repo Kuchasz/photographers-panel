@@ -127,7 +127,7 @@ export class GalleryImagesGridComponent implements OnInit {
         // this.router.navigate([`fullscreen`], { relativeTo: this.route });
         // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
-
+    
     public likeImage(imageId: string, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });
