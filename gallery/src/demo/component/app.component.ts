@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, NgZone } from "@angular/core";
 import { GalleryService } from "../../index";
-import { Router, NavigationStart } from "@angular/router";
+import { Router, NavigationStart, NavigationEnd } from "@angular/router";
 import { first } from "rxjs/operators";
 
 @Component({
@@ -25,6 +25,11 @@ export class AppComponent implements OnInit {
                     this.gallery.selectDirectory(e.url.split("/")[2]);
                 }
             }
+
+            if (!(e instanceof NavigationEnd))
+                return;
+            else
+                document.querySelector("gallery :first-child").scrollTo(0, 0);
         });
     }
 
