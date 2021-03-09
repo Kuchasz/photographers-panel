@@ -526,8 +526,8 @@ app.get("*", async (req, res, next) => {
 
         console.log(match);
     } catch (err) {
-        raiseErr(err, req, res);
-        return;
+        console.error(err);
+        return res.redirect("/");
     }
 
     fs.readFile(requireModule("@pp/site/dist/index.html"), "utf8", async (err, template) => {
@@ -551,8 +551,8 @@ app.get("*", async (req, res, next) => {
             };
             siteContent = Root.renderToString(app);
         } catch (err) {
-            raiseErr(err, req, res);
-            return;
+            console.error(err);
+            return res.status(500);
         }
 
         const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "").split(',')[0];
