@@ -49,13 +49,10 @@ export class GalleryStateComponent {
         //     switchMap((directoryId) => this.gallery.getDirectory(directoryId))
         // );
 
-        // this.currentDirectoryId$ = this.route.paramMap.pipe(tap(console.log), map((x) => x.get("id")));
-
         this.currentImage$ = this.gallery.state.pipe(map((x) => x.images.find((i) => i.id === x.currId)));
         this.currentImageIndex$ = this.gallery.state.pipe(map((x) => {
 
             const directoryId = this.directoryId;
-            console.log(directoryId);
 
             if (!directoryId)
                 return 0;
@@ -70,7 +67,6 @@ export class GalleryStateComponent {
         this.numberOfImages$ = this.gallery.state.pipe(map((x) => {
 
             const directoryId = this.directoryId;
-            console.log(directoryId);
 
             if (!directoryId)
                 return 0;
