@@ -1,6 +1,6 @@
 <ng-container *ngIf="gallery.state | async as state">
   <div class="g-container" [style.flexDirection]="thumbDirection" [ngStyle]="gallery.config.style">
-    <gallery-state (onBack)="goBack()" [config]="gallery.config" [state]="state"></gallery-state>
+    <gallery-state (onBack)="goBack()" [config]="gallery.config" [state]="state" [directoryId]="currentDirectoryId$ | async"></gallery-state>
 
     <div class="g-image-box">
 

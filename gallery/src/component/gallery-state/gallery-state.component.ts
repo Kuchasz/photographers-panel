@@ -5,8 +5,8 @@ import { GalleryState, GalleryImage, GalleryDirectory } from "../../service/gall
 import { GalleryConfig } from "../../index";
 import * as screenfull from "screenfull";
 import { Observable } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
-import { map, switchMap, flatMap, find, first } from "rxjs/operators";
+import { Router } from "@angular/router";
+import { map, find, first, tap } from "rxjs/operators";
 import { ApiService } from '../../service/api.service';
 import { translations } from '../../i18n';
 import { DisplayModes } from '../../config/gallery.config';
@@ -20,14 +20,16 @@ import { DisplayModes } from '../../config/gallery.config';
 export class GalleryStateComponent {
     @Input() state: GalleryState;
     @Input() config: GalleryConfig;
+    @Input() directoryId: string;
     @Output() onBack: EventEmitter<void> = new EventEmitter<void>(false);
 
     // currentDirectoryId$: Observable<string>;
     currentImage$: Observable<GalleryImage>;
-    // currentDirectory$: Observable<GalleryDirectory>;
+    currentImageIndex$: Observable<number>;
+    numberOfImages$: Observable<number>;
+    // currentDirectoryId$: Observable<string>;
     translations = translations;
 
-    // currentDirectoryId: string;
     downloadEnabled: boolean;
     fullscreenEnabled: boolean;
 
@@ -47,7 +49,39 @@ export class GalleryStateComponent {
         //     switchMap((directoryId) => this.gallery.getDirectory(directoryId))
         // );
 
+        // this.currentDirectoryId$ = this.route.paramMap.pipe(tap(console.log), map((x) => x.get("id")));
+
         this.currentImage$ = this.gallery.state.pipe(map((x) => x.images.find((i) => i.id === x.currId)));
+        this.currentImageIndex$ = this.gallery.state.pipe(map((x) => {
+
+            const directoryId = this.directoryId;
+            console.log(directoryId);
+
+            if (!directoryId)
+                return 0;
+
+            const directoryImages = x.directoryImages[directoryId];
+            return directoryImages.indexOf(x.currId)+1;
+
+            // const currentDir = x.directories
+            // x.images.indexOf(x.images.find((i) => i.id === x.currId))
+
+        }));
+        this.numberOfImages$ = this.gallery.state.pipe(map((x) => {
+
+            const directoryId = this.directoryId;
+            console.log(directoryId);
+
+            if (!directoryId)
+                return 0;
+
+            const directoryImages = x.directoryImages[directoryId];
+            return directoryImages.length;
+
+            // const currentDir = x.directories
+            // x.images.indexOf(x.images.find((i) => i.id === x.currId))
+
+        }));
         // this.currentDirectoryId$.subscribe((currentDirectoryId) => (this.currentDirectoryId = currentDirectoryId));
     }
 

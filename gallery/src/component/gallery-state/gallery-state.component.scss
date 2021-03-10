@@ -23,6 +23,17 @@
 .gallery-state {
     display: flex;
     font-size: 0.75em;
+    position: relative;
+
+    .images-progress {
+        // display: none;
+        opacity: 0.25;
+        transition: width 0.2s ease-out;
+        position: absolute;
+        height: 5px;
+        background: white;
+        padding: 0px;
+    }
 
     // background: black;
     // &.compact {
@@ -45,7 +56,12 @@
 
         justify-content: space-between;
 
-        .gallery-state {
+        .images-progress {
+            opacity: 1;
+            height: 2px;
+        }
+
+        .g-state-text {
             display: none;
         }
 
