@@ -170,7 +170,7 @@ app.post([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.r
     fs.readFile(requireModule("@pp/gallery/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500);
+            return res.sendStatus(500);
         }
 
         return res.send(
@@ -211,7 +211,7 @@ app.get([`${authPanel.viewLogIn.route}`, `${authPanel.viewLogIn.route}/*`], asyn
     fs.readFile(requireModule("@pp/panel/dist/index.html"), "utf8", (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500);
+            return res.sendStatus(500);
         }
 
         return res.send(
@@ -514,8 +514,14 @@ app.get("*", async (req, res, next) => {
     if (req.url === "/api")
         return next();
 
+    if (req.url.includes("/public")) 
+        return res.sendStatus(404);
+
     let desiredRoute: { route: string };
     let initialState: any;
+
+
+    console.log(req.url);
 
     try {
         const found = Object.values(routes).filter((p) => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
@@ -533,7 +539,7 @@ app.get("*", async (req, res, next) => {
     fs.readFile(requireModule("@pp/site/dist/index.html"), "utf8", async (err, template) => {
         if (err) {
             console.error(err);
-            return res.status(500);
+            return res.sendStatus(500);
         }
 
         let siteContent = "";
@@ -552,7 +558,7 @@ app.get("*", async (req, res, next) => {
             siteContent = Root.renderToString(app);
         } catch (err) {
             console.error(err);
-            return res.status(500);
+            return res.sendStatus(500);
         }
 
         const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "").split(',')[0];
