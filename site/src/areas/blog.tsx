@@ -25,12 +25,11 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                 <section>
                     <article className="show">
                         <h1>
-                            <sup>
-                                <small>{this.state.blog.date}</small>
-                            </sup>
-                            <br />
                             {this.state.blog.title}
                         </h1>
+                        <sup className="publish-date">
+                            <small>{strings.blog.published}{this.state.blog.date}</small>
+                        </sup>
                         <h2>{this.state.blog.content}</h2>
                         <span>
                             {strings.blog.shareMessage}<a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}><img src={facebookIcon} /></a>
@@ -39,7 +38,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                         <br />
                         <div className="photos">
                             {this.state.blog.assets.map(p => (
-                                <img key={p.url} src={p.url} alt={p.alt} loading="lazy"/>
+                                <img key={p.url} src={p.url} alt={p.alt} loading="lazy" />
                             ))}
                         </div>
                     </article>
