@@ -1,20 +1,20 @@
 import * as React from "react";
 import mapImage from "../images/map.png";
-import { getLastBlog, LastBlog } from "@pp/api/site/blog";
+import { getLastBlogs, BlogListItem } from "@pp/api/site/blog";
 import { Link } from "react-router-dom";
 import { routes } from "@pp/api/site/routes";
 import { strings } from "../resources";
 import { truncate } from "@pp/utils/string";
 
-type HomeProps = { initialState?: LastBlog };
-type HomeState = { lastBlog?: LastBlog };
+type HomeProps = { initialState?: BlogListItem[] };
+type HomeState = { lastBlogs?: BlogListItem[] };
 
 export class Home extends React.Component<HomeProps, HomeState> {
-    state = this.props.initialState !== undefined ? { lastBlog: this.props.initialState } : { lastBlog: undefined };
+    state = this.props.initialState !== undefined ? { lastBlogs: this.props.initialState } : { lastBlogs: [] };
 
     componentDidMount() {
-        if (this.state.lastBlog === undefined) {
-            getLastBlog().then(lastBlog => this.setState({ lastBlog }));
+        if (this.state.lastBlogs === undefined) {
+            getLastBlogs().then(lastBlogs => this.setState({ lastBlogs }));
         }
     }
 
@@ -49,7 +49,19 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </hgroup>
                     </section>
                 </div>
-
+                <div className="promo-blogs">
+                    {this.state.lastBlogs.length > 0 ? <>
+                        <div style={{ gridRow: 1, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[2].photoUrl})` }}></div>
+                        <div style={{ gridRow: 2, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[3].photoUrl})` }}></div>
+                        <div style={{ gridRow: 1, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[4].photoUrl})` }}></div>
+                        <div style={{ gridRow: 2, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[5].photoUrl})` }}></div>
+                        <div className="main" style={{ gridRow: "1 / span 2", gridColumn: "3 / span 2", backgroundImage: `url(${this.state.lastBlogs[0].photoUrl})` }}></div>
+                        <div className="main" style={{ gridRow: "1 / span 2", gridColumn: "5 / span 2", backgroundImage: `url(${this.state.lastBlogs[1].photoUrl})` }}></div>
+                        <div style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[6].photoUrl})` }}></div>
+                        <div style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[7].photoUrl})` }}></div>
+                        <div style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[8].photoUrl})` }}></div>
+                        <div style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[9].photoUrl})` }}></div></> : null}
+                </div>
                 <div className="article">
                     <section>
                         <h1 dangerouslySetInnerHTML={{ __html: strings.article.title }}></h1>
@@ -57,10 +69,10 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                         <article>
                             <span>
-                                {this.state.lastBlog !== undefined ? (
-                                    <Link to={`/blog/${this.state.lastBlog.alias}`}>
-                                        <h1>{this.state.lastBlog.title}</h1>
-                                        <h2>{truncate(220, this.state.lastBlog.content)}...</h2>
+                                {this.state.lastBlogs[0] !== undefined ? (
+                                    <Link to={`/blog/${this.state.lastBlogs[0].alias}`}>
+                                        <h1>{this.state.lastBlogs[0].title}</h1>
+                                        <h2>{truncate(220, this.state.lastBlogs[0].content)}...</h2>
                                     </Link>
                                 ) : null}
                             </span>
@@ -88,6 +100,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </div>
                     </section>
                 </div>
+
                 <div className="map">
                     <section>
                         <div className="address-pointer"></div>

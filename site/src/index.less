@@ -16,6 +16,27 @@
     }
 }
 
+.promo-blogs {
+    height: 320px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0px, 1fr)) repeat(4, minmax(100px, 1.5fr)) repeat(2, minmax(0px, 1fr));
+    grid-auto-columns: 50%;
+    background: black;
+
+    div {
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100%;
+        opacity: .25;
+
+        &.main {
+            opacity: 1;
+        }
+    }
+}
+
 .blog {
     article {
         display: flex;

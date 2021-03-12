@@ -21,12 +21,6 @@ export interface BlogListItem {
     content: string;
 }
 
-export interface LastBlog {
-    alias: string;
-    content: string;
-    title: string;
-}
-
 const getBlogRoute = "/api/blog/:alias";
 export const getBlog = (alias: string) =>
     new Promise<Blog>((resolve, _) => {
@@ -45,9 +39,9 @@ export const getBlogsList = () =>
     });
 getBlogsList.route = getBlogsListRoute;
 
-const getLastBlogRoute = "/api/last-blog";
-export const getLastBlog = () =>
-    new Promise<LastBlog>((resolve, _) => {
-        fetch(endpoint + getLastBlogRoute).then(result => result.json().then(resolve));
+const getLastBlogsRoute = "/api/last-blogs";
+export const getLastBlogs = () =>
+    new Promise<BlogListItem[]>((resolve, _) => {
+        fetch(endpoint + getLastBlogsRoute).then(result => result.json().then(resolve));
     });
-getLastBlog.route = getLastBlogRoute;
+getLastBlogs.route = getLastBlogsRoute;

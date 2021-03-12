@@ -97,7 +97,7 @@ app.use("/public", express.static("public", { index: false }));
 
 // site related APIs
 
-app.get(blog.getLastBlog.route, async (_req, res) => {
+app.get(blog.getLastBlogs.route, async (_req, res) => {
     const blog = await blogModel.getMostRecent();
     res.json(blog);
 });

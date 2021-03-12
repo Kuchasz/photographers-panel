@@ -226,8 +226,9 @@ a#gallery:hover {
     width: 100%;
     /* height: 590px; */
     float: left;
-    background: url("../images/article_bg.jpg") center center repeat-x;
-    background-size: cover;
+    /* background: url("../images/article_bg.jpg") center center repeat-x; */
+    /* background-size: cover; */
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(220,220,220,1) 100%);
     color: #035682;
     padding-bottom: 20px;
 }

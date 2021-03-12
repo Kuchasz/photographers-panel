@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 require('dotenv').config({ path: path.resolve("../.env") });
 const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
+const ProfilingPlugin = require("webpack").debug.ProfilingPlugin;
 
 module.exports = {
     entry: path.resolve("./src/index.tsx"),

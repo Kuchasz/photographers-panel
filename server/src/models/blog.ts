@@ -4,10 +4,24 @@ import * as site from "@pp/api/site/blog";
 import * as panel from "@pp/api/panel/blog";
 import { sum } from "@pp/utils/array";
 
-export const getMostRecent = async (): Promise<site.LastBlog> => {
-    const [mostRecent] = await connection("Blog").where({ IsHidden: 0 }).orderBy("Date", "desc").limit(1);
+export const getMostRecent = async (): Promise<site.BlogListItem[]> => {
+    const blogs = await connection("Blog")
+        .leftJoin("BlogAsset", "BlogAsset.Id", "Blog.MainBlogAsset_id")
+        .where({ IsHidden: 0 })
+        .whereNotNull("BlogAsset.Id")
+        .orderBy("Blog.Date", "desc")
+        .select("Blog.Id", "BlogAsset.Url", "Blog.Title", "Blog.Date", "Blog.Alias", "Blog.Content")
+        .limit(10);
 
-    return { alias: mostRecent.Alias, content: mostRecent.Content, title: mostRecent.Title } as site.LastBlog;
+    const blogListItems = blogs.map((b: any) => ({
+        title: b.Title,
+        date: getDateString(new Date(b.Date)),
+        alias: b.Alias,
+        photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`,
+        content: b.Content
+    }));
+
+    return blogListItems;
 }
 
 export const getList = async (): Promise<site.BlogListItem[]> => {
