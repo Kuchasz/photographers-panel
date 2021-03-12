@@ -83,7 +83,7 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
         const { item, onAltChanged, ...props } = this.props;
         return (
             <Popover {...props} title={translations.blog.assignAssets.describeAsset}>
-                <img style={{ maxWidth: "400px", maxHeight: "400px", objectFit: "contain" }} loading="lazy" src={item.url}></img>
+                <img style={{ maxWidth: "600px", maxHeight: "600px", objectFit: "contain" }} loading="lazy" src={item.url}></img>
                 <Form fluid>
                     <FormGroup>
                         <ControlLabel>{translations.blog.assignAssets.description}</ControlLabel>
