@@ -13,10 +13,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
     state = this.props.initialState !== undefined ? { lastBlogs: this.props.initialState } : { lastBlogs: [] };
 
     componentDidMount() {
-        if (this.state.lastBlogs === undefined) {
+        if (this.state.lastBlogs.length === 0) {
             getLastBlogs().then(lastBlogs => this.setState({ lastBlogs }));
         }
     }
+
+    getBlogUrl(index: number) { return `/blog/${this.state.lastBlogs[index].alias}` }
 
     render() {
         return (
@@ -51,16 +53,16 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 </div>
                 <div className="promo-blogs">
                     {this.state.lastBlogs.length > 0 ? <>
-                        <div style={{ gridRow: 1, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[2].photoUrl})` }}></div>
-                        <div style={{ gridRow: 2, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[3].photoUrl})` }}></div>
-                        <div style={{ gridRow: 1, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[4].photoUrl})` }}></div>
-                        <div style={{ gridRow: 2, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[5].photoUrl})` }}></div>
-                        <div className="main" style={{ gridRow: "1 / span 2", gridColumn: "3 / span 2", backgroundImage: `url(${this.state.lastBlogs[0].photoUrl})` }}></div>
-                        <div className="main" style={{ gridRow: "1 / span 2", gridColumn: "5 / span 2", backgroundImage: `url(${this.state.lastBlogs[1].photoUrl})` }}></div>
-                        <div style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[6].photoUrl})` }}></div>
-                        <div style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[7].photoUrl})` }}></div>
-                        <div style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[8].photoUrl})` }}></div>
-                        <div style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[9].photoUrl})` }}></div></> : null}
+                        <Link to={this.getBlogUrl(2)} style={{ gridRow: 1, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[2].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(3)} style={{ gridRow: 2, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[3].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(4)} style={{ gridRow: 1, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[4].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(5)} style={{ gridRow: 2, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[5].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(0)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "3 / span 2", backgroundImage: `url(${this.state.lastBlogs[0].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(1)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "5 / span 2", backgroundImage: `url(${this.state.lastBlogs[1].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(6)} style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[6].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(7)} style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[7].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(8)} style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[8].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(9)} style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[9].photoUrl})` }}></Link></> : null}
                 </div>
                 <div className="article">
                     <section>
@@ -70,7 +72,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         <article>
                             <span>
                                 {this.state.lastBlogs[0] !== undefined ? (
-                                    <Link to={`/blog/${this.state.lastBlogs[0].alias}`}>
+                                    <Link to={this.getBlogUrl(0)}>
                                         <h1>{this.state.lastBlogs[0].title}</h1>
                                         <h2>{truncate(220, this.state.lastBlogs[0].content)}...</h2>
                                     </Link>
