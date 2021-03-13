@@ -19,6 +19,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
 
     getBlogUrl(index: number) { return `/blog/${this.state.lastBlogs[index].alias}` }
+    getBlogTitle(index: number) { return this.state.lastBlogs[index].title }
 
     render() {
         return (
@@ -57,8 +58,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         <Link to={this.getBlogUrl(3)} style={{ gridRow: 2, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[3].photoUrl})` }}></Link>
                         <Link to={this.getBlogUrl(4)} style={{ gridRow: 1, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[4].photoUrl})` }}></Link>
                         <Link to={this.getBlogUrl(5)} style={{ gridRow: 2, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[5].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(0)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "3 / span 2", backgroundImage: `url(${this.state.lastBlogs[0].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(1)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "5 / span 2", backgroundImage: `url(${this.state.lastBlogs[1].photoUrl})` }}></Link>
+                        <Link to={this.getBlogUrl(0)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "3 / span 2", backgroundImage: `url(${this.state.lastBlogs[0].photoUrl})` }}>
+                            <div className="overlay">{this.getBlogTitle(0)}</div>
+                        </Link>
+                        <Link to={this.getBlogUrl(1)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "5 / span 2", backgroundImage: `url(${this.state.lastBlogs[1].photoUrl})` }}>
+                            <div className="overlay">{this.getBlogTitle(1)}</div>
+                        </Link>
                         <Link to={this.getBlogUrl(6)} style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[6].photoUrl})` }}></Link>
                         <Link to={this.getBlogUrl(7)} style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[7].photoUrl})` }}></Link>
                         <Link to={this.getBlogUrl(8)} style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[8].photoUrl})` }}></Link>
