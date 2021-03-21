@@ -20,7 +20,7 @@
     height: 320px;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0px, 1fr)) repeat(4, minmax(100px, 1.5fr)) repeat(2, minmax(0px, 1fr));
+    grid-template-columns: repeat(2, minmax(0px, 1fr)) repeat(4, minmax(80px, 1.5fr)) repeat(2, minmax(0px, 1fr));
     grid-auto-columns: 50%;
     background: black;
 
@@ -134,8 +134,9 @@
     .thumb {
         width: 600px;
         margin: 0px;
-        object-fit: cover;
-        object-position: center;
+        background-size: cover;
+        background-position: center;
+        flex-shrink: 0;
     }
 
     .blog-text {
@@ -160,17 +161,6 @@
 
         .blog-content {
             line-height: 1.5;
-        }
-
-        &:after {
-            display: block;
-            background-image: linear-gradient(rgba(249, 249, 249, 0), #0c3448);
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
-            width: 40%;
-            height: 80px;
-            content: "";
         }
     }
 }
@@ -412,6 +402,39 @@
 
 }
 
+@media only screen and (min-width: 700px) and (max-width: 980px) {
+    .blog section {
+        width: 100%;
+
+        article {
+            width: 100%;
+
+            >a {
+                width: 100%;
+                padding: 28px;
+
+                .thumb {
+                    flex-grow: 1;
+                    flex-basis: 0px;
+                }
+
+                .blog-text {
+                    flex-grow: 1;
+                    flex-basis: 0px;
+                }
+            }
+        }
+    }
+
+    footer {
+        section {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0px 28px;
+        }
+    }
+}
+
 @media only screen and (max-width: 700px) {
     .menu {
         margin-top: 0px;
@@ -439,10 +462,7 @@
 
         .thumb {
             width: 100%;
-        }
-
-        .blog-text:after {
-            width: 100%;
+            min-height: 400px;
         }
 
         .photos {
