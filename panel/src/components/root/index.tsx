@@ -1,5 +1,5 @@
 import * as React from "react";
-// import { Dashboard } from "../dashboard/index";
+import { Dashboard } from "../dashboard/index";
 import { Menu } from "../menu/index";
 import { Galleries } from "../galleries/index";
 import { NavBarInstance } from "../navbar";
@@ -32,7 +32,7 @@ class RootComponent extends React.Component<Props, State> {
                         <Menu />
                     </div>}
                     <div id="content" className={fullPageView ? "full-page" : ""}>
-                        <Route exact path={routes.home} component={Soon} />
+                        <Route exact path={routes.home} component={Dashboard} />
                         <Route exact path={routes.stats} component={SiteStats} />
                         <Route exact path={routes.galleries} component={Galleries} />
                         <Route exact path={routes.emails} component={Soon} />

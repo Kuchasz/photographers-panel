@@ -14,5 +14,6 @@ import { run as run13 } from "./13-add-private-gallery-title";
 import { run as run14 } from "./14-enlarge-blog-asset-url";
 import { run as run15 } from "./15-move-external-urls-to-https";
 import { run as run16 } from "./16-change-blog-aliases-to-lowercase";
+import { run as run17 } from "./17-add-main-blogs";
 
-export const migrations = [run, run2, run3, run4, run5, run6, run7, run8, run9, run10, run11, run12, run13, run14, run15, run16];
+export const migrations = [run, run2, run3, run4, run5, run6, run7, run8, run9, run10, run11, run12, run13, run14, run15, run16, run17];

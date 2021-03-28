@@ -114,6 +114,20 @@ export default {
         url: "Musi byc URLem",
         oneOf: "Musi byc jedna z zdefiniowanych wartosci"
     },
+    dashboard: {
+        mainBlogs: {
+            leftBlog: {
+                hint: "Blog, który będzie pojawiać się po lewej stronie na stronie głównej",
+                label: "Lewy blog"
+            },
+            rightBlog: {
+                hint: "Blog, który będzie pojawiać się po prawej stronie na stronie głównej",
+                label: "Prawy blog"
+            },
+            edited: "Zmieniono główne blogi",
+            notEdited: "Wystąpił błąd podczas zmiany głównych blogów"
+        }
+    },
     menu: {
         home: "Start",
         stats: "Statystyki",
@@ -142,7 +156,7 @@ export default {
             bestDayVisits: "Odwiedziny najlepszego dnia"
         }
     },
-    imagesUploader:{
+    imagesUploader: {
         notUploaded: "Wystapil blad podczas przesylania zdjecia",
         leftImages: "pozostalo",
         noItemsLeft: "Brak transferow w toku"
@@ -178,7 +192,7 @@ export default {
                 notificationsNotSend: "Powiadomienia nie zostaly wyslany",
                 viewEmails: "Zobacz adresy email"
             }
-        },  
+        },
         emailNotifications: {
             notified: "Wyslano powiadomienie.",
             notNotified: "Wystapil blad podczas wysylania powiadomienia.",

@@ -410,6 +410,27 @@ app.get(blogPanel.getBlogVisits.route, verify, async (req, res) => {
     res.json(blogStats);
 });
 
+app.get(blogPanel.getMainBlogs.route, verify, async (req, res) => {
+    const mainBlogs = await blogModel.getMainBlogs();
+    res.json(mainBlogs);
+});
+
+app.post(blogPanel.changeMainBlogs.route, verify, async (req, res) => {
+    let result: blogPanel.ChangeMainBlogsResult | undefined = undefined;
+
+    var mainBlogs: blogPanel.MainBlogsDto = req.body;
+
+    try {
+        await blogModel.changeMainBlogs(mainBlogs);
+
+        result = { type: ResultType.Success };
+    } catch (err) {
+        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingMainBlogs", errorMessage: JSON.stringify(err) };
+    }
+
+    res.json(result);
+});
+
 app.get(privateGalleryPanel.getGalleriesList.route, verify, async (req, res) => {
     const galleries = await privateGalleryModel.getList();
     res.json(galleries);

@@ -114,6 +114,20 @@ export default {
         url: "Must be an URL",
         oneOf: "Must be one of the specifiec values"
     },
+    dashboard: {
+        mainBlogs: {
+            leftBlog: {
+                hint: "Blog that will on the left of the home page",
+                label: "Left blog"
+            },
+            rightBlog: {
+                hint: "Blog that will on the right of the home page",
+                label: "Right blog"
+            },
+            edited: "Main blogs successfully changed",
+            notEdited: "An error occured while changing main blogs"
+        }
+    },
     menu: {
         home: "Home",
         stats: "Statistics",
@@ -142,7 +156,7 @@ export default {
             bestDayVisits: "Best Day Visits"
         }
     },
-    imagesUploader:{
+    imagesUploader: {
         notUploaded: "An issue occured while uploading image",
         leftImages: "left",
         noItemsLeft: "No uploads in progress"

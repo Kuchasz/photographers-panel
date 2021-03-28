@@ -53,6 +53,11 @@ export interface BlogVisitsDto {
     dailyVisits: VisitsSummaryDto[];
 }
 
+export interface MainBlogsDto {
+    leftBlog?: number,
+    rightBlog?: number
+}
+
 export type CreateBlogError = "ErrorOccuredWhileCreatingBlog";
 export type CreateBlogResult = Result<CreateBlogError>;
 
@@ -76,6 +81,9 @@ export type DeleteBlogAssetResult = Result<DeleteBlogAssetError>;
 
 export type ChangeBlogAssetAltError = "ErrorOccuredWhileChangingBlogAssetError";
 export type ChangeBlogAssetAltResult = Result<ChangeBlogAssetAltError>;
+
+export type ChangeMainBlogsError = "ErrorOccuredWhileChangingMainBlogs";
+export type ChangeMainBlogsResult = Result<ChangeMainBlogsError>;
 
 const getBlogSelectListRoute = "/api/panel/blog-select-list";
 export const getBlogSelectList = () =>
@@ -289,3 +297,25 @@ export const getBlogVisits = (
             .replace(":blogId", selectedGallery.toString())
     ).then(resp => resp.json());
 getBlogVisits.route = getBlogVisitsRoute;
+
+const getMainBlogsRoute = "/api/panel/main-blogs";
+export const getMainBlogs = (): Promise<MainBlogsDto> => 
+    fetch(endpoint + getMainBlogsRoute)
+    .then(resp => resp.json());
+getMainBlogs.route = getMainBlogsRoute;
+
+const changeMainBlogsRoute = "/api/panel/change-main-blogs";
+export const changeMainBlogs = (mainBlogs: MainBlogsDto) =>
+new Promise<ChangeMainBlogsResult>((resolve, _) => {
+    fetch(endpoint + changeMainBlogsRoute, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(mainBlogs)
+    })
+        .then((result) => result.json())
+        .then(resolve);
+});
+changeMainBlogs.route = changeMainBlogsRoute;

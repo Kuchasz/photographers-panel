@@ -1,16 +1,76 @@
+import { ResultType } from "@pp/api/common";
+import { BlogSelectItem, changeMainBlogs, getBlogSelectList, getMainBlogs, MainBlogsDto } from "@pp/api/panel/blog";
 import * as React from "react";
-import { Icon, Panel } from "rsuite";
+import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, SelectPicker } from "rsuite";
+import { FormInstance } from "rsuite/lib/Form";
+import { translations } from "../../i18n";
+import { mainBlogsModel } from "./main-blogs-model";
 
-const sections: {icon: any, value: number, label: string}[] = [
-    {icon: 'image', value: 22, label: 'Galleries'},
-    {icon: 'tv', value: 16800, label: 'Visits'},
-    {icon: 'comments', value: 7, label: 'Unread comments'}
-];
+type Props = {};
 
-export class Dashboard extends React.Component {
-    render() {
-        return <>
-            {sections.map(section => <Panel key={section.icon}><Icon icon={section.icon}/>{section.value}</Panel>)}
-        </>
+const emptyMainBlogs = () => ({
+    leftBlog: undefined,
+    rightBlog: undefined
+});
+
+export const Dashboard = (props: Props) => {
+    const [formState, setFormState] = React.useState<MainBlogsDto>(emptyMainBlogs());
+    const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
+    const formRef = React.useRef<FormInstance>();
+
+    React.useEffect(() => {
+        getBlogSelectList().then(setBlogs);
+    }, []);
+
+    React.useEffect(() => {
+        getMainBlogs().then(setFormState);
+    }, []);
+
+    const _changeMainBlogs = (b: MainBlogsDto) => {
+        setFormState(b);
+
+        if (formRef.current) {
+            const formIsValid = formRef.current.check();
+            if (!formIsValid) return;
+                changeMainBlogs(b).then((result) => {
+                if (result.type === ResultType.Success) {
+                    Alert.success(translations.dashboard.mainBlogs.edited);
+                } else {
+                    Alert.error(translations.dashboard.mainBlogs.notEdited);
+                }
+            });
+        }
     }
+
+    return <Form
+        ref={formRef}
+        model={mainBlogsModel}
+        formValue={formState}
+        onChange={_changeMainBlogs}
+    >
+        <FormGroup>
+            <ControlLabel>{translations.dashboard.mainBlogs.leftBlog.label}</ControlLabel>
+            <FormControl
+                name="leftBlog"
+                style={{ width: 300 }}
+                accepter={SelectPicker}
+                placement="topEnd"
+                searchable={true}
+                data={blogs}
+            />
+            <HelpBlock tooltip>{translations.dashboard.mainBlogs.leftBlog.hint}</HelpBlock>
+        </FormGroup>
+        <FormGroup>
+            <ControlLabel>{translations.dashboard.mainBlogs.rightBlog.label}</ControlLabel>
+            <FormControl
+                name="rightBlog"
+                style={{ width: 300 }}
+                accepter={SelectPicker}
+                placement="topEnd"
+                searchable={true}
+                data={blogs}
+            />
+            <HelpBlock tooltip>{translations.dashboard.mainBlogs.rightBlog.hint}</HelpBlock>
+        </FormGroup>
+    </Form>
 }

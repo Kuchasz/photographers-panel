@@ -4,11 +4,18 @@ import * as site from "@pp/api/site/blog";
 import * as panel from "@pp/api/panel/blog";
 import { sum } from "@pp/utils/array";
 
+const getBlogSelectItem = (b) => ({
+    label: `${b.Title} (${getDateString(b.Date)})`,
+    value: Number(b.Id)
+});
+
 export const getMostRecent = async (): Promise<site.BlogListItem[]> => {
     const blogs = await connection("Blog")
+        .leftJoin("MainBlog", "MainBlog.Blog_id", "Blog.Id")
         .leftJoin("BlogAsset", "BlogAsset.Id", "Blog.MainBlogAsset_id")
         .where({ IsHidden: 0 })
         .whereNotNull("BlogAsset.Id")
+        .orderBy("MainBlog.Kind", "asc")
         .orderBy("Blog.Date", "desc")
         .select("Blog.Id", "BlogAsset.Url", "Blog.Title", "Blog.Date", "Blog.Alias", "Blog.Content")
         .limit(10);
@@ -82,10 +89,7 @@ export const getSelectList = async (): Promise<panel.BlogSelectItem[]> => {
         .orderBy("Date", "desc")
         .select("Title", "Date", "Id");
 
-    const blogSelectListItems = blogs.map((b: any) => ({
-        label: `${b.Title} (${getDateString(b.Date)})`,
-        value: Number(b.Id)
-    }));
+    const blogSelectListItems = blogs.map(getBlogSelectItem);
 
     return blogSelectListItems;
 }
@@ -256,6 +260,43 @@ export const getStats = async (blogId: number, startDate: Date, endDate: Date): 
         todayVisits
     };
 };
+
+export const getMainBlogs = async (): Promise<panel.MainBlogsDto> => {
+
+    const blogs = await connection("MainBlog")
+        .join("Blog", "Blog.Id", "MainBlog.Blog_id")
+        .orderBy("Kind", "asc")
+        .select("Blog.Id");
+
+    const [left, right] = blogs;
+
+    return {
+        leftBlog: left != undefined ? Number(left.Id) : undefined,
+        rightBlog: right != undefined ? Number(right.Id) : undefined
+    };
+};
+
+export const changeMainBlogs = async (mainBlogs: panel.MainBlogsDto): Promise<void> => {
+
+    const transaction = await connection.transaction();
+
+    try {
+        await transaction("MainBlog")
+            .update({ Blog_id: mainBlogs.leftBlog !== undefined ? Number(mainBlogs.leftBlog) : undefined })
+            .where({ Kind: 0 });
+
+        await transaction("MainBlog")
+            .update({ Blog_id: mainBlogs.rightBlog !== undefined ? Number(mainBlogs.rightBlog) : undefined })
+            .where({ Kind: 1 });
+
+        await transaction.commit();
+
+    } catch (err) {
+        await transaction.rollback();
+        return Promise.reject(err);
+    }
+};
+
 
 export const getForEdit = async (blogId: number): Promise<panel.BlogEditDto> => {
 
