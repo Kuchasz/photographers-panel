@@ -131,21 +131,21 @@ export default {
     menu: {
         home: "Start",
         stats: "Statystyki",
-        galleries: "galerię",
+        galleries: "Galerie",
         blogs: "Blogi",
         comments: "Komentarze",
         transfers: "Transfery"
     },
     login: {
         button: "Zaloguj",
-        logged: "pomyślnie zalogowano!",
+        logged: "Pomyślnie zalogowano!",
         notLogged: "Wystąpił błąd podczas proby zalogowania.",
         loginLabel: "Nazwa uzytkownika",
         loginTooltip: "Nazwa uzytkownika jest potrzebna zeby sie zalogowac",
         passwordLabel: "Hasło",
         passwordTooltip: "Hasło jest potrzebne zeby sie zalogowac",
         logoutButton: "Wyloguj sie",
-        loggedOut: "pomyślnie wylogowano!"
+        loggedOut: "Pomyślnie wylogowano!"
     },
     site: {
         stats: {
