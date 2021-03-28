@@ -16,8 +16,8 @@ import { BlogSelectItem, getBlogSelectList } from "@pp/api/panel/blog";
 import { GalleryEditDto, editGallery, getGalleryForEdit } from "@pp/api/panel/private-gallery";
 import { ResultType } from "@pp/api/common";
 import { galleryModel } from "./gallery-model";
-import { FormInstance } from "rsuite/lib/Form/index.d.ts";
 import { translations } from "../../i18n";
+import { FormInstance } from "rsuite/lib/Form";
 
 interface Props {
     id: number;
@@ -42,8 +42,10 @@ const states = [
     { label: PrivateGalleryState[PrivateGalleryState.TurnedOff], value: PrivateGalleryState.TurnedOff }
 ];
 
+let initialGalery: GalleryEditDto = emptyGallery();
+
 export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) => {
-    const [formState, setFormState] = React.useState<GalleryEditDto>(emptyGallery());
+    const [formState, setFormState] = React.useState<GalleryEditDto>(initialGalery);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
     const formRef = React.useRef<FormInstance>();
@@ -53,15 +55,30 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
     }, []);
 
     React.useEffect(() => {
-        getGalleryForEdit(id).then(setFormState);
+        getGalleryForEdit(id).then((r) => {
+            initialGalery = r;
+            setFormState(r);
+        });
     }, [id]);
 
     const submitEditGallery = async () => {
         if (formRef.current) {
             const result = await formRef.current.checkAsync();
-            if (result.hasError) return;
+
+            const { formError } = formRef.current.state as any;
+            const { formValue } = formRef.current.props as any;
+            const passwordNotDirty = formValue.password === initialGalery.password;
+            const onlyErrorIsPassword = Object.keys(formError).length === 1 && Object.keys(formError).includes("password");
+            const ignoreErrors = passwordNotDirty && onlyErrorIsPassword;
+
+            if (ignoreErrors === false && result.hasError)
+                return;
+
+            formRef.current.cleanErrors();
+
             setIsLoading(true);
             editGallery(id, formState).then((result) => {
+                setIsLoading(false);
                 if (result.type === ResultType.Success) {
                     Alert.success(translations.gallery.edit.edited);
                     closeEditForm();
@@ -69,7 +86,6 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                 } else {
                     Alert.error(translations.gallery.edit.notEdited);
                 }
-                setIsLoading(false);
             });
         }
     };
