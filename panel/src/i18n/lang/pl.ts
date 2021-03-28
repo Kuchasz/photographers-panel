@@ -1,25 +1,25 @@
 export default {
     blog: {
         assignAssets: {
-            title: "Dodaj zdjecia do bloga",
+            title: "Dodaj zdjęcia do bloga",
             ok: "OK",
-            assetRemoved: "Zdjecie usuniete prawidlowo",
-            assetNotRemoved: "Wystapil blad podczas usuwania zdjecia",
-            description: "Opis zdjecia",
-            describeAsset: "Opisz zdjecie",
-            delete: "Usun zdjecie",
-            isMain: "Zdjecie jest glowne",
-            setAsMain: "Ustaw jako glowne zdjecie"
+            assetRemoved: "Zdjęcie usunięte prawidłowo",
+            assetNotRemoved: "Wystąpił błąd podczas usuwania zdjęcia",
+            description: "Opis zdjęcia",
+            describeAsset: "Opisz zdjęcie",
+            delete: "Usun zdjęcie",
+            isMain: "zdjęcie jest glowne",
+            setAsMain: "Ustaw jako glowne zdjęcie"
         },
         create: {
             button: "Dodaj bloga",
-            created: "Blog dodany pomyslnie",
-            notCreated: "Wystapil blad podczas dodawania bloga",
+            created: "Blog dodany pomyślnie",
+            notCreated: "Wystąpił błąd podczas dodawania bloga",
             title: "Utworz nowego bloga",
             details: {
                 title: {
-                    label: "Tytul",
-                    hint: "Tytul bloga"
+                    label: "Tytuł",
+                    hint: "Tytuł bloga"
                 },
                 alias: {
                     label: "Alias",
@@ -30,12 +30,12 @@ export default {
                     hint: "Data dodania bloga"
                 },
                 content: {
-                    label: "Tresc",
-                    hint: "Tresc bloga"
+                    label: "Treść",
+                    hint: "Treść bloga"
                 },
                 tags: {
                     label: "Tagi",
-                    hint: "Tagi dotyczace bloga"
+                    hint: "Tagi dotyczące bloga"
                 }
             },
             save: "Zapisz",
@@ -43,12 +43,12 @@ export default {
         },
         edit: {
             edited: "Blog zapisany",
-            notEdited: "Wystapil blad podczas edycji bloga",
+            notEdited: "Wystąpił błąd podczas edycji bloga",
             title: "Edytuj bloga",
             details: {
                 title: {
-                    label: "Tytul",
-                    hint: "Tytul bloga"
+                    label: "Tytuł",
+                    hint: "Tytuł bloga"
                 },
                 alias: {
                     label: "Alias",
@@ -59,22 +59,22 @@ export default {
                     hint: "Data dodania bloga"
                 },
                 content: {
-                    label: "Tresc",
-                    hint: "Tresc bloga"
+                    label: "Treść",
+                    hint: "Treść bloga"
                 },
                 tags: {
                     label: "Tagi",
-                    hint: "Tagi dotyczace bloga"
+                    hint: "Tagi dotyczące bloga"
                 }
             },
             save: "Zapisz",
             cancel: "Anuluj"
         },
         delete: {
-            deleted: "Blog zostal usuniety.",
-            notDeleted: "Wystapil blad podczas usuwania bloga.",
+            deleted: "Blog został usunięty.",
+            notDeleted: "Wystąpił błąd podczas usuwania bloga.",
             confirmationHeader: "Usuwanie bloga",
-            confirmationContent: "Jestes pewien ze chcesz usunac bloga?"
+            confirmationContent: "Jesteś pewien ze chcesz usunąć bloga?"
         },
         list: {
             visible: "Widoczny",
@@ -84,35 +84,35 @@ export default {
                 visits: "Odwiedziny",
                 comments: "Komentarze",
                 date: "Data dodania",
-                title: "Tytul",
-                content: "Tresc"
+                title: "Tytuł",
+                content: "Treść"
             },
             actions: {
                 edit: "Edytuj bloga",
                 delete: "Usun bloga",
-                assignAssets: "Dodaj zdjecia"
+                assignAssets: "Dodaj zdjęcia"
             }
         },
         stats: {
             todayVisits: "Dzisiejsze odwiedziny",
             totalVisits: "Wszystkich odwiedzin",
             rangeVisits: "Odwiedziny z zakresu",
-            bestDay: "Najlepszy dzien",
+            bestDay: "Najlepszy dzień",
             bestDayVisits: "Odwiedziny najlepszego dnia"
         }
     },
     validation: {
         required: "Wymagane",
         unique: "Musi byc unikalne",
-        containLowercaseLetter: "Musi zawierac mala litere",
-        containUppercaseLetter: "Musi zawierac duza litere",
-        containNumber: "Musi zawierac cyfre",
-        lowercaseAndNumbers: "Moze zawierac tylko male litery i numery",
-        minLength: (min: number) => `Musi miec conajmniej ${min} znakow`,
-        maxLength: (max: number) => `Moze miec maksymalnie ${max} znakow`,
+        containLowercaseLetter: "Musi zawierać mala litere",
+        containUppercaseLetter: "Musi zawierać duza litere",
+        containNumber: "Musi zawierać cyfre",
+        lowercaseAndNumbers: "Moze zawierać tylko male litery i numery",
+        minLength: (min: number) => `Musi miec conajmniej ${min} znaków`,
+        maxLength: (max: number) => `Moze miec maksymalnie ${max} znaków`,
         pattern: (pattern: string) => `Musi spelniac wzorzec: ${pattern}`,
         url: "Musi byc URLem",
-        oneOf: "Musi byc jedna z zdefiniowanych wartosci"
+        oneOf: "Musi byc jedna z zdefiniowanych wartości"
     },
     dashboard: {
         mainBlogs: {
@@ -131,89 +131,89 @@ export default {
     menu: {
         home: "Start",
         stats: "Statystyki",
-        galleries: "Galerie",
+        galleries: "galerię",
         blogs: "Blogi",
         comments: "Komentarze",
         transfers: "Transfery"
     },
     login: {
         button: "Zaloguj",
-        logged: "Pomyslnie zalogowano!",
-        notLogged: "Wystapil blad podczas proby zalogowania.",
+        logged: "pomyślnie zalogowano!",
+        notLogged: "Wystąpił błąd podczas proby zalogowania.",
         loginLabel: "Nazwa uzytkownika",
         loginTooltip: "Nazwa uzytkownika jest potrzebna zeby sie zalogowac",
-        passwordLabel: "Haslo",
-        passwordTooltip: "Haslo jest potrzebne zeby sie zalogowac",
+        passwordLabel: "Hasło",
+        passwordTooltip: "Hasło jest potrzebne zeby sie zalogowac",
         logoutButton: "Wyloguj sie",
-        loggedOut: "Pomyslnie wylogowano!"
+        loggedOut: "pomyślnie wylogowano!"
     },
     site: {
         stats: {
             todayVisits: "Dzisiejsze odwiedziny",
             totalVisits: "Wszystkich odwiedzin",
             rangeVisits: "Odwiedziny z zakresu",
-            bestDay: "Najlepszy dzien",
+            bestDay: "Najlepszy dzień",
             bestDayVisits: "Odwiedziny najlepszego dnia"
         }
     },
     imagesUploader: {
-        notUploaded: "Wystapil blad podczas przesylania zdjecia",
-        leftImages: "pozostalo",
-        noItemsLeft: "Brak transferow w toku"
+        notUploaded: "Wystąpił błąd podczas przesylania zdjęcia",
+        leftImages: "pozostało",
+        noItemsLeft: "Brak transferów w toku"
     },
     gallery: {
         stats: {
             todayVisits: "Dzisiejsze odwiedziny",
             totalVisits: "Wszystkich odwiedzin",
             rangeVisits: "Odwiedziny z zakresu",
-            bestDay: "Najlepszy dzien",
+            bestDay: "Najlepszy dzień",
             bestDayVisits: "Odwiedziny najlepszego dnia",
             emails: "Adresy email"
         },
         states: {
             state: "Galleria jest",
             available: "dostepna",
-            turnedOff: "wylaczona",
+            turnedOff: "wyłączona",
             notReady: "nie przygotowana"
         },
         list: {
             blogNotAvailable: "Bloga niema",
             blogAvailable: "Blog jest dostepny",
             headers: {
-                title: "Tytul",
+                title: "Tytuł",
                 notes: "Notatki",
                 date: "Data wesela",
-                password: "Haslo",
+                password: "Hasło",
                 totalVisits: "Wszystkich odwiedzin"
             },
             actions: {
-                edit: "Edytuj galerie",
-                delete: "Usun galerie",
-                notificationsNotSend: "Powiadomienia nie zostaly wyslany",
+                edit: "Edytuj galerię",
+                delete: "Usun galerię",
+                notificationsNotSend: "Powiadomienia nie zostały wysłane",
                 viewEmails: "Zobacz adresy email"
             }
         },
         emailNotifications: {
-            notified: "Wyslano powiadomienie.",
-            notNotified: "Wystapil blad podczas wysylania powiadomienia.",
-            title: "Wyslij powiadomienia",
-            send: "Wyslij powiadomienie",
+            notified: "Wysłano powiadomienie.",
+            notNotified: "Wystąpił błąd podczas wysyłania powiadomienia.",
+            title: "Wyślij powiadomienia",
+            send: "Wyślij powiadomienie",
             cancel: "Anuluj",
-            notifyTooltip: "Kliknij aby powiadomic uzytkownikow ze galeria zostala uruchomiona"
+            notifyTooltip: "Kliknij aby powiadomić użytkowników że galeria została uruchomiona"
         },
         create: {
-            created: "Galeria dodana pomyslnie",
-            notCreated: "Wystapil blad podczas dodawania galerii",
-            title: "Utworz nowa galerie",
-            button: "Dodaj galerie",
+            created: "Galeria dodana pomyślnie",
+            notCreated: "Wystąpił błąd podczas dodawania galerii",
+            title: "Utworz nowa galerię",
+            button: "Dodaj galerię",
             details: {
                 date: {
                     label: "Data wesela",
-                    hint: "Data, kiedy odbylo sie wesele"
+                    hint: "Data, kiedy odbyło się wesele"
                 },
                 title: {
-                    label: "Tytul",
-                    hint: "Tytul wyswietlany gosciom galerii"
+                    label: "Tytuł",
+                    hint: "Tytuł wyswietlany gościom galerii"
                 },
                 notes: {
                     label: "Notatki",
@@ -224,12 +224,12 @@ export default {
                     hint: "Stan uruchomienia galerii"
                 },
                 password: {
-                    label: "Haslo",
-                    hint: "Haslo do galerii"
+                    label: "Hasło",
+                    hint: "Hasło do galerii"
                 },
                 directPath: {
                     label: "URL",
-                    hint: "Bezwgledna sciezka do galerii"
+                    hint: "Bezwględna sciezka do galerii"
                 },
                 blog: {
                     label: "Blog",
@@ -240,23 +240,23 @@ export default {
             cancel: "Anuluj"
         },
         delete: {
-            deleted: "Galeria zostala usunieta.",
-            notDeleted: "Wystapil blad podczas usuwania galerii.",
+            deleted: "Galeria została usunięta.",
+            notDeleted: "Wystąpił błąd podczas usuwania galerii.",
             confirmationHeader: "Usuwanie galerii",
-            confirmationContent: "Jestes pewien ze chcesz usunac galerie?"
+            confirmationContent: "Jesteś pewien ze chcesz usunąć galerię?"
         },
         edit: {
             edited: "Galeria zapisana.",
-            notEdited: "Wystapil blad podczas edycji galerii",
-            title: "Edytuj galerie",
+            notEdited: "Wystąpił błąd podczas edycji galerii",
+            title: "Edytuj galerię",
             details: {
                 date: {
                     label: "Data wesela",
-                    hint: "Data, kiedy odbylo sie wesele"
+                    hint: "Data, kiedy odbyło sie wesele"
                 },
                 title: {
-                    label: "Tytul",
-                    hint: "Tytul wyswietlany gosciom galerii"
+                    label: "Tytuł",
+                    hint: "Tytuł wyswietlany gościom galerii"
                 },
                 notes: {
                     label: "Notatki",
@@ -267,8 +267,8 @@ export default {
                     hint: "Stan uruchomienia galerii"
                 },
                 password: {
-                    label: "Haslo",
-                    hint: "Haslo do galerii"
+                    label: "Hasło",
+                    hint: "Hasło do galerii"
                 },
                 directPath: {
                     label: "URL",
@@ -283,4 +283,4 @@ export default {
             cancel: "Anuluj"
         }
     }
-}
+};
