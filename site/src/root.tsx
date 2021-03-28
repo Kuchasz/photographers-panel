@@ -14,9 +14,11 @@ import { Route, Switch } from "react-router-dom";
 import { routes } from "@pp/api/site/routes";
 import { Videos } from "./areas/videos";
 import { Pricing } from "./areas/pricing";
+import { Headers } from "./components/headers";
 
 export const Root = ({ initialState }: { initialState?: any }) => (
     <>
+        <Headers/>
         <Header/>
         <span>
             <Switch>

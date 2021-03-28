@@ -9,6 +9,7 @@ import "./index.less";
 import { BrowserRouter } from "react-router-dom";
 import { StaticRouter, matchPath } from "react-router";
 import { renderToString } from "react-dom/server";
+import { Helmet } from "react-helmet";
 
 if (typeof document !== "undefined") {
     let initialState: any = (window as any).___InitialState___;
@@ -31,5 +32,6 @@ export const All = {
     createElement: React.createElement,
     StaticRouter,
     renderToString,
-    matchPath
+    matchPath,
+    renderStatic: Helmet.renderStatic
 };

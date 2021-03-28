@@ -2,6 +2,7 @@ import * as React from "react";
 import * as api from "@pp/api/site/blog";
 import facebookIcon from "../images/facebook.svg";
 import { strings } from "../resources";
+import { Headers } from "../components/headers";
 
 type BlogProps = { initialState?: api.Blog; alias: string };
 type BlogState = { blog?: api.Blog };
@@ -22,6 +23,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
 
         return (
             <div className="blog">
+                <Headers title={`${this.state.blog.title} (blog)`}/>
                 <section>
                     <article className="show">
                         <h1>

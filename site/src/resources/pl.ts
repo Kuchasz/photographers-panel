@@ -54,12 +54,26 @@ export const pl = {
     menu: {
         home: "Strona główna",
         pricing: "Cennik",
+        offers: "Oferta",
         offer: "Oferta",
         contact: "Kontakt",
         links: "Polecamy",
         videos: "Film",
+        blogs: "Blog",
         blog: "Blog",
         private: "Galeria z wesela"
+    },
+    pageTitles: {
+        home: "Fotografia, zdjęcia ślubne Andrychów, Bielsko, Wadowice, Kęty",
+        pricing: "Cennik usług, kalkulator ceny",
+        offers: "Oferta, oferowane przez nas usługi",
+        offer: "Oferta, oferowane przez nas usługi",
+        contact: "Formularz kontaktowy",
+        links: "Polecamy inne firmy z branży",
+        videos: "Filmy, nasze realizacje filmowe",
+        blogs: "Blog, najnowsze zrealizowane przez nas zdjęcia",
+        blog: "Blog, najnowsze zrealizowane przez nas zdjęcia",
+        private: "Strefa klienta, galeria zdjęć z wesela"
     },
     link: {
         title: "Zostań naszym partnerem!",

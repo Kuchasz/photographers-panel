@@ -565,6 +565,7 @@ app.get("*", async (req, res, next) => {
 
         let siteContent = "";
         const context = {};
+        let helmet: any = {};
 
         const app = Root.createElement(
             Root.StaticRouter,
@@ -577,6 +578,8 @@ app.get("*", async (req, res, next) => {
                 location: req.protocol + '://' + req.get('host') + req.originalUrl
             };
             siteContent = Root.renderToString(app);
+            helmet = Root.renderStatic();
+
         } catch (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -585,6 +588,26 @@ app.get("*", async (req, res, next) => {
         const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "").split(',')[0];
 
         await siteModel.registerVisit(new Date(), address);
+
+        return res.send(`
+            <!DOCTYPE html>
+            <html lang="pl">
+                <head>
+                    ${helmet.title.toString()}
+                    ${helmet.meta.toString()}
+                    <meta charset="UTF-8" />
+                    <meta property="og:locale" content="pl_PL">
+                    <meta property="og:site_name" content="PyszStudio">
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    <link rel="shortcut icon" href="/favicon.ico" />
+                    <link href="/main.css" rel="stylesheet" />
+                    <script type="text/javascript">window.___InitialState___=${JSON.stringify({[desiredRoute.route]: initialState})}</script>
+                </head>
+                <body>
+                    <div id="root">${siteContent}</div>
+                    <script type="text/javascript" src="/bundle.js"></script>
+                </body>
+            </html>`);
 
         return res.send(
             template.replace('<div id="root"></div>', `<div id="root">${siteContent}</div>`).replace(
