@@ -18,6 +18,7 @@ export interface BlogListItem {
     date: string;
     alias: string;
     photoUrl: string;
+    photoAlt: string;
     content: string;
 }
 

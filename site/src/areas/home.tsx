@@ -54,20 +54,31 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 </div>
                 <div className="promo-blogs">
                     {this.state.lastBlogs.length > 0 ? <>
-                        <Link to={this.getBlogUrl(2)} style={{ gridRow: 1, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[2].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(3)} style={{ gridRow: 2, gridColumn: 1, backgroundImage: `url(${this.state.lastBlogs[3].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(4)} style={{ gridRow: 1, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[4].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(5)} style={{ gridRow: 2, gridColumn: 2, backgroundImage: `url(${this.state.lastBlogs[5].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(0)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "3 / span 2", backgroundImage: `url(${this.state.lastBlogs[0].photoUrl})` }}>
+                        <Link to={this.getBlogUrl(2)} style={{ gridRow: 1, gridColumn: 1 }}>
+                            <img src={this.state.lastBlogs[2].photoUrl} alt={this.state.lastBlogs[2].photoAlt}></img>
+                        </Link>
+                        <Link to={this.getBlogUrl(3)} style={{ gridRow: 2, gridColumn: 1 }}>
+                            <img src={this.state.lastBlogs[3].photoUrl} alt={this.state.lastBlogs[3].photoAlt}></img></Link>
+                        <Link to={this.getBlogUrl(4)} style={{ gridRow: 1, gridColumn: 2 }}>
+                            <img src={this.state.lastBlogs[4].photoUrl} alt={this.state.lastBlogs[4].photoAlt}></img></Link>
+                        <Link to={this.getBlogUrl(5)} style={{ gridRow: 2, gridColumn: 2 }}>
+                            <img src={this.state.lastBlogs[5].photoUrl} alt={this.state.lastBlogs[5].photoAlt}></img></Link>
+                        <Link to={this.getBlogUrl(0)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "3 / span 2" }}>
                             <div className="overlay">{this.getBlogTitle(0)}</div>
+                            <img src={this.state.lastBlogs[0].photoUrl} alt={this.state.lastBlogs[0].photoAlt}></img>
                         </Link>
-                        <Link to={this.getBlogUrl(1)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "5 / span 2", backgroundImage: `url(${this.state.lastBlogs[1].photoUrl})` }}>
+                        <Link to={this.getBlogUrl(1)} className="main" style={{ gridRow: "1 / span 2", gridColumn: "5 / span 2" }}>
                             <div className="overlay">{this.getBlogTitle(1)}</div>
+                            <img src={this.state.lastBlogs[1].photoUrl} alt={this.state.lastBlogs[1].photoAlt}></img>
                         </Link>
-                        <Link to={this.getBlogUrl(6)} style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[6].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(7)} style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[7].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(8)} style={{ gridRow: 1, backgroundImage: `url(${this.state.lastBlogs[8].photoUrl})` }}></Link>
-                        <Link to={this.getBlogUrl(9)} style={{ gridRow: 2, backgroundImage: `url(${this.state.lastBlogs[9].photoUrl})` }}></Link></> : null}
+                        <Link to={this.getBlogUrl(6)} style={{ gridRow: 1 }}>
+                            <img src={this.state.lastBlogs[6].photoUrl} alt={this.state.lastBlogs[6].photoAlt}></img></Link>
+                        <Link to={this.getBlogUrl(7)} style={{ gridRow: 2 }}>
+                            <img src={this.state.lastBlogs[7].photoUrl} alt={this.state.lastBlogs[7].photoAlt}></img></Link>
+                        <Link to={this.getBlogUrl(8)} style={{ gridRow: 1 }}>
+                            <img src={this.state.lastBlogs[8].photoUrl} alt={this.state.lastBlogs[8].photoAlt}></img></Link>
+                        <Link to={this.getBlogUrl(9)} style={{ gridRow: 2 }}>
+                            <img src={this.state.lastBlogs[9].photoUrl} alt={this.state.lastBlogs[9].photoAlt}></img></Link></> : null}
                 </div>
                 <div className="article">
                     <section>

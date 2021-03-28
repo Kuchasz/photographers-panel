@@ -17,7 +17,7 @@ export const getMostRecent = async (): Promise<site.BlogListItem[]> => {
         .whereNotNull("BlogAsset.Id")
         .orderBy("MainBlog.Kind", "asc")
         .orderBy("Blog.Date", "desc")
-        .select("Blog.Id", "BlogAsset.Url", "Blog.Title", "Blog.Date", "Blog.Alias", "Blog.Content")
+        .select("Blog.Id", "BlogAsset.Url", "BlogAsset.Alt", "Blog.Title", "Blog.Date", "Blog.Alias", "Blog.Content")
         .limit(10);
 
     const blogListItems = blogs.map((b: any) => ({
@@ -25,6 +25,7 @@ export const getMostRecent = async (): Promise<site.BlogListItem[]> => {
         date: getDateString(new Date(b.Date)),
         alias: b.Alias,
         photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`,
+        photoAlt: b.Alt,
         content: b.Content
     }));
 
@@ -37,13 +38,14 @@ export const getList = async (): Promise<site.BlogListItem[]> => {
         .where({ IsHidden: 0 })
         .whereNotNull("BlogAsset.Id")
         .orderBy("Blog.Date", "desc")
-        .select("Blog.Id", "BlogAsset.Url", "Blog.Title", "Blog.Date", "Blog.Alias", "Blog.Content");
+        .select("Blog.Id", "BlogAsset.Url", "BlogAsset.Alt", "Blog.Title", "Blog.Date", "Blog.Alias", "Blog.Content");
 
     const blogListItems = blogs.map((b: any) => ({
         title: b.Title,
         date: getDateString(new Date(b.Date)),
         alias: b.Alias,
         photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`,
+        photoAlt: b.Alt,
         content: b.Content
     }));
 

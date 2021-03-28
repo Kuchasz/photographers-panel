@@ -26,12 +26,11 @@
 
     a {
         display: block;
-        background-size: cover;
-        background-position: center;
         width: 100%;
         height: 100%;
         opacity: .25;
         transition: opacity 0.5s linear;
+        position: relative;
         cursor: pointer;
 
         &:hover {
@@ -43,8 +42,9 @@
         }
 
         .overlay {
-            transition: background-color 0.5s linear;
-            background-color: #00000088;
+            position: absolute;
+            transition: opacity 0.5s linear;
+            background-color: #000000DD;
             width: 100%;
             height: 100%;
             display: flex;
@@ -52,10 +52,20 @@
             align-items: center;
             color: white;
             font-size: x-large;
+            z-index: 1;
 
             &:hover {
-                background-color: #000000DD;
+                opacity: 0;
             }
+        }
+
+        img {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
         }
     }
 }
