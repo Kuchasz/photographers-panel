@@ -47,7 +47,7 @@ export const get = async (alias: string): Promise<site.Blog> => {
 
     const blogWithAssets = await connection("Blog")
         .join("BlogAsset", "BlogAsset.Blog_id", "Blog.Id")
-        .where({ Alias: alias })
+        .where({ Alias: alias.toLowerCase() })
         .orderBy("BlogAsset.Id", "asc")
         .select("Blog.Id", "Blog.Title", "Blog.Date", "Blog.Content", "BlogAsset.Url", "BlogAsset.Alt");
 
