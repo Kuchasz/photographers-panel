@@ -126,27 +126,26 @@
     }
 
     article>a {
-        height: 300px;
+        max-height: 300px;
         width: 960px;
         display: flex;
         flex-direction: row;
         margin: 28px 0px;
         overflow: hidden;
         position: relative;
-
-        &:hover {
-            .blog-title {
-                // background-color: rgba(0, 0, 0, 0.25);
-            }
-        }
     }
 
     .thumb {
         width: 600px;
         margin: 0px;
-        background-size: cover;
-        background-position: center;
         flex-shrink: 0;
+
+        img {
+            width: 100%;
+            object-fit: contain;
+            object-position: top;
+            margin: 0px;
+        }
     }
 
     .blog-text {
@@ -465,14 +464,14 @@
     .blog {
 
         article>a {
-            height: auto;
+            max-height: unset;
             width: 100%;
             flex-direction: column;
         }
 
         .thumb {
             width: 100%;
-            min-height: 400px;
+            max-height: 400px;
         }
 
         .photos {
