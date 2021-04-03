@@ -10,3 +10,15 @@ export type Result<T, U = null> = Success<U> | Error<T>;
 
 export let endpoint = "";
 export const setEndpoint = (appPath: string) => endpoint = appPath;
+
+export const f = {
+    post: <T>(url: string, body: any) =>
+        fetch(endpoint + url, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json" },
+            body: JSON.stringify(body)})
+        .then((result) => result.json() as Promise<T>),
+    get: <T>(url: string) => fetch(endpoint + url).then(resp => resp.json() as Promise<T>)
+}

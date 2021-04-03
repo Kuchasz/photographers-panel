@@ -1,4 +1,4 @@
-import { endpoint } from "../common";
+import { f } from "../common";
 
 export interface Blog {
     id: number;
@@ -24,25 +24,15 @@ export interface BlogListItem {
 
 const getBlogRoute = "/api/blog/:alias";
 export const getBlog = (alias: string) =>
-    new Promise<Blog>((resolve, _) => {
-        fetch(endpoint + getBlogRoute.replace(":alias", alias))
-            .then(result => result.json())
-            .then(resolve);
-    });
+    f.get<Blog>(getBlogRoute.replace(":alias", alias));
 getBlog.route = getBlogRoute;
 
 const getBlogsListRoute = "/api/blogs-list";
 export const getBlogsList = () =>
-    new Promise<BlogListItem[]>((resolve, _) => {
-        fetch(endpoint + getBlogsListRoute)
-            .then(result => result.json())
-            .then(resolve);
-    });
+    f.get<BlogListItem[]>(getBlogsListRoute);
 getBlogsList.route = getBlogsListRoute;
 
 const getLastBlogsRoute = "/api/last-blogs";
 export const getLastBlogs = () =>
-    new Promise<BlogListItem[]>((resolve, _) => {
-        fetch(endpoint + getLastBlogsRoute).then(result => result.json().then(resolve));
-    });
+    f.get<BlogListItem[]>(getLastBlogsRoute);
 getLastBlogs.route = getLastBlogsRoute;

@@ -1,5 +1,5 @@
 import { getDateString } from "@pp/utils/date";
-import { endpoint } from "../common";
+import { f } from "../common";
 import { VisitsSummaryDto } from "./visits";
 
 export interface SiteVisitsDto {
@@ -12,14 +12,8 @@ export interface SiteVisitsDto {
 }
 
 const getSiteVisitsRoute = "/api/panel/site-stats/:start/:end";
-export const getSiteVisits = (
-    startDate: Date,
-    endDate: Date
-): Promise<SiteVisitsDto> =>
-    fetch(
-        endpoint +
-        getSiteVisitsRoute
-            .replace(":start", getDateString(startDate))
-            .replace(":end", getDateString(endDate))
-    ).then(resp => resp.json());
+export const getSiteVisits = (startDate: Date, endDate: Date) =>
+    f.get<SiteVisitsDto>(getSiteVisitsRoute
+        .replace(":start", getDateString(startDate))
+        .replace(":end", getDateString(endDate)));
 getSiteVisits.route = getSiteVisitsRoute;
