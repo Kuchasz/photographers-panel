@@ -529,10 +529,11 @@ app.post(privateGalleryPanel.deleteGallery.route, verify, async (req, res) => {
 
 app.get("/sitemap.txt", async (req, res) => {
     const blogAliases = await blogModel.getAliases();
+    const protocol = req.secure ? "https" : "http";
 
-    const blogsUrls = blogAliases.map(alias => `${req.protocol}://${req.headers.host}/blog/${alias}`);
-    const offersUrls = (await offer.getOffersAliases()).map(alias => `${req.protocol}://${req.headers.host}/oferta/${alias}`);
-    const routesUrls = Object.values(routes).filter(x => !x.route.includes(":")).map(r => `${req.protocol}://${req.headers.host}${r.route}`);
+    const blogsUrls = blogAliases.map(alias => `${protocol}://${req.headers.host}/blog/${alias}`);
+    const offersUrls = (await offer.getOffersAliases()).map(alias => `${protocol}://${req.headers.host}/oferta/${alias}`);
+    const routesUrls = Object.values(routes).filter(x => !x.route.includes(":")).map(r => `${protocol}://${req.headers.host}${r.route}`);
 
     const urls = blogsUrls.concat(routesUrls).concat(offersUrls);
 
@@ -541,7 +542,8 @@ app.get("/sitemap.txt", async (req, res) => {
 });
 
 app.get("/robots.txt", function (req, res) {
-    const sitemapUrl = `${req.protocol}://${req.headers.host}/sitemap.txt`;
+    const protocol = req.secure ? "https" : "http";
+    const sitemapUrl = `${protocol}://${req.headers.host}/sitemap.txt`;
     res.type("text/plain");
     res.send(`user-agent: *\nallow: /\n\nsitemap: ${sitemapUrl}`);
 });
@@ -550,7 +552,7 @@ app.get("*", async (req, res, next) => {
     if (req.url === "/api")
         return next();
 
-    if (req.url.includes("/public")) 
+    if (req.url.includes("/public"))
         return res.sendStatus(404);
 
     let desiredRoute: { route: string };
@@ -616,7 +618,7 @@ app.get("*", async (req, res, next) => {
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <link rel="shortcut icon" href="/favicon.ico" />
                     <link href="/main.css" rel="stylesheet" />
-                    <script type="text/javascript">window.___InitialState___=${JSON.stringify({[desiredRoute.route]: initialState})}</script>
+                    <script type="text/javascript">window.___InitialState___=${JSON.stringify({ [desiredRoute.route]: initialState })}</script>
                 </head>
                 <body>
                     <div id="root">${siteContent}</div>
