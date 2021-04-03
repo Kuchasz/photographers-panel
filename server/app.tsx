@@ -529,7 +529,7 @@ app.post(privateGalleryPanel.deleteGallery.route, verify, async (req, res) => {
 
 app.get("/sitemap.txt", async (req, res) => {
     const blogAliases = await blogModel.getAliases();
-    const protocol = req.headers['x-forwarded-proto'];
+    const protocol = getProtocol(req);
 
     const blogsUrls = blogAliases.map(alias => `${protocol}://${req.headers.host}/blog/${alias}`);
     const offersUrls = (await offer.getOffersAliases()).map(alias => `${protocol}://${req.headers.host}/oferta/${alias}`);
@@ -541,8 +541,15 @@ app.get("/sitemap.txt", async (req, res) => {
     res.send(urls.join("\r\n"));
 });
 
+function getProtocol (req) {
+    var proto = req.connection.encrypted ? 'https' : 'http';
+    // only do this if you trust the proxy
+    proto = req.headers['x-forwarded-proto'] || proto;
+    return proto.split(/\s*,\s*/)[0];
+}
+
 app.get("/robots.txt", function (req, res) {
-    const protocol = req.headers['x-forwarded-proto'];
+    const protocol = getProtocol(req);
     const sitemapUrl = `${protocol}://${req.headers.host}/sitemap.txt`;
     res.type("text/plain");
     res.send(`user-agent: *\nallow: /\n\nsitemap: ${sitemapUrl}`);
