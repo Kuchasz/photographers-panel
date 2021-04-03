@@ -20,6 +20,7 @@ import fs from "fs";
 import { routes } from "@pp/api/site/routes";
 import * as message from "@pp/api/site/message";
 import * as privateGallery from "@pp/api/site/private-gallery";
+import * as offer from "@pp/api/site/offer";
 import * as privateGalleryPanel from "@pp/api/panel/private-gallery";
 import * as authPanel from "@pp/api/panel/auth";
 import { ResultType, setEndpoint } from "@pp/api/common";
@@ -526,9 +527,23 @@ app.post(privateGalleryPanel.deleteGallery.route, verify, async (req, res) => {
     res.json(result);
 });
 
-app.get("/robots.txt", function (req, res) {
+app.get("/sitemap.txt", async (req, res) => {
+    const blogAliases = await blogModel.getAliases();
+
+    const blogsUrls = blogAliases.map(alias => `${req.protocol}://${req.headers.host}/blog/${alias}`);
+    const offersUrls = (await offer.getOffersAliases()).map(alias => `${req.protocol}://${req.headers.host}/oferta/${alias}`);
+    const routesUrls = Object.values(routes).filter(x => !x.route.includes(":")).map(r => `${req.protocol}://${req.headers.host}${r.route}`);
+
+    const urls = blogsUrls.concat(routesUrls).concat(offersUrls);
+
     res.type("text/plain");
-    res.send("User-agent: *\nAllow: /");
+    res.send(urls.join("\r\n"));
+});
+
+app.get("/robots.txt", function (req, res) {
+    const sitemapUrl = `${req.protocol}://${req.headers.host}/sitemap.txt`;
+    res.type("text/plain");
+    res.send(`user-agent: *\nallow: /\n\nsitemap: ${sitemapUrl}`);
 });
 
 app.get("*", async (req, res, next) => {
@@ -608,25 +623,12 @@ app.get("*", async (req, res, next) => {
                     <script type="text/javascript" src="/bundle.js"></script>
                 </body>
             </html>`);
-
-        return res.send(
-            template.replace('<div id="root"></div>', `<div id="root">${siteContent}</div>`).replace(
-                "{initial_state}",
-                `<script type="text/javascript">window.___InitialState___=${JSON.stringify({
-                    [desiredRoute.route]: initialState
-                })}</script>`
-            )
-        );
     });
 });
 
-
 const runApp = async () => {
-
-    await runPhotoGalleryServer(app, resolve(__dirname + "/databases"));
-
     await runMigrations();
-
+    await runPhotoGalleryServer(app, resolve(__dirname + "/databases"));
     app.listen(8080, () => {
         console.log("Application started...");
     });

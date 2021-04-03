@@ -161,6 +161,9 @@ export const getOffersList = () =>
         )
     );
 
+export const getOffersAliases = () =>
+    Promise.resolve(offers.map(o => o.alias));
+
 export const getOffer = (alias: string) => {
     const offer = offers.filter(o => o.alias === alias)[0];
     const photos = offerPhotos

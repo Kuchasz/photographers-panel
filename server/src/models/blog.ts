@@ -427,6 +427,15 @@ export const changeBlogAssetAlt = async (id: number, alt: string): Promise<void>
     }
 }
 
+export const getAliases = async (): Promise<string[]> => {
+    const blogAliases = await connection("Blog")
+        .leftJoin("BlogAsset", "BlogAsset.Id", "Blog.MainBlogAsset_id")
+        .whereNotNull("BlogAsset.Id")
+        .select("Blog.Alias");
+
+    return blogAliases.map(x => x.Alias) as string[];
+}
+
 export const getAssetsPath = (blogId: number) => `public/blogs/${blogId}`;
 export const getAssetId = (blogTags: string) => `${blogTags}-${100000000 + Math.floor(Math.random() * 999999990)}.webp`;
 export const getAssetPath = (assetsPath: string, assetId: string) => `${assetsPath}/${assetId}`;
