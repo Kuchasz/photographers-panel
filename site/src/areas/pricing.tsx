@@ -87,12 +87,7 @@ const getOfferUrl = (alias: string) => routes.offer.route.replace(":alias", alia
 
 export const Pricing = () => {
     const tracker = getTracker();
-    const registerCalculatorSettingsChange = () => tracker.trackEvent({
-        category: 'Site',
-        action: 'Change Settings',
-        name: 'Calculator', // optional
-        // value: 123, // optional, numerical value
-    });
+
 
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
     const [selectedTariffs, changeTariffs] = React.useReducer(updateTariffs, [
@@ -102,6 +97,13 @@ export const Pricing = () => {
     ]);
 
     const price = calculatePrice(selectedTariffs, selectedYear);
+
+    const registerCalculatorSettingsChange = () => tracker.trackEvent({
+        category: 'Site',
+        action: 'Change Settings',
+        name: 'Calculator', // optional
+        value: price.finalPrice, // optional, numerical value
+    });
 
     return (
         <div className="pricing">

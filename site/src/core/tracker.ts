@@ -4,6 +4,10 @@ import { get } from '../config';
 let _tracker: MatomoTracker;
 
 export const getTracker = () => {
+
+    if (document === undefined)
+        return { trackEvent: () => { } };
+
     const config = get();
 
     if (!_tracker)
