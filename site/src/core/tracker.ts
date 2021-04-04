@@ -1,7 +1,8 @@
-import MatomoTracker from '@datapunt/matomo-tracker-js'
+
+const MatomoTracker = (document !== undefined) ? require('@datapunt/matomo-tracker-js') : undefined;
 import { get } from '../config';
 
-let _tracker: MatomoTracker;
+let _tracker: any;
 
 export const getTracker = () => {
 
