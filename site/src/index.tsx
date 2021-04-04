@@ -10,6 +10,7 @@ import { BrowserRouter } from "react-router-dom";
 import { StaticRouter, matchPath } from "react-router";
 import { renderToString } from "react-dom/server";
 import { Helmet } from "react-helmet";
+import { tracker } from "./core/tracker";
 
 if (typeof document !== "undefined") {
     let initialState: any = (window as any).___InitialState___;
@@ -35,3 +36,5 @@ export const All = {
     matchPath,
     renderStatic: Helmet.renderStatic
 };
+
+console.log(tracker);

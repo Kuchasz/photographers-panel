@@ -1047,6 +1047,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@datapunt/matomo-tracker-js@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@datapunt/matomo-tracker-js/-/matomo-tracker-js-0.4.0.tgz#0b5012e1de5d302f4ba169ae94904155e526266e"
+  integrity sha512-jOLKZCyPc1y8ZntTTW0vnHAbU1jQHA5Ibdyb7G9jt+KWvGDR2wotX4ki2/x7SMD+IfOrfKDJ9pXzVo29dPIjAg==
+
 "@mdi/font@^5.8.55":
   version "5.8.55"
   resolved "https://registry.yarnpkg.com/@mdi/font/-/font-5.8.55.tgz#1464155bcbc8a6e4af6dffd611fe8e38e09af285"
@@ -1494,7 +1499,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-helmet@^6.1.0":
+"@types/react-helmet@6.1.0":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-6.1.0.tgz#af586ed685f4905e2adc7462d1d65ace52beee7a"
   integrity sha512-PYRoU1XJFOzQ3BHvWL1T8iDNbRjdMDJMT5hFmZKGbsq09kbSqJy61uwEpTrbTNWDopVphUT34zUSVLK9pjsgYQ==
