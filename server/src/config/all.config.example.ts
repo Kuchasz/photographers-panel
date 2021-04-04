@@ -28,7 +28,12 @@ export const auth = {
     maxAge: 0 //session max age in seconds
 };
 
-export const app ={
+export const app = {
     appPath: "http://APP_ROOT_PATH.com",
     reviewUrl: "https://g.page/your-site/review"
+}
+
+export const stats = {
+    siteId: 0, //siteid in piwik/matomo
+    urlBase: 'https://PIWIK_MATOMO.com'
 }

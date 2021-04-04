@@ -10,11 +10,18 @@ import { BrowserRouter } from "react-router-dom";
 import { StaticRouter, matchPath } from "react-router";
 import { renderToString } from "react-dom/server";
 import { Helmet } from "react-helmet";
-import { tracker } from "./core/tracker";
+import { initialize } from "./config";
 
 if (typeof document !== "undefined") {
     let initialState: any = (window as any).___InitialState___;
     delete (window as any).___InitialState___;
+
+    let serverConfig: any = (window as any).___ServerConfig___;
+    initialize(serverConfig);
+
+    console.log((window as any).___ServerConfig___);
+
+    delete (window as any).___ServerConfig___;
 
     hydrate(
         <BrowserRouter>
@@ -36,5 +43,3 @@ export const All = {
     matchPath,
     renderStatic: Helmet.renderStatic
 };
-
-console.log(tracker);

@@ -32,3 +32,8 @@ export const app = {
     appPath: process.env.APP_APP_PATH,
     reviewUrl: process.env.APP_REVIEW_URL
 }
+
+export const stats = {
+    siteId: process.env.STATS_SITE_ID,
+    urlBase: process.env.STATS_URL_BASE
+}

@@ -5,6 +5,9 @@ import linkPhoto from "../images/page_offer_photo.png";
 import { offerExists } from "@pp/api/site/offer";
 import { Link } from "react-router-dom";
 import { routes } from "@pp/api/site/routes";
+import { getTracker } from "../core/tracker";
+
+
 
 type TariffYears = 2021 | 2022 | 2023;
 type TariffPositions = "WeddingPhotography" | "WeddingVideo" | "DvdPackage" | "Afters" | "WeddingSession";
@@ -83,6 +86,14 @@ const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
 const getOfferUrl = (alias: string) => routes.offer.route.replace(":alias", alias);
 
 export const Pricing = () => {
+    const tracker = getTracker();
+    const registerCalculatorSettingsChange = () => tracker.trackEvent({
+        category: 'Site',
+        action: 'Change Settings',
+        name: 'Calculator', // optional
+        // value: 123, // optional, numerical value
+    });
+
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
     const [selectedTariffs, changeTariffs] = React.useReducer(updateTariffs, [
         "WeddingPhotography",
@@ -104,7 +115,7 @@ export const Pricing = () => {
                                 <a
                                     key={t}
                                     className={t === selectedYear ? "current" : ""}
-                                    onClick={() => selectYear(t)}
+                                    onClick={() => { registerCalculatorSettingsChange(); selectYear(t) }}
                                 >
                                     {t}
                                 </a>
@@ -117,11 +128,13 @@ export const Pricing = () => {
                                         <input
                                             type="checkbox"
                                             checked={selectedTariffs.includes(t.type)}
-                                            onChange={e =>
+                                            onChange={e => {
+                                                registerCalculatorSettingsChange();
                                                 changeTariffs({
                                                     type: e.target.checked ? "Select" : "Deselect",
                                                     tariff: t.type
                                                 })
+                                            }
                                             }
                                         />
                                         {strings.offer.tariffs[t.type]}

@@ -541,7 +541,7 @@ app.get("/sitemap.txt", async (req, res) => {
     res.send(urls.join("\r\n"));
 });
 
-function getProtocol (req) {
+function getProtocol(req) {
     var proto = req.connection.encrypted ? 'https' : 'http';
     // only do this if you trust the proxy
     proto = req.headers['x-forwarded-proto'] || proto;
@@ -565,6 +565,16 @@ app.get("*", async (req, res, next) => {
     let desiredRoute: { route: string };
     let initialState: any;
 
+    // interface Config {
+    //     stats: {
+    //         siteId: number,
+    //         urlBase: string
+    //     }
+    // }
+
+    const serverConfig = {
+        stats: config.stats
+    };
 
     console.log(req.url);
 
@@ -625,7 +635,9 @@ app.get("*", async (req, res, next) => {
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <link rel="shortcut icon" href="/favicon.ico" />
                     <link href="/main.css" rel="stylesheet" />
-                    <script type="text/javascript">window.___InitialState___=${JSON.stringify({ [desiredRoute.route]: initialState })}</script>
+                    <script type="text/javascript">
+                        window.___InitialState___=${JSON.stringify({ [desiredRoute.route]: initialState })};
+                        window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>
                 </head>
                 <body>
                     <div id="root">${siteContent}</div>
