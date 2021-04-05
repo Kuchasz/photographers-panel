@@ -8,7 +8,6 @@ interface Config {
 let _config: Config;
 
 export const initialize = (config: Config) => {
-    console.log(config);
     if (typeof config === 'string')
         _config = JSON.parse(config)
     else

@@ -127,8 +127,8 @@ export const Pricing = () => {
 
         tracker.trackEvent({
             e_c: 'Site',
-            e_a: action,
-            e_n: 'Calculator',
+            e_a: 'Calculator',
+            e_n: action,
             e_v: value,
         });
     };
