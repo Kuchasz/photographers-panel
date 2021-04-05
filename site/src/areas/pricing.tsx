@@ -86,7 +86,7 @@ const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
 const getOfferUrl = (alias: string) => routes.offer.route.replace(":alias", alias);
 
 export const Pricing = () => {
-    const tracker = getTracker();
+    const tracker = (document !== undefined) ? getTracker() : { trackEvent: () => { } };
 
 
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
