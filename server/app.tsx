@@ -231,16 +231,21 @@ app.post(authPanel.logIn.route, async (req, res) => {
 });
 
 app.get([`${authPanel.viewLogIn.route}`, `${authPanel.viewLogIn.route}/*`], async (req, res) => {
-    // const { galleryUrl, galleryId } = req.body;
-    // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
+    const serverConfig = {
+        stats: config.stats,
+    };
 
     fs.readFile(requireModule('@pp/panel/dist/index.html'), 'utf8', (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
         }
-
-        return res.send(template);
+        return res.send(
+            template.replace(
+                `<div id="state-initializer">{initial_state}</div>`,
+                `<script type="text/javascript">window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>`
+            )
+        );
     });
 });
 
