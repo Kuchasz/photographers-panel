@@ -1,17 +1,17 @@
 @font-face {
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     src: url(../fonts/MYRIADPRO-REGULAR.woff);
     font-display: swap;
 }
 
 @font-face {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     src: url(../fonts/MYRIADPRO-BOLD.woff);
     font-display: swap;
 }
 
 @font-face {
-    font-family: "Century Gothic Light";
+    font-family: 'Century Gothic Light';
     src: url(../fonts/MyriadPro-Light.woff);
     font-display: swap;
 }
@@ -30,7 +30,7 @@ section {
 
 body {
     margin: 0 auto;
-    font-family: "Century Gothic", sans-serif;
+    font-family: 'Century Gothic', sans-serif;
     padding: 0;
 }
 
@@ -95,7 +95,7 @@ nav {
     width: 330px;
     height: 55px;
     margin: 15px 0 0 0;
-    background: url("../images/header_white.png") no-repeat;
+    background: url('../images/header_white.png') no-repeat;
     float: right;
     clear: both;
 }
@@ -104,12 +104,12 @@ nav {
     width: 77px;
     height: 77px;
     margin: 28px 20px 0 30px;
-    background: url("../images/logo.png") no-repeat;
+    background: url('../images/logo.png') no-repeat;
     float: right;
 }
 
 nav {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     margin: 0;
     display: flex;
     flex-direction: row;
@@ -174,7 +174,7 @@ a#gallery:hover {
 }
 
 .slogan h1 {
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     font-size: 19px;
     font-weight: normal;
     color: #888;
@@ -192,7 +192,7 @@ a#gallery:hover {
 
 .slogan li {
     list-style-type: none;
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     font-size: 24px;
     font-weight: normal;
     color: #5383a2;
@@ -217,7 +217,7 @@ a#gallery:hover {
 .offer {
     width: 100%;
     float: left;
-    background: url("../images/offer_bg.jpg") center center repeat-x;
+    background: url('../images/offer_bg.jpg') center center repeat-x;
     background-size: cover;
     color: #fff;
 }
@@ -228,7 +228,7 @@ a#gallery:hover {
     float: left;
     /* background: url("../images/article_bg.jpg") center center repeat-x; */
     /* background-size: cover; */
-    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(220,220,220,1) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(220, 220, 220, 1) 100%);
     color: #035682;
     padding-bottom: 20px;
 }
@@ -283,7 +283,7 @@ a#gallery:hover {
     }
 }
 
-.blog>section {
+.blog > section {
     width: 960px;
     margin: 0 auto;
 }
@@ -329,7 +329,7 @@ a#gallery:hover {
 .offer h1,
 .article h1 {
     font-size: 46px;
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     text-align: center;
     font-weight: normal;
     margin-bottom: 0;
@@ -342,13 +342,13 @@ a#gallery:hover {
 
 .offer span,
 .article span {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
 }
 
 .offer h2,
 .article h2 {
     font-size: 18px;
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     font-weight: normal;
     text-align: center;
     margin: 30px 60px 50px 60px;
@@ -370,7 +370,7 @@ a#gallery:hover {
 
 .link article,
 .contact_form article,
-.pricing article, 
+.pricing article,
 .offers article {
     width: 530px;
     float: left;
@@ -397,7 +397,7 @@ a#gallery:hover {
 
 .link hgroup,
 .contact_form hgroup,
-.pricing hgroup, 
+.pricing hgroup,
 .offers hgroup {
     float: right;
     margin: 40px 0 40px 0;
@@ -636,7 +636,7 @@ a#gallery:hover {
     -moz-box-shadow: 0 0 7px 3px rgba(252, 252, 252, 0.1);
     box-shadow: 0 0 7px 3px rgba(252, 252, 252, 0.1);
     font-size: 16px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     cursor: pointer;
     text-align: center;
     padding: 15px 25px 16px 25px;
@@ -661,10 +661,10 @@ a#gallery:hover {
 }
 
 .article article a.button,
-.contact_form article input[type="submit"],
-.contact_form article input[type="text"],
-.contact_form article input[type="email"],
-.contact_form article input[type="password"],
+.contact_form article input[type='submit'],
+.contact_form article input[type='text'],
+.contact_form article input[type='email'],
+.contact_form article input[type='password'],
 .contact_form article textarea {
     width: 224px;
     height: 50px;
@@ -675,7 +675,7 @@ a#gallery:hover {
     /* border: solid 1px #ff4643; */
     border: solid 1px #ce2220;
     font-size: 16px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     text-align: center;
     padding: 15px 25px 16px 25px;
     outline: none;
@@ -683,13 +683,13 @@ a#gallery:hover {
     color: #ce2220;
 }
 
-.contact_form article input[type="submit"] {
+.contact_form article input[type='submit'] {
     margin-bottom: 40px;
 }
 
-.contact_form article input[type="text"],
-.contact_form article input[type="password"],
-.contact_form article input[type="email"],
+.contact_form article input[type='text'],
+.contact_form article input[type='password'],
+.contact_form article input[type='email'],
 .contact_form article textarea {
     width: 370px;
     height: 20px;
@@ -769,11 +769,10 @@ a#gallery:hover {
     list-style-type: none;
     padding: 3px 0 0 70px;
     margin: 0 0 25px 0;
-    background: url("../images/check.png") no-repeat;
+    background: url('../images/check.png') no-repeat;
 }
 
 @media only screen and (min-width: 950px) and (max-width: 1030px) {
-
     .offer section,
     .article section {
         width: 920px;
@@ -827,14 +826,14 @@ a#gallery:hover {
         list-style-type: none;
         padding: 3px 0 0 70px;
         margin: 0 0 25px 0;
-        background: url("../images/check.png") no-repeat;
+        background: url('../images/check.png') no-repeat;
     }
 }
 
 .contact {
     width: 100%;
     float: left;
-    background: linear-gradient(45deg, rgba(255,255,255,1) 49.9999%, rgba(0,51,78,1) 50%);
+    background: linear-gradient(45deg, rgba(255, 255, 255, 1) 49.9999%, rgba(0, 51, 78, 1) 50%);
     color: #035682;
 }
 
@@ -857,7 +856,7 @@ a#gallery:hover {
 }
 
 .contact .left h1 {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     font-size: 22px;
     float: left;
     margin: 0;
@@ -881,7 +880,7 @@ a#gallery:hover {
 }
 
 .contact .right h1 {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     font-size: 22px;
     margin: 0;
     padding: 20px 0 4px 0;
@@ -889,7 +888,7 @@ a#gallery:hover {
 
 .contact .right h2 {
     font-size: 22px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     margin: 0;
 }
 
@@ -908,7 +907,7 @@ a#gallery:hover {
 .map {
     width: 100%;
     float: left;
-    background: #ffffff url("../images/map_bg.jpg") center center no-repeat;
+    background: #ffffff url('../images/map_bg.jpg') center center no-repeat;
     color: #035682;
 }
 
@@ -949,7 +948,7 @@ a#gallery:hover {
 }
 
 .map address .address-line:first-child {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
 }
 
 .map address img {
@@ -987,7 +986,7 @@ footer .left {
 footer .left h1,
 footer .right h1 {
     width: 220px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     font-size: 12px;
     margin: 0;
     padding: 30px 0 4px 0;

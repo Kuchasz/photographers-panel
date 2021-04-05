@@ -1,6 +1,5 @@
-import Knex from "knex";
-import { log } from "./log";
-
+import Knex from 'knex';
+import { log } from './log';
 
 export const tableExists = async (tableName: string, knex: Knex): Promise<boolean> => {
     try {
@@ -9,14 +8,13 @@ export const tableExists = async (tableName: string, knex: Knex): Promise<boolea
         return Promise.reject(err);
     }
 
-
     // try {
     //     const [tables] = await connection.query<RowDataPacket[]>(`SHOW TABLES LIKE ?`, [tableName]);
     //     return tables.length === 1;
     // } catch (err) {
     //     return Promise.reject(err);
     // }
-}
+};
 
 export const columnExists = async (tableName: string, columnName: string, knex: Knex): Promise<boolean> => {
     try {
@@ -35,7 +33,7 @@ export const columnExists = async (tableName: string, columnName: string, knex: 
     // } catch (err) {
     //     return Promise.reject(err);
     // }
-}
+};
 
 export const renameTable = async (tableName: string, newTableName: string, knex: Knex): Promise<void> => {
     try {
@@ -45,7 +43,7 @@ export const renameTable = async (tableName: string, newTableName: string, knex:
         log(`RENAMING ${tableName} => ${newTableName}`, err);
         return Promise.reject(err);
     }
-   
+
     // try {
     //     await connection.query(`RENAME TABLE \`${tableName}\` TO \`${newTableName}\``);
     //     log(`RENAMING ${tableName} => ${newTableName}`, null);
@@ -53,7 +51,7 @@ export const renameTable = async (tableName: string, newTableName: string, knex:
     //     log(`RENAMING ${tableName} => ${newTableName}`, err);
     //     return Promise.reject(err);
     // }
-}
+};
 
 // export const changeColumnType = async (tableName: string, columnName: string, newDataType: string, knex: Knex): Promise<void> => {
 //     try {
@@ -63,7 +61,7 @@ export const renameTable = async (tableName: string, newTableName: string, knex:
 //         log(`CHANGING ${tableName}.${columnName} datatype => ${newDataType}`, err);
 //         return Promise.reject(err);
 //     }
-    
+
 //     // try {
 //     //     await connection.query(`ALTER TABLE ${tableName} CHANGE COLUMN ${columnName} ${columnName} ${newDataType}`);
 //     //     log(`CHANGING ${tableName}.${columnName} datatype => ${newDataType}`, null);
@@ -81,7 +79,7 @@ export const renameColumn = async (
     knex: Knex
 ): Promise<void> => {
     try {
-        await knex.schema.alterTable(tableName, builder => builder.renameColumn(columnName, newColumnName));
+        await knex.schema.alterTable(tableName, (builder) => builder.renameColumn(columnName, newColumnName));
         log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, null);
     } catch (err) {
         log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, err);
@@ -94,7 +92,7 @@ export const renameColumn = async (
     //     log(`RENAMING ${tableName}.${columnName} => ${tableName}.${newColumnName}`, err);
     //     return Promise.reject(err);
     // }
-}
+};
 
 export const runQuery = async (query: string, knex: Knex): Promise<void> => {
     try {
@@ -105,7 +103,7 @@ export const runQuery = async (query: string, knex: Knex): Promise<void> => {
         log(`RUNNING: ${query}`, err);
         return Promise.reject(err);
     }
-}
+};
 
 export const executeInTransaction = async (connection, sql: string, values: any | any[] | { [param: string]: any }) => {
     try {
@@ -116,4 +114,4 @@ export const executeInTransaction = async (connection, sql: string, values: any 
         await connection.rollback();
         return Promise.reject(err);
     }
-}
+};

@@ -3,14 +3,14 @@ export const read = (file: File): Promise<ReadResult> => {
     return new Promise<ReadResult>((res, rej) => {
         const reader = new FileReader();
 
-        const img = document.createElement("img");
+        const img = document.createElement('img');
 
         reader.onload = (ev) => {
             img.src = reader.result as string;
 
             img.onload = () => {
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
                 ctx?.drawImage(img, 0, 0);
 
                 const MAX_WIDTH = 100;
@@ -33,7 +33,7 @@ export const read = (file: File): Promise<ReadResult> => {
                 canvas.height = height;
                 ctx?.drawImage(img, 0, 0, width, height);
 
-                const dataurl = canvas.toDataURL("image/png");
+                const dataurl = canvas.toDataURL('image/png');
 
                 res({ url: dataurl as string, file });
             };
@@ -50,8 +50,8 @@ export const read = (file: File): Promise<ReadResult> => {
 };
 
 export const formatFileSize = (size: number, precision: number = 2) => {
-    const i = size === 0 ? 0 : Math.floor( Math.log(size) / Math.log(1024) );
-    const formattedSize = ( size / Math.pow(1024, i) );
+    const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+    const formattedSize = size / Math.pow(1024, i);
     return `${formattedSize.toFixed(precision)} ${['B', 'KB', 'MB', 'GB', 'TB'][i]}`;
 };
 
@@ -62,6 +62,6 @@ export const getLastBytesPerSecond = (lastBytes: number, lastNow: number, loaded
     const lastBytesPerSecond = elapsed ? uploadedBytes / elapsed : 0;
 
     return { calculationTime, lastBytesPerSecond };
-}
+};
 
 export const formatTransfer = (bytesPerSecond: number) => `${formatFileSize(bytesPerSecond, 1)}/s`;

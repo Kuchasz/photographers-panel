@@ -1,1 +1,1 @@
-export const firstSegment = (url: string) => `/${url.split("/")[1]}`;
+export const firstSegment = (url: string) => `/${url.split('/')[1]}`;

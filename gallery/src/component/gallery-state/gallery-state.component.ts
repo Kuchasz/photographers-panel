@@ -1,21 +1,21 @@
-import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from "@angular/core";
-import { GalleryService } from "../../service/gallery.service";
-import { Location } from "@angular/common";
-import { GalleryState, GalleryImage, GalleryDirectory } from "../../service/gallery.state";
-import { GalleryConfig } from "../../index";
-import * as screenfull from "screenfull";
-import { Observable } from "rxjs";
-import { Router } from "@angular/router";
-import { map, find, first, tap } from "rxjs/operators";
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
+import { GalleryService } from '../../service/gallery.service';
+import { Location } from '@angular/common';
+import { GalleryState, GalleryImage, GalleryDirectory } from '../../service/gallery.state';
+import { GalleryConfig } from '../../index';
+import * as screenfull from 'screenfull';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { map, find, first, tap } from 'rxjs/operators';
 import { ApiService } from '../../service/api.service';
 import { translations } from '../../i18n';
 import { DisplayModes } from '../../config/gallery.config';
 
 @Component({
-    selector: "gallery-state",
-    templateUrl: "./gallery-state.component.html",
-    styleUrls: ["./gallery-state.component.scss"],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'gallery-state',
+    templateUrl: './gallery-state.component.html',
+    styleUrls: ['./gallery-state.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GalleryStateComponent {
     @Input() state: GalleryState;
@@ -50,34 +50,32 @@ export class GalleryStateComponent {
         // );
 
         this.currentImage$ = this.gallery.state.pipe(map((x) => x.images.find((i) => i.id === x.currId)));
-        this.currentImageIndex$ = this.gallery.state.pipe(map((x) => {
+        this.currentImageIndex$ = this.gallery.state.pipe(
+            map((x) => {
+                const directoryId = this.directoryId;
 
-            const directoryId = this.directoryId;
+                if (!directoryId) return 0;
 
-            if (!directoryId)
-                return 0;
+                const directoryImages = x.directoryImages[directoryId];
+                return directoryImages.indexOf(x.currId) + 1;
 
-            const directoryImages = x.directoryImages[directoryId];
-            return directoryImages.indexOf(x.currId)+1;
+                // const currentDir = x.directories
+                // x.images.indexOf(x.images.find((i) => i.id === x.currId))
+            })
+        );
+        this.numberOfImages$ = this.gallery.state.pipe(
+            map((x) => {
+                const directoryId = this.directoryId;
 
-            // const currentDir = x.directories
-            // x.images.indexOf(x.images.find((i) => i.id === x.currId))
+                if (!directoryId) return 0;
 
-        }));
-        this.numberOfImages$ = this.gallery.state.pipe(map((x) => {
+                const directoryImages = x.directoryImages[directoryId];
+                return directoryImages.length;
 
-            const directoryId = this.directoryId;
-
-            if (!directoryId)
-                return 0;
-
-            const directoryImages = x.directoryImages[directoryId];
-            return directoryImages.length;
-
-            // const currentDir = x.directories
-            // x.images.indexOf(x.images.find((i) => i.id === x.currId))
-
-        }));
+                // const currentDir = x.directories
+                // x.images.indexOf(x.images.find((i) => i.id === x.currId))
+            })
+        );
         // this.currentDirectoryId$.subscribe((currentDirectoryId) => (this.currentDirectoryId = currentDirectoryId));
     }
 
@@ -97,7 +95,7 @@ export class GalleryStateComponent {
     }
 
     public displaySnappedImages() {
-        this.router.navigate(["/snapped"]);
+        this.router.navigate(['/snapped']);
     }
 
     goBack(event: Event) {
@@ -107,18 +105,18 @@ export class GalleryStateComponent {
         event.stopPropagation();
     }
 
-    orderPhotos() { }
+    orderPhotos() {}
 
     public download(imgSrc: string) {
         fetch(imgSrc)
-            .then(resp => resp.blob())
-            .then(blob => {
+            .then((resp) => resp.blob())
+            .then((blob) => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = url;
                 // the filename you want
-                a.download = imgSrc.split("/").reverse()[0];
+                a.download = imgSrc.split('/').reverse()[0];
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
@@ -131,14 +129,16 @@ export class GalleryStateComponent {
     //     this.gallery.snapImage(this.currentImageId);
     // }
 
-    public likeImage(imageId: string) {//, $event: MouseEvent) {
+    public likeImage(imageId: string) {
+        //, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });
 
         // $event.stopPropagation();
     }
 
-    public unlikeImage(imageId: string) {//, $event: MouseEvent) {
+    public unlikeImage(imageId: string) {
+        //, $event: MouseEvent) {
         this.gallery.unlikeImage(imageId);
         this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
 

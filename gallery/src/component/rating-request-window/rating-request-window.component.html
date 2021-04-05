@@ -1,11 +1,11 @@
 <div class="overlay">
-	<div class="popup">
-		<p class="close" (click)="close()">&times;</p>
-		<header [style.grid-template-columns]="'repeat(' + likedPhotos.length/2 + ', 1fr)'">
-			<img *ngFor="let url of likedPhotos" [src]="url">
-		</header>
-		<h2>{{ translations.review.header }}</h2>
-		<div>{{ translations.review.text }}</div>
-		<a [href]="reviewUrl" target="_blank"><i class="mdi mdi-message-draw"></i>{{ translations.review.button }}</a>
-	</div>
+    <div class="popup">
+        <p class="close" (click)="close()">&times;</p>
+        <header [style.grid-template-columns]="'repeat(' + likedPhotos.length / 2 + ', 1fr)'">
+            <img *ngFor="let url of likedPhotos" [src]="url" />
+        </header>
+        <h2>{{ translations.review.header }}</h2>
+        <div>{{ translations.review.text }}</div>
+        <a [href]="reviewUrl" target="_blank"><i class="mdi mdi-message-draw"></i>{{ translations.review.button }}</a>
+    </div>
 </div>

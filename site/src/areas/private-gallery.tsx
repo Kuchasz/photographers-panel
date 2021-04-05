@@ -1,10 +1,10 @@
-import * as React from "react";
-import galleryPhoto from "../images/page_private_photo.png";
-import { Link } from "react-router-dom";
-import { strings } from "../resources";
-import * as privateGallery from "@pp/api/site/private-gallery";
-import * as commonPrivateGallery from "@pp/api/private-gallery";
-import { ResultType } from "@pp/api/common";
+import * as React from 'react';
+import galleryPhoto from '../images/page_private_photo.png';
+import { Link } from 'react-router-dom';
+import { strings } from '../resources';
+import * as privateGallery from '@pp/api/site/private-gallery';
+import * as commonPrivateGallery from '@pp/api/private-gallery';
+import { ResultType } from '@pp/api/common';
 
 const getContent = (
     isLoading?: boolean,
@@ -13,37 +13,34 @@ const getContent = (
     if (isLoading === undefined || result === undefined)
         return {
             title: strings.privateGallery.title,
-            description: strings.privateGallery.description
+            description: strings.privateGallery.description,
         };
 
     if (result.gallery === undefined)
         return {
             title: strings.privateGallery.notExists.title,
-            description: strings.privateGallery.notExists.description
+            description: strings.privateGallery.notExists.description,
         };
 
     if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available)
         return {
-            title: strings.privateGallery.available.title
-                .replace(":title", result.gallery.title),
-            description: strings.privateGallery.available.description
+            title: strings.privateGallery.available.title.replace(':title', result.gallery.title),
+            description: strings.privateGallery.available.description,
         };
 
     if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.TurnedOff)
         return {
-            title: strings.privateGallery.turnedOff.title
-                .replace(":title", result.gallery.title),
-            description: strings.privateGallery.turnedOff.description
+            title: strings.privateGallery.turnedOff.title.replace(':title', result.gallery.title),
+            description: strings.privateGallery.turnedOff.description,
         };
 
     if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.NotReady)
         return {
-            title: strings.privateGallery.notReady.title
-                .replace(":title", result.gallery.title),
-            description: strings.privateGallery.notReady.description
+            title: strings.privateGallery.notReady.title.replace(':title', result.gallery.title),
+            description: strings.privateGallery.notReady.description,
         };
 
-    throw new Error("Not handled content!");
+    throw new Error('Not handled content!');
 };
 
 type PrivateGalleryProps = {};
@@ -57,20 +54,18 @@ type PrivateGalleryState = {
 };
 
 export class PrivateGallery extends React.Component<PrivateGalleryProps, PrivateGalleryState> {
-
     viewGalleryRef: React.RefObject<HTMLFormElement>;
     constructor(props: PrivateGalleryProps) {
         super(props);
         this.viewGalleryRef = React.createRef<HTMLFormElement>();
     }
 
-
     state = {
-        password: "",
-        email: "",
+        password: '',
+        email: '',
         result: undefined,
         isLoading: undefined,
-        isLoadingNotification: undefined
+        isLoadingNotification: undefined,
     } as PrivateGalleryState;
 
     onPasswordChange(password: string) {
@@ -84,9 +79,13 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
     getPrivateGalleryUrl() {
         if (this.state.password) {
             this.setState({ isLoading: true });
-            privateGallery.getGalleryUrl(this.state.password).then(result => {
+            privateGallery.getGalleryUrl(this.state.password).then((result) => {
                 const passwordReset = result.gallery === undefined;
-                this.setState(state => ({ result, isLoading: false, password: passwordReset ? "" : state.password }));
+                this.setState((state) => ({
+                    result,
+                    isLoading: false,
+                    password: passwordReset ? '' : state.password,
+                }));
             });
         }
     }
@@ -96,9 +95,12 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
             this.setState({ isLoadingNotification: true });
             const result = await privateGallery.subscribeForNotification({
                 privateGalleryId: this.state.result.gallery.id,
-                email: this.state.email
+                email: this.state.email,
             });
-            this.setState({ notificationResult: result, isLoadingNotification: false });
+            this.setState({
+                notificationResult: result,
+                isLoadingNotification: false,
+            });
         }
     }
 
@@ -118,12 +120,11 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                                     type="password"
                                     name="password"
                                     placeholder={strings.privateGallery.password}
-                                    onChange={e => this.onPasswordChange(e.target.value)}
+                                    onChange={(e) => this.onPasswordChange(e.target.value)}
                                     value={this.state.password}
-                                    required
-                                ></input>
+                                    required></input>
                                 <div>
-                                    <a onClick={e => this.getPrivateGalleryUrl()} className="button">
+                                    <a onClick={(e) => this.getPrivateGalleryUrl()} className="button">
                                         {strings.privateGallery.check}
                                     </a>
                                 </div>
@@ -139,9 +140,17 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                                         {strings.privateGallery.notification.subscribedSuccessfully}
                                     </div>
                                 ) : null}
-                                {this.state.notificationResult?.type === ResultType.Error ? <div>{strings.privateGallery.notification.errors[this.state.notificationResult.error]}</div> : null}
+                                {this.state.notificationResult?.type === ResultType.Error ? (
+                                    <div>
+                                        {
+                                            strings.privateGallery.notification.errors[
+                                                this.state.notificationResult.error
+                                            ]
+                                        }
+                                    </div>
+                                ) : null}
                                 <input
-                                    onChange={e => this.onEmailChange(e.target.value)}
+                                    onChange={(e) => this.onEmailChange(e.target.value)}
                                     value={this.state.email}
                                     type="email"
                                     name="email"
@@ -151,14 +160,20 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                                 <a className="button" onClick={() => this.subscribeForNotification()}>
                                     {strings.privateGallery.notification.subscribe}
                                 </a>
-                                <br /><br /><br /><br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
                             </div>
                         ) : null}
                         {result?.gallery ? (
                             <div>
                                 {result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available ? (
                                     <>
-                                        <form ref={this.viewGalleryRef} method="POST" action={privateGallery.viewGallery.route}>
+                                        <form
+                                            ref={this.viewGalleryRef}
+                                            method="POST"
+                                            action={privateGallery.viewGallery.route}>
                                             <input name="galleryId" value={result.gallery.id} type="hidden"></input>
                                             <input name="galleryUrl" value={result.gallery.url} type="hidden"></input>
                                         </form>
@@ -169,15 +184,14 @@ export class PrivateGallery extends React.Component<PrivateGalleryProps, Private
                                 ) : result.blog ? (
                                     <div>
                                         <span>
-                                            {strings.privateGallery.blogAvailable.replace(":title", result.blog.title)}
+                                            {strings.privateGallery.blogAvailable.replace(':title', result.blog.title)}
                                         </span>
                                         <br />
                                         <br />
                                         <Link
                                             className="button"
                                             key={result.blog.alias}
-                                            to={"/blog/" + result.blog.alias}
-                                        >
+                                            to={'/blog/' + result.blog.alias}>
                                             {strings.privateGallery.enterBlog}
                                         </Link>
                                     </div>

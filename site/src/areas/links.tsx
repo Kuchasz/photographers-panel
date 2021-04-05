@@ -1,7 +1,7 @@
-import * as React from "react";
-import linkPhoto from "../images/page_links_photo.png";
-import { Link } from "react-router-dom";
-import { strings } from "../resources";
+import * as React from 'react';
+import linkPhoto from '../images/page_links_photo.png';
+import { Link } from 'react-router-dom';
+import { strings } from '../resources';
 
 type LinksProps = {};
 type LinksState = {};
@@ -22,7 +22,7 @@ export class Links extends React.Component<LinksProps, LinksState> {
                         <h3>{strings.link.linksHeader}</h3>
 
                         <ul>
-                            {strings.link.links.map(l => (
+                            {strings.link.links.map((l) => (
                                 <li key={l.url}>
                                     <a href={l.url} target="_blank">
                                         {l.label}

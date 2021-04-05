@@ -1,24 +1,24 @@
-import * as React from "react";
-import { GalleriesList } from "./galleries-list";
-import { GalleryCreate } from "./gallery-create";
-import { Panel, Icon, Button, Alert } from "rsuite";
-import { ChartStat } from "../stats-chart/stats";
+import * as React from 'react';
+import { GalleriesList } from './galleries-list';
+import { GalleryCreate } from './gallery-create';
+import { Panel, Icon, Button, Alert } from 'rsuite';
+import { ChartStat } from '../stats-chart/stats';
 // import { addMonths } from "@pp/utils/date";
-import "./styles.less";
+import './styles.less';
 import {
     GalleryDto,
     getGalleryVisits,
     getGalleriesList,
     GalleryVisitsDto,
-    deleteGallery
-} from "@pp/api/panel/private-gallery";
-import { GalleryEdit } from "./gallery-edit";
-import { confirm } from "../common/confirmation";
-import { ResultType } from "@pp/api/common";
-import { GalleryEmails } from "./gallery-emails";
-import { StatsChart } from "../stats-chart";
-import { VisitsSummaryDto } from "@pp/api/panel/visits";
-import { translations } from "../../i18n";
+    deleteGallery,
+} from '@pp/api/panel/private-gallery';
+import { GalleryEdit } from './gallery-edit';
+import { confirm } from '../common/confirmation';
+import { ResultType } from '@pp/api/common';
+import { GalleryEmails } from './gallery-emails';
+import { StatsChart } from '../stats-chart';
+import { VisitsSummaryDto } from '@pp/api/panel/visits';
+import { translations } from '../../i18n';
 
 const getStats = (x: GalleryVisitsDto): ChartStat[] => [
     { label: translations.gallery.stats.todayVisits, value: x.todayVisits },
@@ -29,7 +29,7 @@ const getStats = (x: GalleryVisitsDto): ChartStat[] => [
     { label: translations.gallery.stats.emails, value: x.emails },
 ];
 
-interface Props { }
+interface Props {}
 
 interface State {
     isLoadingGalleries: boolean;
@@ -55,7 +55,7 @@ export class Galleries extends React.Component<Props, State> {
             showCreateForm: false,
             showEditForm: false,
             showGalleryViewEmails: false,
-            galleryToEditId: undefined
+            galleryToEditId: undefined,
         };
     }
 
@@ -68,10 +68,10 @@ export class Galleries extends React.Component<Props, State> {
             () => ({ isLoadingGalleries: true }),
             () => {
                 getGalleriesList().then((galleries) => {
-                    const selectedGallery = galleries[0]//.id;
+                    const selectedGallery = galleries[0]; //.id;
                     this.setState({
                         galleries,
-                        isLoadingGalleries: false
+                        isLoadingGalleries: false,
                     });
 
                     this.onGallerySelected(selectedGallery);
@@ -88,7 +88,7 @@ export class Galleries extends React.Component<Props, State> {
         // const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(gallery.date), 1);
 
         this.setState((_state) => ({
-            selectedGallery
+            selectedGallery,
         }));
 
         // getGalleryVisits(selectedGallery).then((resp) =>
@@ -99,12 +99,15 @@ export class Galleries extends React.Component<Props, State> {
     onGalleryEdit = (selectedGallery: number) => {
         this.setState({
             galleryToEditId: selectedGallery,
-            showEditForm: true
+            showEditForm: true,
         });
     };
 
     onGalleryDelete = async (selectedGallery: number) => {
-        const confirmed = await confirm(translations.gallery.delete.confirmationContent, translations.gallery.delete.confirmationHeader);
+        const confirmed = await confirm(
+            translations.gallery.delete.confirmationContent,
+            translations.gallery.delete.confirmationHeader
+        );
         if (confirmed) {
             const result = await deleteGallery(selectedGallery);
             if (result.type === ResultType.Success) {
@@ -119,9 +122,9 @@ export class Galleries extends React.Component<Props, State> {
     onGalleryViewEmails = (selectedGallery: number) => {
         this.setState({
             galleryToEditId: selectedGallery,
-            showGalleryViewEmails: true
+            showGalleryViewEmails: true,
         });
-    }
+    };
 
     closeGalleryViewEmails = () => {
         this.setState({ showGalleryViewEmails: false, galleryToEditId: undefined });
@@ -157,12 +160,18 @@ export class Galleries extends React.Component<Props, State> {
         return (
             <div className="galleries">
                 <Panel>
-                    <StatsChart fetchChartStatsData={async (s, e, i) => {
-                        const result = await getGalleryVisits(s, e, i);
-                        const stats = getStats(result);
-                        const data = result.dailyVisits.map(dv => ({ date: dv.date, value: dv.visits }));
-                        return { data, stats };
-                    }} selectedItem={this.state.selectedGallery!} />
+                    <StatsChart
+                        fetchChartStatsData={async (s, e, i) => {
+                            const result = await getGalleryVisits(s, e, i);
+                            const stats = getStats(result);
+                            const data = result.dailyVisits.map((dv) => ({
+                                date: dv.date,
+                                value: dv.visits,
+                            }));
+                            return { data, stats };
+                        }}
+                        selectedItem={this.state.selectedGallery!}
+                    />
                 </Panel>
                 <div className="list">
                     <Panel
@@ -170,8 +179,7 @@ export class Galleries extends React.Component<Props, State> {
                             <Button onClick={this.showCreateForm} color="green">
                                 <Icon icon="plus" /> {translations.gallery.create.button}
                             </Button>
-                        }
-                    >
+                        }>
                         <GalleriesList
                             galleries={this.state.galleries}
                             loadingGalleries={this.state.isLoadingGalleries}

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     Drawer,
     Button,
@@ -9,15 +9,15 @@ import {
     HelpBlock,
     ButtonToolbar,
     SelectPicker,
-    Alert
-} from "rsuite";
-import { PrivateGalleryState } from "@pp/api/private-gallery";
-import { BlogSelectItem, getBlogSelectList } from "@pp/api/panel/blog";
-import { GalleryEditDto, editGallery, getGalleryForEdit } from "@pp/api/panel/private-gallery";
-import { ResultType } from "@pp/api/common";
-import { galleryModel } from "./gallery-model";
-import { translations } from "../../i18n";
-import { FormInstance } from "rsuite/lib/Form";
+    Alert,
+} from 'rsuite';
+import { PrivateGalleryState } from '@pp/api/private-gallery';
+import { BlogSelectItem, getBlogSelectList } from '@pp/api/panel/blog';
+import { GalleryEditDto, editGallery, getGalleryForEdit } from '@pp/api/panel/private-gallery';
+import { ResultType } from '@pp/api/common';
+import { galleryModel } from './gallery-model';
+import { translations } from '../../i18n';
+import { FormInstance } from 'rsuite/lib/Form';
 
 interface Props {
     id: number;
@@ -27,19 +27,28 @@ interface Props {
 }
 
 export const emptyGallery = (): GalleryEditDto => ({
-    date: "",
-    title: "",
-    notes: "",
+    date: '',
+    title: '',
+    notes: '',
     state: PrivateGalleryState.NotReady,
-    password: "",
-    directPath: "",
-    blog: undefined
+    password: '',
+    directPath: '',
+    blog: undefined,
 });
 
 const states = [
-    { label: PrivateGalleryState[PrivateGalleryState.Available], value: PrivateGalleryState.Available },
-    { label: PrivateGalleryState[PrivateGalleryState.NotReady], value: PrivateGalleryState.NotReady },
-    { label: PrivateGalleryState[PrivateGalleryState.TurnedOff], value: PrivateGalleryState.TurnedOff }
+    {
+        label: PrivateGalleryState[PrivateGalleryState.Available],
+        value: PrivateGalleryState.Available,
+    },
+    {
+        label: PrivateGalleryState[PrivateGalleryState.NotReady],
+        value: PrivateGalleryState.NotReady,
+    },
+    {
+        label: PrivateGalleryState[PrivateGalleryState.TurnedOff],
+        value: PrivateGalleryState.TurnedOff,
+    },
 ];
 
 let initialGalery: GalleryEditDto = emptyGallery();
@@ -68,11 +77,11 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
             const { formError } = formRef.current.state as any;
             const { formValue } = formRef.current.props as any;
             const passwordNotDirty = formValue.password === initialGalery.password;
-            const onlyErrorIsPassword = Object.keys(formError).length === 1 && Object.keys(formError).includes("password");
+            const onlyErrorIsPassword =
+                Object.keys(formError).length === 1 && Object.keys(formError).includes('password');
             const ignoreErrors = passwordNotDirty && onlyErrorIsPassword;
 
-            if (ignoreErrors === false && result.hasError)
-                return;
+            if (ignoreErrors === false && result.hasError) return;
 
             formRef.current.cleanErrors();
 
@@ -100,8 +109,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                     ref={formRef}
                     model={galleryModel(id)}
                     formValue={formState}
-                    onChange={(x) => setFormState(x as GalleryEditDto)}
-                >
+                    onChange={(x) => setFormState(x as GalleryEditDto)}>
                     <FormGroup>
                         <ControlLabel>{translations.gallery.edit.details.date.label}</ControlLabel>
                         <FormControl name="date" type="date" />
@@ -160,8 +168,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                                     setIsLoading(false);
                                     closeEditForm();
                                 }}
-                                appearance="default"
-                            >
+                                appearance="default">
                                 {translations.gallery.edit.cancel}
                             </Button>
                         </ButtonToolbar>

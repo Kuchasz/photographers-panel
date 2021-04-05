@@ -1,6 +1,6 @@
-const concat = (list: any[]) => Array.prototype.concat.bind(list)
-const promiseConcat = (f: Function) => (x: any[]) => f().then(concat(x))
-const promiseReduce = (acc: Promise<any>, x: Function) => acc.then(promiseConcat(x))
+const concat = (list: any[]) => Array.prototype.concat.bind(list);
+const promiseConcat = (f: Function) => (x: any[]) => f().then(concat(x));
+const promiseReduce = (acc: Promise<any>, x: Function) => acc.then(promiseConcat(x));
 /*
  * serial executes Promises sequentially.
  * @param {funcs} An array of funcs that return promises.
@@ -9,4 +9,4 @@ const promiseReduce = (acc: Promise<any>, x: Function) => acc.then(promiseConcat
  * serial(urls.map(url => () => $.ajax(url)))
  *     .then(console.log.bind(console))
  */
-export const serial = (funcs: Function[]) => funcs.reduce(promiseReduce, Promise.resolve([]))
+export const serial = (funcs: Function[]) => funcs.reduce(promiseReduce, Promise.resolve([]));

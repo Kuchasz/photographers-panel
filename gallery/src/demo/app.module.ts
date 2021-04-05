@@ -1,17 +1,17 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, APP_INITIALIZER } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppComponent } from "./component/app.component";
-import { GalleryModule } from "../gallery.module";
-import { checkIfMobile } from "../utils/browser";
-import { DisplayModes } from "../config/gallery.config";
-import { GalleryService } from "../service/gallery.service";
-import { fetchGallery } from "../utils/jalbum";
-import { ApiService } from "../service/api.service";
+import { AppComponent } from './component/app.component';
+import { GalleryModule } from '../gallery.module';
+import { checkIfMobile } from '../utils/browser';
+import { DisplayModes } from '../config/gallery.config';
+import { GalleryService } from '../service/gallery.service';
+import { fetchGallery } from '../utils/jalbum';
+import { ApiService } from '../service/api.service';
 
-document.querySelector("#state-initializer")?.remove();
+document.querySelector('#state-initializer')?.remove();
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -20,26 +20,26 @@ document.querySelector("#state-initializer")?.remove();
         CommonModule,
         GalleryModule.forRoot({
             style: {
-                background: "rgba(0, 0, 0, 0.9)",
-                width: "100%",
-                height: "100%"
+                background: 'rgba(0, 0, 0, 0.9)',
+                width: '100%',
+                height: '100%',
             },
             description: {
-                position: "bottom",
+                position: 'bottom',
                 overlay: false,
                 text: true,
-                counter: true
+                counter: true,
             },
             thumbnails: {
                 width: 95,
                 height: 95,
-                position: "bottom",
-                space: 20
+                position: 'bottom',
+                space: 20,
             },
             navigation: {},
             gestures: checkIfMobile(),
-            displayMode: checkIfMobile() ? DisplayModes.Compact : DisplayModes.Full
-        })
+            displayMode: checkIfMobile() ? DisplayModes.Compact : DisplayModes.Full,
+        }),
     ],
     providers: [
         {
@@ -47,8 +47,13 @@ document.querySelector("#state-initializer")?.remove();
             useFactory: (galleries: GalleryService, api: ApiService) => {
                 return () =>
                     new Promise(async (res, rej) => {
-                        const { galleryUrl: root, galleryId }: { galleryUrl: string; galleryId: number } = (window as any)
-                            .___InitialState___ ?? { galleryUrl: "/you-are-missing-something-here/", galleryId: 1 };
+                        const {
+                            galleryUrl: root,
+                            galleryId,
+                        }: { galleryUrl: string; galleryId: number } = (window as any).___InitialState___ ?? {
+                            galleryUrl: '/you-are-missing-something-here/',
+                            galleryId: 1,
+                        };
 
                         const gallery = await fetchGallery(root);
 
@@ -61,18 +66,169 @@ document.querySelector("#state-initializer")?.remove();
                     });
             },
             deps: [GalleryService, ApiService],
-            multi: true
-        }
+            multi: true,
+        },
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 
 const getRandomAnimal = () => {
-    const options = ["Dog", "Puppy", "Turtle", "Rabbit", "Parrot", "Cat", "Kitten", "Goldfish", "Mouse", "Tropical fish", "Hamster", "Cow", "Rabbit", "Ducks", "Shrimp", "Pig", "Goat", "Crab", "Deer", "Bee", "Sheep", "Fish", "Turkey", "Dove", "Chicken", "Horse", "Crow", "Peacock", "Dove", "Sparrow", "Goose", "Stork", "Pigeon", "Turkey", "Hawk", "Bald eagle", "Raven", "Parrot", "Flamingo", "Seagull", "Ostrich", "Swallow", "Black bird", "Penguin", "Robin", "Swan", "Owl", "Woodpecker", "Squirrel", "Dog", "Chimpanzee", "Ox", "Lion", "Panda", "Walrus", "Otter", "Mouse", "Kangaroo", "Goat", "Horse", "Monkey", "Cow", "Koala", "Mole", "Elephant", "Leopard", "Hippopotamus", "Giraffe", "Fox", "Coyote", "Hedgehong", "Sheep", "Deer", "Giraffe", "Woodpecker", "Camel", "Starfish", "Koala", "Alligator", "Owl", "Tiger", "Bear", "Blue whale", "Coyote", "Chimpanzee", "Raccoon", "Lion", "Arctic wolf", "Crocodile", "Dolphin", "Elephant", "Squirrel", "Snake", "Kangaroo", "Hippopotamus", "Elk", "Fox", "Gorilla", "Bat", "Hare", "Toad", "Frog", "Deer", "Rat", "Badger", "Lizard", "Mole", "Hedgehog", "Otter", "Reindeer", "Crab", "Fish", "Seal", "Octopus", "Shark", "Seahorse", "Walrus", "Starfish", "Whale", "Penguin", "Jellyfish", "Squid", "Lobster", "Pelican", "Clams", "Seagull", "Dolphin", "Shells", "Sea urchin", "Cormorant", "Otter", "Pelican", "Sea anemone", "Sea turtle", "Sea lion", "Coral", "Moth", "Bee", "Butterfly", "Spider", "Ant", "Dragonfly", "Fly", "Mosquito", "Grasshopper", "Beetle", "Cockroach", "Centipede", "Worm", "Louse"];
+    const options = [
+        'Dog',
+        'Puppy',
+        'Turtle',
+        'Rabbit',
+        'Parrot',
+        'Cat',
+        'Kitten',
+        'Goldfish',
+        'Mouse',
+        'Tropical fish',
+        'Hamster',
+        'Cow',
+        'Rabbit',
+        'Ducks',
+        'Shrimp',
+        'Pig',
+        'Goat',
+        'Crab',
+        'Deer',
+        'Bee',
+        'Sheep',
+        'Fish',
+        'Turkey',
+        'Dove',
+        'Chicken',
+        'Horse',
+        'Crow',
+        'Peacock',
+        'Dove',
+        'Sparrow',
+        'Goose',
+        'Stork',
+        'Pigeon',
+        'Turkey',
+        'Hawk',
+        'Bald eagle',
+        'Raven',
+        'Parrot',
+        'Flamingo',
+        'Seagull',
+        'Ostrich',
+        'Swallow',
+        'Black bird',
+        'Penguin',
+        'Robin',
+        'Swan',
+        'Owl',
+        'Woodpecker',
+        'Squirrel',
+        'Dog',
+        'Chimpanzee',
+        'Ox',
+        'Lion',
+        'Panda',
+        'Walrus',
+        'Otter',
+        'Mouse',
+        'Kangaroo',
+        'Goat',
+        'Horse',
+        'Monkey',
+        'Cow',
+        'Koala',
+        'Mole',
+        'Elephant',
+        'Leopard',
+        'Hippopotamus',
+        'Giraffe',
+        'Fox',
+        'Coyote',
+        'Hedgehong',
+        'Sheep',
+        'Deer',
+        'Giraffe',
+        'Woodpecker',
+        'Camel',
+        'Starfish',
+        'Koala',
+        'Alligator',
+        'Owl',
+        'Tiger',
+        'Bear',
+        'Blue whale',
+        'Coyote',
+        'Chimpanzee',
+        'Raccoon',
+        'Lion',
+        'Arctic wolf',
+        'Crocodile',
+        'Dolphin',
+        'Elephant',
+        'Squirrel',
+        'Snake',
+        'Kangaroo',
+        'Hippopotamus',
+        'Elk',
+        'Fox',
+        'Gorilla',
+        'Bat',
+        'Hare',
+        'Toad',
+        'Frog',
+        'Deer',
+        'Rat',
+        'Badger',
+        'Lizard',
+        'Mole',
+        'Hedgehog',
+        'Otter',
+        'Reindeer',
+        'Crab',
+        'Fish',
+        'Seal',
+        'Octopus',
+        'Shark',
+        'Seahorse',
+        'Walrus',
+        'Starfish',
+        'Whale',
+        'Penguin',
+        'Jellyfish',
+        'Squid',
+        'Lobster',
+        'Pelican',
+        'Clams',
+        'Seagull',
+        'Dolphin',
+        'Shells',
+        'Sea urchin',
+        'Cormorant',
+        'Otter',
+        'Pelican',
+        'Sea anemone',
+        'Sea turtle',
+        'Sea lion',
+        'Coral',
+        'Moth',
+        'Bee',
+        'Butterfly',
+        'Spider',
+        'Ant',
+        'Dragonfly',
+        'Fly',
+        'Mosquito',
+        'Grasshopper',
+        'Beetle',
+        'Cockroach',
+        'Centipede',
+        'Worm',
+        'Louse',
+    ];
 
     const length = options.length;
     const selectedOption = Math.floor(Math.random() * length);
 
     return options[selectedOption];
-}
+};

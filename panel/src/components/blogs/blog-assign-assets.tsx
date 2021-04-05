@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent } from 'react';
 import {
     Button,
     Icon,
@@ -10,21 +10,16 @@ import {
     FormGroup,
     ControlLabel,
     FormControl,
-    Form
-} from "rsuite";
+    Form,
+} from 'rsuite';
 
-import {
-    BlogAssetsListItemDto,
-    changeMainBlogAsset,
-    deleteBlogAsset,
-    changeBlogAssetAlt
-} from "@pp/api/panel/blog";
-import { range } from "@pp/utils/array";
-import { ResultType } from "@pp/api/common";
-import { ToolTip } from "../common/tooltip";
-import { debounce } from "@pp/utils/function";
-import { translations } from "../../i18n";
-import { isActive, isQueued, useUploadedImages } from "../../state/uploaded-images";
+import { BlogAssetsListItemDto, changeMainBlogAsset, deleteBlogAsset, changeBlogAssetAlt } from '@pp/api/panel/blog';
+import { range } from '@pp/utils/array';
+import { ResultType } from '@pp/api/common';
+import { ToolTip } from '../common/tooltip';
+import { debounce } from '@pp/utils/function';
+import { translations } from '../../i18n';
+import { isActive, isQueued, useUploadedImages } from '../../state/uploaded-images';
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto>;
 
@@ -42,20 +37,22 @@ const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) =
                     if (!isMain) onSetAsMain();
                     e.stopPropagation();
                 }}
-                className={!isMain ? "hideable" : ""}
-                icon={isMain ? "star" : "star-o"}
+                className={!isMain ? 'hideable' : ''}
+                icon={isMain ? 'star' : 'star-o'}
             />
         </ToolTip>
-        {!isMain && <ToolTip text={translations.blog.assignAssets.delete}>
-            <Icon
-                onClick={(e: MouseEvent) => {
-                    onDelete();
-                    e.stopPropagation();
-                }}
-                className="hideable"
-                icon="trash-o"
-            />
-        </ToolTip>}
+        {!isMain && (
+            <ToolTip text={translations.blog.assignAssets.delete}>
+                <Icon
+                    onClick={(e: MouseEvent) => {
+                        onDelete();
+                        e.stopPropagation();
+                    }}
+                    className="hideable"
+                    icon="trash-o"
+                />
+            </ToolTip>
+        )}
     </div>
 );
 
@@ -83,7 +80,14 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
         const { item, onAltChanged, ...props } = this.props;
         return (
             <Popover {...props} title={translations.blog.assignAssets.describeAsset}>
-                <img style={{ maxWidth: "600px", maxHeight: "600px", objectFit: "contain" }} loading="lazy" src={item.url}></img>
+                <img
+                    style={{
+                        maxWidth: '600px',
+                        maxHeight: '600px',
+                        objectFit: 'contain',
+                    }}
+                    loading="lazy"
+                    src={item.url}></img>
                 <Form fluid>
                     <FormGroup>
                         <ControlLabel>{translations.blog.assignAssets.description}</ControlLabel>
@@ -96,17 +100,16 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
 }
 
 interface AssetThumbProps {
-    id: number
+    id: number;
     onSetAsMain: (assetId: number) => void;
     onDelete: (assetId: number) => void;
     onAltChange: (assetId: number, alt: string) => void;
 }
 
 const AssetThumb = React.memo(({ id, onSetAsMain, onDelete, onAltChange }: AssetThumbProps) => {
-    const item = useUploadedImages(x => x.assets.find(xx => xx.id === id));
+    const item = useUploadedImages((x) => x.assets.find((xx) => xx.id === id));
 
-    if (!item)
-        throw "that should not hapeen";
+    if (!item) throw 'that should not hapeen';
 
     return (
         <Whisper placement="auto" speaker={<AssetDescriptor onAltChanged={onAltChange} item={item} />} trigger="click">
@@ -123,16 +126,17 @@ const AssetThumb = React.memo(({ id, onSetAsMain, onDelete, onAltChange }: Asset
 });
 
 const AssetUploadingThumb = React.memo(({ id }: { id: string }) => {
-    const item = useUploadedImages(x => x.images.find(xx => xx.originId === id));
+    const item = useUploadedImages((x) => x.images.find((xx) => xx.originId === id));
 
-    if (!item)
-        throw "that should not hapeen";
+    if (!item) throw 'that should not hapeen';
 
     return (
         <AssetsListItem className="thumb">
-            {item.status === "failed" && <Loader inverse center />}
-            {isQueued(item.status) && <Icon style={{ color: "white" }} icon="clock-o" size="lg"></Icon>}
-            {isActive(item.status) && <Progress.Line strokeWidth={3} showInfo={false} status={"active"} percent={item.progress} />}
+            {item.status === 'failed' && <Loader inverse center />}
+            {isQueued(item.status) && <Icon style={{ color: 'white' }} icon="clock-o" size="lg"></Icon>}
+            {isActive(item.status) && (
+                <Progress.Line strokeWidth={3} showInfo={false} status={'active'} percent={item.progress} />
+            )}
         </AssetsListItem>
     );
 });
@@ -150,7 +154,10 @@ const AssetUploadButton = ({ onAssetsChosen }: AssetUploadButtonProps) => {
 
     const handleFilesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files ?? new FileList();
-        const res = range(files.length).map(i => ({ file: files[i], url: files[i].name }));//await Promise.all(range(files.length).map((x) => read(files[x])));
+        const res = range(files.length).map((i) => ({
+            file: files[i],
+            url: files[i].name,
+        })); //await Promise.all(range(files.length).map((x) => read(files[x])));
         onAssetsChosen(res);
     };
 
@@ -173,15 +180,15 @@ const AssetsListItem: React.FC<{ className: string; onClick?: () => void }> = ({
 );
 
 const getItemsForBlog = <T extends { blogId: number }>(blogId: number, items: T[]) => {
-    return items.filter(i => i.blogId === blogId);
-}
+    return items.filter((i) => i.blogId === blogId);
+};
 
 const AssetsList = ({
     onAssetsChosen,
     blogId,
     onSetAsMain,
     onDelete,
-    onAltChange
+    onAltChange,
 }: {
     blogId: number;
     onAssetsChosen: (assets: { url: string; file: File }[]) => void;
@@ -189,38 +196,39 @@ const AssetsList = ({
     onDelete: (assetId: number) => void;
     onAltChange: (assetId: number, alt: string) => void;
 }) => {
-
     const { uploaded, assets } = useUploadedImages(
-        x => ({
-            uploaded: getItemsForBlog(blogId, x.images).filter(x => x.status !== "successful").map(x => x.originId),
-            assets: getItemsForBlog(blogId, x.assets).map(x => x.id)
+        (x) => ({
+            uploaded: getItemsForBlog(blogId, x.images)
+                .filter((x) => x.status !== 'successful')
+                .map((x) => x.originId),
+            assets: getItemsForBlog(blogId, x.assets).map((x) => x.id),
         }),
-        (p, n: any) => p.assets.length === n.assets.length && p.uploaded.length === n.uploaded.length);
+        (p, n: any) => p.assets.length === n.assets.length && p.uploaded.length === n.uploaded.length
+    );
 
     return (
         <div className="assets-list">
-            {assets.map((item) => <AssetThumb
-                onAltChange={onAltChange}
-                onDelete={onDelete}
-                onSetAsMain={onSetAsMain}
-                id={item}
-                key={item}
-            />
-            )}
-            {uploaded.map((item) => <AssetUploadingThumb
-                id={item}
-                key={item}
-            />)}
+            {assets.map((item) => (
+                <AssetThumb
+                    onAltChange={onAltChange}
+                    onDelete={onDelete}
+                    onSetAsMain={onSetAsMain}
+                    id={item}
+                    key={item}
+                />
+            ))}
+            {uploaded.map((item) => (
+                <AssetUploadingThumb id={item} key={item} />
+            ))}
             <AssetUploadButton onAssetsChosen={onAssetsChosen} />
         </div>
-    )
+    );
 };
 
 export interface BlogAssignAssetsProps {
     id: number;
 }
-interface BlogAssignAssetsState {
-}
+interface BlogAssignAssetsState {}
 
 export class BlogAssignAssets extends React.Component<BlogAssignAssetsProps, BlogAssignAssetsState> {
     constructor(props: BlogAssignAssetsProps) {
@@ -240,24 +248,29 @@ export class BlogAssignAssets extends React.Component<BlogAssignAssetsProps, Blo
 
     handleNewAssets = (assets: { url: string; file: File }[]) => {
         const { uploadImages } = useUploadedImages.getState();
-        const images = assets.map(i => ({ id: i.url, blogId: this.props.id, file: i.file, size: i.file.size, name: i.file.name }));
+        const images = assets.map((i) => ({
+            id: i.url,
+            blogId: this.props.id,
+            file: i.file,
+            size: i.file.size,
+            name: i.file.name,
+        }));
         uploadImages(images);
     };
 
     handleMarkAsMain = (assetId: number) => {
         changeMainBlogAsset({
             id: this.props.id,
-            mainBlogAsset: assetId
+            mainBlogAsset: assetId,
         }).then(() => {
             const { assets, updateAsset } = useUploadedImages.getState();
 
             const blogAssets = getItemsForBlog(this.props.id, assets);
 
-            const newMain = blogAssets.find(x => x.id === assetId);
-            const oldMain = blogAssets.find(x => x.isMain);
+            const newMain = blogAssets.find((x) => x.id === assetId);
+            const oldMain = blogAssets.find((x) => x.isMain);
 
-            if (newMain === undefined || oldMain === undefined || newMain === oldMain)
-                return;
+            if (newMain === undefined || oldMain === undefined || newMain === oldMain) return;
 
             updateAsset(oldMain.id)({ isMain: false });
             updateAsset(newMain.id)({ isMain: true });

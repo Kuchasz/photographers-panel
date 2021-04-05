@@ -1,69 +1,70 @@
-import express from "express";
-import compression from "compression";
-import multer from "multer";
-import cookieParser from "cookie-parser";
-import { resolve } from "path";
+import express from 'express';
+import compression from 'compression';
+import multer from 'multer';
+import cookieParser from 'cookie-parser';
+import { resolve } from 'path';
 
-require('dotenv').config({ path: resolve(__dirname + "/../.env") });
+require('dotenv').config({ path: resolve(__dirname + '/../.env') });
 const upload = multer();
 
-import * as blogModel from "./src/models/blog";
-import * as messageModel from "./src/models/message";
-import * as privateGalleryModel from "./src/models/private-gallery";
-import * as emailModel from "./src/models/email";
-import * as siteModel from "./src/models/site";
-import { All as Root } from "@pp/site";
-import * as blog from "@pp/api/site/blog";
-import * as blogPanel from "@pp/api/panel/blog";
-import * as sitePanel from "@pp/api/panel/site";
-import fs from "fs";
-import { routes } from "@pp/api/site/routes";
-import * as message from "@pp/api/site/message";
-import * as privateGallery from "@pp/api/site/private-gallery";
-import * as offer from "@pp/api/site/offer";
-import * as privateGalleryPanel from "@pp/api/panel/private-gallery";
-import * as authPanel from "@pp/api/panel/auth";
-import { ResultType, setEndpoint } from "@pp/api/common";
-import { notifySubscribers, sendEmail } from "./src/messages";
-import { allowCrossDomain, processImage } from "./src/core";
-import { runPhotoGalleryServer } from "@pp/gallery-server";
-import * as config from "./src/config";
+import * as blogModel from './src/models/blog';
+import * as messageModel from './src/models/message';
+import * as privateGalleryModel from './src/models/private-gallery';
+import * as emailModel from './src/models/email';
+import * as siteModel from './src/models/site';
+import { All as Root } from '@pp/site';
+import * as blog from '@pp/api/site/blog';
+import * as blogPanel from '@pp/api/panel/blog';
+import * as sitePanel from '@pp/api/panel/site';
+import fs from 'fs';
+import { routes } from '@pp/api/site/routes';
+import * as message from '@pp/api/site/message';
+import * as privateGallery from '@pp/api/site/private-gallery';
+import * as offer from '@pp/api/site/offer';
+import * as privateGalleryPanel from '@pp/api/panel/private-gallery';
+import * as authPanel from '@pp/api/panel/auth';
+import { ResultType, setEndpoint } from '@pp/api/common';
+import { notifySubscribers, sendEmail } from './src/messages';
+import { allowCrossDomain, processImage } from './src/core';
+import { runPhotoGalleryServer } from '@pp/gallery-server';
+import * as config from './src/config';
 
 const requireModule = (path: string) => resolve(__dirname + `/../node_modules/${path}`);
 
 setEndpoint(config.app.appPath);
 
-require("isomorphic-fetch");
-const Youch = require("youch");
+require('isomorphic-fetch');
+const Youch = require('youch');
 
-import { migrations } from "./src/migrations";
-import { connection } from "./src/db";
-import { login, verify } from "./src/auth";
-import { deleteFile, deleteFolderRecursive } from "./src/core/fs";
-import Knex from "knex";
+import { migrations } from './src/migrations';
+import { connection } from './src/db';
+import { login, verify } from './src/auth';
+import { deleteFile, deleteFolderRecursive } from './src/core/fs';
+import Knex from 'knex';
 
-const runMigration = (migration: (connection: Knex) => Promise<boolean>, connection: Knex) => new Promise<boolean>(async (res, rej) => {
-    const transaction = await connection.transaction();
-    try {
-        const runOrNot = await migration(transaction);
-        await transaction.commit();
-        res(runOrNot);
-    } catch (err) {
-        console.log(err);
-        console.log('Rolling back transaction!');
-        await transaction.rollback();
-        return Promise.reject(err);
-    }
-});
+const runMigration = (migration: (connection: Knex) => Promise<boolean>, connection: Knex) =>
+    new Promise<boolean>(async (res, rej) => {
+        const transaction = await connection.transaction();
+        try {
+            const runOrNot = await migration(transaction);
+            await transaction.commit();
+            res(runOrNot);
+        } catch (err) {
+            console.log(err);
+            console.log('Rolling back transaction!');
+            await transaction.rollback();
+            return Promise.reject(err);
+        }
+    });
 
 const runMigrations = async () => {
     console.log(`Running ${migrations.length} migrations`);
     for (let i = 0; i < migrations.length; i++) {
         try {
-            console.log("----------------------");
+            console.log('----------------------');
             console.log(`Running Migration ${i + 1}`);
             const runOrNot = await runMigration(migrations[i], connection);
-            console.log(runOrNot ? "done" : "skipped");
+            console.log(runOrNot ? 'done' : 'skipped');
         } catch (err) {
             console.log('Migrations failed');
             // console.error(err);
@@ -82,7 +83,7 @@ const raiseErr = (err: Error, req: any, res: any) => {
     const youch = new Youch(err, req);
 
     youch.toHTML().then((html: string) => {
-        res.writeHead(500, { "content-type": "text/html" });
+        res.writeHead(500, { 'content-type': 'text/html' });
         res.write(html);
         res.end();
     });
@@ -90,11 +91,14 @@ const raiseErr = (err: Error, req: any, res: any) => {
 
 const wildCard = (s: string) => `${s}*`;
 
-app.use(express.static(requireModule("@pp/site/dist"), { index: false }));
+app.use(express.static(requireModule('@pp/site/dist'), { index: false }));
 
-app.use(privateGallery.viewGallery.route, express.static(requireModule("@pp/gallery/dist"), { index: false }));
-app.use([authPanel.viewLogIn.route, '/panel*', '/panel/*'], express.static(requireModule("@pp/panel/dist"), { index: false }));
-app.use("/public", express.static("public", { index: false }));
+app.use(privateGallery.viewGallery.route, express.static(requireModule('@pp/gallery/dist'), { index: false }));
+app.use(
+    [authPanel.viewLogIn.route, '/panel*', '/panel/*'],
+    express.static(requireModule('@pp/panel/dist'), { index: false })
+);
+app.use('/public', express.static('public', { index: false }));
 
 // site related APIs
 
@@ -111,7 +115,9 @@ app.get(blog.getBlogsList.route, async (_req, res) => {
 app.get(blog.getBlog.route, async (req, res) => {
     const blog = await blogModel.get(req.params.alias);
 
-    const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "").split(',')[0];
+    const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
+        .replace('::ffff:', '')
+        .split(',')[0];
     await blogModel.registerVisit(blog.id, address, new Date());
 
     res.json(blog);
@@ -131,7 +137,7 @@ app.post(message.send.route, async (req, res) => {
         await sendEmail(mesg.name, mesg.email, mesg.content);
         res.json({ type: ResultType.Success });
     } catch {
-        res.json({ type: ResultType.Error, error: "InternalError" });
+        res.json({ type: ResultType.Error, error: 'InternalError' });
     }
 });
 
@@ -139,13 +145,13 @@ app.post(privateGallery.subscribeForNotification.route, async (req, res) => {
     let result: privateGallery.SubscribtionResult | undefined = undefined;
 
     var emailIsValid = emailModel.validate(req.body.email);
-    if (!emailIsValid) result = { type: ResultType.Error, error: "EmailInvalid" };
+    if (!emailIsValid) result = { type: ResultType.Error, error: 'EmailInvalid' };
 
     const galleryExists = await privateGalleryModel.exists(req.body.privateGalleryId);
-    if (galleryExists === false) result = { type: ResultType.Error, error: "GalleryDoesNotExists" };
+    if (galleryExists === false) result = { type: ResultType.Error, error: 'GalleryDoesNotExists' };
 
     const subscribtionExists = await privateGalleryModel.alreadySubscribed(req.body);
-    if (subscribtionExists === true) result = { type: ResultType.Error, error: "AlreadySubscribed" };
+    if (subscribtionExists === true) result = { type: ResultType.Error, error: 'AlreadySubscribed' };
 
     if (result == undefined) {
         await privateGalleryModel.subscribe(req.body);
@@ -163,23 +169,27 @@ app.get(privateGallery.getGalleryUrl.route, async (req, res) => {
 
 app.post([`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.route}/*`], async (req, res) => {
     const { galleryUrl, galleryId } = req.body;
-    const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
+    const initialState = {
+        galleryId: Number(galleryId),
+        galleryUrl: galleryUrl + '/',
+    };
 
-    const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "").split(',')[0];
+    const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
+        .replace('::ffff:', '')
+        .split(',')[0];
     await privateGalleryModel.registerVisit(galleryId, address, new Date());
 
-    fs.readFile(requireModule("@pp/gallery/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(requireModule('@pp/gallery/dist/index.html'), 'utf8', (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
         }
 
         return res.send(
-            template
-                .replace(
-                    `<div id="state-initializer">{initial_state}</div>`,
-                    `<script type="text/javascript">window.___InitialState___=${JSON.stringify(initialState)}</script>`
-                )
+            template.replace(
+                `<div id="state-initializer">{initial_state}</div>`,
+                `<script type="text/javascript">window.___InitialState___=${JSON.stringify(initialState)}</script>`
+            )
         );
     });
 });
@@ -195,11 +205,26 @@ app.post(authPanel.logIn.route, async (req, res) => {
 
     try {
         const tokens = await login(req.body as authPanel.UserCredentials);
-        result = { type: ResultType.Success, result: { authToken: tokens.encodedToken, refreshToken: tokens.encodedToken, issuedAt: tokens.iat, expireDate: tokens.exp } };
-        res.cookie(config.auth.cookieName, result.result.authToken, { httpOnly: true, maxAge: config.auth.maxAge * 1000 }); //secure the cookie!!
+        result = {
+            type: ResultType.Success,
+            result: {
+                authToken: tokens.encodedToken,
+                refreshToken: tokens.encodedToken,
+                issuedAt: tokens.iat,
+                expireDate: tokens.exp,
+            },
+        };
+        res.cookie(config.auth.cookieName, result.result.authToken, {
+            httpOnly: true,
+            maxAge: config.auth.maxAge * 1000,
+        }); //secure the cookie!!
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: 'ErrorOccuredWhileLogIn', errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileLogIn',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -209,23 +234,18 @@ app.get([`${authPanel.viewLogIn.route}`, `${authPanel.viewLogIn.route}/*`], asyn
     // const { galleryUrl, galleryId } = req.body;
     // const initialState = { galleryId: Number(galleryId), galleryUrl: galleryUrl + "/" };
 
-    fs.readFile(requireModule("@pp/panel/dist/index.html"), "utf8", (err, template) => {
+    fs.readFile(requireModule('@pp/panel/dist/index.html'), 'utf8', (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
         }
 
-        return res.send(
-            template
-        );
+        return res.send(template);
     });
 });
 
 app.get(sitePanel.getSiteVisits.route, verify, async (req, res) => {
-    const siteStats = await siteModel.getStats(
-        new Date(req.params.start),
-        new Date(req.params.end)
-    );
+    const siteStats = await siteModel.getStats(new Date(req.params.start), new Date(req.params.end));
     res.json(siteStats);
 });
 
@@ -247,7 +267,11 @@ app.post(blogPanel.createBlog.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingBlog", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileCreatingBlog',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -269,7 +293,11 @@ app.post(blogPanel.changeBlogVisibility.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogVisibility", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileChangingBlogVisibility',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -283,7 +311,11 @@ app.post(blogPanel.changeMainBlogAsset.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingMainBlogAsset", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileChangingMainBlogAsset',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -299,7 +331,11 @@ app.post(blogPanel.editBlog.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingBlog", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileEditingBlog',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -323,13 +359,17 @@ app.post(blogPanel.deleteBlog.route, verify, async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlog", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileDeletingBlog',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
 });
 
-app.post(blogPanel.uploadBlogAsset.route, verify, upload.single("asset"), async (req: Express.Request, res) => {
+app.post(blogPanel.uploadBlogAsset.route, verify, upload.single('asset'), async (req: Express.Request, res) => {
     let result: blogPanel.UploadBlogAssetResult | undefined = undefined;
 
     const blogId: number = (req as any).body.blogId;
@@ -349,15 +389,23 @@ app.post(blogPanel.uploadBlogAsset.route, verify, upload.single("asset"), async 
 
         await processImage(req.file.buffer)(finalPath);
 
-        const blogAseet = await blogModel.createBlogAsset(blogId, assetId, "");
+        const blogAseet = await blogModel.createBlogAsset(blogId, assetId, '');
 
         result = {
             type: ResultType.Success,
-            result: { id: blogAseet.id, isMain: blogAseet.isMain, url: `/${finalPath}` }
+            result: {
+                id: blogAseet.id,
+                isMain: blogAseet.isMain,
+                url: `/${finalPath}`,
+            },
         };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileUploadingBlogAsset", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileUploadingBlogAsset',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -380,7 +428,11 @@ app.post(blogPanel.deleteBlogAsset.route, verify, async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingBlogAsset", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileDeletingBlogAsset',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -396,7 +448,11 @@ app.post(blogPanel.changeBlogAssetAlt.route, verify, async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingBlogAssetError", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileChangingBlogAssetError',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -426,7 +482,11 @@ app.post(blogPanel.changeMainBlogs.route, verify, async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileChangingMainBlogs", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileChangingMainBlogs',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -472,7 +532,11 @@ app.post(privateGalleryPanel.createGallery.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileCreatingGallery", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileCreatingGallery',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -486,12 +550,19 @@ app.post(privateGalleryPanel.notifySubscribers.route, verify, async (req, res) =
         const emails = await privateGalleryModel.getEmails(id);
         const gallery = await privateGalleryModel.getForEdit(id);
 
-        await notifySubscribers(emails.emails.map(e => e.address), gallery.password);
+        await notifySubscribers(
+            emails.emails.map((e) => e.address),
+            gallery.password
+        );
         await privateGalleryModel.markAsNotified(id);
 
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileNotifyingSubsribers", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileNotifyingSubsribers',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -505,7 +576,11 @@ app.post(privateGalleryPanel.editGallery.route, verify, async (req, res) => {
         await privateGalleryModel.editGallery(id, gallery);
         result = { type: ResultType.Success };
     } catch (err) {
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileEditingGallery", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileEditingGallery',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
@@ -521,24 +596,32 @@ app.post(privateGalleryPanel.deleteGallery.route, verify, async (req, res) => {
         result = { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = { type: ResultType.Error, error: "ErrorOccuredWhileDeletingGallery", errorMessage: JSON.stringify(err) };
+        result = {
+            type: ResultType.Error,
+            error: 'ErrorOccuredWhileDeletingGallery',
+            errorMessage: JSON.stringify(err),
+        };
     }
 
     res.json(result);
 });
 
-app.get("/sitemap.txt", async (req, res) => {
+app.get('/sitemap.txt', async (req, res) => {
     const blogAliases = await blogModel.getAliases();
     const protocol = getProtocol(req);
 
-    const blogsUrls = blogAliases.map(alias => `${protocol}://${req.headers.host}/blog/${alias}`);
-    const offersUrls = (await offer.getOffersAliases()).map(alias => `${protocol}://${req.headers.host}/oferta/${alias}`);
-    const routesUrls = Object.values(routes).filter(x => !x.route.includes(":")).map(r => `${protocol}://${req.headers.host}${r.route}`);
+    const blogsUrls = blogAliases.map((alias) => `${protocol}://${req.headers.host}/blog/${alias}`);
+    const offersUrls = (await offer.getOffersAliases()).map(
+        (alias) => `${protocol}://${req.headers.host}/oferta/${alias}`
+    );
+    const routesUrls = Object.values(routes)
+        .filter((x) => !x.route.includes(':'))
+        .map((r) => `${protocol}://${req.headers.host}${r.route}`);
 
     const urls = blogsUrls.concat(routesUrls).concat(offersUrls);
 
-    res.type("text/plain");
-    res.send(urls.join("\r\n"));
+    res.type('text/plain');
+    res.send(urls.join('\r\n'));
 });
 
 function getProtocol(req) {
@@ -548,19 +631,17 @@ function getProtocol(req) {
     return proto.split(/\s*,\s*/)[0];
 }
 
-app.get("/robots.txt", function (req, res) {
+app.get('/robots.txt', function (req, res) {
     const protocol = getProtocol(req);
     const sitemapUrl = `${protocol}://${req.headers.host}/sitemap.txt`;
-    res.type("text/plain");
+    res.type('text/plain');
     res.send(`user-agent: *\nallow: /\n\nsitemap: ${sitemapUrl}`);
 });
 
-app.get("*", async (req, res, next) => {
-    if (req.url === "/api")
-        return next();
+app.get('*', async (req, res, next) => {
+    if (req.url === '/api') return next();
 
-    if (req.url.includes("/public"))
-        return res.sendStatus(404);
+    if (req.url.includes('/public')) return res.sendStatus(404);
 
     let desiredRoute: { route: string };
     let initialState: any;
@@ -573,7 +654,7 @@ app.get("*", async (req, res, next) => {
     // }
 
     const serverConfig = {
-        stats: config.stats
+        stats: config.stats,
     };
 
     console.log(req.url);
@@ -588,16 +669,16 @@ app.get("*", async (req, res, next) => {
         console.log(match);
     } catch (err) {
         console.error(err);
-        return res.redirect("/");
+        return res.redirect('/');
     }
 
-    fs.readFile(requireModule("@pp/site/dist/index.html"), "utf8", async (err, template) => {
+    fs.readFile(requireModule('@pp/site/dist/index.html'), 'utf8', async (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
         }
 
-        let siteContent = "";
+        let siteContent = '';
         const context = {};
         let helmet: any = {};
 
@@ -611,17 +692,18 @@ app.get("*", async (req, res, next) => {
 
         try {
             (global as any).window = {
-                location: req.protocol + '://' + req.get('host') + req.originalUrl
+                location: req.protocol + '://' + req.get('host') + req.originalUrl,
             };
             siteContent = Root.renderToString(app);
             helmet = Root.renderStatic();
-
         } catch (err) {
             console.error(err);
             return res.sendStatus(500);
         }
 
-        const address = (req.header('x-forwarded-for') || req.connection.remoteAddress).replace("::ffff:", "").split(',')[0];
+        const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
+            .replace('::ffff:', '')
+            .split(',')[0];
 
         await siteModel.registerVisit(new Date(), address);
 
@@ -638,7 +720,9 @@ app.get("*", async (req, res, next) => {
                     <link rel="shortcut icon" href="/favicon.ico" />
                     <link href="/main.css" rel="stylesheet" />
                     <script type="text/javascript">
-                        window.___InitialState___=${JSON.stringify({ [desiredRoute.route]: initialState })};
+                        window.___InitialState___=${JSON.stringify({
+                            [desiredRoute.route]: initialState,
+                        })};
                         window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>
                 </head>
                 <body>
@@ -651,9 +735,9 @@ app.get("*", async (req, res, next) => {
 
 const runApp = async () => {
     await runMigrations();
-    await runPhotoGalleryServer(app, resolve(__dirname + "/databases"));
+    await runPhotoGalleryServer(app, resolve(__dirname + '/databases'));
     app.listen(8080, () => {
-        console.log("Application started...");
+        console.log('Application started...');
     });
 };
 

@@ -15,7 +15,7 @@
 
     .slogan li {
         list-style-type: none;
-        font-family: "Century Gothic";
+        font-family: 'Century Gothic';
         font-size: 20px;
         font-weight: normal;
         color: #5383a2;
@@ -69,7 +69,7 @@
     .map {
         width: 100%;
         float: left;
-        background: #ffffff url("../images/map_bg.jpg") center center no-repeat;
+        background: #ffffff url('../images/map_bg.jpg') center center no-repeat;
         color: #035682;
     }
 
@@ -88,7 +88,7 @@
     }
 
     .map address .address-line:first-child {
-        font-family: "Century Gothic Bold";
+        font-family: 'Century Gothic Bold';
     }
 
     .map address img {
@@ -117,7 +117,7 @@
     .offer h1,
     .article h1 {
         font-size: 34px;
-        font-family: "Century Gothic";
+        font-family: 'Century Gothic';
         text-align: center;
         font-weight: normal;
         margin-bottom: 0;
@@ -254,8 +254,6 @@
         font-size: 18px;
     }
 
-
-
     .offer article h2 {
         text-align: center;
     }
@@ -271,7 +269,7 @@
         list-style-type: none;
         padding: 3px 0 0 70px;
         margin: 0 0 20px 0;
-        background: url("../images/check.png") no-repeat;
+        background: url('../images/check.png') no-repeat;
     }
 
     .offer .right {
@@ -287,7 +285,7 @@
         list-style-type: none;
         padding: 3px 0 0 0px;
         margin: 0 0 1px 0;
-        background: url("../images/check.png") no-repeat;
+        background: url('../images/check.png') no-repeat;
     }
 
     footer section {

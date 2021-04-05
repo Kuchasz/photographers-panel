@@ -17,7 +17,6 @@ gallery-images-grid {
     background-color: white;
 
     .columns {
-
         display: flex;
         padding: 2px;
     }
@@ -73,7 +72,7 @@ gallery-images-grid {
 
     img {
         opacity: 0;
-        transition: opacity .5s linear; //transform 5s linear;
+        transition: opacity 0.5s linear; //transform 5s linear;
 
         &.loaded {
             opacity: 1;

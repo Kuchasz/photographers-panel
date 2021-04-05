@@ -1,4 +1,4 @@
-import { f } from "../common";
+import { f } from '../common';
 
 export interface Blog {
     id: number;
@@ -22,17 +22,14 @@ export interface BlogListItem {
     content: string;
 }
 
-const getBlogRoute = "/api/blog/:alias";
-export const getBlog = (alias: string) =>
-    f.get<Blog>(getBlogRoute.replace(":alias", alias));
+const getBlogRoute = '/api/blog/:alias';
+export const getBlog = (alias: string) => f.get<Blog>(getBlogRoute.replace(':alias', alias));
 getBlog.route = getBlogRoute;
 
-const getBlogsListRoute = "/api/blogs-list";
-export const getBlogsList = () =>
-    f.get<BlogListItem[]>(getBlogsListRoute);
+const getBlogsListRoute = '/api/blogs-list';
+export const getBlogsList = () => f.get<BlogListItem[]>(getBlogsListRoute);
 getBlogsList.route = getBlogsListRoute;
 
-const getLastBlogsRoute = "/api/last-blogs";
-export const getLastBlogs = () =>
-    f.get<BlogListItem[]>(getLastBlogsRoute);
+const getLastBlogsRoute = '/api/last-blogs';
+export const getLastBlogs = () => f.get<BlogListItem[]>(getLastBlogsRoute);
 getLastBlogs.route = getLastBlogsRoute;

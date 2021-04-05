@@ -1,82 +1,82 @@
 rating-request-window {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 201;
-  background: rgba(0, 0, 0, .9);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 201;
+    background: rgba(0, 0, 0, 0.9);
 }
 
 .popup {
-  margin: 50px auto;
-  padding: 20px;
-  background: #fff;
-  width: 500px;
-  height: 500px;
-  position: relative;
-  transition: all 5s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  font-weight: inherit;
-
-  header {
-    display: grid;
-    // grid-template-columns: repeat(5, 1fr);
-    height: 180px;
-    grid-gap: 10px;
-
-    img {
-      object-fit: cover;
-      object-position: center;
-      height: 85px;
-    }
-  }
-
-  h2 {
-    color: #333;
-    text-align: center;
-    margin-top: 20px;
-    font-weight: inherit;
-  }
-
-  .close {
-    // position: absolute;
-    // top: 5px;
-    // right: 15px;
-    transition: all 200ms;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-    color: #333;
-    margin: 0px;
-    align-self: flex-end;
-    transform: translateY(-10px);
-
-    &:hover {
-      color: #d80606;
-    }
-  }
-
-  a {
-    text-decoration: none;
-    padding: 10px 15px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    width: 500px;
+    height: 500px;
+    position: relative;
+    transition: all 5s ease-in-out;
     display: flex;
-    background-color: black;
-    color: white;
-    flex-direction: row;
-    justify-content: space-between;
-    align-self: center;
-    margin-top: 40px;
-    text-transform: uppercase;
-    align-items: center;
-  }
+    flex-direction: column;
+    font-weight: inherit;
+
+    header {
+        display: grid;
+        // grid-template-columns: repeat(5, 1fr);
+        height: 180px;
+        grid-gap: 10px;
+
+        img {
+            object-fit: cover;
+            object-position: center;
+            height: 85px;
+        }
+    }
+
+    h2 {
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+        font-weight: inherit;
+    }
+
+    .close {
+        // position: absolute;
+        // top: 5px;
+        // right: 15px;
+        transition: all 200ms;
+        font-size: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        color: #333;
+        margin: 0px;
+        align-self: flex-end;
+        transform: translateY(-10px);
+
+        &:hover {
+            color: #d80606;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        padding: 10px 15px;
+        display: flex;
+        background-color: black;
+        color: white;
+        flex-direction: row;
+        justify-content: space-between;
+        align-self: center;
+        margin-top: 40px;
+        text-transform: uppercase;
+        align-items: center;
+    }
 }
 
 @media screen and (max-width: 700px) {
-  .popup {
-    width: 100%;
-    height: 100%;
-  }
+    .popup {
+        width: 100%;
+        height: 100%;
+    }
 }

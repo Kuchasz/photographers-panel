@@ -1,15 +1,15 @@
-import { Component, Input, ChangeDetectionStrategy, ElementRef, OnInit, HostListener } from "@angular/core";
-import { GalleryService } from "../../service/gallery.service";
-import { GalleryState, GalleryDirectory, GalleryImage } from "../../service/gallery.state";
-import { GalleryThumbConfig } from "../../config";
-import CSSPlugin from "gsap/CSSPlugin";
+import { Component, Input, ChangeDetectionStrategy, ElementRef, OnInit, HostListener } from '@angular/core';
+import { GalleryService } from '../../service/gallery.service';
+import { GalleryState, GalleryDirectory, GalleryImage } from '../../service/gallery.state';
+import { GalleryThumbConfig } from '../../config';
+import CSSPlugin from 'gsap/CSSPlugin';
 const C = CSSPlugin; // here is the gotcha....
 
 @Component({
-    selector: "gallery-thumb",
-    templateUrl: "./gallery-thumb.component.html",
-    styleUrls: ["./gallery-thumb.component.scss"],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'gallery-thumb',
+    templateUrl: './gallery-thumb.component.html',
+    styleUrls: ['./gallery-thumb.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GalleryThumbComponent implements OnInit {
     @Input() config: GalleryThumbConfig;
@@ -21,7 +21,7 @@ export class GalleryThumbComponent implements OnInit {
     elContainer: any;
     thumbsDelta: number = 0;
 
-    @HostListener("document:keydown", ["$event"])
+    @HostListener('document:keydown', ['$event'])
     handleKeyStrokes = (e) => {
         if (e.keyCode === 37) this.gallery.prev(this.directoryId);
         if (e.keyCode === 39) this.gallery.next(this.directoryId);
@@ -31,7 +31,7 @@ export class GalleryThumbComponent implements OnInit {
 
     ngOnInit() {
         // if (this.gallery.config.gestures) {
-        this.elContainer = this.el.nativeElement.querySelector(".g-thumbs");
+        this.elContainer = this.el.nativeElement.querySelector('.g-thumbs');
 
         // const hammer = new Hammer(this.elContainer);
 
@@ -53,7 +53,7 @@ export class GalleryThumbComponent implements OnInit {
         //         -this.config.width / 2
         //     );
 
-            // TweenLite.to(this.elContainer, 0.5, { x: this.thumbsDelta });
+        // TweenLite.to(this.elContainer, 0.5, { x: this.thumbsDelta });
         // });
 
         // hammer.on("pan", (e) => {

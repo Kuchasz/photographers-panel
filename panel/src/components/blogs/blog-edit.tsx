@@ -1,10 +1,10 @@
-import * as React from "react";
-import { Drawer, Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, ButtonToolbar, Alert } from "rsuite";
-import { BlogEditDto, editBlog, getBlogForEdit } from "@pp/api/panel/blog";
-import { ResultType } from "@pp/api/common";
-import { blogModel, emptyBlog } from "./blog-model";
-import { FormInstance } from "rsuite/lib/Form/index.d.ts";
-import { translations } from "../../i18n";
+import * as React from 'react';
+import { Drawer, Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, ButtonToolbar, Alert } from 'rsuite';
+import { BlogEditDto, editBlog, getBlogForEdit } from '@pp/api/panel/blog';
+import { ResultType } from '@pp/api/common';
+import { blogModel, emptyBlog } from './blog-model';
+import { FormInstance } from 'rsuite/lib/Form/index.d.ts';
+import { translations } from '../../i18n';
 
 interface Props {
     id: number;
@@ -50,8 +50,7 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
                     ref={formRef}
                     model={blogModel(id)}
                     formValue={formState}
-                    onChange={(x) => setFormState(x as BlogEditDto)}
-                >
+                    onChange={(x) => setFormState(x as BlogEditDto)}>
                     <FormGroup>
                         <ControlLabel>{translations.blog.edit.details.title.label}</ControlLabel>
                         <FormControl style={{ width: 500 }} name="title" />
@@ -87,8 +86,7 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
                                     setIsLoading(false);
                                     closeEditForm();
                                 }}
-                                appearance="default"
-                            >
+                                appearance="default">
                                 {translations.blog.edit.cancel}
                             </Button>
                         </ButtonToolbar>

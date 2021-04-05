@@ -1,7 +1,7 @@
-import { Injectable, Optional } from "@angular/core";
-import { GraphQLClient } from "graphql-request";
+import { Injectable, Optional } from '@angular/core';
+import { GraphQLClient } from 'graphql-request';
 
-import { getSdk } from "../sdk";
+import { getSdk } from '../sdk';
 
 @Injectable()
 export class ApiService {
@@ -9,16 +9,20 @@ export class ApiService {
     public clientId: number;
     public galleryId: number;
 
-    constructor() { }
+    constructor() {}
 
     async connect(name: string, galleryId: number) {
         // console.log('connect: ', galleryId);
-        this.sdk = getSdk(new GraphQLClient('/api', { headers: { galleryid: galleryId.toString() } }));
+        this.sdk = getSdk(
+            new GraphQLClient('/api', {
+                headers: { galleryid: galleryId.toString() },
+            })
+        );
         this.galleryId = galleryId;
 
         const clientIdKey = `${galleryId}.clientId`;
 
-        this.clientId = Number.parseInt(localStorage.getItem(clientIdKey) ?? "0");
+        this.clientId = Number.parseInt(localStorage.getItem(clientIdKey) ?? '0');
 
         if (!this.clientId) {
             const connectClientResult = await this.sdk.connectClient({ name });

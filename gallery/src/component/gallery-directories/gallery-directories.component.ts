@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { GalleryState } from "../../service/gallery.state";
-import { GalleryConfig } from "../../config/gallery.config";
-import { GalleryService } from "../../service/gallery.service";
-import { Router } from "@angular/router";
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { GalleryState } from '../../service/gallery.state';
+import { GalleryConfig } from '../../config/gallery.config';
+import { GalleryService } from '../../service/gallery.service';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: "gallery-directories",
-    templateUrl: "./gallery-directores.component.html",
-    styleUrls: ["./gallery-directories.component.scss"],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'gallery-directories',
+    templateUrl: './gallery-directores.component.html',
+    styleUrls: ['./gallery-directories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GalleryDirectoriesComponent {
     @Input() config: GalleryConfig;
@@ -29,6 +29,6 @@ export class GalleryDirectoriesComponent {
 
     selectDirectory(directoryId: string) {
         this.router.navigate([`/${directoryId}`]);
-        document.querySelector("gallery :first-child").scrollTo(0, 0);
+        document.querySelector('gallery :first-child').scrollTo(0, 0);
     }
 }

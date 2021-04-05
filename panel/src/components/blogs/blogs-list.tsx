@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { BlogListItem, changeBlogVisibility } from "@pp/api/panel/blog";
-import { Table, Icon, IconButton, ButtonToolbar, Divider } from "rsuite";
-import { ToolTip } from "../common/tooltip";
-import { translations } from "../../i18n";
+import React, { useState } from 'react';
+import { BlogListItem, changeBlogVisibility } from '@pp/api/panel/blog';
+import { Table, Icon, IconButton, ButtonToolbar, Divider } from 'rsuite';
+import { ToolTip } from '../common/tooltip';
+import { translations } from '../../i18n';
 
 interface Props {
     onSelect: (item: any) => void;
@@ -18,7 +18,11 @@ interface State {
     isChangingVisibility: boolean;
 }
 
-type VisibilityIconProps = { id: number; initialVisibility: boolean, onVisibilityChange: (visibility: boolean) => void };
+type VisibilityIconProps = {
+    id: number;
+    initialVisibility: boolean;
+    onVisibilityChange: (visibility: boolean) => void;
+};
 
 const VisibilityIcon = ({ id, initialVisibility, onVisibilityChange }: VisibilityIconProps) => {
     const [visible, setVisible] = useState<boolean>(initialVisibility);
@@ -41,16 +45,16 @@ const VisibilityIcon = ({ id, initialVisibility, onVisibilityChange }: Visibilit
         <ToolTip
             text={
                 <>
-                    {translations.blog.list.visibilityTooltip} <i>{visible ? translations.blog.list.visible : translations.blog.list.hidden}</i>
+                    {translations.blog.list.visibilityTooltip}{' '}
+                    <i>{visible ? translations.blog.list.visible : translations.blog.list.hidden}</i>
                 </>
-            }
-        >
+            }>
             <IconButton
                 onClick={onChangeBlogVisibility}
-                style={{ color: visible ? "#4CAF50" : "#F44336" }}
+                style={{ color: visible ? '#4CAF50' : '#F44336' }}
                 loading={isLoading}
                 appearance="subtle"
-                icon={<Icon icon={visible ? "eye" : "eye-slash"} />}
+                icon={<Icon icon={visible ? 'eye' : 'eye-slash'} />}
             />
         </ToolTip>
     );
@@ -68,16 +72,21 @@ export class BlogsList extends React.Component<Props, State> {
                 rowHeight={50}
                 virtualized={true}
                 shouldUpdateScroll={true}
-                onDataUpdated={() => { }}
+                onDataUpdated={() => {}}
                 loading={this.props.loadingBlogs}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item)}
-                data={this.props.blogs}
-            >
+                data={this.props.blogs}>
                 <Table.Column width={100} align="center">
                     <Table.HeaderCell></Table.HeaderCell>
                     <Table.Cell className="link-group">
-                        {(blog: BlogListItem) => <VisibilityIcon onVisibilityChange={(visibility) => this.props.onVisibilityChange(blog.id, visibility)} id={blog.id} initialVisibility={blog.visible} />}
+                        {(blog: BlogListItem) => (
+                            <VisibilityIcon
+                                onVisibilityChange={(visibility) => this.props.onVisibilityChange(blog.id, visibility)}
+                                id={blog.id}
+                                initialVisibility={blog.visible}
+                            />
+                        )}
                     </Table.Cell>
                 </Table.Column>
 

@@ -1,16 +1,16 @@
-import { ResultType } from "@pp/api/common";
-import { BlogSelectItem, changeMainBlogs, getBlogSelectList, getMainBlogs, MainBlogsDto } from "@pp/api/panel/blog";
-import * as React from "react";
-import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, SelectPicker } from "rsuite";
-import { FormInstance } from "rsuite/lib/Form";
-import { translations } from "../../i18n";
-import { mainBlogsModel } from "./main-blogs-model";
+import { ResultType } from '@pp/api/common';
+import { BlogSelectItem, changeMainBlogs, getBlogSelectList, getMainBlogs, MainBlogsDto } from '@pp/api/panel/blog';
+import * as React from 'react';
+import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, SelectPicker } from 'rsuite';
+import { FormInstance } from 'rsuite/lib/Form';
+import { translations } from '../../i18n';
+import { mainBlogsModel } from './main-blogs-model';
 
 type Props = {};
 
 const emptyMainBlogs = () => ({
     leftBlog: undefined,
-    rightBlog: undefined
+    rightBlog: undefined,
 });
 
 export const Dashboard = (props: Props) => {
@@ -32,7 +32,7 @@ export const Dashboard = (props: Props) => {
         if (formRef.current) {
             const formIsValid = formRef.current.check();
             if (!formIsValid) return;
-                changeMainBlogs(b).then((result) => {
+            changeMainBlogs(b).then((result) => {
                 if (result.type === ResultType.Success) {
                     Alert.success(translations.dashboard.mainBlogs.edited);
                 } else {
@@ -40,37 +40,34 @@ export const Dashboard = (props: Props) => {
                 }
             });
         }
-    }
+    };
 
-    return <Form
-        ref={formRef}
-        model={mainBlogsModel}
-        formValue={formState}
-        onChange={_changeMainBlogs}
-    >
-        <FormGroup>
-            <ControlLabel>{translations.dashboard.mainBlogs.leftBlog.label}</ControlLabel>
-            <FormControl
-                name="leftBlog"
-                style={{ width: 300 }}
-                accepter={SelectPicker}
-                placement="topEnd"
-                searchable={true}
-                data={blogs}
-            />
-            <HelpBlock tooltip>{translations.dashboard.mainBlogs.leftBlog.hint}</HelpBlock>
-        </FormGroup>
-        <FormGroup>
-            <ControlLabel>{translations.dashboard.mainBlogs.rightBlog.label}</ControlLabel>
-            <FormControl
-                name="rightBlog"
-                style={{ width: 300 }}
-                accepter={SelectPicker}
-                placement="topEnd"
-                searchable={true}
-                data={blogs}
-            />
-            <HelpBlock tooltip>{translations.dashboard.mainBlogs.rightBlog.hint}</HelpBlock>
-        </FormGroup>
-    </Form>
-}
+    return (
+        <Form ref={formRef} model={mainBlogsModel} formValue={formState} onChange={_changeMainBlogs}>
+            <FormGroup>
+                <ControlLabel>{translations.dashboard.mainBlogs.leftBlog.label}</ControlLabel>
+                <FormControl
+                    name="leftBlog"
+                    style={{ width: 300 }}
+                    accepter={SelectPicker}
+                    placement="topEnd"
+                    searchable={true}
+                    data={blogs}
+                />
+                <HelpBlock tooltip>{translations.dashboard.mainBlogs.leftBlog.hint}</HelpBlock>
+            </FormGroup>
+            <FormGroup>
+                <ControlLabel>{translations.dashboard.mainBlogs.rightBlog.label}</ControlLabel>
+                <FormControl
+                    name="rightBlog"
+                    style={{ width: 300 }}
+                    accepter={SelectPicker}
+                    placement="topEnd"
+                    searchable={true}
+                    data={blogs}
+                />
+                <HelpBlock tooltip>{translations.dashboard.mainBlogs.rightBlog.hint}</HelpBlock>
+            </FormGroup>
+        </Form>
+    );
+};

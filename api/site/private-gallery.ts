@@ -1,5 +1,5 @@
-import { Result, f } from "../common";
-import { PrivateGalleryState } from "../private-gallery";
+import { Result, f } from '../common';
+import { PrivateGalleryState } from '../private-gallery';
 
 export interface PrivateGalleryUrlCheckResult {
     gallery?: PrivateGalleryDetails;
@@ -23,19 +23,19 @@ export interface Subscription {
     email: string;
 }
 
-export type SubscribtionValidationError = "GalleryDoesNotExists" | "AlreadySubscribed" | "EmailInvalid";
+export type SubscribtionValidationError = 'GalleryDoesNotExists' | 'AlreadySubscribed' | 'EmailInvalid';
 export type SubscribtionResult = Result<SubscribtionValidationError>;
 
-const getGalleryUrlRoute = "/api/private-gallery-url/:password";
+const getGalleryUrlRoute = '/api/private-gallery-url/:password';
 export const getGalleryUrl = (password: string) =>
-    f.get<PrivateGalleryUrlCheckResult>(getGalleryUrlRoute.replace(":password", password));
+    f.get<PrivateGalleryUrlCheckResult>(getGalleryUrlRoute.replace(':password', password));
 getGalleryUrl.route = getGalleryUrlRoute;
 
-const viewGalleryRoute = "/gallery";
-export const viewGallery = () => { };
+const viewGalleryRoute = '/gallery';
+export const viewGallery = () => {};
 viewGallery.route = viewGalleryRoute;
 
-export const subscribeForNotificationRoute = "/api/subscribe-for-notification";
+export const subscribeForNotificationRoute = '/api/subscribe-for-notification';
 export const subscribeForNotification = (subscription: Subscription) =>
     f.post<SubscribtionResult>(subscribeForNotificationRoute, subscription);
 subscribeForNotification.route = subscribeForNotificationRoute;

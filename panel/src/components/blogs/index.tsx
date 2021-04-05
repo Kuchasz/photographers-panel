@@ -1,28 +1,28 @@
-import * as React from "react";
-import { Panel, Icon, Alert, Button } from "rsuite";
-import "./styles.less";
-import { confirm } from "../common/confirmation";
-import { getBlogsList, BlogListItem, deleteBlog, getBlogVisits, BlogVisitsDto } from "@pp/api/panel/blog";
-import { BlogsList } from "./blogs-list";
-import { BlogCreate } from "./blog-create";
-import { BlogEdit } from "./blog-edit";
-import { ResultType } from "@pp/api/common";
-import { BlogAssignAssetsModal } from "./blog-assign-assets-modal";
-import { StatsChart } from "../stats-chart";
-import { ChartStat } from "../stats-chart/stats";
-import { translations } from "../../i18n";
-import { RouteComponentProps } from "react-router-dom";
-import { routes } from "../../routes";
+import * as React from 'react';
+import { Panel, Icon, Alert, Button } from 'rsuite';
+import './styles.less';
+import { confirm } from '../common/confirmation';
+import { getBlogsList, BlogListItem, deleteBlog, getBlogVisits, BlogVisitsDto } from '@pp/api/panel/blog';
+import { BlogsList } from './blogs-list';
+import { BlogCreate } from './blog-create';
+import { BlogEdit } from './blog-edit';
+import { ResultType } from '@pp/api/common';
+import { BlogAssignAssetsModal } from './blog-assign-assets-modal';
+import { StatsChart } from '../stats-chart';
+import { ChartStat } from '../stats-chart/stats';
+import { translations } from '../../i18n';
+import { RouteComponentProps } from 'react-router-dom';
+import { routes } from '../../routes';
 
 const getStats = (x: BlogVisitsDto): ChartStat[] => [
     { label: translations.blog.stats.todayVisits, value: x.todayVisits },
     { label: translations.blog.stats.totalVisits, value: x.totalVisits },
     { label: translations.blog.stats.rangeVisits, value: x.rangeVisits },
     { label: translations.blog.stats.bestDay, value: x.bestDay.date || '---' },
-    { label: translations.blog.stats.bestDayVisits, value: x.bestDay.visits }
+    { label: translations.blog.stats.bestDayVisits, value: x.bestDay.visits },
 ];
 
-interface Props extends RouteComponentProps { }
+interface Props extends RouteComponentProps {}
 
 interface State {
     isLoadingBlogs: boolean;
@@ -44,7 +44,7 @@ export class Blogs extends React.Component<Props, State> {
             showCreateForm: false,
             showEditForm: false,
             showAssignAssets: false,
-            blogToEditId: undefined
+            blogToEditId: undefined,
         };
     }
 
@@ -57,10 +57,10 @@ export class Blogs extends React.Component<Props, State> {
             () => ({ isLoadingBlogs: true }),
             () => {
                 getBlogsList().then((blogs) => {
-                    const selectedBlog = blogs[0];//.id;
+                    const selectedBlog = blogs[0]; //.id;
                     this.setState({
                         blogs,
-                        isLoadingBlogs: false
+                        isLoadingBlogs: false,
                     });
                     this.onBlogSelected(selectedBlog);
                 });
@@ -72,20 +72,19 @@ export class Blogs extends React.Component<Props, State> {
         if (selectedBlog === this.state.selectedBlog) return;
 
         this.setState((_state) => ({
-            selectedBlog
+            selectedBlog,
         }));
-
     };
 
     onBlogEdit = (selectedBlog: number) => {
         this.setState({
             blogToEditId: selectedBlog,
-            showEditForm: true
+            showEditForm: true,
         });
     };
 
     onVisibilityChange = (selectedBlog: number, visibility: boolean) => {
-        const blog = this.state.blogs.find(b => b.id === selectedBlog);
+        const blog = this.state.blogs.find((b) => b.id === selectedBlog);
         if (blog) {
             blog.visible = visibility;
         }
@@ -98,11 +97,14 @@ export class Blogs extends React.Component<Props, State> {
         // });
 
         //blog/:id/assets
-        this.props.history.push(routes.blog.assets.replace(":id", String(selectedBlog)));
+        this.props.history.push(routes.blog.assets.replace(':id', String(selectedBlog)));
     };
 
     onBlogDelete = async (selectedBlog: number) => {
-        const confirmed = await confirm(translations.blog.delete.confirmationContent, translations.blog.delete.confirmationHeader);
+        const confirmed = await confirm(
+            translations.blog.delete.confirmationContent,
+            translations.blog.delete.confirmationHeader
+        );
         if (confirmed) {
             const result = await deleteBlog(selectedBlog);
             if (result.type === ResultType.Success) {
@@ -134,12 +136,18 @@ export class Blogs extends React.Component<Props, State> {
         return (
             <div className="blogs">
                 <Panel>
-                    <StatsChart fetchChartStatsData={async (s, e, i) => {
-                        const result = await getBlogVisits(s, e, i);
-                        const stats = getStats(result);
-                        const data = result.dailyVisits.map(dv => ({ date: dv.date, value: dv.visits }));
-                        return { data, stats };
-                    }} selectedItem={this.state.selectedBlog!} />
+                    <StatsChart
+                        fetchChartStatsData={async (s, e, i) => {
+                            const result = await getBlogVisits(s, e, i);
+                            const stats = getStats(result);
+                            const data = result.dailyVisits.map((dv) => ({
+                                date: dv.date,
+                                value: dv.visits,
+                            }));
+                            return { data, stats };
+                        }}
+                        selectedItem={this.state.selectedBlog!}
+                    />
                 </Panel>
                 <div className="list">
                     <Panel
@@ -147,8 +155,7 @@ export class Blogs extends React.Component<Props, State> {
                             <Button onClick={this.showCreateForm} color="green">
                                 <Icon icon="plus" /> {translations.blog.create.button}
                             </Button>
-                        }
-                    >
+                        }>
                         <BlogsList
                             blogs={this.state.blogs}
                             loadingBlogs={this.state.isLoadingBlogs}

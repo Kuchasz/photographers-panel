@@ -1,5 +1,10 @@
 <ng-container *ngIf="gallery.state | async as state">
-    <gallery-snapped-state (onBack)="goBack()" [snappedCount]="getSnappedCount()" [config]="config" [state]="state"></gallery-snapped-state>
+    <gallery-snapped-state
+        (onBack)="goBack()"
+        [snappedCount]="getSnappedCount()"
+        [config]="config"
+        [state]="state"
+    ></gallery-snapped-state>
     <div class="g-thumb-container">
         <div
             class="g-thumb"
@@ -13,7 +18,7 @@
                 [style.backgroundImage]="getThumbImage(i)"
             ></div>
             <div (click)="image.snapped ? remove(i) : restore(i)" class="g-thumb-delete">
-                <i class="material-icons">{{ image.snapped === true ? "close" : "refresh" }}</i>
+                <i class="material-icons">{{ image.snapped === true ? 'close' : 'refresh' }}</i>
             </div>
         </div>
     </div>

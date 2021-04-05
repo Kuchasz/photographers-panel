@@ -5,23 +5,23 @@ import {
     Component,
     Input,
     OnInit,
-    ViewEncapsulation
-} from "@angular/core";
-import { GalleryState, GalleryDirectory, GalleryImage } from "../../service/gallery.state";
-import { GalleryService } from "../../service/gallery.service";
-import { DisplayModes, GalleryConfig } from "../../config/gallery.config";
-import { Observable } from "rxjs";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { switchMap, find, flatMap, map, tap, first, filter, pluck, distinctUntilChanged } from "rxjs/operators";
-import { sum, sort } from "../../utils/array";
-import { ApiService } from "../../service/api.service";
+    ViewEncapsulation,
+} from '@angular/core';
+import { GalleryState, GalleryDirectory, GalleryImage } from '../../service/gallery.state';
+import { GalleryService } from '../../service/gallery.service';
+import { DisplayModes, GalleryConfig } from '../../config/gallery.config';
+import { Observable } from 'rxjs';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { switchMap, find, flatMap, map, tap, first, filter, pluck, distinctUntilChanged } from 'rxjs/operators';
+import { sum, sort } from '../../utils/array';
+import { ApiService } from '../../service/api.service';
 
 @Component({
-    selector: "gallery-images-grid",
-    templateUrl: "./gallery-images-grid.component.html",
-    styleUrls: ["./gallery-images-grid.component.scss"],
+    selector: 'gallery-images-grid',
+    templateUrl: './gallery-images-grid.component.html',
+    styleUrls: ['./gallery-images-grid.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class GalleryImagesGridComponent implements OnInit {
     currentDirectoryId$: Observable<string>;
@@ -44,15 +44,18 @@ export class GalleryImagesGridComponent implements OnInit {
     ngOnInit() {
         const thumbPos = this.gallery.config.thumbnails.position;
 
-        this.currentDirectoryId$ = this.route.paramMap.pipe(map((x) => x.get("id")));
+        this.currentDirectoryId$ = this.route.paramMap.pipe(map((x) => x.get('id')));
         this.fullscreenModeEnabled$ = this.route.url.pipe(
-            map((segments) => segments.filter((s) => s.path === "fullscreen").length === 0)
+            map((segments) => segments.filter((s) => s.path === 'fullscreen').length === 0)
         );
 
         this.images$ = this.currentDirectoryId$.pipe(
             flatMap((directoryId) =>
                 this.gallery.state.pipe(
-                    map((s) => ({ images: s.images, directoryImages: s.directoryImages })),
+                    map((s) => ({
+                        images: s.images,
+                        directoryImages: s.directoryImages,
+                    })),
                     distinctUntilChanged((prev, curr) => prev.images === curr.images),
                     map((s) => {
                         const ids = s.directoryImages[directoryId];
@@ -76,19 +79,22 @@ export class GalleryImagesGridComponent implements OnInit {
                 return [
                     ...columns.slice(0, shorttestColumn.index),
                     [...shorttestColumn.items, img],
-                    ...columns.slice(shorttestColumn.index + 1)
+                    ...columns.slice(shorttestColumn.index + 1),
                 ];
                 // const leftOrRight = sumHeights(left) > sumHeights(right);
                 // return leftOrRight ? ({left, right: [...right, img]}) : ({right, left: [...left, img]});
             }, columns);
 
-            const columnsWithHeights = finalImages.map((images) => ({ height: sumHeights(images), images }));
+            const columnsWithHeights = finalImages.map((images) => ({
+                height: sumHeights(images),
+                images,
+            }));
 
             const shortestColumn = sortByHeight(columnsWithHeights)[0];
 
             const columnsWithAdjustments = columnsWithHeights.map((c) => ({
                 images: c.images,
-                adjustment: shortestColumn.height / c.height
+                adjustment: shortestColumn.height / c.height,
             }));
 
             finalImages = columnsWithAdjustments.map((c) =>
@@ -112,7 +118,7 @@ export class GalleryImagesGridComponent implements OnInit {
     }
 
     onImageLoad($event: Event) {
-        ($event.target as HTMLImageElement).className = "loaded";
+        ($event.target as HTMLImageElement).className = 'loaded';
     }
 
     enableFullscreenMode(imageId: string, directoryId: string) {
@@ -127,7 +133,7 @@ export class GalleryImagesGridComponent implements OnInit {
         // this.router.navigate([`fullscreen`], { relativeTo: this.route });
         // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     }
-    
+
     public likeImage(imageId: string, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });

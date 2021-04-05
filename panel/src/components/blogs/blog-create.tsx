@@ -1,20 +1,10 @@
-import * as React from "react";
-import {
-    Drawer,
-    Button,
-    Form,
-    FormGroup,
-    ControlLabel,
-    FormControl,
-    HelpBlock,
-    ButtonToolbar,
-    Alert
-} from "rsuite";
-import { BlogEditDto, createBlog } from "@pp/api/panel/blog";
-import { ResultType } from "@pp/api/common";
-import { blogModel, emptyBlog } from "./blog-model";
-import { FormInstance } from "rsuite/lib/Form/index.d.ts";
-import { translations } from "../../i18n";
+import * as React from 'react';
+import { Drawer, Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, ButtonToolbar, Alert } from 'rsuite';
+import { BlogEditDto, createBlog } from '@pp/api/panel/blog';
+import { ResultType } from '@pp/api/common';
+import { blogModel, emptyBlog } from './blog-model';
+import { FormInstance } from 'rsuite/lib/Form/index.d.ts';
+import { translations } from '../../i18n';
 
 interface Props {
     showCreateForm: boolean;
@@ -56,8 +46,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                     ref={formRef}
                     model={blogModel()}
                     formValue={formState}
-                    onChange={(x) => setFormState(x as BlogEditDto)}
-                >
+                    onChange={(x) => setFormState(x as BlogEditDto)}>
                     <FormGroup>
                         <ControlLabel>{translations.blog.create.details.title.label}</ControlLabel>
                         <FormControl style={{ width: 500 }} name="title" />
@@ -94,8 +83,7 @@ export const BlogCreate = ({ showCreateForm, closeCreateForm, onAdded }: Props) 
                                     setIsLoading(false);
                                     closeCreateForm();
                                 }}
-                                appearance="default"
-                            >
+                                appearance="default">
                                 {translations.blog.create.cancel}
                             </Button>
                         </ButtonToolbar>

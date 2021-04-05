@@ -1,16 +1,14 @@
-import React from "react";
-import { Modal, Button } from "rsuite";
-import { BlogAssignAssets, BlogAssignAssetsProps } from "./blog-assign-assets";
-import { translations } from "../../i18n";
+import React from 'react';
+import { Modal, Button } from 'rsuite';
+import { BlogAssignAssets, BlogAssignAssetsProps } from './blog-assign-assets';
+import { translations } from '../../i18n';
 
 interface BlogAssignAssetsModalProps extends BlogAssignAssetsProps {
     showBlogAssignAssets: boolean;
     closeAssignAssets: () => void;
 }
 
-interface BlogAssignAssetsModalState {
-}
-
+interface BlogAssignAssetsModalState {}
 
 export class BlogAssignAssetsModal extends React.Component<BlogAssignAssetsModalProps, BlogAssignAssetsModalState> {
     constructor(props: BlogAssignAssetsModalProps) {
@@ -23,11 +21,7 @@ export class BlogAssignAssetsModal extends React.Component<BlogAssignAssetsModal
 
     render() {
         return (
-            <Modal
-                full
-                show={this.props.showBlogAssignAssets}
-                onHide={this.handleModalHide}
-            >
+            <Modal full show={this.props.showBlogAssignAssets} onHide={this.handleModalHide}>
                 <Modal.Header>
                     <Modal.Title>{translations.blog.assignAssets.title}</Modal.Title>
                 </Modal.Header>

@@ -1,15 +1,15 @@
-import React from "react";
-import { OfferEntry, getOffer } from "@pp/api/site/offer";
-import { Headers } from "../components/headers";
+import React from 'react';
+import { OfferEntry, getOffer } from '@pp/api/site/offer';
+import { Headers } from '../components/headers';
 
 const getImageBackgroundStyle = (url: string) => {
     return {
-        backgroundImage: `url(${url})`
+        backgroundImage: `url(${url})`,
     };
 };
 
 type Offer = { title: string; photos: string[]; description: string };
-type OfferProps = { alias: string, initialState: OfferEntry };
+type OfferProps = { alias: string; initialState: OfferEntry };
 
 export const Offer = ({ alias, initialState }: OfferProps) => {
     const [offer, setOffer] = React.useState(initialState ?? {});
@@ -28,7 +28,7 @@ export const Offer = ({ alias, initialState }: OfferProps) => {
 
                         {offer.photos?.length > 0 ? (
                             <div className="slides">
-                                {offer.photos.map(p => (
+                                {offer.photos.map((p) => (
                                     <div className="slide" key={p.url} style={getImageBackgroundStyle(p.url)}></div>
                                     // <img key={p.url} src={p.url} alt={p.altText}></img>
                                 ))}

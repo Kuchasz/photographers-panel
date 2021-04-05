@@ -1,6 +1,6 @@
-import { Tooltip, Whisper } from "rsuite";
-import React from "react";
-import { TypeAttributes } from "rsuite/lib/@types/common.d.ts";
+import { Tooltip, Whisper } from 'rsuite';
+import React from 'react';
+import { TypeAttributes } from 'rsuite/lib/@types/common.d.ts';
 
 interface ToolTipProps {
     placement?: TypeAttributes.Placement;

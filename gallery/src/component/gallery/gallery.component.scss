@@ -1,17 +1,16 @@
 div {
+    height: 100%;
+    // height: 100vh;
+    // overflow: hidden;
+    justify-content: center;
 
-  height: 100%;
-  // height: 100vh;
-  // overflow: hidden;
-  justify-content: center;
+    gallery-main {
+        display: flex;
+    }
 
-  gallery-main {
-    display: flex;
-  }
-
-  gallery-directories {
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-  }
+    gallery-directories {
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+    }
 }

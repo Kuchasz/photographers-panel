@@ -1,19 +1,18 @@
-import * as React from "react";
-import * as api from "@pp/api/site/blog";
-import facebookIcon from "../images/facebook.svg";
-import { strings } from "../resources";
-import { Headers } from "../components/headers";
+import * as React from 'react';
+import * as api from '@pp/api/site/blog';
+import facebookIcon from '../images/facebook.svg';
+import { strings } from '../resources';
+import { Headers } from '../components/headers';
 
 type BlogProps = { initialState?: api.Blog; alias: string };
 type BlogState = { blog?: api.Blog };
 
 export class Blog extends React.Component<BlogProps, BlogState> {
-
     state = this.props.initialState !== undefined ? { blog: this.props.initialState } : { blog: undefined };
 
     componentDidMount() {
         if (this.state.blog === undefined) {
-            api.getBlog(this.props.alias).then(blog => this.setState({ blog }));
+            api.getBlog(this.props.alias).then((blog) => this.setState({ blog }));
         }
     }
 
@@ -23,23 +22,27 @@ export class Blog extends React.Component<BlogProps, BlogState> {
 
         return (
             <div className="blog">
-                <Headers title={`${this.state.blog.title} (blog)`}/>
+                <Headers title={`${this.state.blog.title} (blog)`} />
                 <section>
                     <article className="show">
-                        <h1>
-                            {this.state.blog.title}
-                        </h1>
+                        <h1>{this.state.blog.title}</h1>
                         <sup className="publish-date">
-                            <small>{strings.blog.published}{this.state.blog.date}</small>
+                            <small>
+                                {strings.blog.published}
+                                {this.state.blog.date}
+                            </small>
                         </sup>
                         <h2>{this.state.blog.content}</h2>
                         <span>
-                            {strings.blog.shareMessage}<a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}><img src={facebookIcon} /></a>
+                            {strings.blog.shareMessage}
+                            <a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}>
+                                <img src={facebookIcon} />
+                            </a>
                         </span>
                         <br />
                         <br />
                         <div className="photos">
-                            {this.state.blog.assets.map(p => (
+                            {this.state.blog.assets.map((p) => (
                                 <img key={p.url} src={p.url} alt={p.alt} loading="lazy" />
                             ))}
                         </div>
