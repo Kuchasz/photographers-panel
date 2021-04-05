@@ -36,4 +36,5 @@ export const app = {
 export const stats = {
     siteId: process.env.STATS_SITE_ID,
     urlBase: process.env.STATS_URL_BASE,
+    authToken: process.env.STATS_AUTH_TOKEN
 };

@@ -174,7 +174,7 @@ export const Pricing = () => {
                                                     type: e.target.checked ? 'Select' : 'Deselect',
                                                     tariff: t.type,
                                                 });
-                                                registerEvent(`Change Tariff [${t.type}]`, Number(e.target.checked));
+                                                registerEvent(`Change Tariff.${t.type}`, Number(e.target.checked));
                                             }}
                                         />
                                         {strings.offer.tariffs[t.type]}

@@ -652,7 +652,10 @@ app.get('*', async (req, res, next) => {
     let initialState: any;
 
     const serverConfig = {
-        stats: config.stats,
+        stats: {
+            siteId: config.stats.siteId,
+            urlBase: config.stats.urlBase
+        },
     };
 
     console.log(req.url);

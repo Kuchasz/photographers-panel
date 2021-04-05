@@ -14,12 +14,13 @@ const emptyMainBlogs = () => ({
     rightBlog: undefined,
 });
 
-const eventsRaportUrl = () =>
-    `//${config.stats.urlBase}/index.php?module=Widgetize&action=iframe&secondaryDimension=eventName&disableLink=0&widget=1&moduleToWidgetize=Events&actionToWidgetize=getAction&idSite=${config.stats.siteId}&period=day&date=2021-04-05&disableLink=1&widget=1`;
+const eventsReportUrl = () =>
+    `${config.stats.urlBase}/index.php?module=API&method=Events.getAction&idSite=${config.stats.siteId}&period=month&date=today&format=JSON&token_auth=${config.stats.authToken}&force_api_session=1`;
 
 export const Dashboard = (props: Props) => {
     const [formState, setFormState] = React.useState<MainBlogsDto>(emptyMainBlogs());
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
+    const [report, setReport] = React.useState<string>('');
     const formRef = React.useRef<FormInstance>();
 
     React.useEffect(() => {
@@ -29,6 +30,12 @@ export const Dashboard = (props: Props) => {
     React.useEffect(() => {
         getMainBlogs().then(setFormState);
     }, []);
+
+    React.useEffect(() => {
+        fetch(eventsReportUrl())
+            .then((x) => x.json())
+            .then((x) => setReport(JSON.stringify(x)));
+    });
 
     const _changeMainBlogs = (b: MainBlogsDto) => {
         setFormState(b);
@@ -74,16 +81,7 @@ export const Dashboard = (props: Props) => {
                     <HelpBlock tooltip>{translations.dashboard.mainBlogs.rightBlog.hint}</HelpBlock>
                 </FormGroup>
             </Form>
-            <div style={{ width: '100%', height: '100%' }} id="widgetIframe">
-                <iframe
-                    width="100%"
-                    height="100%"
-                    src={eventsRaportUrl()}
-                    scrolling="yes"
-                    frameBorder="0"
-                    marginHeight={0}
-                    marginWidth={0}></iframe>
-            </div>
+            <p>{report}</p>
         </>
     );
 };

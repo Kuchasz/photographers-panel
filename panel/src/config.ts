@@ -2,6 +2,7 @@ interface Config {
     stats: {
         siteId: number;
         urlBase: string;
+        authToken: string;
     };
 }
 
