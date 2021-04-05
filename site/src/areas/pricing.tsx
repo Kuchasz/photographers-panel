@@ -5,7 +5,8 @@ import linkPhoto from "../images/page_offer_photo.png";
 import { offerExists } from "@pp/api/site/offer";
 import { Link } from "react-router-dom";
 import { routes } from "@pp/api/site/routes";
-import { getTracker } from "../core/tracker";
+import { MatomoTracker } from "../core/mtracker";
+import { get } from "../config";
 
 
 
@@ -86,7 +87,8 @@ const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
 const getOfferUrl = (alias: string) => routes.offer.route.replace(":alias", alias);
 
 export const Pricing = () => {
-    const tracker = (document !== undefined) ? getTracker() : { trackEvent: () => { } };
+    const config = get();
+    const tracker = new MatomoTracker(config.stats.siteId, config.stats.urlBase);
 
 
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
@@ -98,11 +100,17 @@ export const Pricing = () => {
 
     const price = calculatePrice(selectedTariffs, selectedYear);
 
+    // e_c?: string;
+    // e_a?: string;
+    // e_n?: string;
+    // e_v?: string;
+  
+
     const registerCalculatorSettingsChange = () => tracker.trackEvent({
-        category: 'Site',
-        action: 'Change Settings',
-        name: 'Calculator', // optional
-        value: price.finalPrice, // optional, numerical value
+        e_c: 'Site',
+        e_a: 'Change Settings',
+        e_n: 'Calculator', // optional
+        e_v: price.finalPrice, // optional, numerical value
     });
 
     return (

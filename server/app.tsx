@@ -601,6 +601,8 @@ app.get("*", async (req, res, next) => {
         const context = {};
         let helmet: any = {};
 
+        Root.initializeConfig(serverConfig);
+
         const app = Root.createElement(
             Root.StaticRouter,
             { location: req.url, context },

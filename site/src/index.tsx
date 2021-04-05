@@ -41,5 +41,6 @@ export const All = {
     StaticRouter,
     renderToString,
     matchPath,
-    renderStatic: Helmet.renderStatic
-};
+    renderStatic: Helmet.renderStatic,
+    initializeConfig: initialize
+} as any;
