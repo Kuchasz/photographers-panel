@@ -254,6 +254,11 @@ app.get(sitePanel.getSiteVisits.route, verify, async (req, res) => {
     res.json(siteStats);
 });
 
+app.get(sitePanel.getSiteEvents.route, verify, async(req,res) => {
+    const siteEvents = await siteModel.getEvents();
+    res.json(siteEvents);
+});
+
 app.get(blogPanel.getBlogSelectList.route, verify, async (req, res) => {
     const blogs = await blogModel.getSelectList();
     res.json(blogs);

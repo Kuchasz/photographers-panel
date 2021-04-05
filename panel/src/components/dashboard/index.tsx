@@ -1,9 +1,9 @@
 import { ResultType } from '@pp/api/common';
 import { BlogSelectItem, changeMainBlogs, getBlogSelectList, getMainBlogs, MainBlogsDto } from '@pp/api/panel/blog';
+import { getSiteEvents, SiteEventDto } from '@pp/api/panel/site';
 import * as React from 'react';
 import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, SelectPicker } from 'rsuite';
 import { FormInstance } from 'rsuite/lib/Form';
-import { config } from '../../config';
 import { translations } from '../../i18n';
 import { mainBlogsModel } from './main-blogs-model';
 
@@ -14,13 +14,10 @@ const emptyMainBlogs = () => ({
     rightBlog: undefined,
 });
 
-const eventsReportUrl = () =>
-    `${config.stats.urlBase}/index.php?module=API&method=Events.getAction&idSite=${config.stats.siteId}&period=month&date=today&format=JSON&token_auth=${config.stats.authToken}&force_api_session=1`;
-
 export const Dashboard = (props: Props) => {
     const [formState, setFormState] = React.useState<MainBlogsDto>(emptyMainBlogs());
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
-    const [report, setReport] = React.useState<string>('');
+    const [events, setEvents] = React.useState<SiteEventDto[]>([]);
     const formRef = React.useRef<FormInstance>();
 
     React.useEffect(() => {
@@ -32,10 +29,8 @@ export const Dashboard = (props: Props) => {
     }, []);
 
     React.useEffect(() => {
-        fetch(eventsReportUrl())
-            .then((x) => x.json())
-            .then((x) => setReport(JSON.stringify(x)));
-    });
+        getSiteEvents().then(setEvents);
+    }, []);
 
     const _changeMainBlogs = (b: MainBlogsDto) => {
         setFormState(b);
@@ -81,7 +76,13 @@ export const Dashboard = (props: Props) => {
                     <HelpBlock tooltip>{translations.dashboard.mainBlogs.rightBlog.hint}</HelpBlock>
                 </FormGroup>
             </Form>
-            <p>{report}</p>
+            <ul>
+                {events.map((e) => (
+                    <li key={e.idsubdatatable}>
+                        {e.label}: {e.nb_events}
+                    </li>
+                ))}
+            </ul>
         </>
     );
 };

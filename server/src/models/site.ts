@@ -2,6 +2,9 @@ import { connection } from '../db';
 import * as panel from '@pp/api/panel/site';
 import { getDateRange, getDateString } from '@pp/utils/date';
 import { sum } from '@pp/utils/array';
+import { getHttp } from '../core/http';
+import { stats } from "../config";
+
 
 export const exists = async (date: Date, ip: string): Promise<boolean> => {
     const rows = await connection('SiteVisit').where({ Date: date, Ip: ip }).select('Id').limit(1);
@@ -73,3 +76,6 @@ export const getStats = async (startDate: Date, endDate: Date): Promise<panel.Si
         todayVisits,
     };
 };
+
+export const getEvents = (): Promise<panel.SiteEventDto[]> => 
+    getHttp(`https://${stats.urlBase}/index.php?module=API&method=Events.getAction&idSite=${stats.siteId}&period=month&date=today&format=JSON&token_auth=${stats.authToken}&force_api_session=1`);
