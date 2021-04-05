@@ -646,13 +646,6 @@ app.get('*', async (req, res, next) => {
     let desiredRoute: { route: string };
     let initialState: any;
 
-    // interface Config {
-    //     stats: {
-    //         siteId: number,
-    //         urlBase: string
-    //     }
-    // }
-
     const serverConfig = {
         stats: config.stats,
     };

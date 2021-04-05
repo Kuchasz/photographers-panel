@@ -7,17 +7,6 @@ import { routes } from '@pp/api/site/routes';
 import { MatomoTracker } from '../core/mtracker';
 import { get } from '../config';
 
-const config = get();
-const tracker = new MatomoTracker(config.stats.siteId, config.stats.urlBase);
-
-const registerEvent = (action: string, value: number) =>
-    tracker.trackEvent({
-        e_c: 'Site',
-        e_a: action,
-        e_n: 'Calculator',
-        e_v: value,
-    });
-
 type TariffYears = 2021 | 2022 | 2023;
 type TariffPositions = 'WeddingPhotography' | 'WeddingVideo' | 'DvdPackage' | 'Afters' | 'WeddingSession';
 type TariffValues = { [P in TariffYears]: number };
@@ -132,6 +121,18 @@ const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);
 
 export const Pricing = () => {
+    const registerEvent = (action: string, value: number) => {
+        const config = get();
+        const tracker = new MatomoTracker(config.stats.siteId, config.stats.urlBase);
+
+        tracker.trackEvent({
+            e_c: 'Site',
+            e_a: action,
+            e_n: 'Calculator',
+            e_v: value,
+        });
+    };
+
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
     const [selectedTariffs, changeTariffs] = React.useReducer(updateTariffs, [
         'WeddingPhotography',
