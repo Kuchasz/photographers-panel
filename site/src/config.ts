@@ -8,7 +8,10 @@ interface Config {
 let _config: Config;
 
 export const initialize = (config: Config) => {
-    _config = config;
+    if (typeof config === 'string')
+        _config = JSON.parse(config)
+    else
+        _config = config;
 };
 
 export const get = () => _config;
