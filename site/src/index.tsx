@@ -29,7 +29,7 @@ if (typeof document !== 'undefined') {
     );
 
     for (var prop in initialState) delete initialState[prop];
-    for (var prop in serverConfig) delete serverConfig[prop];
+    // for (var prop in serverConfig) delete serverConfig[prop];
 
     initialState = undefined;
     serverConfig = undefined;
