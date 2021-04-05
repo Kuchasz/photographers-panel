@@ -7,6 +7,17 @@ import { routes } from '@pp/api/site/routes';
 import { MatomoTracker } from '../core/mtracker';
 import { get } from '../config';
 
+const config = get();
+const tracker = new MatomoTracker(config.stats.siteId, config.stats.urlBase);
+
+const registerEvent = (action: string, value: number) =>
+    tracker.trackEvent({
+        e_c: 'Site',
+        e_a: action,
+        e_n: 'Calculator',
+        e_v: value,
+    });
+
 type TariffYears = 2021 | 2022 | 2023;
 type TariffPositions = 'WeddingPhotography' | 'WeddingVideo' | 'DvdPackage' | 'Afters' | 'WeddingSession';
 type TariffValues = { [P in TariffYears]: number };
@@ -121,9 +132,6 @@ const available = (selectedTariffs: TariffPositions[]) => (tariff: Tariff) =>
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);
 
 export const Pricing = () => {
-    const config = get();
-    const tracker = new MatomoTracker(config.stats.siteId, config.stats.urlBase);
-
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
     const [selectedTariffs, changeTariffs] = React.useReducer(updateTariffs, [
         'WeddingPhotography',
@@ -132,14 +140,6 @@ export const Pricing = () => {
     ]);
 
     const price = calculatePrice(selectedTariffs, selectedYear);
-
-    const registerCalculatorSettingsChange = () =>
-        tracker.trackEvent({
-            e_c: 'Site',
-            e_a: 'Change Settings',
-            e_n: 'Calculator',
-            e_v: price.finalPrice,
-        });
 
     return (
         <div className="pricing">
@@ -155,7 +155,7 @@ export const Pricing = () => {
                                     className={t === selectedYear ? 'current' : ''}
                                     onClick={() => {
                                         selectYear(t);
-                                        registerCalculatorSettingsChange();
+                                        registerEvent('Change Year', t);
                                     }}>
                                     {t}
                                 </a>
@@ -173,7 +173,7 @@ export const Pricing = () => {
                                                     type: e.target.checked ? 'Select' : 'Deselect',
                                                     tariff: t.type,
                                                 });
-                                                registerCalculatorSettingsChange();
+                                                registerEvent(`Change Tariff [${t.type}]`, Number(e.target.checked));
                                             }}
                                         />
                                         {strings.offer.tariffs[t.type]}
