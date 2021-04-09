@@ -19,8 +19,8 @@ import { setEndpoint } from '@pp/api/common';
 import { allowCrossDomain } from './src/core';
 import { runPhotoGalleryServer } from '@pp/gallery-server';
 import * as config from './src/config';
-import { router as siteRouter } from "./src/areas/site/routes";
-import { router as panelRouter } from "./src/areas/panel/routes";
+import { router as siteRouter } from './src/areas/site/routes';
+import { router as panelRouter } from './src/areas/panel/routes';
 
 const requireModule = (path: string) => resolve(__dirname + `/../node_modules/${path}`);
 
@@ -69,8 +69,7 @@ app.use(express.urlencoded());
 app.use(compression());
 app.use(cookieParser());
 app.use(allowCrossDomain);
-app.use(siteRouter);
-app.use(panelRouter);
+
 
 const raiseErr = (err: Error, req: any, res: any) => {
     const youch = new Youch(err, req);
@@ -82,17 +81,20 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-const wildCard = (s: string) => `${s}*`;
-
 app.use(express.static(requireModule('@pp/site/dist'), { index: false }));
-
-app.use(privateGallery.viewGallery.route, express.static(requireModule('@pp/gallery/dist'), { index: false }));
+app.use(
+    [privateGallery.viewGallery.route],
+    express.static(requireModule('@pp/gallery/dist'), { index: false })
+);
 app.use(
     [authPanel.viewLogIn.route, '/panel*', '/panel/*'],
     express.static(requireModule('@pp/panel/dist'), { index: false })
 );
-app.use('/public', express.static('public', { index: false }));
 
+app.use(siteRouter);
+app.use(panelRouter);
+
+app.use('/public', express.static('public', { index: false }));
 
 app.get('/sitemap.txt', async (req, res) => {
     const blogAliases = await blogModel.getAliases();
@@ -137,7 +139,7 @@ app.get('*', async (req, res, next) => {
     const serverConfig = {
         stats: {
             siteId: config.stats.siteId,
-            urlBase: config.stats.urlBase
+            urlBase: config.stats.urlBase,
         },
     };
 
