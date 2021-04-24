@@ -13,7 +13,7 @@ export interface BlogAsset {
     alt: string;
 }
 
-export interface BlogListItem {
+export type BlogListItem = {
     title: string;
     date: string;
     alias: string;
@@ -21,6 +21,8 @@ export interface BlogListItem {
     photoAlt: string;
     content: string;
 }
+
+export type MostRecentBlogListItem = BlogListItem & { isMain: boolean };
 
 const getBlogRoute = '/api/blog/:alias';
 export const getBlog = (alias: string) => f.get<Blog>(getBlogRoute.replace(':alias', alias));
@@ -31,5 +33,5 @@ export const getBlogsList = () => f.get<BlogListItem[]>(getBlogsListRoute);
 getBlogsList.route = getBlogsListRoute;
 
 const getLastBlogsRoute = '/api/last-blogs';
-export const getLastBlogs = () => f.get<BlogListItem[]>(getLastBlogsRoute);
+export const getLastBlogs = () => f.get<MostRecentBlogListItem[]>(getLastBlogsRoute);
 getLastBlogs.route = getLastBlogsRoute;

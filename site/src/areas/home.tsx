@@ -1,13 +1,13 @@
 import * as React from 'react';
 import mapImage from '../images/map.png';
-import { getLastBlogs, BlogListItem } from '@pp/api/site/blog';
+import { getLastBlogs, MostRecentBlogListItem } from '@pp/api/site/blog';
 import { Link } from 'react-router-dom';
 import { routes } from '@pp/api/site/routes';
 import { strings } from '../resources';
 import { truncate } from '@pp/utils/string';
 
-type HomeProps = { initialState?: BlogListItem[] };
-type HomeState = { lastBlogs?: BlogListItem[] };
+type HomeProps = { initialState?: MostRecentBlogListItem[] };
+type HomeState = { lastBlogs?: MostRecentBlogListItem[] };
 
 export class Home extends React.Component<HomeProps, HomeState> {
     state = this.props.initialState !== undefined ? { lastBlogs: this.props.initialState } : { lastBlogs: [] };
@@ -18,14 +18,20 @@ export class Home extends React.Component<HomeProps, HomeState> {
         }
     }
 
-    getBlogUrl(index: number) {
+    getBlogUrlByIndex(index: number) {
         return `/blog/${this.state.lastBlogs[index].alias}`;
     }
+
+    getBlogUrl(blog: MostRecentBlogListItem){
+        return `/blog/${blog.alias}`;
+    }
+
     getBlogTitle(index: number) {
         return this.state.lastBlogs[index].title;
     }
 
     render() {
+        const mostRecentBlog = this.state.lastBlogs.filter(x => !x.isMain)[0];
         return (
             <>
                 <div className="offer">
@@ -59,28 +65,28 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 <div className="promo-blogs">
                     {this.state.lastBlogs.length > 0 ? (
                         <>
-                            <Link to={this.getBlogUrl(2)} style={{ gridRow: 1, gridColumn: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(2)} style={{ gridRow: 1, gridColumn: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[2].photoUrl}
                                     alt={this.state.lastBlogs[2].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrl(3)} style={{ gridRow: 2, gridColumn: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(3)} style={{ gridRow: 2, gridColumn: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[3].photoUrl}
                                     alt={this.state.lastBlogs[3].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrl(4)} style={{ gridRow: 1, gridColumn: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(4)} style={{ gridRow: 1, gridColumn: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[4].photoUrl}
                                     alt={this.state.lastBlogs[4].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrl(5)} style={{ gridRow: 2, gridColumn: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(5)} style={{ gridRow: 2, gridColumn: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[5].photoUrl}
                                     alt={this.state.lastBlogs[5].photoAlt}></img>
                             </Link>
                             <Link
-                                to={this.getBlogUrl(0)}
+                                to={this.getBlogUrlByIndex(0)}
                                 className="main"
                                 style={{ gridRow: '1 / span 2', gridColumn: '3 / span 2' }}>
                                 <div className="overlay">{this.getBlogTitle(0)}</div>
@@ -89,7 +95,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                     alt={this.state.lastBlogs[0].photoAlt}></img>
                             </Link>
                             <Link
-                                to={this.getBlogUrl(1)}
+                                to={this.getBlogUrlByIndex(1)}
                                 className="main"
                                 style={{ gridRow: '1 / span 2', gridColumn: '5 / span 2' }}>
                                 <div className="overlay">{this.getBlogTitle(1)}</div>
@@ -97,22 +103,22 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                     src={this.state.lastBlogs[1].photoUrl}
                                     alt={this.state.lastBlogs[1].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrl(6)} style={{ gridRow: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(6)} style={{ gridRow: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[6].photoUrl}
                                     alt={this.state.lastBlogs[6].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrl(7)} style={{ gridRow: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(7)} style={{ gridRow: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[7].photoUrl}
                                     alt={this.state.lastBlogs[7].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrl(8)} style={{ gridRow: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(8)} style={{ gridRow: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[8].photoUrl}
                                     alt={this.state.lastBlogs[8].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrl(9)} style={{ gridRow: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(9)} style={{ gridRow: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[9].photoUrl}
                                     alt={this.state.lastBlogs[9].photoAlt}></img>
@@ -127,10 +133,10 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                         <article>
                             <span>
-                                {this.state.lastBlogs[0] !== undefined ? (
-                                    <Link to={this.getBlogUrl(0)}>
-                                        <h1>{this.state.lastBlogs[0].title}</h1>
-                                        <h2>{truncate(220, this.state.lastBlogs[0].content)}...</h2>
+                                { mostRecentBlog !== undefined ? (
+                                    <Link to={this.getBlogUrl(mostRecentBlog)}>
+                                        <h1>{mostRecentBlog.title}</h1>
+                                        <h2>{truncate(220, mostRecentBlog.content)}...</h2>
                                     </Link>
                                 ) : null}
                             </span>

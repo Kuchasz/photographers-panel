@@ -9,7 +9,7 @@ const getBlogSelectItem = (b) => ({
     value: Number(b.Id),
 });
 
-export const getMostRecent = async (): Promise<site.BlogListItem[]> => {
+export const getMostRecent = async (): Promise<site.MostRecentBlogListItem[]> => {
     const blogs = await connection('Blog')
         .leftJoin('MainBlog', 'MainBlog.Blog_id', 'Blog.Id')
         .leftJoin('BlogAsset', 'BlogAsset.Id', 'Blog.MainBlogAsset_id')
@@ -17,7 +17,7 @@ export const getMostRecent = async (): Promise<site.BlogListItem[]> => {
         .whereNotNull('BlogAsset.Id')
         .orderBy('MainBlog.Kind', 'asc')
         .orderBy('Blog.Date', 'desc')
-        .select('Blog.Id', 'BlogAsset.Url', 'BlogAsset.Alt', 'Blog.Title', 'Blog.Date', 'Blog.Alias', 'Blog.Content')
+        .select('Blog.Id', 'BlogAsset.Url', 'BlogAsset.Alt', 'Blog.Title', 'Blog.Date', 'Blog.Alias', 'Blog.Content', 'MainBlog.Kind')
         .limit(10);
 
     const blogListItems = blogs.map((b: any) => ({
@@ -27,6 +27,7 @@ export const getMostRecent = async (): Promise<site.BlogListItem[]> => {
         photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`,
         photoAlt: b.Alt,
         content: b.Content,
+        isMain: b.Kind !== null
     }));
 
     return blogListItems;
@@ -46,7 +47,7 @@ export const getList = async (): Promise<site.BlogListItem[]> => {
         alias: b.Alias,
         photoUrl: `/${getAssetPath(getAssetsPath(b.Id), b.Url)}`,
         photoAlt: b.Alt,
-        content: b.Content,
+        content: b.Content
     }));
 
     return blogListItems;
