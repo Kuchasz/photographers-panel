@@ -50,7 +50,6 @@ gallery-images-grid {
         visibility: hidden;
         // opacity: 0;
         transition: background-color 0.25s linear;
-        color: white;
         height: 100%;
         // background-color: rgba(0, 0, 0, 0.4);
         background-color: transparent;
@@ -80,7 +79,9 @@ gallery-images-grid {
             margin-left: 5px;
             padding: 0.2em 0.5em;
             border-radius: 15px;
-            background: lightcoral;
+            color: lightcoral;
+            background: white;
+            font-weight: bold;
         }
     }
 

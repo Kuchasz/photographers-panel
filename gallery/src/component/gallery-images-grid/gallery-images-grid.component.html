@@ -6,16 +6,18 @@
                     [style.flex-basis]="image.height / 2 + 'px'" class="image-container">
                     <img [src]="image.src" (load)="onImageLoad($event)" loading="lazy" />
                     <div class="background">
-                        <div class="image-status">
-                            <ng-container *ngIf="image.liked">
-                                <span class="mdi mdi-heart" (click)="unlikeImage(image.id, $event)"></span>
+                        <ng-container *ngIf="image.liked">
+                            <div class="image-status" (click)="unlikeImage(image.id, $event)">
+                                <span class="mdi mdi-heart"></span>
                                 <p *ngIf="image.likes > 1">{{ image.likes }}</p>
-                            </ng-container>
-                            <ng-container *ngIf="!image.liked">
-                                <span class="mdi mdi-heart-outline" (click)="likeImage(image.id, $event)"></span>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!image.liked">
+                            <div class="image-status" (click)="likeImage(image.id, $event)">
+                                <span class="mdi mdi-heart-outline"></span>
                                 <p *ngIf="image.likes > 0">{{ image.likes }}</p>
-                            </ng-container>
-                        </div>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
             </div>
