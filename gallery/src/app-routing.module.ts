@@ -25,6 +25,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],
-    providers: [{ provide: APP_BASE_HREF, useValue: '/gallery' }],
+    providers: [{ provide: APP_BASE_HREF, useValue: '/galeria' }],
 })
 export class AppRoutingModule {}
