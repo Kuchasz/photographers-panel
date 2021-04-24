@@ -46,8 +46,9 @@ gallery-images-grid {
     -webkit-tap-highlight-color: transparent;
 
     .background {
-        display: none;
-        visibility: hidden;
+        // display: none;
+        // visibility: hidden;
+        display: flex;
         // opacity: 0;
         transition: background-color 0.25s linear;
         height: 100%;
@@ -95,17 +96,8 @@ gallery-images-grid {
     }
 
     @media (min-width: 480px) {
-        .background {
-            display: flex;
-            visibility: visible;
-        }
-
         &:hover {
             &:hover {
-                img {
-                    // transform: scale(1.1);
-                }
-
                 .background {
                     background-color: rgba(0, 0, 0, 0.25);
                 }
