@@ -31,7 +31,7 @@ export const getGalleryUrl = (password: string) =>
     f.get<PrivateGalleryUrlCheckResult>(getGalleryUrlRoute.replace(':password', password));
 getGalleryUrl.route = getGalleryUrlRoute;
 
-const viewGalleryRoute = '/gallery';
+const viewGalleryRoute = '/galeria';
 export const viewGallery = () => {};
 viewGallery.route = viewGalleryRoute;
 

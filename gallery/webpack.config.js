@@ -55,7 +55,7 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: resolve(__dirname, './dist'), //,
-        publicPath: '/gallery/',
+        publicPath: '/galeria/',
     },
     devtool: 'eval-source-map',
     performance: {
