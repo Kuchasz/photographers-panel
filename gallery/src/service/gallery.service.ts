@@ -4,18 +4,13 @@ import { GalleryState, GalleryImage, GalleryDirectory, ScreenOrientation } from 
 import { GalleryConfig } from '../config/gallery.config';
 import { defaultState, defaultConfig } from '../config/gallery.default';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
-import { switchMap, take, takeWhile, map, filter, find, tap, finalize, publishLast } from 'rxjs/operators';
-import { from, pipe, interval as fromInterval } from 'rxjs';
-import { access } from 'fs';
+import { switchMap, take, takeWhile, map, filter, find, tap, finalize } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject, from, pipe, interval as fromInterval } from 'rxjs';
 import { sort } from '@pp/utils/array';
 
 @Injectable()
 export class GalleryService {
-    state: BehaviorSubject<GalleryState>;
+    public state: BehaviorSubject<GalleryState>;
     config: GalleryConfig = defaultConfig;
     player: Subject<number>;
     likedPhotos: string[] = [];

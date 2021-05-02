@@ -46,7 +46,7 @@ document.querySelector('#state-initializer')?.remove();
             provide: APP_INITIALIZER,
             useFactory: (galleries: GalleryService, api: ApiService) => {
                 return () =>
-                    new Promise(async (res, rej) => {
+                    new Promise<void>(async (res, rej) => {
                         const {
                             galleryUrl: root,
                             galleryId,

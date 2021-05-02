@@ -6,24 +6,32 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var autoprefixer = require('autoprefixer');
 // var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ngtools = require('@ngtools/webpack');
-require('dotenv').config({ path: resolve('../.env') });
+require('dotenv').config({
+    path: resolve('../.env')
+});
 
 const rootModuleDirectory = (packageName) => join(__dirname, '../node_modules', packageName);
 
 var postcssLoader = {
     loader: 'postcss-loader',
     options: {
-        plugins: function () {
-            return [autoprefixer];
-        },
+        postcssOptions: {
+            plugins: [
+                ["autoprefixer", {}]
+            ]
+        }
     },
 };
 
-var miniCssExtractLoader = {
-    loader: MiniCssExtractPlugin.loader,
+var cssLoader = {
+    loader: 'css-loader',
     options: {
-        hmr: process.env.NODE_ENV === 'development',
-    },
+        esModule: false
+    }
+}
+
+var miniCssExtractLoader = {
+    loader: MiniCssExtractPlugin.loader
 };
 
 var plugins = [
@@ -46,9 +54,13 @@ var plugins = [
 ];
 
 const optimization =
-    process.env.NODE_ENV === 'production'
-        ? { minimize: true, nodeEnv: 'production' }
-        : { minimize: false, nodeEnv: process.env.NODE_ENV };
+    process.env.NODE_ENV === 'production' ? {
+        minimize: true,
+        nodeEnv: 'production'
+    } : {
+        minimize: false,
+        nodeEnv: process.env.NODE_ENV
+    };
 
 module.exports = {
     entry: resolve(__dirname, './src/demo/main.ts'),
@@ -63,8 +75,7 @@ module.exports = {
     },
     optimization,
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
                 loader: '@ngtools/webpack',
                 // include: [
@@ -75,7 +86,9 @@ module.exports = {
             },
             {
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
-                parser: { system: true },
+                parser: {
+                    system: true
+                },
             },
             {
                 test: /\.html$/,
@@ -89,7 +102,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 include: [resolve(__dirname, 'src/demo/component'), resolve(__dirname, 'src/component')],
-                use: ['to-string-loader', postcssLoader, 'sass-loader'],
+                use: ['to-string-loader', cssLoader, postcssLoader, 'sass-loader'],
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
@@ -100,6 +113,10 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
         modules: [resolve('node_modules'), resolve('../node_modules')],
+        fallback: {
+            "timers": require.resolve("timers-browserify"),
+            "stream": require.resolve("stream-browserify")
+        }
     },
     resolveLoader: {
         modules: [resolve('node_modules'), resolve('../node_modules')],
