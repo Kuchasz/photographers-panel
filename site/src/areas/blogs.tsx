@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 type BlogsProps = { initialState?: BlogListItem[] };
 type BlogsState = { blogs?: BlogListItem[] };
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const options = { year: 'numeric' as 'numeric', month: 'long' as 'long', day: 'numeric' as 'numeric' };
 
 export class Blogs extends React.Component<BlogsProps, BlogsState> {
     state = this.props.initialState !== undefined ? { blogs: this.props.initialState } : { blogs: undefined };
