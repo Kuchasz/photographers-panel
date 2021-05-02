@@ -196,7 +196,7 @@ const AssetsList = ({
     onDelete: (assetId: number) => void;
     onAltChange: (assetId: number, alt: string) => void;
 }) => {
-    const { uploaded, assets } = useUploadedImages(
+    const { uploaded, assets } = useUploadedImages<{uploaded: string[], assets: number[]}>(
         (x) => ({
             uploaded: getItemsForBlog(blogId, x.images)
                 .filter((x) => x.status !== 'successful')

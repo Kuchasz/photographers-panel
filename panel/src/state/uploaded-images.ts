@@ -74,7 +74,7 @@ export const useUploadedImages = create<State>((set, get) => ({
     updateImage: (id) => (changes) =>
         set((state) => {
             const image = state.images.find((x) => x.originId === id);
-            if (!image) return state;
+            if (!image) return { images: state.images };
             return {
                 images: replace(state.images, image, { ...image, ...changes }, (x) => x.originId),
             };
@@ -93,7 +93,7 @@ export const useUploadedImages = create<State>((set, get) => ({
     updateAsset: (id) => (changes) =>
         set((state) => {
             const asset = state.assets.find((x) => x.id === id);
-            if (!asset) return state;
+            if (!asset) return { assets: state.assets };
             return {
                 assets: replace(state.assets, asset, { ...asset, ...changes }, (x) => x.id),
             };
@@ -105,7 +105,7 @@ export const useUploadedImages = create<State>((set, get) => ({
     finalizeUpload: (originId, changes, asset) =>
         set((state) => {
             const image = state.images.find((x) => x.originId === originId);
-            if (!image) return state;
+            if (!image) return { images: state.images, assets: state.assets };
             return {
                 images: replace(state.images, image, { ...image, ...changes }, (x) => x.originId),
                 assets: [...state.assets, asset],

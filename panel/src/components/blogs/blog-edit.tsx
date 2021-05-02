@@ -3,8 +3,8 @@ import { Drawer, Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, 
 import { BlogEditDto, editBlog, getBlogForEdit } from '@pp/api/panel/blog';
 import { ResultType } from '@pp/api/common';
 import { blogModel, emptyBlog } from './blog-model';
-import { FormInstance } from 'rsuite/lib/Form/index.d.ts';
 import { translations } from '../../i18n';
+import { FormInstance } from 'rsuite/lib/Form';
 
 interface Props {
     id: number;

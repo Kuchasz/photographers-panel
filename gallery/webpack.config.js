@@ -3,7 +3,6 @@ var join = require('path').join;
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-var autoprefixer = require('autoprefixer');
 // var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ngtools = require('@ngtools/webpack');
 require('dotenv').config({

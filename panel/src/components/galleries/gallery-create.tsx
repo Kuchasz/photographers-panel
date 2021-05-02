@@ -16,8 +16,8 @@ import { BlogSelectItem, getBlogSelectList } from '@pp/api/panel/blog';
 import { GalleryEditDto, createGallery } from '@pp/api/panel/private-gallery';
 import { ResultType } from '@pp/api/common';
 import { galleryModel } from './gallery-model';
-import { FormInstance } from 'rsuite/lib/Form/index.d.ts';
 import { translations } from '../../i18n';
+import { FormInstance } from 'rsuite/lib/Form';
 
 interface Props {
     showCreateForm: boolean;

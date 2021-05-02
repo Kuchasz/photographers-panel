@@ -1,11 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const EnvironmentPlugin = require('webpack').EnvironmentPlugin;
-require('dotenv').config({ path: path.resolve('../.env') });
+const { EnvironmentPlugin, ProvidePlugin } = require('webpack');
+require('dotenv').config({
+    path: path.resolve('../.env')
+});
 
 console.log(path.join(__dirname, '../node_modules/@pp/utils'));
 
@@ -17,8 +18,7 @@ module.exports = (env, argv) => ({
     mode: argv.mode,
     devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.ts|\.tsx$/,
                 use: 'ts-loader',
                 // include: [
@@ -29,27 +29,40 @@ module.exports = (env, argv) => ({
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        'css-loader',
-                        'resolve-url-loader',
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: [require('autoprefixer')],
-                            },
-                        },
-                        'sass-loader',
-                    ],
-                }),
+                use: [{
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {},
+                    },
+                    "css-loader",
+                    "resolve-url-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    ["autoprefixer", {}]
+                                ]
+                            }
+                        }
+                    },
+                    "sass-loader"
+                ]
             },
             {
                 test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: ['css-loader', 'less-loader?javascriptEnabled=true'],
-                }),
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {},
+                }, 
+                'css-loader', 
+                {
+                    loader: "less-loader",
+                    options: {
+                        lessOptions: {
+                            javascriptEnabled: true,
+                        }
+                    }
+                }]
             },
             // this rule handles images
             // {
@@ -76,31 +89,38 @@ module.exports = (env, argv) => ({
     resolve: {
         extensions: ['.scss', '.ts', '.tsx', '.js'],
     },
-    optimization:
-        argv.mode === 'production'
-            ? {
-                  usedExports: true,
-                  sideEffects: true,
-                  minimize: true,
-                  minimizer: [new TerserPlugin()],
-              }
-            : {},
+    optimization: argv.mode === 'production' ?
+        {
+            usedExports: true,
+            sideEffects: true,
+            minimize: true,
+            minimizer: [new TerserPlugin()],
+        } :
+        {},
     plugins: [
-        ...(argv.analyze
-            ? [
-                  new BundleAnalyzerPlugin({
-                      analyzerHost: '192.168.56.102',
-                      analyzerPort: '8888',
-                  }),
-              ]
-            : []),
-        new ProgressBarPlugin(),
+        ...(argv.analyze ?
+            [
+                new BundleAnalyzerPlugin({
+                    analyzerHost: '192.168.56.102',
+                    analyzerPort: '8888',
+                }),
+            ] :
+            []),
         new HtmlWebpackPlugin({
             template: 'src/index.html',
             alwaysWriteToDisk: true,
             cache: false,
         }),
-        new ExtractTextPlugin('styles.css'),
+        new ProvidePlugin({
+            process: 'process/browser',
+        }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // all options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css',
+            ignoreOrder: false, // Enable to remove warnings about conflicting order
+        }),
         new EnvironmentPlugin(Object.keys(process.env)),
     ],
     devServer: {

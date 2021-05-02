@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Button, Form, FormGroup, ControlLabel, FormControl, HelpBlock, ButtonToolbar, Alert } from 'rsuite';
 import { ResultType } from '@pp/api/common';
 import { loginModel } from './login-model';
-import { FormInstance } from 'rsuite/lib/Form/index.d.ts';
 import { UserCredentials, logIn } from '@pp/api/panel/auth';
 import './styles.less';
 import { Redirect } from 'react-router-dom';
@@ -10,6 +9,7 @@ import { logIn as stateLogIn } from '../../security';
 import { routes } from '../../routes';
 import { isLoggedIn } from '../../security';
 import { translations } from '../../i18n';
+import { FormInstance } from 'rsuite/lib/Form';
 
 const emptyLogin = () => ({ username: '', password: '' });
 
