@@ -7,7 +7,7 @@
   "typings": "./dist",
   "private": true,
   "scripts": {
-    "build": "webpack --mode=production",
+    "build:prod": "webpack --mode=production",
     "start": "webpack-dev-server --hot --inline",
     "watch:dev": "rimraf ./dist | webpack --mode development --watch",
     "packages:check": "ncu",
@@ -68,5 +68,8 @@
     "whatwg-fetch": "3.6.2",
     "xml2js": "0.4.23",
     "zone.js": "0.11.4"
+  },
+  "dependencies": {
+    "postcss": "8.2.13"
   }
 }

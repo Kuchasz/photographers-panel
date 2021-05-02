@@ -28,7 +28,7 @@ jobs:
       - run: |  
           cd ./gallery
           yarn install
-          yarn run build
+          yarn run build:prod
 
       - uses: actions/upload-artifact@v2
         with:
