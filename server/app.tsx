@@ -9,9 +9,8 @@ const upload = multer();
 
 import * as blogModel from './src/models/blog';
 import * as siteModel from './src/models/site';
-import { All as Root } from '@pp/site';
 import fs from 'fs';
-import { routes } from '@pp/api/site/routes';
+
 import * as privateGallery from '@pp/api/site/private-gallery';
 import * as offer from '@pp/api/site/offer';
 import * as authPanel from '@pp/api/panel/auth';
@@ -21,6 +20,8 @@ import { runPhotoGalleryServer } from '@pp/gallery-server';
 import * as config from './src/config';
 import { router as siteRouter } from './src/areas/site/routes';
 import { router as panelRouter } from './src/areas/panel/routes';
+import { routes } from '@pp/api/site/routes';
+import { Root } from '@pp/site';
 
 const requireModule = (path: string) => resolve(__dirname + `/../node_modules/${path}`);
 

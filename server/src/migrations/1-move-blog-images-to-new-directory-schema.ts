@@ -1,5 +1,5 @@
 import fs from 'fs';
-import Knex from 'knex';
+import { Knex } from 'knex';
 import { resolve, join } from 'path';
 import { deleteFolderRecursiveSync, rename } from '../core/fs';
 

@@ -96,7 +96,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 exclude: [resolve(__dirname, 'src/demo/component'), resolve(__dirname, 'src/component')],
-                use: [miniCssExtractLoader, 'css-loader', postcssLoader, 'sass-loader'],
+                use: [miniCssExtractLoader, cssLoader, postcssLoader, 'sass-loader'],
             },
             {
                 test: /\.scss$/,

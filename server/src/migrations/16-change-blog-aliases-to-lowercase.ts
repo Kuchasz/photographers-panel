@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 import { runQuery } from '../core/db';
 
 export const run = async (connection: Knex): Promise<boolean> => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, hydrate } from 'react-dom';
-import { Root } from './root';
+import { Root as RootComponent} from './root';
 import './styles/slide.css';
 import './styles/style.css';
 import './styles/tablet.css';
@@ -23,7 +23,7 @@ if (typeof document !== 'undefined') {
 
     hydrate(
         <BrowserRouter>
-            <Root initialState={initialState} />
+            <RootComponent initialState={initialState} />
         </BrowserRouter>,
         document.querySelector('#root')
     );
@@ -35,8 +35,8 @@ if (typeof document !== 'undefined') {
     serverConfig = undefined;
 }
 
-export const All = {
-    Root,
+export const Root = {
+    Root: RootComponent,
     createElement: React.createElement,
     StaticRouter,
     renderToString,

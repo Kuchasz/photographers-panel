@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 import { log } from './log';
 
 export const tableExists = async (tableName: string, knex: Knex): Promise<boolean> => {

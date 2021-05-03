@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 import { columnExists, renameTable, renameColumn } from '../core/db';
 
 type result = { Id: number; Tags: string };

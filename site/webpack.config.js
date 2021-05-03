@@ -2,9 +2,46 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
-require('dotenv').config({ path: path.resolve("../.env") });
+require('dotenv').config({
+    path: path.resolve("../.env")
+});
 const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
 const ProfilingPlugin = require("webpack").debug.ProfilingPlugin;
+
+var postcssLoader = {
+    loader: 'postcss-loader',
+    options: {
+        postcssOptions: {
+            plugins: [
+                ["autoprefixer", {}]
+            ]
+        }
+    },
+};
+
+var cssLoader = {
+    loader: 'css-loader',
+    options: {
+        esModule: false
+    }
+};
+
+var lessLoader = {
+    loader: "less-loader",
+    options: {
+        lessOptions: {
+            javascriptEnabled: true,
+        }
+    }
+};
+
+var fileLoader = {
+    loader: 'file-loader',
+    options: {
+        esModule: false,
+        name: "[name].[ext]?[hash]"
+    },
+};
 
 module.exports = {
     entry: path.resolve("./src/index.tsx"),
@@ -17,73 +54,48 @@ module.exports = {
     },
     mode: "development",
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.tsx?$/,
                 use: "ts-loader"
             },
             {
                 test: /\.scss$/,
-                use: [
-                    {
+                use: [{
                         loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            hmr: process.env.NODE_ENV === 'development',
-                        },
+                        options: {},
                     },
-                    "css-loader",
+                    cssLoader,
                     "resolve-url-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: [require('autoprefixer')]
-                        }
-                    },
-                    "sass-loader"]
+                    postcssLoader,
+                    "sass-loader"
+                ]
             }, {
                 test: /\.less$/,
-                use: [
-                    {
+                use: [{
                         loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            hmr: process.env.NODE_ENV === 'development',
-                        }
+                        options: {}
                     },
-                    "css-loader",
+                    cssLoader,
                     "resolve-url-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: [require('autoprefixer')]
-                        }
-                    },
-                    'less-loader?javascriptEnabled=true'
+                    postcssLoader,
+                    lessLoader
                 ]
-
             },
             {
                 test: /\.css$/,
-                use: [
-                    {
+                use: [{
                         loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            hmr: process.env.NODE_ENV === 'development'
-                        }
+                        options: {}
                     },
-                    "css-loader",
+                    cssLoader,
                     "resolve-url-loader",
-                    {
-                        loader: "postcss-loader",
-                        options: {
-                            plugins: [require('autoprefixer')]
-                        }
-                    }
+                    postcssLoader
                 ]
             },
             // this rule handles images
             {
                 test: /\.webp|\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
-                use: 'file-loader?name=[name].[ext]?[hash]'
+                use: [fileLoader]
             },
             //
             // // the following 3 rules handle font extraction
@@ -94,7 +106,7 @@ module.exports = {
             //
             {
                 test: /\.(ttf|eot|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'file-loader'
+                use: [fileLoader]
             },
             // {
             //     test: /\.otf(\?.*)?$/,
@@ -119,9 +131,12 @@ module.exports = {
             chunkFilename: '[id].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         }),
-        new CopyPlugin([{
-            from: "src/images", to: "media/images"
-        }]),
+        new CopyPlugin({
+            patterns: [{
+                from: "src/images",
+                to: "media/images"
+            }]
+        }),
         new EnvironmentPlugin(Object.keys(process.env))
     ],
     devServer: {
