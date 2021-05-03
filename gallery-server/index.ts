@@ -55,4 +55,5 @@ export const runPhotoGalleryServer = async (app: express.Express, databases: str
             allowedHeaders: ['Content-Type', 'Origin', 'Accept'],
         },
     });
+
 };

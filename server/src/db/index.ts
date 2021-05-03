@@ -1,4 +1,4 @@
-import knex from 'knex';
+import { knex } from 'knex';
 import { db } from '../config';
 
 export const connection = knex({

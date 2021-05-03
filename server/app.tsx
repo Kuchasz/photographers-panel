@@ -31,7 +31,7 @@ const Youch = require('youch');
 
 import { migrations } from './src/migrations';
 import { connection } from './src/db';
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 const runMigration = (migration: (connection: Knex) => Promise<boolean>, connection: Knex) =>
     new Promise<boolean>(async (res, rej) => {
