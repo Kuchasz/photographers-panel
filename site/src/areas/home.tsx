@@ -65,22 +65,22 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 <div className="promo-blogs">
                     {this.state.lastBlogs.length > 0 ? (
                         <>
-                            <Link to={this.getBlogUrlByIndex(2)} style={{ gridRow: 1, gridColumn: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(2)} title={this.getBlogTitle(2)} style={{ gridRow: 1, gridColumn: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[2].photoUrl}
                                     alt={this.state.lastBlogs[2].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrlByIndex(3)} style={{ gridRow: 2, gridColumn: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(3)} title={this.getBlogTitle(3)} style={{ gridRow: 2, gridColumn: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[3].photoUrl}
                                     alt={this.state.lastBlogs[3].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrlByIndex(4)} style={{ gridRow: 1, gridColumn: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(4)} title={this.getBlogTitle(4)} style={{ gridRow: 1, gridColumn: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[4].photoUrl}
                                     alt={this.state.lastBlogs[4].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrlByIndex(5)} style={{ gridRow: 2, gridColumn: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(5)} title={this.getBlogTitle(5)} style={{ gridRow: 2, gridColumn: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[5].photoUrl}
                                     alt={this.state.lastBlogs[5].photoAlt}></img>
@@ -103,22 +103,22 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                     src={this.state.lastBlogs[1].photoUrl}
                                     alt={this.state.lastBlogs[1].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrlByIndex(6)} style={{ gridRow: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(6)} title={this.getBlogTitle(6)} style={{ gridRow: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[6].photoUrl}
                                     alt={this.state.lastBlogs[6].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrlByIndex(7)} style={{ gridRow: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(7)} title={this.getBlogTitle(7)} style={{ gridRow: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[7].photoUrl}
                                     alt={this.state.lastBlogs[7].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrlByIndex(8)} style={{ gridRow: 1 }}>
+                            <Link to={this.getBlogUrlByIndex(8)} title={this.getBlogTitle(8)} style={{ gridRow: 1 }}>
                                 <img
                                     src={this.state.lastBlogs[8].photoUrl}
                                     alt={this.state.lastBlogs[8].photoAlt}></img>
                             </Link>
-                            <Link to={this.getBlogUrlByIndex(9)} style={{ gridRow: 2 }}>
+                            <Link to={this.getBlogUrlByIndex(9)} title={this.getBlogTitle(9)} style={{ gridRow: 2 }}>
                                 <img
                                     src={this.state.lastBlogs[9].photoUrl}
                                     alt={this.state.lastBlogs[9].photoAlt}></img>
