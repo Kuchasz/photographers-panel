@@ -1,8 +1,5 @@
 import { Directive, ElementRef, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-
-import { Observable, from } from 'rxjs';
 import { Subject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @Directive({
     selector: '[lazyImage]',
