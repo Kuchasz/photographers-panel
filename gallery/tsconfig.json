@@ -14,7 +14,8 @@
     "baseUrl": "./",   
     "paths": {
       "@pp/utils/*": ["../utils/*"],
-      "@pp/server/*": ["../server/*"]
+      "@pp/server/*": ["../server/*"],
+      "@pp/api/*": ["../api/*"]
     },   
     "typeRoots": [
       "./node_modules/@types",

@@ -1,6 +1,7 @@
 import { ResultType } from '@pp/api/common';
 import { BlogSelectItem, changeMainBlogs, getBlogSelectList, getMainBlogs, MainBlogsDto } from '@pp/api/panel/blog';
 import { getSiteEvents, SiteEventDto } from '@pp/api/panel/site';
+import { EventDto, getEventsList } from '@pp/api/event';
 import * as React from 'react';
 import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, SelectPicker } from 'rsuite';
 import { FormInstance } from 'rsuite/lib/Form';
@@ -18,6 +19,7 @@ export const Dashboard = (props: Props) => {
     const [formState, setFormState] = React.useState<MainBlogsDto>(emptyMainBlogs());
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
     const [events, setEvents] = React.useState<SiteEventDto[]>([]);
+    const [newEvents, setNewEvents] = React.useState<EventDto[]>([]);
     const formRef = React.useRef<FormInstance>();
 
     React.useEffect(() => {
@@ -30,6 +32,10 @@ export const Dashboard = (props: Props) => {
 
     React.useEffect(() => {
         getSiteEvents().then(setEvents);
+    }, []);
+
+    React.useEffect(() => {
+        getEventsList().then(setNewEvents);
     }, []);
 
     const _changeMainBlogs = (b: MainBlogsDto) => {
@@ -80,6 +86,13 @@ export const Dashboard = (props: Props) => {
                 {events.map((e) => (
                     <li key={e.idsubdatatable}>
                         {e.label}: {e.nb_events}
+                    </li>
+                ))}
+            </ul>
+            <ul>
+                {newEvents.map((e) => (
+                    <li key={e.occuredOn.getTime()}>
+                        {e.occuredOn}, {e.type}, {e.user}
                     </li>
                 ))}
             </ul>

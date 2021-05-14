@@ -15,6 +15,7 @@ import { run as run14 } from './14-enlarge-blog-asset-url';
 import { run as run15 } from './15-move-external-urls-to-https';
 import { run as run16 } from './16-change-blog-aliases-to-lowercase';
 import { run as run17 } from './17-add-main-blogs';
+import { run as run18 } from './18-add-event';
 
 export const migrations = [
     run,
@@ -34,4 +35,5 @@ export const migrations = [
     run15,
     run16,
     run17,
+    run18
 ];

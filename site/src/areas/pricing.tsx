@@ -1,6 +1,7 @@
 import React from 'react';
 import { strings } from '../resources';
 import { includesAll, distinctBy, includesAny } from '@pp/utils/array';
+import * as events from "@pp/api/event";
 import linkPhoto from '../images/page_offer_photo.png';
 import { Link } from 'react-router-dom';
 import { routes } from '@pp/api/site/routes';
@@ -122,6 +123,9 @@ const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alia
 
 export const Pricing = () => {
     const registerEvent = (action: string, value: number) => {
+
+        events.reqisterEvent(events.EventType.CalculatorConfigChanged, "Kitten");
+
         const config = get();
         const tracker = new MatomoTracker(config.stats.siteId, config.stats.urlBase);
 
