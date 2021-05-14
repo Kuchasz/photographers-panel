@@ -5,8 +5,6 @@ import * as events from "@pp/api/event";
 import linkPhoto from '../images/page_offer_photo.png';
 import { Link } from 'react-router-dom';
 import { routes } from '@pp/api/site/routes';
-import { MatomoTracker } from '../core/mtracker';
-import { get } from '../config';
 
 type TariffYears = 2021 | 2022 | 2023;
 type TariffPositions = 'WeddingPhotography' | 'WeddingVideo' | 'DvdPackage' | 'Afters' | 'WeddingSession';
@@ -123,18 +121,7 @@ const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alia
 
 export const Pricing = () => {
     const registerEvent = (action: string, value: number) => {
-
         events.reqisterEvent(events.EventType.CalculatorConfigChanged, "Kitten");
-
-        const config = get();
-        const tracker = new MatomoTracker(config.stats.siteId, config.stats.urlBase);
-
-        tracker.trackEvent({
-            e_c: 'Site',
-            e_a: 'Calculator',
-            e_n: action,
-            e_v: value,
-        });
     };
 
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
