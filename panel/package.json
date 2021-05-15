@@ -38,6 +38,7 @@
     "less-loader": "8.1.1",
     "mini-css-extract-plugin": "1.6.0",
     "node-sass": "5.0.0",
+    "postcss": "8.2.13",
     "postcss-loader": "5.2.0",
     "process": "0.11.10",
     "react": "17.0.2",
@@ -58,8 +59,5 @@
     "webpack-cli": "4.6.0",
     "webpack-dev-server": "3.11.2",
     "zustand": "3.4.2"
-  },
-  "dependencies": {
-    "postcss": "8.2.13"
   }
 }

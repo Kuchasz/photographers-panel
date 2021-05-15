@@ -3,10 +3,35 @@ import { BlogSelectItem, changeMainBlogs, getBlogSelectList, getMainBlogs, MainB
 import { getSiteEvents, SiteEventDto } from '@pp/api/panel/site';
 import { EventDto, getEventsList } from '@pp/api/event';
 import * as React from 'react';
-import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, SelectPicker } from 'rsuite';
+import { Alert, ControlLabel, FlexboxGrid, Form, FormControl, FormGroup, HelpBlock, Icon, List, SelectPicker } from 'rsuite';
 import { FormInstance } from 'rsuite/lib/Form';
 import { translations } from '../../i18n';
 import { mainBlogsModel } from './main-blogs-model';
+
+const styleCenter = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '60px',
+};
+
+const slimText = {
+    fontSize: '0.666em',
+    color: '#97969B',
+    fontWeight: 'lighter',
+    paddingBottom: 5,
+} as const;
+
+const titleStyle = {
+    paddingBottom: 5,
+    whiteSpace: 'nowrap',
+    fontWeight: 500,
+} as const;
+
+// const dataStyle = {
+//     fontSize: '1.2em',
+//     fontWeight: 500,
+// };
 
 type Props = {};
 
@@ -89,13 +114,67 @@ export const Dashboard = (props: Props) => {
                     </li>
                 ))}
             </ul>
-            <ul>
-                {newEvents.map((e, i) => (
-                    <li key={i}>
-                        {e.occuredOn}, {e.type}, {e.user}
-                    </li>
+            <List hover>
+                {newEvents.map((item, index) => (
+                    <List.Item key={index} index={index + 1}>
+                        <FlexboxGrid>
+                            {/*icon*/}
+                            {/* <FlexboxGrid.Item colspan={2} style={styleCenter}>
+                                {React.cloneElement(item['icon'], {
+                                    style: {
+                                        color: 'darkgrey',
+                                        fontSize: '1.5em',
+                                    },
+                                })}
+                            </FlexboxGrid.Item> */}
+                            {/*base info*/}
+                            <FlexboxGrid.Item
+                                colspan={6}
+                                style={{
+                                    ...styleCenter,
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                    overflow: 'hidden',
+                                }}>
+                                <div style={titleStyle}>{item.type}</div>
+                                <div style={slimText}>
+                                    <div>
+                                        <Icon icon="user-circle-o"/>
+                                        {' ' + item.user}
+                                    </div>
+                                    <div>{item.occuredOn}</div>
+                                </div>
+                            </FlexboxGrid.Item>
+                            {/*peak data*/}
+                            {/* <FlexboxGrid.Item colspan={6} style={styleCenter}>
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={slimText}>Peak</div>
+                                    <div style={dataStyle}>{item['peak'].toLocaleString()}</div>
+                                </div>
+                                {this.renderRaise(item['peakRaise'])}
+                            </FlexboxGrid.Item> */}
+                            {/*uv data*/}
+                            {/* <FlexboxGrid.Item colspan={6} style={styleCenter}>
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={slimText}>User visits (UV)</div>
+                                    <div style={dataStyle}>{item['uv'].toLocaleString()}</div>
+                                </div>
+                                {this.renderRaise(item['uvRaise'])}
+                            </FlexboxGrid.Item> */}
+                            {/*uv data*/}
+                            {/* <FlexboxGrid.Item
+                                colspan={4}
+                                style={{
+                                    ...styleCenter,
+                                }}>
+                                <a href="#">View</a>
+                                <span style={{ padding: 5 }}>|</span>
+                                <a href="#">Edit</a>
+                            </FlexboxGrid.Item> */}
+                        </FlexboxGrid>
+                    </List.Item>
                 ))}
-            </ul>
+            </List>
         </>
     );
 };

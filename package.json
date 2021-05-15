@@ -14,5 +14,8 @@
             "site",
             "server"
         ]
+    },
+    "resolutions": {
+        "**/@types/react": "17.0.5"
     }
 }
