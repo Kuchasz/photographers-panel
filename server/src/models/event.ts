@@ -1,7 +1,7 @@
 import { connection } from '../db';
 import { EventType } from '@pp/api/event';
 import { UserName } from '@pp/api/user';
-import { getDateString } from '@pp/utils/date';
+import { getDateTimeString } from '@pp/utils/date';
 
 export const registerEvent = async (type: EventType, user: UserName) => {
     try {
@@ -20,12 +20,12 @@ export const getList = async () => {
         .select(
             'Event.Type',
             'Event.User',
-            'Event.OccuredOn'
-        );
+            'Event.OccuredOn')
+        .orderBy('Event.OccuredOn', 'desc');
 
     return events.map((e: any) => ({
         type: e.Type,
         user: e.User,
-        occuredOn: getDateString(new Date(e.OccuredOn))
+        occuredOn: getDateTimeString(new Date(e.OccuredOn))
     }));
 }

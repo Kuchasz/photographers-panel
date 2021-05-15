@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { map, find, first, tap } from 'rxjs/operators';
 import { ApiService } from '../../service/api.service';
 import { translations } from '../../i18n';
+import * as events from "@pp/api/event";
 import { DisplayModes } from '../../config/gallery.config';
 
 @Component({
@@ -120,6 +121,8 @@ export class GalleryStateComponent {
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
+                
+                events.reqisterEvent(events.EventType.PhotoDownloaded, "Alligator");
                 // alert('your file has downloaded!'); // or you know, something with better UX...
             })
             .catch(() => console.log(`DOWNLOAD OF: ${imgSrc} failed.`));
@@ -133,6 +136,7 @@ export class GalleryStateComponent {
         //, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });
+        events.reqisterEvent(events.EventType.PhotoLiked, "Ant");
 
         // $event.stopPropagation();
     }
@@ -141,6 +145,7 @@ export class GalleryStateComponent {
         //, $event: MouseEvent) {
         this.gallery.unlikeImage(imageId);
         this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
+        events.reqisterEvent(events.EventType.PhotoUnliked, "Ant");
 
         // $event.stopPropagation();
     }

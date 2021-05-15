@@ -128,6 +128,14 @@ export default {
             notEdited: 'An error occured while changing main blogs',
         },
     },
+    events: {
+        types: {
+            calculatorConfigChanged: 'Calculator settings change',
+            photoLiked: 'Photo liked',
+            photoUnliked: 'Photo unliked',
+            photoDownloaded: 'Photo downloaded'
+        }
+    },
     menu: {
         home: 'Home',
         stats: 'Statistics',

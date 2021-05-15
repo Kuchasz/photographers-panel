@@ -21,6 +21,17 @@ export const getDateString = (date: Date) => {
     return `${year}-${month}-${day}`;
 };
 
+export const getDateTimeString = (date: Date) => {
+    const month = withMinLength(date.getMonth() + 1, 2);
+    const day = withMinLength(date.getDate(), 2);
+    const year = date.getFullYear();
+    const hour = withMinLength(date.getHours() + 1, 2);
+    const minute = withMinLength(date.getMinutes() + 1, 2);
+    const second = withMinLength(date.getSeconds() + 1, 2);
+    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+};
+
+
 export const getDayAndMonth = (date: Date) => {
     const month = withMinLength(date.getMonth() + 1, 2);
     const day = withMinLength(date.getDate(), 2);

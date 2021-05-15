@@ -128,6 +128,14 @@ export default {
             notEdited: 'Wystąpił błąd podczas zmiany głównych blogów',
         },
     },
+    events: {
+        types: {
+            calculatorConfigChanged: 'Zmiana ustawien kalkulatora',
+            photoLiked: 'Polubienie zdjecia',
+            photoUnliked: 'Odlubienie zdjecia',
+            photoDownloaded: 'Pobranie zdjecia'
+        }
+    },
     menu: {
         home: 'Start',
         stats: 'Statystyki',
