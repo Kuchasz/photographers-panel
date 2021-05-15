@@ -20,6 +20,7 @@ import { runPhotoGalleryServer } from '@pp/gallery-server';
 import * as config from './src/config';
 import { router as siteRouter } from './src/areas/site/routes';
 import { router as panelRouter } from './src/areas/panel/routes';
+import { router as mainRouter } from './src/areas/routes';
 import { routes } from '@pp/api/site/routes';
 import { Root } from '@pp/site';
 
@@ -94,6 +95,7 @@ app.use(
 
 app.use(siteRouter);
 app.use(panelRouter);
+app.use(mainRouter);
 
 app.use('/public', express.static('public', { index: false }));
 
