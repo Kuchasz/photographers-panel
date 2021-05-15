@@ -90,8 +90,8 @@ export const Dashboard = (props: Props) => {
                 ))}
             </ul>
             <ul>
-                {newEvents.map((e) => (
-                    <li key={e.occuredOn.getTime()}>
+                {newEvents.map((e, i) => (
+                    <li key={i}>
                         {e.occuredOn}, {e.type}, {e.user}
                     </li>
                 ))}
