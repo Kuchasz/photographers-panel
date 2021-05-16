@@ -133,7 +133,10 @@ export default {
             calculatorConfigChanged: 'Zmiana ustawien kalkulatora',
             photoLiked: 'Polubienie zdjecia',
             photoUnliked: 'Odlubienie zdjecia',
-            photoDownloaded: 'Pobranie zdjecia'
+            photoDownloaded: 'Pobranie zdjecia',
+            displayRatingRequestScreen: 'Wyswietlono ekran prosby o opinie',
+            navigatedToRating: 'Nawigowano do wystawienia opinii',
+            closeRatingRequestScreen: 'Zamknieto ekran prosby o opinie'
         }
     },
     menu: {

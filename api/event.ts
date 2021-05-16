@@ -5,7 +5,10 @@ export enum EventType {
     CalculatorConfigChanged = 0,
     PhotoLiked = 1,
     PhotoUnliked = 2,
-    PhotoDownloaded = 3
+    PhotoDownloaded = 3,
+    DisplayRatingRequestScreen = 4,
+    NavigatedToRating = 5,
+    CloseRatingRequestScreen = 6
 }
 
 export type EventDto = {

@@ -133,7 +133,10 @@ export default {
             calculatorConfigChanged: 'Calculator settings change',
             photoLiked: 'Photo liked',
             photoUnliked: 'Photo unliked',
-            photoDownloaded: 'Photo downloaded'
+            photoDownloaded: 'Photo downloaded',
+            displayRatingRequestScreen: 'Rating request screen displayed',
+            navigatedToRating: 'Navigated to rating',
+            closeRatingRequestScreen: "Rating request screen closed"
         }
     },
     menu: {

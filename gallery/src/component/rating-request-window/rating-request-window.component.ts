@@ -13,6 +13,9 @@ import { GalleryService } from '../../service/gallery.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { translations } from '../../i18n';
 import { DisplayModes } from '../../config/gallery.config';
+import * as events from "@pp/api/event";
+import { getOrRegisterName } from '@pp/utils/user';
+import * as user from '@pp/api/user';
 
 @Component({
     selector: 'rating-request-window',
@@ -40,5 +43,10 @@ export class RatingRequestWindowComponent implements OnInit {
 
     close() {
         this.gallery.setDisplayRatingRequestDetails(false);
+        events.reqisterEvent(events.EventType.CloseRatingRequestScreen, getOrRegisterName(user.getUserName) as user.UserName);
+    }
+
+    registerEvent(){
+        events.reqisterEvent(events.EventType.NavigatedToRating, getOrRegisterName(user.getUserName) as user.UserName);
     }
 }

@@ -51,6 +51,9 @@ const getIconForItem = (e: EventDto) => {
     if (e.type === EventType.PhotoDownloaded || e.type === EventType.PhotoLiked || e.type === EventType.PhotoUnliked)
         return 'image';
 
+    if (e.type === EventType.DisplayRatingRequestScreen || e.type === EventType.NavigatedToRating || e.type === EventType.CloseRatingRequestScreen)
+        return 'star-o';
+
     return 'trophy';
 };
 
@@ -59,7 +62,10 @@ const getTitleForItem = (e: EventDto) => {
     if (e.type === EventType.PhotoDownloaded) return translations.events.types.photoDownloaded;
     if (e.type === EventType.PhotoLiked) return translations.events.types.photoLiked;
     if (e.type === EventType.PhotoUnliked) return translations.events.types.photoUnliked;
-
+    if (e.type === EventType.DisplayRatingRequestScreen) return translations.events.types.displayRatingRequestScreen;
+    if (e.type === EventType.NavigatedToRating) return translations.events.types.navigatedToRating;
+    if (e.type === EventType.CloseRatingRequestScreen) return translations.events.types.closeRatingRequestScreen;
+    
     return '';
 };
 

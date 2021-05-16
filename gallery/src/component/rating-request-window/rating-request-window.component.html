@@ -6,6 +6,6 @@
         </header>
         <h2>{{ translations.review.header }}</h2>
         <div>{{ translations.review.text }}</div>
-        <a [href]="reviewUrl" target="_blank"><i class="mdi mdi-message-draw"></i>{{ translations.review.button }}</a>
+        <a [href]="reviewUrl" (click)="registerEvent()" target="_blank"><i class="mdi mdi-message-draw"></i>{{ translations.review.button }}</a>
     </div>
 </div>

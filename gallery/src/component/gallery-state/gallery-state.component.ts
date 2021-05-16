@@ -153,5 +153,6 @@ export class GalleryStateComponent {
 
     public openDisplayRatingRequestDetails() {
         this.gallery.setDisplayRatingRequestDetails(true);
+        events.reqisterEvent(events.EventType.DisplayRatingRequestScreen, getOrRegisterName(user.getUserName) as user.UserName);
     }
 }
