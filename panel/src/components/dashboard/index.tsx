@@ -15,7 +15,7 @@ import {
     SelectPicker,
 } from 'rsuite';
 import { FormInstance } from 'rsuite/lib/Form';
-import { translations } from '../../i18n';
+import { translations, formatDateTime } from '../../i18n';
 import { mainBlogsModel } from './main-blogs-model';
 import { colorFromString, invertColor } from "@pp/utils/color";
 import './styles.less';
@@ -123,7 +123,7 @@ export const Dashboard = (props: Props) => {
                         <span className="avatar" style={{ backgroundColor: colorFromString(item.user), color: invertColor(colorFromString(item.user)) }}>{item.user[0]}</span>
                         <span>
                             <div><Icon icon={getIconForItem(item)}></Icon>{getTitleForItem(item)}</div>
-                            <div className="details">{item.user}, {item.occuredOn}</div>
+                            <div className="details">{item.user}, {formatDateTime(item.occuredOn)}</div>
                         </span>
                     
                     </List.Item>

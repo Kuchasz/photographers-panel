@@ -130,13 +130,13 @@ export default {
     },
     events: {
         types: {
-            calculatorConfigChanged: 'Zmiana ustawien kalkulatora',
-            photoLiked: 'Polubienie zdjecia',
-            photoUnliked: 'Odlubienie zdjecia',
-            photoDownloaded: 'Pobranie zdjecia',
-            displayRatingRequestScreen: 'Wyswietlono ekran prosby o opinie',
+            calculatorConfigChanged: 'Zmiana ustawień kalkulatora',
+            photoLiked: 'Polubienie zdjęcia',
+            photoUnliked: 'Odlubienie zdjęcia',
+            photoDownloaded: 'Pobranie zdjęcia',
+            displayRatingRequestScreen: 'Wyświetlono ekran prośby o opinię',
             navigatedToRating: 'Nawigowano do wystawienia opinii',
-            closeRatingRequestScreen: 'Zamknieto ekran prosby o opinie'
+            closeRatingRequestScreen: 'Zamknięto ekran prośby o opinię'
         }
     },
     menu: {
