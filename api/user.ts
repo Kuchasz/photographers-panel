@@ -1,3 +1,5 @@
+import { withMinLength } from "@pp/utils/number";
+
 const options = [
     'Dog',
     'Puppy',
@@ -151,10 +153,13 @@ const options = [
     'Louse',
 ] as const;
 
-export type UserName = typeof options[number];
+export type UserName = `${typeof options[number]}${number | ''}`;
+
 export const getUserName = (): UserName => {
     const length = options.length;
     const selectedOption = Math.floor(Math.random() * length);
 
-    return options[selectedOption];
+    const number = withMinLength(Math.floor(Math.random() * 9999), 4);
+
+    return `${options[selectedOption]}${number}` as UserName;
 };

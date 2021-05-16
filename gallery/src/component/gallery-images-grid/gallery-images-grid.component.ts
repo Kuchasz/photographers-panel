@@ -14,8 +14,10 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap, find, flatMap, map, tap, first, filter, pluck, distinctUntilChanged } from 'rxjs/operators';
 import { sum, sort } from '../../utils/array';
+import { getOrRegisterName } from '@pp/utils/user';
 import { ApiService } from '../../service/api.service';
 import * as events from "@pp/api/event";
+import * as user from "@pp/api/user";
 
 @Component({
     selector: 'gallery-images-grid',
@@ -138,14 +140,14 @@ export class GalleryImagesGridComponent implements OnInit {
     public likeImage(imageId: string, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });
-        events.reqisterEvent(events.EventType.PhotoLiked, "Ant");
+        events.reqisterEvent(events.EventType.PhotoLiked, getOrRegisterName(user.getUserName) as user.UserName);
         $event.stopPropagation();
     }
 
     public unlikeImage(imageId: string, $event: MouseEvent) {
         this.gallery.unlikeImage(imageId);
         this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
-        events.reqisterEvent(events.EventType.PhotoUnliked, "Ant");
+        events.reqisterEvent(events.EventType.PhotoUnliked, getOrRegisterName(user.getUserName) as user.UserName);
         $event.stopPropagation();
     }
 

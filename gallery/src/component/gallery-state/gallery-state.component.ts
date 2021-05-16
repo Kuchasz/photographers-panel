@@ -11,6 +11,8 @@ import { ApiService } from '../../service/api.service';
 import { translations } from '../../i18n';
 import * as events from "@pp/api/event";
 import { DisplayModes } from '../../config/gallery.config';
+import { getOrRegisterName } from '@pp/utils/user';
+import * as user from '@pp/api/user';
 
 @Component({
     selector: 'gallery-state',
@@ -121,8 +123,7 @@ export class GalleryStateComponent {
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
-                
-                events.reqisterEvent(events.EventType.PhotoDownloaded, "Alligator");
+                events.reqisterEvent(events.EventType.PhotoDownloaded, getOrRegisterName(user.getUserName) as user.UserName);
                 // alert('your file has downloaded!'); // or you know, something with better UX...
             })
             .catch(() => console.log(`DOWNLOAD OF: ${imgSrc} failed.`));
@@ -136,7 +137,7 @@ export class GalleryStateComponent {
         //, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });
-        events.reqisterEvent(events.EventType.PhotoLiked, "Ant");
+        events.reqisterEvent(events.EventType.PhotoLiked, getOrRegisterName(user.getUserName) as user.UserName);
 
         // $event.stopPropagation();
     }
@@ -145,7 +146,7 @@ export class GalleryStateComponent {
         //, $event: MouseEvent) {
         this.gallery.unlikeImage(imageId);
         this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
-        events.reqisterEvent(events.EventType.PhotoUnliked, "Ant");
+        events.reqisterEvent(events.EventType.PhotoUnliked, getOrRegisterName(user.getUserName) as user.UserName);
 
         // $event.stopPropagation();
     }

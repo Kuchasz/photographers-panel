@@ -1,7 +1,9 @@
 import React from 'react';
 import { strings } from '../resources';
 import { includesAll, distinctBy, includesAny } from '@pp/utils/array';
+import { getOrRegisterName } from '@pp/utils/user';
 import * as events from "@pp/api/event";
+import * as user from "@pp/api/user";
 import linkPhoto from '../images/page_offer_photo.png';
 import { Link } from 'react-router-dom';
 import { routes } from '@pp/api/site/routes';
@@ -121,7 +123,7 @@ const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alia
 
 export const Pricing = () => {
     const registerEvent = (action: string, value: number) => {
-        events.reqisterEvent(events.EventType.CalculatorConfigChanged, "Kitten");
+        events.reqisterEvent(events.EventType.CalculatorConfigChanged, getOrRegisterName(user.getUserName) as user.UserName);
     };
 
     const [selectedYear, selectYear] = React.useState(tariffYears[0]);
