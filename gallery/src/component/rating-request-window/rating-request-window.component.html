@@ -6,6 +6,12 @@
         </header>
         <h2>{{ translations.review.header }}</h2>
         <div>{{ translations.review.text }}</div>
-        <a [href]="reviewUrl" (click)="registerEvent()" target="_blank"><i class="mdi mdi-message-draw"></i>{{ translations.review.button }}</a>
+        <ng-container *ngIf="!requestedWindow">
+            <a [href]="reviewUrl" (click)="registerEvent()" target="_blank"><i
+                    class="mdi mdi-message-draw"></i>{{ translations.review.button }}</a>
+        </ng-container>
+        <ng-container *ngIf="requestedWindow">
+            <span>{{ translations.review.acknowledgement }}</span>
+        </ng-container>
     </div>
 </div>

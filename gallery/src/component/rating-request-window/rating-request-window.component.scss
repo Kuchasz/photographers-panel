@@ -59,11 +59,13 @@ rating-request-window {
         }
     }
 
-    a {
+    a, span {
         text-decoration: none;
-        padding: 10px 15px;
+        padding: 10px 20px 10px 15px;
         display: flex;
-        background-color: black;
+        background-color: #333;
+        border-radius: 10px;
+        border-style: solid;
         color: white;
         flex-direction: row;
         justify-content: space-between;
@@ -71,6 +73,9 @@ rating-request-window {
         margin-top: 40px;
         text-transform: uppercase;
         align-items: center;
+        &:hover {
+            background-color: #000;
+        }
     }
 }
 

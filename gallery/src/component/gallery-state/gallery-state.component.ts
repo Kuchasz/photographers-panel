@@ -123,8 +123,8 @@ export class GalleryStateComponent {
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
+                
                 events.reqisterEvent(events.EventType.PhotoDownloaded, getOrRegisterName(user.getUserName) as user.UserName);
-                // alert('your file has downloaded!'); // or you know, something with better UX...
             })
             .catch(() => console.log(`DOWNLOAD OF: ${imgSrc} failed.`));
     }

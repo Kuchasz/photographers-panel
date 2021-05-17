@@ -28,17 +28,22 @@ export class RatingRequestWindowComponent implements OnInit {
     reviewUrl: string = 'https://g.page/pyszstudio/review';
     likedPhotos: string[] = [];
     translations = translations;
+    requestedWindow: boolean = false;
 
-    constructor(public gallery: GalleryService, private route: ActivatedRoute, private location: Location) {}
+    constructor(public gallery: GalleryService, private route: ActivatedRoute, private location: Location) { }
 
     ngOnInit() {
         const state = this.gallery.state.getValue();
 
         const photosToDisplay = this.gallery.config.displayMode === DisplayModes.Compact ? 4 : 10;
 
-        this.likedPhotos = this.gallery.likedPhotos
-            .slice(0, photosToDisplay)
-            .map((imageId) => state.images.find((x) => x.id === imageId).src);
+        this.likedPhotos = this.gallery.likedPhotos.length < photosToDisplay
+            ? state.images
+                .slice(0, photosToDisplay)
+                .map(s => s.src)
+            : this.gallery.likedPhotos
+                .slice(0, photosToDisplay)
+                .map((imageId) => state.images.find((x) => x.id === imageId).src);
     }
 
     close() {
@@ -46,7 +51,8 @@ export class RatingRequestWindowComponent implements OnInit {
         events.reqisterEvent(events.EventType.CloseRatingRequestScreen, getOrRegisterName(user.getUserName) as user.UserName);
     }
 
-    registerEvent(){
+    registerEvent() {
+        this.requestedWindow = true;
         events.reqisterEvent(events.EventType.NavigatedToRating, getOrRegisterName(user.getUserName) as user.UserName);
     }
 }

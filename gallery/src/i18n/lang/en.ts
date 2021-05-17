@@ -11,6 +11,7 @@ export default {
         header: 'Please rate us',
         text: 'We hope you like that photos. Please rate us or just close that window.',
         button: 'Click here to rate us',
+        acknowledgement: 'Thank you!'
     },
     title: 'Wedding Gallery',
 };

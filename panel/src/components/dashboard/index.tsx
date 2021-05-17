@@ -3,22 +3,13 @@ import { BlogSelectItem, changeMainBlogs, getBlogSelectList, getMainBlogs, MainB
 // import { getSiteEvents, SiteEventDto } from '@pp/api/panel/site';
 import { EventDto, EventType, getEventsList } from '@pp/api/event';
 import * as React from 'react';
-import {
-    Alert,
-    ControlLabel,
-    Form,
-    FormControl,
-    FormGroup,
-    HelpBlock,
-    Icon,
-    List,
-    SelectPicker,
-} from 'rsuite';
+import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Icon, List, SelectPicker } from 'rsuite';
 import { FormInstance } from 'rsuite/lib/Form';
 import { translations, formatDateTime } from '../../i18n';
 import { mainBlogsModel } from './main-blogs-model';
-import { colorFromString, invertColor } from "@pp/utils/color";
+import { colorFromString, invertColor } from '@pp/utils/color';
 import './styles.less';
+import { ToolTip } from '../common/tooltip';
 
 // const styleCenter = {
 //     display: 'flex',
@@ -51,7 +42,11 @@ const getIconForItem = (e: EventDto) => {
     if (e.type === EventType.PhotoDownloaded || e.type === EventType.PhotoLiked || e.type === EventType.PhotoUnliked)
         return 'image';
 
-    if (e.type === EventType.DisplayRatingRequestScreen || e.type === EventType.NavigatedToRating || e.type === EventType.CloseRatingRequestScreen)
+    if (
+        e.type === EventType.DisplayRatingRequestScreen ||
+        e.type === EventType.NavigatedToRating ||
+        e.type === EventType.CloseRatingRequestScreen
+    )
         return 'star-o';
 
     return 'trophy';
@@ -65,7 +60,7 @@ const getTitleForItem = (e: EventDto) => {
     if (e.type === EventType.DisplayRatingRequestScreen) return translations.events.types.displayRatingRequestScreen;
     if (e.type === EventType.NavigatedToRating) return translations.events.types.navigatedToRating;
     if (e.type === EventType.CloseRatingRequestScreen) return translations.events.types.closeRatingRequestScreen;
-    
+
     return '';
 };
 
@@ -120,12 +115,27 @@ export const Dashboard = (props: Props) => {
             <List bordered className="events" hover>
                 {newEvents.map((item, index) => (
                     <List.Item className="event" key={index} index={index + 1}>
-                        <span className="avatar" style={{ backgroundColor: colorFromString(item.user), color: invertColor(colorFromString(item.user)) }}>{item.user[0]}</span>
-                        <span>
-                            <div><Icon icon={getIconForItem(item)}></Icon>{getTitleForItem(item)}</div>
-                            <div className="details">{item.user}, {formatDateTime(item.occuredOn)}</div>
+                        <span
+                            className="avatar"
+                            style={{
+                                backgroundColor: colorFromString(item.user),
+                                color: invertColor(colorFromString(item.user)),
+                            }}>
+                            {item.user[0]}
                         </span>
-                    
+                        <span>
+                            <div>
+                                <Icon icon={getIconForItem(item)}></Icon>
+                                {getTitleForItem(item)}
+                            </div>
+                            <div className="details">
+                                <ToolTip text={item.occuredOn}>
+                                    <span>
+                                        {item.user}, {formatDateTime(item.occuredOn)}
+                                    </span>
+                                </ToolTip>
+                            </div>
+                        </span>
                     </List.Item>
                 ))}
             </List>

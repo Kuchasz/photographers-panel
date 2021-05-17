@@ -62,7 +62,7 @@ export class GalleryService {
             currId: undefined,
             prevId: undefined,
             nextId: undefined,
-            ratingRequestAvailable: this.likedPhotos.length >= 10,
+            ratingRequestAvailable: true//this.likedPhotos.length >= 10,
         });
     }
 

@@ -17,7 +17,6 @@ const rtf = new intl.RelativeTimeFormat(desiredLanguage, { numeric: "auto", styl
 
 export const translations = translation || en;
 export const formatDateTime = (date: Date) => {
-
     const olderDateString: any = date;
 
     const olderDate = new Date(olderDateString);
