@@ -39,6 +39,7 @@ export const formatDateTime = (date: Date) => {
 
     if (Math.abs(timespan / 2_628_000_000) < 12)
         return rtf.format(Math.floor(timespan / 2_628_000_000), 'day');
-
-    return rtf.format(Math.floor(timespan / (2_628_000_000 * 12)), 'year');
+    
+    return olderDateString;
+    //return rtf.format(Math.floor(timespan / (2_628_000_000 * 12)), 'year');
 }
