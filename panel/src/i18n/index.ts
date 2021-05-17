@@ -23,22 +23,22 @@ export const formatDateTime = (date: Date) => {
     const olderDate = new Date(olderDateString);
     const now = new Date();
 
-    const timespan = (olderDate.getTime() - 3_600_000) - now.getTime();
+    const timeDiff = ((olderDate.getTime() - 3_600_000) - now.getTime()) / 1000;
 
-    if (Math.abs(timespan / 1_000) < 60)
-        return rtf.format(Math.floor(timespan / 1_000), 'second');
+    if (Math.abs(timeDiff) < 60)
+        return rtf.format(Math.floor(timeDiff), 'second');
 
-    if (Math.abs(timespan / 60_000) < 60)
-        return rtf.format(Math.floor(timespan / 60_000), 'minute');
+    if (Math.abs(timeDiff / 60) < 60)
+        return rtf.format(Math.floor(timeDiff / 60), 'minute');
 
-    if (Math.abs(timespan / 3_600_000) < 24)
-        return rtf.format(Math.floor(timespan / 3_600_000), 'hour');
+    if (Math.abs(timeDiff / 3_600) < 24)
+        return rtf.format(Math.floor(timeDiff / 3_600), 'hour');
 
-    if (Math.abs(timespan / 86_400_000) < 30)
-        return rtf.format(Math.floor(timespan / 86_400_000), 'day');
+    if (Math.abs(timeDiff / 86_400) < 30)
+        return rtf.format(Math.floor(timeDiff / 86_400), 'day');
 
-    if (Math.abs(timespan / 2_628_000_000) < 12)
-        return rtf.format(Math.floor(timespan / 2_628_000_000), 'day');
+    if (Math.abs(timeDiff / 2_628_000) < 12)
+        return rtf.format(Math.floor(timeDiff / 2_628_000), 'day');
 
-    return rtf.format(Math.floor(timespan / (2_628_000_000 * 12)), 'year');
+    return rtf.format(Math.floor(timeDiff / (2_628_000 * 12)), 'year');
 }
