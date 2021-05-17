@@ -27,17 +27,17 @@ export const formatDateTime = (date: Date) => {
     if (Math.abs(timeDiff) < 60)
         return rtf.format(Math.floor(timeDiff), 'second');
 
-    if (Math.abs(timeDiff / 60) < 60)
+    if (Math.abs(timeDiff) < 60 * 60)
         return rtf.format(Math.floor(timeDiff / 60), 'minute');
 
-    if (Math.abs(timeDiff / 3_600) < 24)
-        return rtf.format(Math.floor(timeDiff / 3_600), 'hour');
+    if (Math.abs(timeDiff) < 60 * 60 * 24)
+        return rtf.format(Math.floor(timeDiff / (60 * 60)), 'hour');
 
-    if (Math.abs(timeDiff / 86_400) < 30)
-        return rtf.format(Math.floor(timeDiff / 86_400), 'day');
+    if (Math.abs(timeDiff) < 60 * 60 * 24 * 30)
+        return rtf.format(Math.floor(timeDiff / (60 * 60 * 24)), 'day');
 
-    if (Math.abs(timeDiff / 2_628_000) < 12)
-        return rtf.format(Math.floor(timeDiff / 2_628_000), 'day');
+    if (Math.abs(timeDiff) < 60 * 60 * 24 * 30 * 12)
+        return rtf.format(Math.floor(timeDiff / (60 * 60 * 24 * 30)), 'month');
 
-    return rtf.format(Math.floor(timeDiff / (2_628_000 * 12)), 'year');
+    return rtf.format(Math.floor(timeDiff / (60 * 60 * 24 * 30 * 12)), 'year');
 }

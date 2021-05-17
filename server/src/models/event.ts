@@ -1,7 +1,6 @@
 import { connection } from '../db';
 import { EventType } from '@pp/api/event';
 import { UserName } from '@pp/api/user';
-import { getDateTimeString } from '@pp/utils/date';
 
 export const registerEvent = async (type: EventType, user: UserName) => {
     try {
@@ -26,6 +25,6 @@ export const getList = async () => {
     return events.map((e: any) => ({
         type: e.Type,
         user: e.User,
-        occuredOn: getDateTimeString(new Date(e.OccuredOn))
+        occuredOn: e.OccuredOn
     }));
 }
