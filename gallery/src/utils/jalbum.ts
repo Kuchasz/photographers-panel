@@ -1,5 +1,6 @@
 import { GalleryDirectory, GalleryImage } from '../service/gallery.state';
 import { parseString } from 'xml2js';
+import { getDirectoryName } from './directories-names';
 
 const getId = () => {
     const usedIds = [];
@@ -66,7 +67,7 @@ export const fetchGallery = (path: string) =>
                                             directory: {
                                                 id: directoryId,
                                                 visited: false,
-                                                name: item.name.replaceAll('_', ' '),
+                                                name: getDirectoryName(item.name.replaceAll('_', ' ')),
                                                 rootDir: item.path,
                                             },
                                         });
