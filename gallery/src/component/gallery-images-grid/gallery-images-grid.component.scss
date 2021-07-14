@@ -71,7 +71,7 @@ gallery-images-grid {
             font-size: 1.5em;
         }
 
-        .image-status{
+        .image-status {
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -83,6 +83,22 @@ gallery-images-grid {
             color: lightcoral;
             background: white;
             font-weight: bold;
+
+            .mdi-heart,
+            .mdi-heart-outline {
+                &::before {
+                    transition: transform 0.25s;
+                }
+            }
+
+            &:hover {
+                .mdi-heart,
+                .mdi-heart-outline {
+                    &::before {
+                        transform: scale(1.2);
+                    }
+                }
+            }
         }
     }
 
