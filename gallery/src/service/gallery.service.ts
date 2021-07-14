@@ -13,7 +13,7 @@ export class GalleryService {
     public state: BehaviorSubject<GalleryState>;
     config: GalleryConfig = defaultConfig;
     player: Subject<number>;
-    likedPhotos: string[] = [];
+    downloadedPhotos: string[] = [];
 
     constructor(@Optional() config: GalleryConfig) {
         this.state = new BehaviorSubject<GalleryState>(defaultState);
@@ -52,8 +52,6 @@ export class GalleryService {
             {}
         );
 
-        this.likedPhotos = likes.filter((l) => l.liked).map((l) => l.imageId);
-
         this.state.next({
             ...state,
             directories: result.directories,
@@ -81,17 +79,11 @@ export class GalleryService {
 
         if (img.liked === true) return;
 
-        if (!this.likedPhotos.includes(imageId)) this.likedPhotos.push(imageId);
-
         img.likes++;
         img.liked = true;
-
-        if (this.likedPhotos.length === 10) {
-            this.state.next({ ...state, ratingRequestAvailable: true });
-        }
     }
 
-    setratingRequestAvailable(enabled: boolean) {
+    setRatingRequestAvailable(enabled: boolean) {
         const state = this.state.getValue();
         this.state.next({ ...state, ratingRequestAvailable: enabled });
     }
@@ -121,8 +113,6 @@ export class GalleryService {
             ...state.directories,
             [directoryId]: { ...state.directories[directoryId], visited: true },
         };
-
-        // console.log(directories);
 
         this.state.next({
             ...state,
