@@ -208,6 +208,18 @@ export class GalleryService {
         this.selectImage(state.nextId, directoryId);
     }
 
+    download(photoId: string){
+        if(this.downloadedPhotos.includes(photoId))
+            return;
+
+        this.downloadedPhotos.push(photoId);
+
+        if(this.downloadedPhotos.length === 5){
+            const state = this.state.getValue();
+            this.state.next({...state, displayRatingRequestDetails: true});
+        }
+    }
+
     prev(directoryId: string) {
         const state = this.state.getValue();
 

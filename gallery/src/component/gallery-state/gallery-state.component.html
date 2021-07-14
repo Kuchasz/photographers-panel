@@ -36,7 +36,7 @@
                 <p>{{ translations.state.reviewUs }}</p>
                 <span class="mdi mdi-message-text-outline"></span>
             </span>
-            <span [tap] (tapClick)="download(currentImage.src)" class="g-state-button" *ngIf="downloadEnabled">
+            <span [tap] (tapClick)="download(currentImage.src, currentImage.id)" class="g-state-button" *ngIf="downloadEnabled">
                 <p>{{ translations.state.download }}</p>
                 <span class="mdi mdi-download"></span>
             </span>

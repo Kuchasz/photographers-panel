@@ -37,13 +37,9 @@ export class RatingRequestWindowComponent implements OnInit {
 
         const photosToDisplay = this.gallery.config.displayMode === DisplayModes.Compact ? 4 : 10;
 
-        this.likedPhotos = this.gallery.likedPhotos.length < photosToDisplay
-            ? state.images
-                .slice(0, photosToDisplay)
-                .map(s => s.src)
-            : this.gallery.likedPhotos
-                .slice(0, photosToDisplay)
-                .map((imageId) => state.images.find((x) => x.id === imageId).src);
+        this.likedPhotos = state.images
+            .slice(0, photosToDisplay)
+            .map(s => s.src);
     }
 
     close() {
