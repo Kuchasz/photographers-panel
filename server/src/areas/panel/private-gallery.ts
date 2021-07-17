@@ -1,5 +1,6 @@
 import * as privateGalleryModel from "../../models/private-gallery";
 import * as privateGallery from "@pp/api/panel/private-gallery";
+import * as messages from "../../messages";
 import { ResultType } from "@pp/api/common";
 
 export const getGalleriesList =  async (req, res) => {
@@ -56,11 +57,11 @@ export const notifySubscribers =  async (req, res) => {
     let result: privateGallery.NotifySubscribersResult | undefined = undefined;
 
     try {
-        var { id }: { id: number } = req.body;
+        const { id }: { id: number } = req.body;
         const emails = await privateGalleryModel.getEmails(id);
         const gallery = await privateGalleryModel.getForEdit(id);
 
-        await notifySubscribers(
+        await messages.notifySubscribers(
             emails.emails.map((e) => e.address),
             gallery.password
         );
@@ -68,6 +69,7 @@ export const notifySubscribers =  async (req, res) => {
 
         result = { type: ResultType.Success };
     } catch (err) {
+        console.log(err);
         result = {
             type: ResultType.Error,
             error: 'ErrorOccuredWhileNotifyingSubsribers',
