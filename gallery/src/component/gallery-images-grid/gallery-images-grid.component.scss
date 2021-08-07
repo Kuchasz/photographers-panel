@@ -95,7 +95,7 @@ gallery-images-grid {
                 .mdi-heart,
                 .mdi-heart-outline {
                     &::before {
-                        transform: scale(1.2);
+                        transform: scale(1.25) translateZ(0);
                     }
                 }
             }

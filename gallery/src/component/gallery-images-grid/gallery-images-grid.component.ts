@@ -145,9 +145,9 @@ export class GalleryImagesGridComponent implements OnInit {
     }
 
     public unlikeImage(imageId: string, $event: MouseEvent) {
-        this.gallery.unlikeImage(imageId);
-        this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
-        events.reqisterEvent(events.EventType.PhotoUnliked, getOrRegisterName(user.getUserName) as user.UserName);
+        // this.gallery.unlikeImage(imageId);
+        // this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
+        // events.reqisterEvent(events.EventType.PhotoUnliked, getOrRegisterName(user.getUserName) as user.UserName);
         $event.stopPropagation();
     }
 

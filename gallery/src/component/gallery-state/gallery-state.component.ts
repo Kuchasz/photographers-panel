@@ -108,9 +108,12 @@ export class GalleryStateComponent {
         event.stopPropagation();
     }
 
-    orderPhotos() {}
+    orderPhotos() { }
 
-    public download(imgSrc: string, imageId: string) {
+    public download(imgSrc: string, imageId: string, liked: boolean) {
+        if (!liked)
+            this.likeImage(imageId);
+
         fetch(imgSrc)
             .then((resp) => resp.blob())
             .then((blob) => {
@@ -123,7 +126,7 @@ export class GalleryStateComponent {
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
-                
+
                 events.reqisterEvent(events.EventType.PhotoDownloaded, getOrRegisterName(user.getUserName) as user.UserName);
                 this.gallery.download(imageId);
             })
@@ -141,9 +144,9 @@ export class GalleryStateComponent {
     }
 
     public unlikeImage(imageId: string) {
-        this.gallery.unlikeImage(imageId);
-        this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
-        events.reqisterEvent(events.EventType.PhotoUnliked, getOrRegisterName(user.getUserName) as user.UserName);
+        // this.gallery.unlikeImage(imageId);
+        // this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
+        // events.reqisterEvent(events.EventType.PhotoUnliked, getOrRegisterName(user.getUserName) as user.UserName);
     }
 
     public openDisplayRatingRequestDetails() {
