@@ -1,15 +1,27 @@
-import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from "@angular/core";
+import * as screenfull from "screenfull";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ApiService } from "../../service/api.service";
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    Output
+    } from "@angular/core";
+import { DisplayModes } from "../../config/gallery.config";
+import {
+    find,
+    first,
+    flatMap,
+    map,
+    switchMap
+    } from "rxjs/operators";
+import { GalleryConfig } from "../../index";
+import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
 import { GalleryService } from "../../service/gallery.service";
 import { Location } from "@angular/common";
-import { GalleryState, GalleryImage, GalleryDirectory } from "../../service/gallery.state";
-import { GalleryConfig } from "../../index";
-import * as screenfull from "screenfull";
 import { Observable } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
-import { map, switchMap, flatMap, find, first } from "rxjs/operators";
-import { ApiService } from '../../service/api.service';
-import { translations } from '../../i18n';
-import { DisplayModes } from '../../config/gallery.config';
+import { translations } from "../../i18n";
 
 @Component({
     selector: "gallery-state",
@@ -75,18 +87,18 @@ export class GalleryStateComponent {
         this.location.back();
     }
 
-    orderPhotos() { }
+    orderPhotos() {}
 
     public download(imgSrc: string) {
         fetch(imgSrc)
-            .then(resp => resp.blob())
-            .then(blob => {
+            .then((resp) => resp.blob())
+            .then((blob) => {
                 const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
+                const a = document.createElement("a");
+                a.style.display = "none";
                 a.href = url;
                 // the filename you want
-                a.download = imgSrc.split("/").reverse()[0];
+                a.download = imgSrc.split("/").reverse()[0] + "?q=" + Math.random();
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
@@ -99,14 +111,16 @@ export class GalleryStateComponent {
     //     this.gallery.snapImage(this.currentImageId);
     // }
 
-    public likeImage(imageId: string) {//, $event: MouseEvent) {
+    public likeImage(imageId: string) {
+        //, $event: MouseEvent) {
         this.gallery.likeImage(imageId);
         this.api.sdk.likeImage({ imageId, clientId: this.api.clientId });
 
         // $event.stopPropagation();
     }
 
-    public unlikeImage(imageId: string) {//, $event: MouseEvent) {
+    public unlikeImage(imageId: string) {
+        //, $event: MouseEvent) {
         this.gallery.unlikeImage(imageId);
         this.api.sdk.unlikeImage({ imageId, clientId: this.api.clientId });
 
