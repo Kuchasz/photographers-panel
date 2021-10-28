@@ -133,7 +133,7 @@ export class GalleryStateComponent {
                 a.href = url + '?q=' + Math.random();
                 // the filename you want
                 a.download = imgSrc.split('/').reverse()[0];
-                console.log(a.download);
+                console.log(a.href);
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
