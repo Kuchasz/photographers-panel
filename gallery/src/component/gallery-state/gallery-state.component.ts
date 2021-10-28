@@ -130,9 +130,9 @@ export class GalleryStateComponent {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
-                a.href = url;
+                a.href = url + '?q=' + Math.random();
                 // the filename you want
-                a.download = imgSrc.split('/').reverse()[0] + '?q=' + Math.random();
+                a.download = imgSrc.split('/').reverse()[0];
                 console.log(a.download);
                 document.body.appendChild(a);
                 a.click();
