@@ -124,16 +124,15 @@ export class GalleryStateComponent {
     public download(imgSrc: string, imageId: string, liked: boolean) {
         if (!liked) this.likeImage(imageId);
 
-        fetch(imgSrc)
+        fetch(imgSrc + 'q?=' + Math.random())
             .then((resp) => resp.blob())
             .then((blob) => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
-                a.href = url + '?q=' + Math.random();
+                a.href = url;
                 // the filename you want
                 a.download = imgSrc.split('/').reverse()[0];
-                console.log(a.href);
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
