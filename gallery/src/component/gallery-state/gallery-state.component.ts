@@ -124,7 +124,7 @@ export class GalleryStateComponent {
     public download(imgSrc: string, imageId: string, liked: boolean) {
         if (!liked) this.likeImage(imageId);
 
-        fetch(imgSrc + 'q?=' + Math.random())
+        fetch(imgSrc + '?q=' + Math.random())
             .then((resp) => resp.blob())
             .then((blob) => {
                 const url = window.URL.createObjectURL(blob);
