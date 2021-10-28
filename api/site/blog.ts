@@ -1,4 +1,4 @@
-import { endpoint } from "../common";
+import { f } from '../common';
 
 export interface Blog {
     id: number;
@@ -13,41 +13,25 @@ export interface BlogAsset {
     alt: string;
 }
 
-export interface BlogListItem {
+export type BlogListItem = {
     title: string;
     date: string;
     alias: string;
     photoUrl: string;
+    photoAlt: string;
     content: string;
 }
 
-export interface LastBlog {
-    alias: string;
-    content: string;
-    title: string;
-}
+export type MostRecentBlogListItem = BlogListItem & { isMain: boolean };
 
-const getBlogRoute = "/api/blog/:alias";
-export const getBlog = (alias: string) =>
-    new Promise<Blog>((resolve, _) => {
-        fetch(endpoint + getBlogRoute.replace(":alias", alias))
-            .then(result => result.json())
-            .then(resolve);
-    });
+const getBlogRoute = '/api/blog/:alias';
+export const getBlog = (alias: string) => f.get<Blog>(getBlogRoute.replace(':alias', alias));
 getBlog.route = getBlogRoute;
 
-const getBlogsListRoute = "/api/blogs-list";
-export const getBlogsList = () =>
-    new Promise<BlogListItem[]>((resolve, _) => {
-        fetch(endpoint + getBlogsListRoute)
-            .then(result => result.json())
-            .then(resolve);
-    });
+const getBlogsListRoute = '/api/blogs-list';
+export const getBlogsList = () => f.get<BlogListItem[]>(getBlogsListRoute);
 getBlogsList.route = getBlogsListRoute;
 
-const getLastBlogRoute = "/api/last-blog";
-export const getLastBlog = () =>
-    new Promise<LastBlog>((resolve, _) => {
-        fetch(endpoint + getLastBlogRoute).then(result => result.json().then(resolve));
-    });
-getLastBlog.route = getLastBlogRoute;
+const getLastBlogsRoute = '/api/last-blogs';
+export const getLastBlogs = () => f.get<MostRecentBlogListItem[]>(getLastBlogsRoute);
+getLastBlogs.route = getLastBlogsRoute;

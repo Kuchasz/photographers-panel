@@ -1,6 +1,6 @@
-import * as React from "react";
-import { confirmable, createConfirmation } from "react-confirm";
-import { Modal, Button } from "rsuite";
+import * as React from 'react';
+import { confirmable, createConfirmation } from 'react-confirm';
+import { Modal, Button } from 'rsuite';
 
 interface ConfirmationProps {
     confirmation: string;

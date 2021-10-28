@@ -1,6 +1,6 @@
-import * as React from "react";
-import { VideoListItem, getVideosList } from "@pp/api/site/video";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { VideoListItem, getVideosList } from '@pp/api/site/video';
+import { Link } from 'react-router-dom';
 
 type BlogsProps = { initialState?: VideoListItem[] };
 type BlogsState = { videos?: VideoListItem[] };
@@ -10,7 +10,7 @@ export class Videos extends React.Component<BlogsProps, BlogsState> {
 
     componentDidMount() {
         if (this.state.videos === undefined) {
-            getVideosList().then(videos => this.setState({ videos }));
+            getVideosList().then((videos) => this.setState({ videos }));
         }
     }
 
@@ -18,7 +18,7 @@ export class Videos extends React.Component<BlogsProps, BlogsState> {
         return (
             <div className="videos">
                 <section>
-                    {this.state.videos?.map(v => (
+                    {this.state.videos?.map((v) => (
                         <div key={v.videoUrl} className="video">
                             {/* <div className="ripple">
                                 <div></div>
@@ -31,8 +31,7 @@ export class Videos extends React.Component<BlogsProps, BlogsState> {
                                 src={v.videoUrl}
                                 frameBorder="0"
                                 allow="autoplay; encrypted-media;"
-                                allowFullScreen
-                            ></iframe>
+                                allowFullScreen></iframe>
                         </div>
                     ))}
                 </section>

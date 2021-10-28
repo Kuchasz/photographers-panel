@@ -1,7 +1,8 @@
 {
     "private": true,
     "scripts": {
-        "build": "yarn workspaces run build"
+        "build": "yarn workspaces run build",
+        "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'"
     },
     "workspaces": {
         "packages": [
@@ -13,5 +14,8 @@
             "site",
             "server"
         ]
+    },
+    "resolutions": {
+        "**/@types/react": "17.0.5"
     }
 }

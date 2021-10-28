@@ -1,9 +1,9 @@
-import * as React from "react";
-import { strings } from "../resources";
-import { send, SendResult } from "@pp/api/site/message";
-import { ResultType } from "@pp/api/common";
+import * as React from 'react';
+import { strings } from '../resources';
+import { send, SendResult } from '@pp/api/site/message';
+import { ResultType } from '@pp/api/common';
 
-import contactPhoto from "../images/page_contact_photo.png";
+import contactPhoto from '../images/page_contact_photo.png';
 
 type ContactProps = {};
 type ContactState = {
@@ -16,11 +16,11 @@ type ContactState = {
 
 export class Contact extends React.Component<ContactProps, ContactState> {
     state = {
-        name: "",
-        email: "",
-        content: "",
+        name: '',
+        email: '',
+        content: '',
         result: undefined,
-        isLoading: false
+        isLoading: false,
     } as ContactState;
 
     onNameChange(name: string) {
@@ -39,7 +39,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
         this.setState({ isLoading: true }, async () => {
             const result = await send(this.state);
 
-            const content = result.type === ResultType.Success ? "" : this.state.content;
+            const content = result.type === ResultType.Success ? '' : this.state.content;
 
             this.setState({ result, isLoading: false, content: content });
         });
@@ -57,7 +57,7 @@ export class Contact extends React.Component<ContactProps, ContactState> {
                             <br />
                             <strong>{strings.contact.addressLabel}</strong>
                             <br />
-                            {strings.contact.address.map(a => (
+                            {strings.contact.address.map((a) => (
                                 <React.Fragment key={a}>
                                     {a}
                                     <br />
@@ -86,28 +86,25 @@ export class Contact extends React.Component<ContactProps, ContactState> {
                                 <input
                                     type="text"
                                     name="name"
-                                    onChange={e => this.onNameChange(e.target.value)}
+                                    onChange={(e) => this.onNameChange(e.target.value)}
                                     value={this.state.name}
                                     placeholder={strings.contact.form.name}
-                                    required
-                                ></input>
+                                    required></input>
                                 <input
                                     type="email"
                                     name="email"
-                                    onChange={e => this.onEmailChange(e.target.value)}
+                                    onChange={(e) => this.onEmailChange(e.target.value)}
                                     value={this.state.email}
                                     placeholder={strings.contact.form.email}
-                                    required
-                                ></input>
+                                    required></input>
                                 <textarea
                                     name="content"
-                                    onChange={e => this.onContentChange(e.target.value)}
+                                    onChange={(e) => this.onContentChange(e.target.value)}
                                     value={this.state.content}
                                     placeholder={strings.contact.form.content}
-                                    required
-                                ></textarea>
+                                    required></textarea>
                                 <div>
-                                    <a onClick={e => this.sendMessage()} className="button">
+                                    <a onClick={(e) => this.sendMessage()} className="button">
                                         {strings.contact.form.submit}
                                     </a>
                                 </div>

@@ -1,6 +1,6 @@
-import { notifications } from "../config";
-import nodemailer from "nodemailer";
-import { template } from "./template";
+import { notifications } from '../config';
+import nodemailer from 'nodemailer';
+import { template } from './template';
 
 const transporter = nodemailer.createTransport({
     host: notifications.server.host,
@@ -8,8 +8,8 @@ const transporter = nodemailer.createTransport({
     secure: notifications.server.secure,
     auth: {
         user: notifications.server.auth.user,
-        pass: notifications.server.auth.pass
-    }
+        pass: notifications.server.auth.pass,
+    },
 } as any);
 
 export const sendEmail = async (from: string, email: string, content: string) =>
@@ -23,15 +23,16 @@ export const sendEmail = async (from: string, email: string, content: string) =>
                 <p><strong>E-mail:</strong> ${email}</p>
                 <p><strong>Treść wiadomości:</strong> <br /><br />${content}</p>
             </html>`,
-            replyTo: `${from} <${email}>`
+            replyTo: `${from} <${email}>`,
         };
 
         transporter.sendMail(message, (err) => {
             if (err) {
-                rej(err)
-            } else { res(); }
+                rej(err);
+            } else {
+                res();
+            }
         });
-
     });
 
 export const notifySubscribers = async (subscribers: string[], password: string) =>
@@ -41,12 +42,14 @@ export const notifySubscribers = async (subscribers: string[], password: string)
             bcc: subscribers,
             subject: `Udostępniliśmy galerię zdjęć`,
             html: template(password),
-            replyTo: `${notifications.message.from} <${notifications.message.target}>`
+            replyTo: `${notifications.message.from} <${notifications.message.target}>`,
         };
 
         transporter.sendMail(message, (err) => {
             if (err) {
-                rej(err)
-            } else { res(); }
+                rej(err);
+            } else {
+                res();
+            }
         });
     });

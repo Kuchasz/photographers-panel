@@ -1,14 +1,14 @@
-import { Component, ChangeDetectionStrategy, Input } from "@angular/core";
-import { GalleryService } from "../../service/gallery.service";
-import { GalleryState, GalleryImage } from "../../service/gallery.state";
-import { Location } from "@angular/common";
-import { GalleryConfig } from "../../config/gallery.config";
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { GalleryService } from '../../service/gallery.service';
+import { GalleryState, GalleryImage } from '../../service/gallery.state';
+import { Location } from '@angular/common';
+import { GalleryConfig } from '../../config/gallery.config';
 
 @Component({
-    selector: "gallery-snapped-images",
-    templateUrl: "./gallery-snapped-images.component.html",
-    styleUrls: ["./gallery-snapped-images.component.scss"],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'gallery-snapped-images',
+    templateUrl: './gallery-snapped-images.component.html',
+    styleUrls: ['./gallery-snapped-images.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GallerySnappedImagesComponent {
     @Input() state: GalleryState;

@@ -9,8 +9,9 @@ debug.log
 *.secret.config.ts
 server/public/blogs/
 *.sqlite
-.env
+.env*
 utils/**/*.js
 api/**/*.js
 server/**/*.js
 stats.json
+*.sql

@@ -1,32 +1,30 @@
 #!/bin/bash
-cd api
-yarn install
-cd ../gallery
-yarn install
-cd ../gallery-server
-yarn install
-cd ../panel
-yarn install
-cd ../server
-yarn install
-cd ../site
-yarn install
-cd ..
+# cd api
+# yarn install
+# cd ../gallery
+# yarn install
+# cd ../gallery-server
+# yarn install
+# cd ../panel
+# yarn install
+# cd ../server
+# yarn install
+# cd ../site
+# yarn install
+# cd ..
 
-cd api
-yarn run build
-cd ../utils
-yarn run build
-cd ../site
-rimraf dist
+# cd api
+# yarn run build
+# cd ../utils
+# yarn run build
+cd site
+# rimraf dist
 yarn run build:prod
-yarn run build
 cd ../panel
-rimraf dist
+# rimraf dist
 yarn run build:prod
-yarn run build
 cd ../gallery-server
-rimraf dist
+# rimraf dist
 yarn run build
 cd ../gallery
 yarn run build

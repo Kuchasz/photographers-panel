@@ -11,9 +11,15 @@ interface Props {
     stats: ChartStat[];
 }
 
-export const ChartStats = ({ isLoading, stats }: Props) => <>
-    <div className="stats">
-        <Loader className={isLoading ? 'visible' : 'collapsed'} />
-        {stats.map(s => <span key={s.label}>{s.label}: <strong>{s.value}</strong></span>)}
-    </div>
-</>;
+export const ChartStats = ({ isLoading, stats }: Props) => (
+    <>
+        <div className="stats">
+            <Loader className={isLoading ? 'visible' : 'collapsed'} />
+            {stats.map((s) => (
+                <span key={s.label}>
+                    {s.label}: <strong>{s.value}</strong>
+                </span>
+            ))}
+        </div>
+    </>
+);

@@ -1,6 +1,7 @@
-import { getDateString } from "@pp/utils/date";
-import { endpoint, Result } from "../common";
-import { VisitsSummaryDto } from "./visits";
+import { getDateString } from '@pp/utils/date';
+import { getLastBytesPerSecond } from '@pp/utils/file';
+import { endpoint, Result, f } from '../common';
+import { VisitsSummaryDto } from './visits';
 
 export interface BlogSelectItem {
     label: string;
@@ -52,227 +53,171 @@ export interface BlogVisitsDto {
     dailyVisits: VisitsSummaryDto[];
 }
 
-export type CreateBlogError = "ErrorOccuredWhileCreatingBlog";
+export interface MainBlogsDto {
+    leftBlog?: number;
+    rightBlog?: number;
+}
+
+export type CreateBlogError = 'ErrorOccuredWhileCreatingBlog';
 export type CreateBlogResult = Result<CreateBlogError>;
 
-export type ChangeBlogVisibilityError = "ErrorOccuredWhileChangingBlogVisibility";
+export type ChangeBlogVisibilityError = 'ErrorOccuredWhileChangingBlogVisibility';
 export type ChangeBlogVisibilityResult = Result<ChangeBlogVisibilityError>;
 
-export type BlogEditError = "ErrorOccuredWhileEditingBlog";
+export type BlogEditError = 'ErrorOccuredWhileEditingBlog';
 export type BlogEditResult = Result<BlogEditError>;
 
-export type DeleteBlogError = "ErrorOccuredWhileDeletingBlog";
+export type DeleteBlogError = 'ErrorOccuredWhileDeletingBlog';
 export type DeleteBlogResult = Result<DeleteBlogError>;
 
-export type UploadBlogAssetError = "ErrorOccuredWhileUploadingBlogAsset";
-export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number; url: string }>;
+export type UploadBlogAssetError = 'ErrorOccuredWhileUploadingBlogAsset';
+export type UploadBlogAssetResult = Result<UploadBlogAssetError, { id: number; url: string; isMain: boolean }>;
 
-export type ChangeMainBlogAssetError = "ErrorOccuredWhileChangingMainBlogAsset";
+export type ChangeMainBlogAssetError = 'ErrorOccuredWhileChangingMainBlogAsset';
 export type ChangeMainBlogAssetResult = Result<ChangeMainBlogAssetError>;
 
-export type DeleteBlogAssetError = "ErrorOccuredWhileDeletingBlogAsset";
+export type DeleteBlogAssetError = 'ErrorOccuredWhileDeletingBlogAsset';
 export type DeleteBlogAssetResult = Result<DeleteBlogAssetError>;
 
-export type ChangeBlogAssetAltError = "ErrorOccuredWhileChangingBlogAssetError";
+export type ChangeBlogAssetAltError = 'ErrorOccuredWhileChangingBlogAssetError';
 export type ChangeBlogAssetAltResult = Result<ChangeBlogAssetAltError>;
 
-const getBlogSelectListRoute = "/api/panel/blog-select-list";
-export const getBlogSelectList = () =>
-    new Promise<BlogSelectItem[]>((resolve, _) => {
-        fetch(endpoint + getBlogSelectListRoute)
-            .then((result) => result.json())
-            .then(resolve);
-    });
+export type ChangeMainBlogsError = 'ErrorOccuredWhileChangingMainBlogs';
+export type ChangeMainBlogsResult = Result<ChangeMainBlogsError>;
+
+const getBlogSelectListRoute = '/api/panel/blog-select-list';
+export const getBlogSelectList = () => f.get<BlogSelectItem[]>(getBlogSelectListRoute);
 getBlogSelectList.route = getBlogSelectListRoute;
 
-const getBlogsListRoute = "/api/panel/blogs-list";
-export const getBlogsList = () =>
-    new Promise<BlogListItem[]>((resolve, _) => {
-        fetch(endpoint + getBlogsListRoute)
-            .then((result) => result.json())
-            .then(resolve);
-    });
+const getBlogsListRoute = '/api/panel/blogs-list';
+export const getBlogsList = () => f.get<BlogListItem[]>(getBlogsListRoute);
 getBlogsList.route = getBlogsListRoute;
 
-const createBlogRoute = "/api/panel/create-blog";
-export const createBlog = (blog: BlogEditDto) =>
-    new Promise<CreateBlogResult>((resolve, _) => {
-        fetch(endpoint + createBlogRoute, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(blog)
-        })
-            .then((result) => result.json())
-            .then(resolve);
-    });
+const createBlogRoute = '/api/panel/create-blog';
+export const createBlog = (blog: BlogEditDto) => f.post<CreateBlogResult>(createBlogRoute, blog);
 createBlog.route = createBlogRoute;
 
-const checkAliasIsUniqueRoute = "/api/panel/blog-alias-unique/:alias/:blogId?";
-export const checkAliasIsUnique = (blogId?: number) => (alias: string): Promise<boolean> =>
-    fetch(
-        endpoint +
-        checkAliasIsUniqueRoute.replace(":alias", alias).replace(":blogId?", blogId?.toString() ?? "")
-    ).then((resp) => resp.json());
+const checkAliasIsUniqueRoute = '/api/panel/blog-alias-unique/:alias/:blogId?';
+export const checkAliasIsUnique = (blogId?: number) => (alias: string) =>
+    f.get<boolean>(checkAliasIsUniqueRoute.replace(':alias', alias).replace(':blogId?', blogId?.toString() ?? ''));
 checkAliasIsUnique.route = checkAliasIsUniqueRoute;
 
-const changeBlogVisibilityRoute = "/api/panel/blog-change-visibility";
+const changeBlogVisibilityRoute = '/api/panel/blog-change-visibility';
 export const changeBlogVisibility = (blogVisibility: BlogVisibilityDto) =>
-    new Promise<ChangeBlogVisibilityResult>((resolve, _) => {
-        fetch(endpoint + changeBlogVisibilityRoute, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(blogVisibility)
-        })
-            .then((result) => result.json())
-            .then(resolve);
-    });
+    f.post<ChangeBlogVisibilityResult>(changeBlogVisibilityRoute, blogVisibility);
 changeBlogVisibility.route = changeBlogVisibilityRoute;
 
-const getBlogForEditRoute = "/api/panel/blog-for-edit/:blogId";
-export const getBlogForEdit = (id: number) =>
-    fetch(endpoint + getBlogForEditRoute.replace(":blogId", id.toString())).then(
-        (resp) => resp.json() as Promise<BlogEditDto>
-    );
+const getBlogForEditRoute = '/api/panel/blog-for-edit/:blogId';
+export const getBlogForEdit = (id: number) => f.get<BlogEditDto>(getBlogForEditRoute.replace(':blogId', id.toString()));
 getBlogForEdit.route = getBlogForEditRoute;
 
-const editBlogRoute = "/api/panel/edit-blog";
-export const editBlog = (id: number, blog: BlogEditDto) =>
-    new Promise<BlogEditResult>((resolve, _) => {
-        fetch(endpoint + editBlogRoute, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id, blog })
-        })
-            .then((result) => result.json())
-            .then(resolve);
-    });
+const editBlogRoute = '/api/panel/edit-blog';
+export const editBlog = (id: number, blog: BlogEditDto) => f.post<BlogEditResult>(editBlogRoute, { id, blog });
 editBlog.route = editBlogRoute;
 
-const deleteBlogRoute = "/api/panel/remove-blog";
-export const deleteBlog = (id: number) =>
-    new Promise<DeleteBlogResult>((resolve, _) => {
-        fetch(endpoint + deleteBlogRoute, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id })
-        })
-            .then((result) => result.json())
-            .then(resolve);
-    });
+const deleteBlogRoute = '/api/panel/remove-blog';
+export const deleteBlog = (id: number) => f.post<DeleteBlogResult>(deleteBlogRoute, { id });
 deleteBlog.route = deleteBlogRoute;
 
-const uploadBlogAssetRoute = "/api/panel/upload-blog-asset";
+const uploadBlogAssetRoute = '/api/panel/upload-blog-asset';
 export const uploadBlogAsset = (
     id: number,
     asset: File,
-    onProgress: (progress: { processing: boolean, progress: number }) => void,
+    onProgress: (progress: {
+        processing: boolean;
+        progress: number;
+        loaded: number;
+        lastBytesPerSecond: number;
+    }) => void,
     onEnd: (result: UploadBlogAssetResult) => void
 ) => {
     const request = new XMLHttpRequest();
 
-    request.upload.onloadend = () => {
-        onProgress({ processing: true, progress: 100 });
+    let lastNow = new Date().getTime();
+    let lastBytes = 0;
+
+    request.upload.onloadend = (event: ProgressEvent) => {
+        const r = getLastBytesPerSecond(lastBytes, lastNow, event.loaded);
+        onProgress({
+            processing: true,
+            progress: 100,
+            loaded: event.loaded,
+            lastBytesPerSecond: r.lastBytesPerSecond,
+        });
     };
 
     request.upload.onprogress = (event: ProgressEvent) => {
+        const r = getLastBytesPerSecond(lastBytes, lastNow, event.loaded);
+
+        lastBytes = event.loaded;
+        lastNow = r.calculationTime;
+
         let percent = 0;
         if (event.lengthComputable) {
             percent = (event.loaded / event.total) * 100;
         }
-        onProgress({ processing: percent === 100, progress: percent });
+        onProgress({
+            processing: percent === 100,
+            progress: percent,
+            loaded: event.loaded,
+            lastBytesPerSecond: r.lastBytesPerSecond,
+        });
     };
-    request.responseType = "json";
-    request.upload.onloadstart = () => onProgress({ processing: false, progress: 0 });
+    request.responseType = 'json';
+    request.upload.onloadstart = (e) => {
+        onProgress({
+            processing: false,
+            progress: 0,
+            loaded: 0,
+            lastBytesPerSecond: 0,
+        });
+    };
     request.onload = () => onEnd(request.response);
 
     const payload = new FormData();
-    payload.append("asset", asset);
-    payload.append("blogId", id.toString());
+    payload.append('asset', asset);
+    payload.append('blogId', id.toString());
 
-    request.open("POST", endpoint + uploadBlogAssetRoute, true);
+    request.open('POST', endpoint + uploadBlogAssetRoute, true);
 
     request.send(payload);
 };
 uploadBlogAsset.route = uploadBlogAssetRoute;
 
-const getBlogAssetsRoute = "/api/panel/blog-assets/:blogId";
-export const getBlogAssets = (blogId: number): Promise<BlogAssetsListItemDto[]> =>
-    fetch(endpoint + getBlogAssetsRoute.replace(":blogId", blogId.toString())).then(
-        (resp) => resp.json() as Promise<BlogAssetsListItemDto[]>
-    );
+const getBlogAssetsRoute = '/api/panel/blog-assets/:blogId';
+export const getBlogAssets = (blogId: number) =>
+    f.get<BlogAssetsListItemDto[]>(getBlogAssetsRoute.replace(':blogId', blogId.toString()));
 getBlogAssets.route = getBlogAssetsRoute;
 
-const changeMainBlogAssetRoute = "/api/panel/blog-change-main-asset";
+const changeMainBlogAssetRoute = '/api/panel/blog-change-main-asset';
 export const changeMainBlogAsset = (blogMainAsset: MainBlogAssetDto) =>
-    new Promise<ChangeBlogVisibilityResult>((resolve, _) => {
-        fetch(endpoint + changeMainBlogAssetRoute, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(blogMainAsset)
-        })
-            .then((result) => result.json())
-            .then(resolve);
-    });
+    f.post<ChangeBlogVisibilityResult>(changeMainBlogAssetRoute, blogMainAsset);
 changeMainBlogAsset.route = changeMainBlogAssetRoute;
 
-const deleteBlogAssetRoute = "/api/panel/remove-blog-asset";
-export const deleteBlogAsset = (id: number) =>
-    new Promise<DeleteBlogResult>((resolve, _) => {
-        fetch(endpoint + deleteBlogAssetRoute, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id })
-        })
-            .then((result) => result.json())
-            .then(resolve);
-    });
+const deleteBlogAssetRoute = '/api/panel/remove-blog-asset';
+export const deleteBlogAsset = (id: number) => f.post<DeleteBlogResult>(deleteBlogAssetRoute, { id });
 deleteBlogAsset.route = deleteBlogAssetRoute;
 
-const changeBlogAssetAltRoute = "/api/panel/change-blog-asset-alt";
+const changeBlogAssetAltRoute = '/api/panel/change-blog-asset-alt';
 export const changeBlogAssetAlt = (id: number, alt: string) =>
-    new Promise<ChangeBlogAssetAltResult>((resolve, _) => {
-        fetch(endpoint + changeBlogAssetAltRoute, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id, alt })
-        })
-            .then((result) => result.json())
-            .then(resolve);
-    });
+    f.post<ChangeBlogAssetAltResult>(changeBlogAssetAltRoute, { id, alt });
 changeBlogAssetAlt.route = changeBlogAssetAltRoute;
 
-const getBlogVisitsRoute = "/api/panel/blog-stats/:start/:end/:blogId";
-export const getBlogVisits = (
-    startDate: Date,
-    endDate: Date,
-    selectedGallery: number
-): Promise<BlogVisitsDto> =>
-    fetch(
-        endpoint +
+const getBlogVisitsRoute = '/api/panel/blog-stats/:start/:end/:blogId';
+export const getBlogVisits = (startDate: Date, endDate: Date, selectedGallery: number) =>
+    f.get<BlogVisitsDto>(
         getBlogVisitsRoute
-            .replace(":start", getDateString(startDate))
-            .replace(":end", getDateString(endDate))
-            .replace(":blogId", selectedGallery.toString())
-    ).then(resp => resp.json());
+            .replace(':start', getDateString(startDate))
+            .replace(':end', getDateString(endDate))
+            .replace(':blogId', selectedGallery.toString())
+    );
 getBlogVisits.route = getBlogVisitsRoute;
+
+const getMainBlogsRoute = '/api/panel/main-blogs';
+export const getMainBlogs = () => f.get<MainBlogsDto>(getMainBlogsRoute);
+getMainBlogs.route = getMainBlogsRoute;
+
+const changeMainBlogsRoute = '/api/panel/change-main-blogs';
+export const changeMainBlogs = (mainBlogs: MainBlogsDto) =>
+    f.post<ChangeMainBlogsResult>(changeMainBlogsRoute, mainBlogs);
+changeMainBlogs.route = changeMainBlogsRoute;

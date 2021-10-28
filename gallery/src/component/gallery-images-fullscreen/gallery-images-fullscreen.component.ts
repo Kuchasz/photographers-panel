@@ -8,23 +8,23 @@ import {
     ViewEncapsulation,
     EventEmitter,
     Output,
-    HostListener
-} from "@angular/core";
-import { Location } from "@angular/common";
-import { GalleryState, GalleryDirectory, GalleryImage } from "../../service/gallery.state";
-import { GalleryService } from "../../service/gallery.service";
-import { GalleryConfig } from "../../config";
-import { DisplayModes } from "../../config/gallery.config";
-import { Observable, fromEvent } from "rxjs";
-import { ActivatedRoute, ParamMap } from "@angular/router";
-import { switchMap, find, flatMap, map, tap, first, filter } from "rxjs/operators";
+    HostListener,
+} from '@angular/core';
+import { Location } from '@angular/common';
+import { GalleryState, GalleryDirectory, GalleryImage } from '../../service/gallery.state';
+import { GalleryService } from '../../service/gallery.service';
+import { GalleryConfig } from '../../config';
+import { DisplayModes } from '../../config/gallery.config';
+import { Observable, fromEvent } from 'rxjs';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap, find, flatMap, map, tap, first, filter } from 'rxjs/operators';
 
 @Component({
-    selector: "gallery-images-fullscreen",
-    templateUrl: "./gallery-images-fullscreen.component.html",
-    styleUrls: ["./gallery-images-fullscreen.component.scss"],
+    selector: 'gallery-images-fullscreen',
+    templateUrl: './gallery-images-fullscreen.component.html',
+    styleUrls: ['./gallery-images-fullscreen.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class GalleryImagesFullscreenComponent implements OnInit {
     @Output() onBack: EventEmitter<void> = new EventEmitter<void>(false);
@@ -42,9 +42,9 @@ export class GalleryImagesFullscreenComponent implements OnInit {
 
     ngOnInit() {
         const thumbPos = this.gallery.config.thumbnails.position;
-        this.thumbDirection = thumbPos === "left" || thumbPos === "right" ? "row" : "column";
+        this.thumbDirection = thumbPos === 'left' || thumbPos === 'right' ? 'row' : 'column';
 
-        this.currentDirectoryId$ = this.route.parent.paramMap.pipe(map((x) => x.get("id")));
+        this.currentDirectoryId$ = this.route.parent.paramMap.pipe(map((x) => x.get('id')));
 
         this.isFullView = this.gallery.config.displayMode !== DisplayModes.Compact;
 
@@ -64,14 +64,15 @@ export class GalleryImagesFullscreenComponent implements OnInit {
         );
     }
 
-    @HostListener("document:keyup", ["$event"])
+    @HostListener('document:keyup', ['$event'])
     onKeyUp(ev: KeyboardEvent) {
-        if (ev.key !== "Escape") return;
+        if (ev.key !== 'Escape') return;
 
         this.goBack();
     }
 
     goBack() {
         this.location.back();
+        document.querySelector('gallery :first-child').scrollTo(0, 0);
     }
 }

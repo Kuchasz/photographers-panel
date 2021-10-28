@@ -1,8 +1,8 @@
-import knex from "knex";
-import { db } from "../config";
+import { knex } from 'knex';
+import { db } from '../config';
 
 export const connection = knex({
-    client: "pg",
+    client: 'pg',
     connection: db,
-    searchPath: "jarvis_pstudio"
-})
+    searchPath: 'jarvis_pstudio',
+});

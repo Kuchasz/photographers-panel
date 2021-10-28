@@ -1,17 +1,17 @@
 @font-face {
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     src: url(../fonts/MYRIADPRO-REGULAR.woff);
     font-display: swap;
 }
 
 @font-face {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     src: url(../fonts/MYRIADPRO-BOLD.woff);
     font-display: swap;
 }
 
 @font-face {
-    font-family: "Century Gothic Light";
+    font-family: 'Century Gothic Light';
     src: url(../fonts/MyriadPro-Light.woff);
     font-display: swap;
 }
@@ -30,7 +30,7 @@ section {
 
 body {
     margin: 0 auto;
-    font-family: "Century Gothic", sans-serif;
+    font-family: 'Century Gothic', sans-serif;
     padding: 0;
 }
 
@@ -51,6 +51,8 @@ small {
 header {
     display: flex;
     flex-flow: row-reverse;
+    flex-wrap: wrap;
+    align-content: flex-start;
     box-shadow: inset 0 0 100px black;
     width: 100%;
     height: 100vh;
@@ -84,22 +86,16 @@ header .background div {
 }
 
 nav {
-    width: 642px;
     height: 55px;
     margin: 50px 0 0 0;
     float: right;
-    background-color: black;
-}
-
-nav ul {
-    padding-inline-start: 20px;
 }
 
 #menu_down {
     width: 330px;
     height: 55px;
     margin: 15px 0 0 0;
-    background: url("../images/header_white.png") no-repeat;
+    background: url('../images/header_white.png') no-repeat;
     float: right;
     clear: both;
 }
@@ -108,62 +104,59 @@ nav ul {
     width: 77px;
     height: 77px;
     margin: 28px 20px 0 30px;
-    background: url("../images/logo.png") no-repeat;
+    background: url('../images/logo.png') no-repeat;
     float: right;
 }
 
-nav ul {
-    font-family: "Century Gothic Bold";
-    list-style-type: none;
+nav {
+    font-family: 'Century Gothic Bold';
     margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
-nav li:first-child {
-    margin-left: 13px;
-}
-
-nav li a {
+nav a {
     float: left;
     color: #838384;
+    background-color: black;
     font-size: 17px;
-    height: 48px;
-    margin-right: 29px;
-    padding-top: 18px;
+    height: 100%;
     text-transform: uppercase;
+    padding: 0px 13px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
     transition: linear 0.25s color;
 }
 
-nav li a:hover {
+nav a:hover {
     color: #c7c7c7;
     text-decoration: none;
 }
 
-nav li #current {
+nav #current {
     color: white;
 }
 
 #gallery {
-    width: 205px;
-    height: 55px;
-    margin: 15px 0 0 0;
-    padding-right: 10px;
-    background-color: #ff4643;
-    float: right;
-    clear: both;
+    /* background-color: #ff4643; */
+    background-color: #ce2220;
 }
 
-#gallery a {
-    float: right;
-    height: 48px;
+a#gallery {
+    /* float: right; */
+    /* height: 48px; */
     color: #fff;
-    font-family: "Century Gothic Bold";
-    font-size: 17px;
+    /* font-family: "Century Gothic Bold"; */
+    /* font-size: 17px;
     margin-right: 22px;
-    padding-top: 18px;
-    text-transform: uppercase;
+    padding-top: 18px; */
+    /* text-transform: uppercase; */
 }
 
-#gallery a:hover {
+a#gallery:hover {
     color: #620200;
     text-decoration: none;
 }
@@ -175,13 +168,13 @@ nav li #current {
 }
 
 .slogan section {
-    width: 1000px;
+    width: 960px;
     height: 42px;
     margin: 0 auto;
 }
 
 .slogan h1 {
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     font-size: 19px;
     font-weight: normal;
     color: #888;
@@ -199,7 +192,7 @@ nav li #current {
 
 .slogan li {
     list-style-type: none;
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     font-size: 24px;
     font-weight: normal;
     color: #5383a2;
@@ -224,20 +217,25 @@ nav li #current {
 .offer {
     width: 100%;
     float: left;
-    background: url("../images/offer_bg.jpg") center center repeat-x;
+    background: url('../images/offer_bg.jpg') center center repeat-x;
+    background-size: cover;
     color: #fff;
 }
 
 .article {
     width: 100%;
-    height: 590px;
+    /* height: 590px; */
     float: left;
-    background: url("../images/article_bg.jpg") center center repeat-x;
+    /* background: url("../images/article_bg.jpg") center center repeat-x; */
+    /* background-size: cover; */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(220, 220, 220, 1) 100%);
     color: #035682;
+    padding-bottom: 20px;
 }
 
 .gallery,
 .offers,
+.pricing,
 .link,
 .videos,
 .contact_form,
@@ -263,11 +261,13 @@ nav li #current {
 .gallery section,
 .videos section,
 .offers section,
+.pricing section,
 .link section,
 .contact_form section,
+.videos section,
 .gallery_sub section,
 .sub_sub section {
-    width: 1000px;
+    width: 960px;
     margin: 0 auto;
 }
 
@@ -301,8 +301,7 @@ nav li #current {
 }
 
 .blog img {
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 5px;
 }
 
 .link a,
@@ -329,7 +328,7 @@ nav li #current {
 .offer h1,
 .article h1 {
     font-size: 46px;
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     text-align: center;
     font-weight: normal;
     margin-bottom: 0;
@@ -342,13 +341,13 @@ nav li #current {
 
 .offer span,
 .article span {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
 }
 
 .offer h2,
 .article h2 {
     font-size: 18px;
-    font-family: "Century Gothic";
+    font-family: 'Century Gothic';
     font-weight: normal;
     text-align: center;
     margin: 30px 60px 50px 60px;
@@ -363,18 +362,20 @@ nav li #current {
 .gallery_sub article,
 .blog article,
 .sub_sub article {
-    width: 410px;
+    width: 380px;
     float: left;
     margin-left: 0px;
 }
 
 .link article,
 .contact_form article,
+.pricing article,
 .offers article {
     width: 530px;
     float: left;
 }
-.offers article:nth-of-type(2) {
+
+.offers article {
     width: 100%;
     float: left;
 }
@@ -382,7 +383,7 @@ nav li #current {
 .gallery_sub article,
 .blog article,
 .sub_sub article {
-    width: 1000px;
+    width: 960px;
     margin-bottom: 20px;
 }
 
@@ -395,6 +396,7 @@ nav li #current {
 
 .link hgroup,
 .contact_form hgroup,
+.pricing hgroup,
 .offers hgroup {
     float: right;
     margin: 40px 0 40px 0;
@@ -420,7 +422,7 @@ nav li #current {
 }
 
 .article article {
-    width: 500px;
+    width: 480px;
 }
 
 .gallery_sub article a,
@@ -435,6 +437,7 @@ nav li #current {
 
 .offer article h1,
 .offers article h1,
+.pricing article h1,
 .article article h1,
 .link article h1,
 .contact_form article h1,
@@ -457,6 +460,7 @@ nav li #current {
 .contact_form article h1,
 .gallery_sub article h1,
 .offers article h1,
+.pricing article h1,
 .blog article h1,
 .sub_sub article h1 {
     margin: 0;
@@ -487,7 +491,8 @@ nav li #current {
 }
 
 .gallery li h1,
-.offers li h1 {
+.offers li h1,
+.pricing li h1 {
     color: #fff;
     font-size: 21px;
     font-weight: normal;
@@ -503,7 +508,8 @@ nav li #current {
 }
 
 .gallery li h3,
-.offers li h3 {
+.offers li h3,
+.pricing li h3 {
     color: #62becc;
     font-size: 12px;
     font-weight: normal;
@@ -512,7 +518,8 @@ nav li #current {
 }
 
 .gallery li h2,
-.offers li h2 {
+.offers li h2,
+.pricing li h2 {
     color: #fff;
     font-size: 13px;
     font-weight: normal;
@@ -552,6 +559,7 @@ nav li #current {
 
 .offer article h2,
 .offers article h2,
+.pricing article h2,
 .article article h2,
 .link article h2,
 .contact_form article h2,
@@ -571,6 +579,7 @@ nav li #current {
 .gallery_sub article h2,
 .blog article h2,
 .offers article,
+.pricing article,
 .sub_sub article h2 {
     margin-top: 15px;
     margin-bottom: 40px;
@@ -582,6 +591,7 @@ nav li #current {
 .gallery_sub article h2,
 .blog article h2,
 .offers article h2,
+.pricing article h2,
 .sub_sub article h2 {
     margin-bottom: 50px;
 }
@@ -619,12 +629,13 @@ nav li #current {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    background-color: #ff4643;
+    /* background-color: #ff4643; */
+    background-color: #ce2220;
     -webkit-box-shadow: 0 0 7px 3px rgba(252, 252, 252, 0.1);
     -moz-box-shadow: 0 0 7px 3px rgba(252, 252, 252, 0.1);
     box-shadow: 0 0 7px 3px rgba(252, 252, 252, 0.1);
     font-size: 16px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     cursor: pointer;
     text-align: center;
     padding: 15px 25px 16px 25px;
@@ -649,10 +660,10 @@ nav li #current {
 }
 
 .article article a.button,
-.contact_form article input[type="submit"],
-.contact_form article input[type="text"],
-.contact_form article input[type="email"],
-.contact_form article input[type="password"],
+.contact_form article input[type='submit'],
+.contact_form article input[type='text'],
+.contact_form article input[type='email'],
+.contact_form article input[type='password'],
 .contact_form article textarea {
     width: 224px;
     height: 50px;
@@ -660,22 +671,24 @@ nav li #current {
     -moz-border-radius: 2px;
     border-radius: 2px;
     background-color: rgba(255, 70, 67, 0);
-    border: solid 1px #ff4643;
+    /* border: solid 1px #ff4643; */
+    border: solid 1px #ce2220;
     font-size: 16px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     text-align: center;
     padding: 15px 25px 16px 25px;
     outline: none;
-    color: #ff4643;
+    /* color: #ff4643; */
+    color: #ce2220;
 }
 
-.contact_form article input[type="submit"] {
+.contact_form article input[type='submit'] {
     margin-bottom: 40px;
 }
 
-.contact_form article input[type="text"],
-.contact_form article input[type="password"],
-.contact_form article input[type="email"],
+.contact_form article input[type='text'],
+.contact_form article input[type='password'],
+.contact_form article input[type='email'],
 .contact_form article textarea {
     width: 370px;
     height: 20px;
@@ -755,7 +768,7 @@ nav li #current {
     list-style-type: none;
     padding: 3px 0 0 70px;
     margin: 0 0 25px 0;
-    background: url("../images/check.png") no-repeat;
+    background: url('../images/check.png') no-repeat;
 }
 
 @media only screen and (min-width: 950px) and (max-width: 1030px) {
@@ -812,25 +825,25 @@ nav li #current {
         list-style-type: none;
         padding: 3px 0 0 70px;
         margin: 0 0 25px 0;
-        background: url("../images/check.png") no-repeat;
+        background: url('../images/check.png') no-repeat;
     }
 }
 
 .contact {
     width: 100%;
     float: left;
-    background: #fff url("../images/contact_bg.jpg") center center no-repeat;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 1) 49.9999%, rgba(0, 51, 78, 1) 50%);
     color: #035682;
 }
 
 .contact section {
-    width: 1000px;
+    width: 960px;
     height: 100px;
     margin: 0 auto;
 }
 
 .contact .left {
-    width: 280px;
+    max-width: 220px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -842,7 +855,7 @@ nav li #current {
 }
 
 .contact .left h1 {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     font-size: 22px;
     float: left;
     margin: 0;
@@ -856,17 +869,17 @@ nav li #current {
 }
 
 .contact .right {
-    width: 450px;
+    /* width: 450px; */
     float: right;
     margin-top: 0px;
     margin-bottom: 0px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     text-align: right;
     color: #fff;
 }
 
 .contact .right h1 {
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     font-size: 22px;
     margin: 0;
     padding: 20px 0 4px 0;
@@ -874,7 +887,7 @@ nav li #current {
 
 .contact .right h2 {
     font-size: 22px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     margin: 0;
 }
 
@@ -893,32 +906,37 @@ nav li #current {
 .map {
     width: 100%;
     float: left;
-    background: #ffffff url("../images/map_bg.jpg") center center no-repeat;
+    background: #ffffff url('../images/map_bg.jpg') center center no-repeat;
     color: #035682;
 }
 
 .map section {
-    width: 1000px;
+    width: 960px;
     height: 420px;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .map address {
-    width: 398px;
-    height: 126px;
-    float: right;
-    background: url("../images/address_bg.png") no-repeat;
-    margin-top: 208px;
-    margin-right: 50px;
-    padding-top: 13px;
+    margin-left: 185px;
+    margin-top: -90px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px rgb(0 0 0 / 25%);
 }
 
-.map address ul {
-    width: 200px;
-    float: left;
+.map .address-pointer {
+    background: #035682;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 20px;
 }
 
-.map address li {
+.map address .address-line {
     list-style-type: none;
     font-size: 14px;
     color: #035682;
@@ -928,8 +946,8 @@ nav li #current {
     padding-left: 5px;
 }
 
-.map address li:first-child {
-    font-family: "Century Gothic Bold";
+.map address .address-line:first-child {
+    font-family: 'Century Gothic Bold';
 }
 
 .map address img {
@@ -951,13 +969,13 @@ footer {
 }
 
 footer section {
-    width: 1000px;
+    width: 960px;
     height: 100px;
     margin: 0 auto;
 }
 
 footer .left {
-    width: 500px;
+    /* width: 500px; */
     float: left;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -967,7 +985,7 @@ footer .left {
 footer .left h1,
 footer .right h1 {
     width: 220px;
-    font-family: "Century Gothic Bold";
+    font-family: 'Century Gothic Bold';
     font-size: 12px;
     margin: 0;
     padding: 30px 0 4px 0;

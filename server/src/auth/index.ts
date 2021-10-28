@@ -1,20 +1,26 @@
-
-import { UserCredentials } from "@pp/api/panel/auth";
-import { auth } from "../config";
-import * as jwt from "../core/jwt";
+import { UserCredentials } from '@pp/api/panel/auth';
+import { auth } from '../config';
+import * as jwt from '../core/jwt';
 import { Request, Response, NextFunction } from 'express';
 
-const validateCredentials = (username: string, password: string) => username === 'admin' && password === 'beebee';
+const admin_username = process.env.ADMIN_USER;
+const admin_password = process.env.ADMIN_PASSWORD;
+
+const validateCredentials = (username: string, password: string) =>
+    username === admin_username && password === admin_password;
 
 export const login = async ({ username, password }: UserCredentials) => {
     if (validateCredentials(username, password)) {
-        const encodedToken = await jwt.sign({ username }, auth.secretKey, { algorithm: "RS256", expiresIn: auth.maxAge });
+        const encodedToken = await jwt.sign({ username }, auth.secretKey, {
+            algorithm: 'RS256',
+            expiresIn: auth.maxAge,
+        });
         const decoded = jwt.decode(encodedToken, { json: true });
         return { encodedToken, iat: Number(decoded.iat), exp: Number(decoded.exp) };
     } else {
         return Promise.reject('Invalid credentials');
     }
-}
+};
 
 export const verify = async (req: Request, res: Response, next: NextFunction) => {
     let accessToken: string = req.cookies[auth.cookieName];
@@ -30,8 +36,7 @@ export const verify = async (req: Request, res: Response, next: NextFunction) =>
         //throws an error if the token has expired or has a invalid signature
         payload = await jwt.verify(accessToken, auth.publicKey);
         next();
-    }
-    catch (e) {
+    } catch (e) {
         //if an error occured return request unauthorized error
         console.log(e);
         return res.status(401).send();

@@ -23,6 +23,17 @@
 .gallery-state {
     display: flex;
     font-size: 0.75em;
+    position: relative;
+
+    .images-progress {
+        // display: none;
+        opacity: 0.25;
+        transition: width 0.2s ease-out;
+        position: absolute;
+        height: 5px;
+        background: white;
+        padding: 0px;
+    }
 
     // background: black;
     // &.compact {
@@ -42,10 +53,14 @@
 
 @media (max-width: 480px) {
     .gallery-state {
-
         justify-content: space-between;
 
-        .g-state-directory {
+        .images-progress {
+            opacity: 1;
+            height: 2px;
+        }
+
+        .g-state-text {
             display: none;
         }
 
@@ -111,17 +126,18 @@ a {
     padding: 0px;
     align-items: center;
     color: white;
+    justify-content: flex-end;
 
     .g-snapped-count {
         height: 100%;
     }
 }
 
-.g-state-directory {
-    color: white;
-    flex-grow: 1;
-    align-self: center;
-}
+// .g-state-directory {
+//     color: white;
+//     flex-grow: 1;
+//     align-self: center;
+// }
 
 .g-state-button {
     @extend %state-button;
@@ -140,7 +156,23 @@ a {
         opacity: 1;
 
         .mdi {
-            padding: 0em .1em !important;
+            padding: 0em 0.1em !important;
+        }
+
+        .mdi-heart,
+        .mdi-heart-outline {
+            &::before {
+                transition: transform 0.25s;
+            }
+        }
+
+        &:hover {
+            .mdi-heart,
+            .mdi-heart-outline {
+                &::before {
+                    transform: scale(1.25) translateZ(0);
+                }
+            }
         }
     }
 

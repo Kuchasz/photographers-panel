@@ -1,4 +1,4 @@
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 700px) {
     .slogan section {
         width: 100%;
         height: auto;
@@ -15,7 +15,7 @@
 
     .slogan li {
         list-style-type: none;
-        font-family: "Century Gothic";
+        font-family: 'Century Gothic';
         font-size: 20px;
         font-weight: normal;
         color: #5383a2;
@@ -23,11 +23,17 @@
         padding-right: 0px;
     }
 
+    .logo {
+        display: none !important;
+    }
+
     .offer section,
+    .offers section,
+    .pricing section,
     .article section,
     .blog section,
     .gallery section,
-    .offers section,
+    .videos section,
     .link section,
     .contact_form section,
     .gallery_sub section,
@@ -37,13 +43,13 @@
     }
 
     .contact section {
-        width: 720px;
+        width: 100%;
         height: 100px;
         margin: 0 auto;
     }
 
     .contact .left {
-        width: 260px;
+        /* width: 260px; */
         float: left;
         margin-top: 0px;
         margin-bottom: 0px;
@@ -51,11 +57,11 @@
     }
 
     .contact .right {
-        width: 350px;
+        /* width: 350px; */
         float: right;
         margin-top: 0px;
         margin-bottom: 0px;
-        margin-left: 20px;
+        /* margin-left: 20px; */
         text-align: right;
         color: #fff;
     }
@@ -63,34 +69,17 @@
     .map {
         width: 100%;
         float: left;
-        background: #ffffff url("../images/map_bg.jpg") center center no-repeat;
+        background: #ffffff url('../images/map_bg.jpg') center center no-repeat;
         color: #035682;
     }
 
     .map section {
-        width: 740px;
+        width: 100%;
         height: 420px;
         margin: 0 auto;
     }
 
-    .map address {
-        width: 320px;
-        float: right;
-        background-image: url("../images/address_bg.png");
-        background-size: 320px;
-        margin-top: 216px;
-        margin-right: 15px;
-    }
-
-    .map address ul {
-        width: 170px;
-        float: left;
-        margin: 0;
-        padding: 0;
-        padding: 8px 0 0 30px;
-    }
-
-    .map address li {
+    .map address .address-line {
         list-style-type: none;
         font-size: 13px;
         color: #035682;
@@ -98,8 +87,8 @@
         font-style: normal;
     }
 
-    .map address li:first-child {
-        font-family: "Century Gothic Bold";
+    .map address .address-line:first-child {
+        font-family: 'Century Gothic Bold';
     }
 
     .map address img {
@@ -115,15 +104,20 @@
     }
 
     .article #map {
-        width: 390px;
+        display: none;
+        /* width: 390px;
         margin-top: 50px;
-        margin-left: -70px;
+        margin-left: -70px; */
+    }
+
+    .article article a.button {
+        height: auto;
     }
 
     .offer h1,
     .article h1 {
         font-size: 34px;
-        font-family: "Century Gothic";
+        font-family: 'Century Gothic';
         text-align: center;
         font-weight: normal;
         margin-bottom: 0;
@@ -141,13 +135,15 @@
     }
 
     .offer article,
+    .offers article,
+    .pricing article,
     .article article,
     .link article,
     .contact_form article,
     .gallery_sub article,
     .blog article,
     .sub_sub article {
-        width: 350px;
+        width: 100%;
         float: left;
         margin-left: 0px;
     }
@@ -158,7 +154,7 @@
 
     .link article,
     .contact_form article {
-        width: 530px;
+        width: 100%;
         margin-top: -50px;
     }
 
@@ -182,7 +178,8 @@
     .blog article h1,
     .sub_sub article h1 {
         font-size: 30px;
-        text-align: left;
+        /* text-align: left; */
+        text-align: center;
         margin-top: 0px;
         font-weight: normal;
         padding: 70px 0 0 0;
@@ -197,7 +194,8 @@
     .sub_sub article h2 {
         font-size: 17px;
         font-weight: normal;
-        text-align: left;
+        text-align: center;
+        /* text-align: left; */
         margin: 0;
         margin-bottom: 35px;
         padding: 25px 0 0 0;
@@ -207,8 +205,17 @@
         font-size: 15px;
     }
 
+    .offer article,
+    .article article {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .link hgroup,
-    .contact_form hgroup {
+    .contact_form hgroup,
+    .pricing hgroup,
+    .offers hgroup {
         display: none;
         width: 1px;
         height: 1px;
@@ -216,25 +223,53 @@
         margin: 0px 0 0px 0;
     }
 
+    .contact section .left {
+        display: none;
+    }
+
+    .contact section .right {
+        text-align: center;
+    }
+
+    .contact section {
+        display: flex;
+        justify-content: center;
+    }
+
+    .contact {
+        background: rgba(0, 51, 78, 1);
+    }
+
+    .offer section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .offer hgroup {
-        width: 240px;
+        width: auto;
         float: left;
         margin-top: 70px;
         margin-bottom: 20px;
         font-size: 18px;
     }
 
+    .offer article h2 {
+        text-align: center;
+    }
+
     .offer .left {
         padding-left: 50px;
+        width: auto;
     }
 
     .offer .left li {
-        width: 240px;
+        width: auto;
         height: 50px;
         list-style-type: none;
         padding: 3px 0 0 70px;
         margin: 0 0 20px 0;
-        background: url("../images/check.png") no-repeat;
+        background: url('../images/check.png') no-repeat;
     }
 
     .offer .right {
@@ -250,7 +285,7 @@
         list-style-type: none;
         padding: 3px 0 0 0px;
         margin: 0 0 1px 0;
-        background: url("../images/check.png") no-repeat;
+        background: url('../images/check.png') no-repeat;
     }
 
     footer section {

@@ -17,10 +17,6 @@
 }
 
 .blog-assign-assets {
-    .rs-modal-body {
-        overflow: hidden !important;
-    }
-
     .assets-list {
         display: flex;
         flex-wrap: wrap;
@@ -52,6 +48,10 @@
                 position: relative;
                 overflow: hidden;
                 background-color: rgba(39, 44, 54, 0.83);
+                display: flex;
+                // align-content: center;
+                align-items: center;
+                justify-content: center;
 
                 .rs-progress {
                     width: 100%;
@@ -84,6 +84,7 @@
                     margin: 0px;
                     justify-content: space-around;
                     color: white;
+                    // display: none; //have to find any better way to prevent new layer being created for list item
 
                     .hideable {
                         transition: opacity linear 0.25s;

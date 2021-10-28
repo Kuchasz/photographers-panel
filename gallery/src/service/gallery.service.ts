@@ -1,22 +1,19 @@
-import { Injectable, Optional } from "@angular/core";
+import { Directive, Injectable, Optional } from '@angular/core';
 
-import { GalleryState, GalleryImage, GalleryDirectory, ScreenOrientation } from "./gallery.state";
-import { GalleryConfig } from "../config/gallery.config";
-import { defaultState, defaultConfig } from "../config/gallery.default";
+import { GalleryState, GalleryImage, GalleryDirectory, ScreenOrientation } from './gallery.state';
+import { GalleryConfig } from '../config/gallery.config';
+import { defaultState, defaultConfig } from '../config/gallery.default';
 
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-
-import { switchMap, take, takeWhile, map, filter, find, tap, finalize, publishLast } from "rxjs/operators";
-import { from, pipe, interval as fromInterval } from "rxjs";
+import { switchMap, take, takeWhile, map, filter, find, tap, finalize } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject, from, pipe, interval as fromInterval } from 'rxjs';
+import { sort } from '@pp/utils/array';
 
 @Injectable()
 export class GalleryService {
-    state: BehaviorSubject<GalleryState>;
+    public state: BehaviorSubject<GalleryState>;
     config: GalleryConfig = defaultConfig;
     player: Subject<number>;
-    likedPhotos: string[] = [];
+    downloadedPhotos: string[] = [];
 
     constructor(@Optional() config: GalleryConfig) {
         this.state = new BehaviorSubject<GalleryState>(defaultState);
@@ -35,35 +32,42 @@ export class GalleryService {
             directoryImages: { [id: string]: string[] };
             directories: { [id: string]: GalleryDirectory };
         },
-        likes: { imageId: string; likes: number, liked: boolean }[]
+        likes: { imageId: string; likes: number; liked: boolean }[]
     ) {
         const state = this.state.getValue();
 
         const images = result.images.map((i) => ({
             ...i,
             likes: likes.filter((l) => i.id === l.imageId).map((l) => l.likes)[0] ?? 0,
-            liked: likes.filter((l) => i.id === l.imageId).map((l) => l.liked)[0] ?? false
+            liked: likes.filter((l) => i.id === l.imageId).map((l) => l.liked)[0] ?? false,
         }));
 
-        this.likedPhotos = likes.filter(l => l.liked).map(l => l.imageId);
+        const imagesLikes = images.reduce((acc, img) => ({ ...acc, [img.id]: img.likes }), {});
+
+        const dirImages = Object.entries(result.directoryImages).reduce(
+            (acc, [key, imgs]) => ({
+                ...acc,
+                [key]: sort(imgs, (i) => imagesLikes[i]),
+            }),
+            {}
+        );
 
         this.state.next({
             ...state,
             directories: result.directories,
-            images: images,
-            directoryImages: result.directoryImages,
+            images: sort(images, (x) => x.likes),
+            directoryImages: dirImages,
             currId: undefined,
             prevId: undefined,
             nextId: undefined,
-            ratingRequestAvailable: this.likedPhotos.length >= 10
+            ratingRequestAvailable: true//this.likedPhotos.length >= 10,
         });
     }
 
     unlikeImage(imageId: string) {
         const img = this.state.getValue().images.find((x) => x.id === imageId);
 
-        if (img.liked === false)
-            return;
+        if (img.liked === false) return;
 
         img.likes--;
         img.liked = false;
@@ -73,28 +77,20 @@ export class GalleryService {
         const state = this.state.getValue();
         const img = state.images.find((x) => x.id === imageId);
 
-        if (img.liked === true)
-            return;
-
-        if(!this.likedPhotos.includes(imageId))
-            this.likedPhotos.push(imageId);
+        if (img.liked === true) return;
 
         img.likes++;
         img.liked = true;
-
-        if (this.likedPhotos.length === 10) {
-            this.state.next({ ...state, ratingRequestAvailable: true });
-        }
     }
 
-    setratingRequestAvailable(enabled: boolean){
+    setRatingRequestAvailable(enabled: boolean) {
         const state = this.state.getValue();
-        this.state.next({...state, ratingRequestAvailable: enabled});
+        this.state.next({ ...state, ratingRequestAvailable: enabled });
     }
 
-    setDisplayRatingRequestDetails(display: boolean){
+    setDisplayRatingRequestDetails(display: boolean) {
         const state = this.state.getValue();
-        this.state.next({...state, displayRatingRequestDetails: display});
+        this.state.next({ ...state, displayRatingRequestDetails: display });
     }
 
     setOrientation(orientation: ScreenOrientation) {
@@ -105,7 +101,7 @@ export class GalleryService {
     toggleOrientation() {
         const state = this.state.getValue();
 
-        const orientation = state.orientation === "landscape" ? "portrait" : "landscape";
+        const orientation = state.orientation === 'landscape' ? 'portrait' : 'landscape';
 
         this.state.next({ ...state, orientation });
     }
@@ -115,14 +111,12 @@ export class GalleryService {
 
         const directories = {
             ...state.directories,
-            [directoryId]: { ...state.directories[directoryId], visited: true }
+            [directoryId]: { ...state.directories[directoryId], visited: true },
         };
-
-        console.log(directories);
 
         this.state.next({
             ...state,
-            directories
+            directories,
         });
 
         this.selectImage(state.directoryImages[directoryId][0], directoryId);
@@ -136,7 +130,15 @@ export class GalleryService {
         const state = this.state.getValue();
         this.state.next({
             ...state,
-            fullscreenEnabled: !state.fullscreenEnabled
+            fullscreenEnabled: !state.fullscreenEnabled,
+        });
+    }
+
+    toggleThumbs() {
+        const state = this.state.getValue();
+        this.state.next({
+            ...state,
+            displayThumbs: !state.displayThumbs,
         });
     }
 
@@ -148,8 +150,8 @@ export class GalleryService {
             ...{
                 prevId: undefined,
                 currId: undefined,
-                nextId: undefined
-            }
+                nextId: undefined,
+            },
         });
     }
 
@@ -159,7 +161,7 @@ export class GalleryService {
 
         this.state.next({
             ...state,
-            ...this._getStateIds(id, images)
+            ...this._getStateIds(id, images),
         });
     }
 
@@ -171,7 +173,7 @@ export class GalleryService {
         return {
             currId: id,
             prevId: images[prevIndex],
-            nextId: images[nextIndex]
+            nextId: images[nextIndex],
         };
     }
 
@@ -180,13 +182,13 @@ export class GalleryService {
 
         const newState = {
             ...state,
-            images: state.images.map((x) => (x.id !== id ? x : { ...x, snapped: !x.snapped }))
+            images: state.images.map((x) => (x.id !== id ? x : { ...x, snapped: !x.snapped })),
         };
 
         this.state.next(newState);
     }
 
-    snapImages(images: GalleryImage[]) { }
+    snapImages(images: GalleryImage[]) {}
 
     displaySnappedImages() {
         const state = this.state.getValue();
@@ -204,6 +206,18 @@ export class GalleryService {
         const state = this.state.getValue();
 
         this.selectImage(state.nextId, directoryId);
+    }
+
+    download(photoId: string){
+        if(this.downloadedPhotos.includes(photoId))
+            return;
+
+        this.downloadedPhotos.push(photoId);
+
+        if(this.downloadedPhotos.length === 5){
+            const state = this.state.getValue();
+            this.state.next({...state, displayRatingRequestDetails: true});
+        }
     }
 
     prev(directoryId: string) {

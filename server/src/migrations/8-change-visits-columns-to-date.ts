@@ -1,9 +1,9 @@
-import Knex from "knex";
-import { columnExists, runQuery, tableExists, renameTable, renameColumn } from "../core/db";
+import { Knex } from 'knex';
+import { columnExists, runQuery, tableExists, renameTable, renameColumn } from '../core/db';
 
 export const run = async (connection: Knex): Promise<boolean> => {
     try {
-        if (!(await tableExists("PrivateGalleryDailyVisit", connection))) {
+        if (!(await tableExists('PrivateGalleryDailyVisit', connection))) {
             return false;
         }
 
@@ -12,13 +12,13 @@ export const run = async (connection: Knex): Promise<boolean> => {
 
         // connection.raw("ALTER TABLE :tableName: ALTER COLUMN :columnName: ? ?")
 
-        await connection.schema.alterTable("BlogVisit", builder => builder.date("Date").alter());
+        await connection.schema.alterTable('BlogVisit', (builder) => builder.date('Date').alter());
 
-        await connection.schema.createTable("PrivateGalleryVisit", builder => {
-            builder.increments("Id").primary().notNullable();
-            builder.date("Date").notNullable();
-            builder.string("Ip", 15);
-            builder.integer("PrivateGallery_id", 8).notNullable();
+        await connection.schema.createTable('PrivateGalleryVisit', (builder) => {
+            builder.increments('Id').primary().notNullable();
+            builder.date('Date').notNullable();
+            builder.string('Ip', 15);
+            builder.integer('PrivateGallery_id', 8).notNullable();
         });
 
         // await runQuery(`CREATE TABLE "jarvis_pstudio"."PrivateGalleryVisit"(
@@ -30,7 +30,11 @@ export const run = async (connection: Knex): Promise<boolean> => {
 
         type result = { PrivateGallery_id: number; date: Date; count: number };
 
-        const results = await connection<result[]>("PrivateGalleryDailyVisit").select("PrivateGallery_id", "date", "count");
+        const results = await connection<result[]>('PrivateGalleryDailyVisit').select(
+            'PrivateGallery_id',
+            'date',
+            'count'
+        );
 
         // connection.query(
         //     `SELECT PrivateGallery_id, date, count FROM PrivateGalleryDailyVisit`,
@@ -41,10 +45,12 @@ export const run = async (connection: Knex): Promise<boolean> => {
             try {
                 const visits = Array.from(Array(daily.count));
                 for (const _ of visits) {
-                    await connection("PrivateGalleryVisit").insert({ PrivateGallery_id: daily.PrivateGallery_id, Date: daily.date });
+                    await connection('PrivateGalleryVisit').insert({
+                        PrivateGallery_id: daily.PrivateGallery_id,
+                        Date: daily.date,
+                    });
                 }
                 // await runQuery(`INSERT INTO "PrivateGalleryVisit"("PrivateGallery_id", "Date") VALUES ('${daily.PrivateGallery_id}', '${daily.date}')`, connection);
-
             } catch (err) {
                 return Promise.reject(err);
                 // rej(err);
@@ -56,13 +62,10 @@ export const run = async (connection: Knex): Promise<boolean> => {
         return true;
         // res(true);
         // });
-
     } catch (err) {
         return Promise.reject(err);
     }
 };
-
-
 
 //
 // await runQuery(`ALTER TABLE "Blog" ADD "MainBlogAsset_id" INT(11) NULL AFTER "isHidden";`, connection);

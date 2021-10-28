@@ -1,56 +1,69 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const ProgressBarPlugin = require("progress-bar-webpack-plugin");
-const EnvironmentPlugin = require("webpack").EnvironmentPlugin;
-require('dotenv').config({ path: path.resolve("../.env") });
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { EnvironmentPlugin, ProvidePlugin } = require('webpack');
+require('dotenv').config({
+    path: path.resolve('../.env')
+});
 
-console.log(path.join(__dirname, "../node_modules/@pp/utils"))
+console.log(path.join(__dirname, '../node_modules/@pp/utils'));
 
 module.exports = (env, argv) => ({
-    entry: path.resolve("./src/index.tsx"),
+    entry: path.resolve('./src/index.tsx'),
     output: {
-        filename: "bundle.js"
+        filename: 'bundle.js',
     },
     mode: argv.mode,
-    devtool: argv.mode === "production" ? "source-map" : "eval-source-map",
+    devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.ts|\.tsx$/,
-                use: "ts-loader",
+                use: 'ts-loader',
                 // include: [
-                //     path.join(__dirname, "src"), 
-                //     path.join(__dirname, "../node_modules/@pp/utils"), 
+                //     path.join(__dirname, "src"),
+                //     path.join(__dirname, "../node_modules/@pp/utils"),
                 //     path.join(__dirname, "../node_modules/@pp/api")
                 // ]
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: [
-                        "css-loader",
-                        "resolve-url-loader",
-                        {
-                            loader: "postcss-loader",
-                            options: {
-                                plugins: [require("autoprefixer")]
+                use: [{
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {},
+                    },
+                    "css-loader",
+                    "resolve-url-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    ["autoprefixer", {}]
+                                ]
                             }
-                        },
-                        "sass-loader"
-                    ]
-                })
+                        }
+                    },
+                    "sass-loader"
+                ]
             },
             {
                 test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ["css-loader", "less-loader?javascriptEnabled=true"]
-                })
-            }
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {},
+                }, 
+                'css-loader', 
+                {
+                    loader: "less-loader",
+                    options: {
+                        lessOptions: {
+                            javascriptEnabled: true,
+                        }
+                    }
+                }]
+            },
             // this rule handles images
             // {
             //     test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
@@ -71,40 +84,54 @@ module.exports = (env, argv) => ({
             //     test: /\.otf(\?.*)?$/,
             //     use: 'file-loader?name=/fonts/[name].  [ext]&mimetype=application/font-otf'
             // }
-        ]
+        ],
     },
     resolve: {
-        extensions: [".scss", ".ts", ".tsx", ".js"]
+        extensions: ['.scss', '.ts', '.tsx', '.js'],
     },
-    optimization:
-        argv.mode === "production"
-            ? {
-                  usedExports: true,
-                  sideEffects: true,
-                  minimize: true,
-                  minimizer: [new TerserPlugin()]
-              }
-            : {},
+    optimization: argv.mode === 'production' ?
+        {
+            usedExports: true,
+            sideEffects: true,
+            minimize: true,
+            minimizer: [new TerserPlugin()],
+        } :
+        {},
     plugins: [
-        ...(argv.analyze ? [new BundleAnalyzerPlugin({ analyzerHost: "192.168.56.102", analyzerPort: "8888" })] : []),
-        new ProgressBarPlugin(),
+        ...(argv.analyze ?
+            [
+                new BundleAnalyzerPlugin({
+                    analyzerHost: '192.168.56.102',
+                    analyzerPort: '8888',
+                }),
+            ] :
+            []),
         new HtmlWebpackPlugin({
-            template: "src/index.html",
+            template: 'src/index.html',
             alwaysWriteToDisk: true,
-            cache: false
+            cache: false,
         }),
-        new ExtractTextPlugin("styles.css"),
-        new EnvironmentPlugin(Object.keys(process.env))
+        new ProvidePlugin({
+            process: 'process/browser',
+        }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // all options are optional
+            filename: '[name].css',
+            chunkFilename: '[id].css',
+            ignoreOrder: false, // Enable to remove warnings about conflicting order
+        }),
+        new EnvironmentPlugin(Object.keys(process.env)),
     ],
     devServer: {
         port: 8081,
-        host: "localhost",
+        host: 'localhost',
         historyApiFallback: true,
         watchOptions: {
             aggregateTimeout: 300,
-            poll: 1000
+            poll: 1000,
         },
-        contentBase: path.resolve("./dist"),
-        open: true
-    }
+        contentBase: path.resolve('./dist'),
+        open: true,
+    },
 });

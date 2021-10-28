@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Table, Icon, Progress, ButtonToolbar, IconButton, Divider } from "rsuite";
-import { range } from "@pp/utils/array";
-import { GalleryDto } from "@pp/api/panel/private-gallery";
-import { PrivateGalleryState } from "@pp/api/private-gallery";
-import { ToolTip } from "../common/tooltip";
-import { translations } from "../../i18n";
+import React, { useState } from 'react';
+import { Table, Icon, Progress, ButtonToolbar, IconButton, Divider } from 'rsuite';
+import { range } from '@pp/utils/array';
+import { trim } from '@pp/utils/string';
+import { GalleryDto } from '@pp/api/panel/private-gallery';
+import { PrivateGalleryState } from '@pp/api/private-gallery';
+import { ToolTip } from '../common/tooltip';
+import { translations } from '../../i18n';
 
 interface Props {
     onSelect: (item: any) => void;
@@ -15,34 +16,34 @@ interface Props {
     loadingGalleries: boolean;
     selectedGalleryId?: number;
 }
-interface State { }
+interface State {}
 
 const getColorFromGalleryState = (galleryState: PrivateGalleryState): any => {
     switch (galleryState) {
         case PrivateGalleryState.Available:
-            return "#4CAF50";
+            return '#4CAF50';
         case PrivateGalleryState.TurnedOff:
-            return "#F44336";
+            return '#F44336';
         case PrivateGalleryState.NotReady:
-            return "#FFC107";
+            return '#FFC107';
         default:
-            throw new Error("Not handled GalleryState!");
+            throw new Error('Not handled GalleryState!');
     }
 };
 
 const getIconFromGalleryState = (galleryState: PrivateGalleryState): any => {
     switch (galleryState) {
         case PrivateGalleryState.Available:
-            return "btn-on";
+            return 'btn-on';
         case PrivateGalleryState.TurnedOff:
         case PrivateGalleryState.NotReady:
-            return "btn-off";
+            return 'btn-off';
         default:
-            throw new Error("Not handled GalleryState!");
+            throw new Error('Not handled GalleryState!');
     }
 };
 
-const getColorFromBlogEntry = (blogId: number) => (blogId ? "#4caf50" : "#f44336");
+const getColorFromBlogEntry = (blogId: number) => (blogId ? '#4caf50' : '#f44336');
 
 const stateTooltips = {
     [PrivateGalleryState.Available]: (
@@ -59,20 +60,20 @@ const stateTooltips = {
         <>
             {translations.gallery.states.state} <i>{translations.gallery.states.notReady}</i>.
         </>
-    )
+    ),
 };
 
 const blogTooltips = {
     Available: translations.gallery.list.blogAvailable,
-    None: translations.gallery.list.blogNotAvailable
+    None: translations.gallery.list.blogNotAvailable,
 };
 
 const passHash = (password: string) =>
     range(password.length - 1)
-        .map((x) => "*")
-        .reduce((agg, cur) => agg + cur, "");
+        .map((x) => '*')
+        .reduce((agg, cur) => agg + cur, '');
 
-const obfuscatePassword = (password: string) => password.slice(0, 1) + passHash(password);
+const obfuscatePassword = (password: string) => trim(1, password) + passHash(password);
 
 const Password = ({ password }: { password: string }) => {
     const [passwordRevealed, revealPassword] = useState(false);
@@ -96,7 +97,7 @@ const Password = ({ password }: { password: string }) => {
     };
 
     return (
-        <span className={"password " + (passwordRevealed ? "revealed" : "not-revealed")}>
+        <span className={'password ' + (passwordRevealed ? 'revealed' : 'not-revealed')}>
             <span className="text">
                 {passwordRevealed ? password : obfuscatePassword(password)}
                 {passwordRevealed ? <Progress.Circle percent={revealTime} /> : null}
@@ -117,19 +118,27 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 rowHeight={50}
                 virtualized={true}
                 shouldUpdateScroll={true}
-                onDataUpdated={() => { }}
+                onDataUpdated={() => {}}
                 loading={this.props.loadingGalleries}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item)}
-                rowClassName={(row: GalleryDto) => this.props.selectedGalleryId && row?.id === this.props.selectedGalleryId ? "selected" : ""}
-                data={this.props.galleries}
-            >
+                rowClassName={(row: GalleryDto) =>
+                    this.props.selectedGalleryId && row?.id === this.props.selectedGalleryId ? 'selected' : ''
+                }
+                data={this.props.galleries}>
                 <Table.Column width={50} align="center">
                     <Table.HeaderCell></Table.HeaderCell>
                     <Table.Cell dataKey="state">
                         {(gallery: GalleryDto) => (
                             <ToolTip text={stateTooltips[gallery.state]}>
-                                <Icon icon={getIconFromGalleryState(gallery.state)} style={{ fontSize: "24px", marginTop: "-2px", color: getColorFromGalleryState(gallery.state) }} />
+                                <Icon
+                                    icon={getIconFromGalleryState(gallery.state)}
+                                    style={{
+                                        fontSize: '24px',
+                                        marginTop: '-2px',
+                                        color: getColorFromGalleryState(gallery.state),
+                                    }}
+                                />
                             </ToolTip>
                         )}
                     </Table.Cell>
@@ -168,7 +177,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     </Table.Cell>
                 </Table.Column>
 
-                <Table.Column width={100} align="center">
+                <Table.Column width={140} align="center">
                     <Table.HeaderCell>{translations.gallery.list.headers.totalVisits}</Table.HeaderCell>
                     <Table.Cell dataKey="visits" />
                 </Table.Column>
@@ -194,10 +203,16 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                     />
                                 </ToolTip>
                                 <Divider vertical />
-                                <ToolTip placement="left" text={gallery.pendingNotification ? translations.gallery.list.actions.notificationsNotSend : translations.gallery.list.actions.viewEmails}>
+                                <ToolTip
+                                    placement="left"
+                                    text={
+                                        gallery.pendingNotification
+                                            ? translations.gallery.list.actions.notificationsNotSend
+                                            : translations.gallery.list.actions.viewEmails
+                                    }>
                                     <IconButton
                                         appearance="subtle"
-                                        style={gallery.pendingNotification ? { color: "#FFC107" } : {}}
+                                        style={gallery.pendingNotification ? { color: '#FFC107' } : {}}
                                         icon={<Icon icon="envelope-o" />}
                                         onClick={() => this.props.onViewEmails(gallery.id)}
                                     />

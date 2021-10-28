@@ -1,4 +1,7 @@
-<div class="g-thumb-container" #container>
+<div class="g-thumb-container" [class.collapsed]="state.displayThumbs === false" #container>
+    <div class="g-thumb-collapse">
+        <span class="mdi mdi-chevron-down" (mouseup)="gallery.toggleThumbs()"></span>
+    </div>
     <div class="g-nav-prev" (mouseup)="gallery.prev(directoryId)">
         <span class="mdi mdi-chevron-left"></span>
     </div>

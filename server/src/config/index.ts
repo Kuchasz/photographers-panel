@@ -1,1 +1,1 @@
-export * from "./all.config";
+export * from './all.config';

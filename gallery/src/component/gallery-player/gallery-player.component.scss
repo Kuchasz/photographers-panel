@@ -1,6 +1,6 @@
 :host {
-  position: absolute;
-  z-index: 310;
+    position: absolute;
+    z-index: 310;
 }
 
 //.g-progress {
@@ -10,13 +10,12 @@
 //}
 
 .g-player-btns {
-  display: flex;
-  padding: 0.5em 1em;
+    display: flex;
+    padding: 0.5em 1em;
 }
 
 .g-player-btn {
-  margin-right: 0.5em;
-  color: #ffffff;
-  cursor: pointer;
+    margin-right: 0.5em;
+    color: #ffffff;
+    cursor: pointer;
 }
-

@@ -1,27 +1,25 @@
 <div #container [@imgAnimate]="animate" class="g-image">
-    <div class="g-image-container">
+    <div class="g-image-container" [style.paddingBottom]="config.displayMode === 1 ? '0px' : '24px'">
         <!-- <ng-container> -->
-            <img
-                class="prev g-image-img"
-                [lazySrc]="currentImage[0]?.src"
-                (lazyLoad)="imageLoad($event)"
-            />
-                <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
-            <!-- </div> -->
-            <img
-                class="curr g-image-img"
-                [lazySrc]="currentImage[1]?.src"
-                (lazyLoad)="imageLoad($event)"
-            />
-                <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
-            <!-- </div> -->
-            <img
-                class="next g-image-img"
-                [lazySrc]="currentImage[2]?.src"
-                (lazyLoad)="imageLoad($event)"
-            />
-                <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
-            <!-- </div> -->
+        <img
+            *ngIf="config.displayMode === 1"
+            class="prev g-image-img"
+            [lazySrc]="currentImage[0]?.src"
+            (lazyLoad)="imageLoad($event)"
+        />
+        <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
+        <!-- </div> -->
+        <img class="curr g-image-img" [lazySrc]="currentImage[1]?.src" (lazyLoad)="imageLoad($event)" />
+        <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
+        <!-- </div> -->
+        <img
+            *ngIf="config.displayMode === 1"
+            class="next g-image-img"
+            [lazySrc]="currentImage[2]?.src"
+            (lazyLoad)="imageLoad($event)"
+        />
+        <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
+        <!-- </div> -->
         <!-- </ng-container> -->
     </div>
 </div>

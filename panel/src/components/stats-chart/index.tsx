@@ -1,9 +1,9 @@
-import React from "react";
-import { StatsRange } from "./stats-range";
-import { Chart, ChartData } from "./chart";
-import { ChartStat, ChartStats } from "./stats";
-import { addMonths } from "@pp/utils/date";
-import "./styles.less";
+import React from 'react';
+import { StatsRange } from './stats-range';
+import { Chart, ChartData } from './chart';
+import { ChartStat, ChartStats } from './stats';
+import { addMonths } from '@pp/utils/date';
+import './styles.less';
 
 type StatsItem = {
     id: number;
@@ -13,7 +13,7 @@ type StatsItem = {
 type ChartStatsData = {
     data: ChartData[];
     stats: ChartStat[];
-}
+};
 
 interface Props<Item extends StatsItem> {
     selectedItem: Item;
@@ -30,7 +30,6 @@ interface State {
 }
 
 export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, State> {
-
     constructor(props: Props<T>) {
         super(props);
         this.state = {
@@ -39,12 +38,14 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
             startDate: addMonths(new Date(), -1),
             endDate: new Date(),
             stats: [],
-            items: []
+            items: [],
         };
     }
 
     toggleAutoDate = () => {
-        this.setState(({ disableAutoDate }) => ({ disableAutoDate: !disableAutoDate }));
+        this.setState(({ disableAutoDate }) => ({
+            disableAutoDate: !disableAutoDate,
+        }));
     };
 
     componentDidMount() {
@@ -61,19 +62,20 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
         this.setState({ isLoading: true });
 
         const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(this.props.selectedItem.date);
-        const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(this.props.selectedItem.date), 1);
+        const endDate = this.state.disableAutoDate
+            ? this.state.endDate
+            : addMonths(new Date(this.props.selectedItem.date), 1);
 
         this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
-            console.log(resp.data);
+            // console.log(resp.data);
             this.setState({
                 isLoading: false,
                 stats: resp.stats,
                 items: resp.data,
                 startDate,
-                endDate
-            })
-        }
-        );
+                endDate,
+            });
+        });
     }
 
     onDateRangeChanged = ([startDate, endDate]: [(Date | undefined)?, (Date | undefined)?]) => {
@@ -81,40 +83,39 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
         this.setState(() => ({ disableAutoDate: true, startDate, endDate }));
         if (this.props.selectedItem) {
             this.setState(() => ({
-                isLoading: true
+                isLoading: true,
             }));
 
             this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
-                console.log(resp.data);
+                // console.log(resp.data);
                 this.setState({
                     isLoading: false,
                     stats: resp.stats,
-                    items: resp.data
-                })
-            }
-            );
+                    items: resp.data,
+                });
+            });
         }
     };
 
     render() {
-        return <div className="stats-chart">
-            <header>
-                <StatsRange
-                    onAutoChanged={this.toggleAutoDate}
-                    autoDisabled={this.state.disableAutoDate}
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate}
-                    onRangeChange={this.onDateRangeChanged}
-                />
-                <span>
-                    {this.state.stats != null ? (
-                        <ChartStats
-                            isLoading={this.state.isLoading}
-                            stats={this.state.stats} />
-                    ) : null}
-                </span>
-            </header>
-            <Chart items={this.state.items}></Chart>
-        </div>;
+        return (
+            <div className="stats-chart">
+                <header>
+                    <StatsRange
+                        onAutoChanged={this.toggleAutoDate}
+                        autoDisabled={this.state.disableAutoDate}
+                        startDate={this.state.startDate}
+                        endDate={this.state.endDate}
+                        onRangeChange={this.onDateRangeChanged}
+                    />
+                    <span>
+                        {this.state.stats != null ? (
+                            <ChartStats isLoading={this.state.isLoading} stats={this.state.stats} />
+                        ) : null}
+                    </span>
+                </header>
+                <Chart items={this.state.items}></Chart>
+            </div>
+        );
     }
 }

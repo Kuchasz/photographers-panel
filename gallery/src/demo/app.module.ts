@@ -1,17 +1,18 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, APP_INITIALIZER } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppComponent } from "./component/app.component";
-import { GalleryModule } from "../gallery.module";
-import { checkIfMobile } from "../utils/browser";
-import { DisplayModes } from "../config/gallery.config";
-import { GalleryService } from "../service/gallery.service";
-import { fetchGallery } from "../utils/jalbum";
-import { ApiService } from "../service/api.service";
+import { AppComponent } from './component/app.component';
+import { GalleryModule } from '../gallery.module';
+import { checkIfMobile } from '../utils/browser';
+import { DisplayModes } from '../config/gallery.config';
+import { GalleryService } from '../service/gallery.service';
+import { fetchGallery } from '../utils/jalbum';
+import { ApiService } from '../service/api.service';
+import { getUserName } from "@pp/api/user";
 
-document.querySelector("#state-initializer")?.remove();
+document.querySelector('#state-initializer')?.remove();
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -20,39 +21,44 @@ document.querySelector("#state-initializer")?.remove();
         CommonModule,
         GalleryModule.forRoot({
             style: {
-                background: "rgba(0, 0, 0, 0.9)",
-                width: "100%",
-                height: "100%"
+                background: 'rgba(0, 0, 0, 0.9)',
+                width: '100%',
+                height: '100%',
             },
             description: {
-                position: "bottom",
+                position: 'bottom',
                 overlay: false,
                 text: true,
-                counter: true
+                counter: true,
             },
             thumbnails: {
                 width: 95,
                 height: 95,
-                position: "bottom",
-                space: 20
+                position: 'bottom',
+                space: 20,
             },
             navigation: {},
-            gestures: true,
-            displayMode: checkIfMobile() ? DisplayModes.Compact : DisplayModes.Full
-        })
+            gestures: checkIfMobile(),
+            displayMode: checkIfMobile() ? DisplayModes.Compact : DisplayModes.Full,
+        }),
     ],
     providers: [
         {
             provide: APP_INITIALIZER,
             useFactory: (galleries: GalleryService, api: ApiService) => {
                 return () =>
-                    new Promise(async (res, rej) => {
-                        const { galleryUrl: root, galleryId }: { galleryUrl: string; galleryId: number } = (window as any)
-                            .___InitialState___ ?? { galleryUrl: "/you-are-missing-something-here/", galleryId: 1 };
+                    new Promise<void>(async (res, rej) => {
+                        const {
+                            galleryUrl: root,
+                            galleryId,
+                        }: { galleryUrl: string; galleryId: number } = (window as any).___InitialState___ ?? {
+                            galleryUrl: '/you-are-missing-something-here/',
+                            galleryId: 1,
+                        };
 
                         const gallery = await fetchGallery(root);
 
-                        const clientId = await api.connect("John", galleryId);
+                        const clientId = await api.connect(getUserName(), galleryId);
 
                         const likesResult = await api.sdk.likes({ clientId });
 
@@ -61,9 +67,9 @@ document.querySelector("#state-initializer")?.remove();
                     });
             },
             deps: [GalleryService, ApiService],
-            multi: true
-        }
+            multi: true,
+        },
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

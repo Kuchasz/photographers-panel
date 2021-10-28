@@ -1,24 +1,37 @@
-import * as React from "react";
-import mapImage from "../images/map.png";
-import photographerImage from "../images/address_ph.png";
-import { getLastBlog, LastBlog } from "@pp/api/site/blog";
-import { Link } from "react-router-dom";
-import { routes } from "@pp/api/site/routes";
-import { strings } from "../resources";
+import * as React from 'react';
+import mapImage from '../images/map.png';
+import { getLastBlogs, MostRecentBlogListItem } from '@pp/api/site/blog';
+import { Link } from 'react-router-dom';
+import { routes } from '@pp/api/site/routes';
+import { strings } from '../resources';
+import { truncate } from '@pp/utils/string';
 
-type HomeProps = { initialState?: LastBlog };
-type HomeState = { lastBlog?: LastBlog };
+type HomeProps = { initialState?: MostRecentBlogListItem[] };
+type HomeState = { lastBlogs?: MostRecentBlogListItem[] };
 
 export class Home extends React.Component<HomeProps, HomeState> {
-    state = this.props.initialState !== undefined ? { lastBlog: this.props.initialState } : { lastBlog: undefined };
+    state = this.props.initialState !== undefined ? { lastBlogs: this.props.initialState } : { lastBlogs: [] };
 
     componentDidMount() {
-        if (this.state.lastBlog === undefined) {
-            getLastBlog().then(lastBlog => this.setState({ lastBlog }));
+        if (this.state.lastBlogs.length === 0) {
+            getLastBlogs().then((lastBlogs) => this.setState({ lastBlogs }));
         }
     }
 
+    getBlogUrlByIndex(index: number) {
+        return `/blog/${this.state.lastBlogs[index].alias}`;
+    }
+
+    getBlogUrl(blog: MostRecentBlogListItem){
+        return `/blog/${blog.alias}`;
+    }
+
+    getBlogTitle(index: number) {
+        return this.state.lastBlogs[index].title;
+    }
+
     render() {
+        const mostRecentBlog = this.state.lastBlogs.filter(x => !x.isMain)[0];
         return (
             <>
                 <div className="offer">
@@ -37,19 +50,82 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                         <hgroup>
                             <ul className="left">
-                                {strings.offer.slogan.advantages.slice(0, 4).map(adv => (
+                                {strings.offer.slogan.advantages.slice(0, 4).map((adv) => (
                                     <li key={adv}>{adv}</li>
                                 ))}
                             </ul>
                             <ul className="right">
-                                {strings.offer.slogan.advantages.slice(4).map(adv => (
+                                {strings.offer.slogan.advantages.slice(4).map((adv) => (
                                     <li key={adv}>{adv}</li>
                                 ))}
                             </ul>
                         </hgroup>
                     </section>
                 </div>
-
+                <div className="promo-blogs">
+                    {this.state.lastBlogs.length > 0 ? (
+                        <>
+                            <Link to={this.getBlogUrlByIndex(2)} title={this.getBlogTitle(2)} style={{ gridRow: 1, gridColumn: 1 }}>
+                                <img
+                                    src={this.state.lastBlogs[2].photoUrl}
+                                    alt={this.state.lastBlogs[2].photoAlt}></img>
+                            </Link>
+                            <Link to={this.getBlogUrlByIndex(3)} title={this.getBlogTitle(3)} style={{ gridRow: 2, gridColumn: 1 }}>
+                                <img
+                                    src={this.state.lastBlogs[3].photoUrl}
+                                    alt={this.state.lastBlogs[3].photoAlt}></img>
+                            </Link>
+                            <Link to={this.getBlogUrlByIndex(4)} title={this.getBlogTitle(4)} style={{ gridRow: 1, gridColumn: 2 }}>
+                                <img
+                                    src={this.state.lastBlogs[4].photoUrl}
+                                    alt={this.state.lastBlogs[4].photoAlt}></img>
+                            </Link>
+                            <Link to={this.getBlogUrlByIndex(5)} title={this.getBlogTitle(5)} style={{ gridRow: 2, gridColumn: 2 }}>
+                                <img
+                                    src={this.state.lastBlogs[5].photoUrl}
+                                    alt={this.state.lastBlogs[5].photoAlt}></img>
+                            </Link>
+                            <Link
+                                to={this.getBlogUrlByIndex(0)}
+                                className="main"
+                                style={{ gridRow: '1 / span 2', gridColumn: '3 / span 2' }}>
+                                <div className="overlay">{this.getBlogTitle(0)}</div>
+                                <img
+                                    src={this.state.lastBlogs[0].photoUrl}
+                                    alt={this.state.lastBlogs[0].photoAlt}></img>
+                            </Link>
+                            <Link
+                                to={this.getBlogUrlByIndex(1)}
+                                className="main"
+                                style={{ gridRow: '1 / span 2', gridColumn: '5 / span 2' }}>
+                                <div className="overlay">{this.getBlogTitle(1)}</div>
+                                <img
+                                    src={this.state.lastBlogs[1].photoUrl}
+                                    alt={this.state.lastBlogs[1].photoAlt}></img>
+                            </Link>
+                            <Link to={this.getBlogUrlByIndex(6)} title={this.getBlogTitle(6)} style={{ gridRow: 1 }}>
+                                <img
+                                    src={this.state.lastBlogs[6].photoUrl}
+                                    alt={this.state.lastBlogs[6].photoAlt}></img>
+                            </Link>
+                            <Link to={this.getBlogUrlByIndex(7)} title={this.getBlogTitle(7)} style={{ gridRow: 2 }}>
+                                <img
+                                    src={this.state.lastBlogs[7].photoUrl}
+                                    alt={this.state.lastBlogs[7].photoAlt}></img>
+                            </Link>
+                            <Link to={this.getBlogUrlByIndex(8)} title={this.getBlogTitle(8)} style={{ gridRow: 1 }}>
+                                <img
+                                    src={this.state.lastBlogs[8].photoUrl}
+                                    alt={this.state.lastBlogs[8].photoAlt}></img>
+                            </Link>
+                            <Link to={this.getBlogUrlByIndex(9)} title={this.getBlogTitle(9)} style={{ gridRow: 2 }}>
+                                <img
+                                    src={this.state.lastBlogs[9].photoUrl}
+                                    alt={this.state.lastBlogs[9].photoAlt}></img>
+                            </Link>
+                        </>
+                    ) : null}
+                </div>
                 <div className="article">
                     <section>
                         <h1 dangerouslySetInnerHTML={{ __html: strings.article.title }}></h1>
@@ -57,10 +133,10 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                         <article>
                             <span>
-                                {this.state.lastBlog !== undefined ? (
-                                    <Link to={`/blog/${this.state.lastBlog.alias}`}>
-                                        <h1>{this.state.lastBlog.title}</h1>
-                                        <h2>{this.state.lastBlog.content.slice(0, 220)}...</h2>
+                                { mostRecentBlog !== undefined ? (
+                                    <Link to={this.getBlogUrl(mostRecentBlog)}>
+                                        <h1>{mostRecentBlog.title}</h1>
+                                        <h2>{truncate(220, mostRecentBlog.content)}...</h2>
                                     </Link>
                                 ) : null}
                             </span>
@@ -71,11 +147,10 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </article>
 
                         <hgroup>
-                            <img src={mapImage} alt="mazowsze_map" id="map" />
+                            <img width="450" height="344" src={mapImage} alt="malopolskie_map" id="map" />
                         </hgroup>
                     </section>
                 </div>
-
                 <div className="contact">
                     <section>
                         <div className="left">
@@ -89,15 +164,16 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </div>
                     </section>
                 </div>
+
                 <div className="map">
                     <section>
+                        <div className="address-pointer"></div>
                         <address>
-                            <ul>
-                                {strings.contact.address.map(addr => (
-                                    <li key={addr}>{addr}</li>
-                                ))}
-                            </ul>
-                            <img src={photographerImage} alt="Adres siedziby PyszStudio - Andrychów" />
+                            {strings.contact.address.map((addr) => (
+                                <div className="address-line" key={addr}>
+                                    {addr}
+                                </div>
+                            ))}
                         </address>
                     </section>
                 </div>

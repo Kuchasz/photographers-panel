@@ -1,13 +1,14 @@
-import * as fs from "fs";
-import { log } from "./log";
+import * as fs from 'fs';
+import { log } from './log';
 
-export const rename = (oldPath: string, newPath: string): Promise<void> => new Promise<void>((res, rej) => {
-    fs.rename(oldPath, newPath, (err) => {
-        log(`RENAMING PATH: ${oldPath} => ${newPath}`, err);
-        if (err) rej(err)
-        else res();
+export const rename = (oldPath: string, newPath: string): Promise<void> =>
+    new Promise<void>((res, rej) => {
+        fs.rename(oldPath, newPath, (err) => {
+            log(`RENAMING PATH: ${oldPath} => ${newPath}`, err);
+            if (err) rej(err);
+            else res();
+        });
     });
-})
 
 export const deleteFile = (imagePath: string): Promise<void> =>
     new Promise((res, rej) => {
@@ -20,7 +21,7 @@ export const deleteFolderRecursiveSync = function (path: string) {
     if (fs.existsSync(path)) {
         files = fs.readdirSync(path);
         files.forEach(function (file, index) {
-            var curPath = path + "/" + file;
+            var curPath = path + '/' + file;
             if (fs.lstatSync(curPath).isDirectory()) {
                 // recurse
                 deleteFolderRecursiveSync(curPath);
