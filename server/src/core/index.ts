@@ -20,7 +20,7 @@ export const processImage = (image: Buffer) => (finalPath: string): Promise<void
                     gravity: 'southwest',
                 },
             ])
-            .webp({ quality: 80 })
+            .webp({ nearLossless:true, quality:50 })
             .toFile(finalPath, async (_err, _info) => {
                 if (_err) rej();
                 res();
