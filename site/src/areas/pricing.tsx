@@ -186,7 +186,7 @@ export const Pricing = () => {
                             ) : (
                                 <>
                                     <span>
-                                        Cena:<span className="old">{price.basePrice} zł</span>
+                                        Cena regularna:<span className="old">{price.basePrice} zł</span>
                                     </span>
                                     <br />
                                     <span>
