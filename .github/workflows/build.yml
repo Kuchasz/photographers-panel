@@ -107,7 +107,7 @@ jobs:
                   path: ./packages/utils
 
     build_api:
-      needs: [build_utils]
+        needs: [build_utils]
         runs-on: ubuntu-latest
 
         steps:
