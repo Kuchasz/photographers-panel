@@ -8,8 +8,6 @@ require('dotenv').config({
     path: path.resolve('../.env'),
 });
 
-console.log(path.join(__dirname, '../node_modules/@pp/utils/dist/'));
-
 module.exports = (env, argv) => ({
     entry: path.resolve('./src/index.tsx'),
     output: {
