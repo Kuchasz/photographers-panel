@@ -12,78 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    build_gallery:
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v2
-
-            - uses: c-hive/gha-yarn-cache@v1
-
-            - uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '12.x'
-                  check-latest: true
-
-            - run: |
-                  cd ./packages/gallery
-                  yarn install
-                  yarn run build:prod
-
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: build_gallery
-                  path: ./packages/gallery/dist
-
-    build_site:
-        needs: [build_api]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v2
-
-            - uses: c-hive/gha-yarn-cache@v1
-
-            - uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '12.x'
-                  check-latest: true
-
-            - run: |
-                  cd ./packages/site
-                  yarn install
-                  yarn run build:prod
-
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: build_site
-                  path: ./packages/site/dist
-
-    build_panel:
-        needs: [build_api]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v2
-
-            - uses: c-hive/gha-yarn-cache@v1
-
-            - uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '12.x'
-                  check-latest: true
-
-            - run: |
-                  cd ./packages/panel
-                  yarn install
-                  yarn run build:prod
-
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: build_panel
-                  path: ./packages/panel/dist
-
-    build_utils:
+    build_frontends:
         runs-on: ubuntu-latest
 
         steps:
@@ -101,60 +30,33 @@ jobs:
                   yarn install
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: build_utils
-                  path: ./packages/utils
-
-    build_api:
-        needs: [build_utils]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v2
-
-            - uses: c-hive/gha-yarn-cache@v1
-
-            - uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '12.x'
-                  check-latest: true
-
             - run: |
                   cd ./packages/api
                   yarn install
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: build_api
-                  path: ./packages/api
+            - run: |
+                  cd ./packages/gallery
+                  yarn install
+                  yarn run build:prod
 
-    build_gallery-server:
-        runs-on: ubuntu-latest
+            - run: |
+                  cd ./packages/site
+                  yarn install
+                  yarn run build:prod
 
-        steps:
-            - uses: actions/checkout@v2
-
-            - uses: c-hive/gha-yarn-cache@v1
-
-            - uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '12.x'
-                  check-latest: true
+            - run: |
+                  cd ./packages/panel
+                  yarn install
+                  yarn run build:prod
 
             - run: |
                   cd ./packages/gallery-server
                   yarn install
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: build_gallery-server
-                  path: ./packages/gallery-server
-
     build_server:
-        needs: [build_site, build_panel, build_gallery, build_utils, build_api, build_gallery-server]
+        needs: [build_frontends]
         runs-on: ubuntu-latest
 
         steps:
