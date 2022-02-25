@@ -1,20 +1,14 @@
 {
     "private": true,
+    "name": "photographers-panel",
     "scripts": {
         "build": "yarn workspaces run build",
-        "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'"
+        "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'",
+        "start": "node packages/server/dist/app.js"
     },
-    "workspaces": {
-        "packages": [
-            "utils",
-            "api",
-            "gallery-server",
-            "gallery",
-            "panel",
-            "site",
-            "server"
-        ]
-    },
+    "workspaces": [
+        "packages/*"
+    ],
     "resolutions": {
         "**/@types/react": "17.0.5"
     }

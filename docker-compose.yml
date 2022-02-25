@@ -1,0 +1,22 @@
+services:
+  server:
+    build: .
+    ports:
+      - '5000:5000'
+    depends_on:
+      - 'db'
+    volumes:
+      - node_modules:/app/node_modules
+  db:
+    image: 'postgres'
+    environment:
+      POSTGRES_PASSWORD: '123456'
+      POSTGRES_USER: 'docker'
+      POSTGRES_DB: 'pstudio'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+volumes:
+  db-data:
+  node_modules:

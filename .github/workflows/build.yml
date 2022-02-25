@@ -5,213 +5,216 @@ name: Master.Build
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  push:
-    branches: [master]
-  # pull_request:
-  #   branches: [ master ]
+    push:
+        branches: [master]
+    # pull_request:
+    #   branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build_gallery:
-    runs-on: ubuntu-latest
+    build_gallery:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: c-hive/gha-yarn-cache@v1
+            - uses: c-hive/gha-yarn-cache@v1
 
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: "12.x"
-          check-latest: true
+            - uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '12.x'
+                  check-latest: true
 
-      - run: |  
-          cd ./gallery
-          yarn install
-          yarn run build:prod
+            - run: |
+                  cd ./packages/gallery
+                  yarn install
+                  yarn run build:prod
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build_gallery
-          path: ./gallery/dist
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: build_gallery
+                  path: ./packages/gallery/dist
 
-  build_site:
-    runs-on: ubuntu-latest
+    build_site:
+        needs: [build_api]
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: c-hive/gha-yarn-cache@v1
+            - uses: c-hive/gha-yarn-cache@v1
 
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: "12.x"
-          check-latest: true
+            - uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '12.x'
+                  check-latest: true
 
-      - run: |  
-          cd ./site
-          yarn install
-          yarn run build:prod
+            - run: |
+                  cd ./packages/site
+                  yarn install
+                  yarn run build:prod
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build_site
-          path: ./site/dist
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: build_site
+                  path: ./packages/site/dist
 
-  build_panel:
-    runs-on: ubuntu-latest
+    build_panel:
+        needs: [build_api]
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: c-hive/gha-yarn-cache@v1
+            - uses: c-hive/gha-yarn-cache@v1
 
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: "12.x"
-          check-latest: true
+            - uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '12.x'
+                  check-latest: true
 
-      - run: |  
-          cd ./panel
-          yarn install
-          yarn run build:prod
+            - run: |
+                  cd ./packages/panel
+                  yarn install
+                  yarn run build:prod
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build_panel
-          path: ./panel/dist
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: build_panel
+                  path: ./packages/panel/dist
 
-  build_utils:
-    runs-on: ubuntu-latest
+    build_utils:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: c-hive/gha-yarn-cache@v1
+            - uses: c-hive/gha-yarn-cache@v1
 
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: "12.x"
-          check-latest: true
+            - uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '12.x'
+                  check-latest: true
 
-      - run: |  
-          cd ./utils
-          yarn install
-          yarn run build
+            - run: |
+                  cd ./packages/utils
+                  yarn install
+                  yarn run build
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build_utils
-          path: ./utils
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: build_utils
+                  path: ./packages/utils
 
-  build_api:
-    runs-on: ubuntu-latest
+    build_api:
+      needs: [build_utils]
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: c-hive/gha-yarn-cache@v1
+            - uses: c-hive/gha-yarn-cache@v1
 
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: "12.x"
-          check-latest: true
+            - uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '12.x'
+                  check-latest: true
 
-      - run: |  
-          cd ./api
-          yarn install
-          yarn run build
+            - run: |
+                  cd ./packages/api
+                  yarn install
+                  yarn run build
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build_api
-          path: ./api
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: build_api
+                  path: ./packages/api
 
-  build_gallery-server:
-    runs-on: ubuntu-latest
+    build_gallery-server:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: c-hive/gha-yarn-cache@v1
+            - uses: c-hive/gha-yarn-cache@v1
 
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: "12.x"
-          check-latest: true
+            - uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '12.x'
+                  check-latest: true
 
-      - run: |  
-          cd ./gallery-server
-          yarn install
-          yarn run build
+            - run: |
+                  cd ./packages/gallery-server
+                  yarn install
+                  yarn run build
 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build_gallery-server
-          path: ./gallery-server
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: build_gallery-server
+                  path: ./packages/gallery-server
 
-  build_server:
-    needs: [build_site, build_panel, build_gallery, build_utils, build_api, build_gallery-server]
-    runs-on: ubuntu-latest
+    build_server:
+        needs: [build_site, build_panel, build_gallery, build_utils, build_api, build_gallery-server]
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-      - uses: c-hive/gha-yarn-cache@v1
+            - uses: c-hive/gha-yarn-cache@v1
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: build_site
-          path: ./site/dist
+            - uses: actions/download-artifact@v2
+              with:
+                  name: build_site
+                  path: ./packages/site/dist
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: build_panel
-          path: ./panel/dist
+            - uses: actions/download-artifact@v2
+              with:
+                  name: build_panel
+                  path: ./packages/panel/dist
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: build_gallery
-          path: ./gallery/dist
+            - uses: actions/download-artifact@v2
+              with:
+                  name: build_gallery
+                  path: ./packages/gallery/dist
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: build_utils
-          path: ./utils
+            - uses: actions/download-artifact@v2
+              with:
+                  name: build_utils
+                  path: ./packages/utils
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: build_api
-          path: ./api
+            - uses: actions/download-artifact@v2
+              with:
+                  name: build_api
+                  path: ./packages/api
 
-      - uses: actions/download-artifact@v2
-        with:
-          name: build_gallery-server
-          path: ./gallery-server
+            - uses: actions/download-artifact@v2
+              with:
+                  name: build_gallery-server
+                  path: ./packages/gallery-server
 
-      - uses: actions/setup-node@v2-beta
-        with:
-          node-version: "12.x"
-          check-latest: true
+            - uses: actions/setup-node@v2-beta
+              with:
+                  node-version: '12.x'
+                  check-latest: true
 
-      - run: |
-          cd ./server
-          yarn install --production
-          yarn run build
+            - run: |
+                  cd ./packages/server
+                  yarn install --production
+                  yarn run build
 
-      - uses: montudor/action-zip@v0.1.0
-        with:
-          args: zip -qq -r package.zip node_modules server
+            - uses: montudor/action-zip@v0.1.0
+              with:
+                  args: zip -qq -r package.zip node_modules server
 
-      - run: |
-          mkdir package
-          mv package.zip package/package.zip
+            - run: |
+                  mkdir package
+                  mv package.zip package/package.zip
 
-      - name: upload artifact to stating
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
-        with:
-          server: ${{ secrets.ftp_server }}
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          local-dir: ./package/
-          server-dir: domains/artifacts/
+            - name: upload artifact to stating
+              uses: SamKirkland/FTP-Deploy-Action@4.0.0
+              with:
+                  server: ${{ secrets.ftp_server }}
+                  username: ${{ secrets.ftp_username }}
+                  password: ${{ secrets.ftp_password }}
+                  local-dir: ./packages/package/
+                  server-dir: domains/artifacts/
