@@ -3,7 +3,7 @@ var join = require('path').join;
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { AngularWebpackPlugin } = require('@ngtools/webpack');
+const AngularWebpackPlugin = require('@ngtools/webpack').AngularWebpackPlugin;
 require('dotenv').config({
     path: resolve('../.env'),
 });
