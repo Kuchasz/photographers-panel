@@ -22,7 +22,7 @@ jobs:
 
             - uses: actions/setup-node@v2-beta
               with:
-                  node-version: '16.x'
+                  node-version: '16.13.0'
                   check-latest: false
 
             - run: |
