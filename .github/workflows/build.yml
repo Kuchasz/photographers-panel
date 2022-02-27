@@ -12,7 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    build.fontend:
+    build_fontend:
         runs-on: ubuntu-latest
 
         steps:
@@ -63,7 +63,7 @@ jobs:
                       packages/**/package.json
 
     upload:
-        needs: [build.fontend]
+        needs: [build_fontend]
         runs-on: ubuntu-latest
 
         steps:
