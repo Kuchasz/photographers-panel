@@ -35,10 +35,10 @@ jobs:
                   yarn install
                   yarn run build
 
-            - run: |
-                  cd ./packages/gallery
-                  yarn install
-                  npm run build:prod
+            # - run: |
+            #       cd ./packages/gallery
+            #       yarn install
+            #       yarn run build:prod
 
             - run: |
                   cd ./packages/site
