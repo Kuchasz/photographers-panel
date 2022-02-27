@@ -12,7 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    build_utils:
+    build/utils:
         runs-on: ubuntu-latest
 
         steps:
@@ -46,8 +46,8 @@ jobs:
                   path: |
                       packages/utils/dist
 
-    build_api:
-        needs: [build_utils]
+    build/api:
+        needs: [build/utils]
         runs-on: ubuntu-latest
 
         steps:
@@ -86,8 +86,8 @@ jobs:
                   path: |
                       packages/api/dist
 
-    build_site:
-        needs: [build_utils, build_api]
+    build/site:
+        needs: [build/utils, build/api]
         runs-on: ubuntu-latest
 
         steps:
@@ -131,8 +131,8 @@ jobs:
                   path: |
                       packages/site/dist
 
-    build_panel:
-        needs: [build_utils, build_api]
+    build/panel:
+        needs: [build/utils, build/api]
         runs-on: ubuntu-latest
 
         steps:
@@ -176,8 +176,8 @@ jobs:
                   path: |
                       packages/panel/dist
 
-    build_gallery-server:
-        needs: [build_utils, build_api]
+    build/gallery-server:
+        needs: [build/utils, build/api]
         runs-on: ubuntu-latest
 
         steps:
@@ -226,7 +226,7 @@ jobs:
                   yarn run build
 
     build_server:
-        needs: [build_utils, build_api, build_site, build_panel, build_gallery-server]
+        needs: [build/utils, build/api, build/site, build/panel, build/gallery-server]
         runs-on: ubuntu-latest
 
         steps:
@@ -260,7 +260,7 @@ jobs:
 
             - uses: actions/download-artifact@v2
               with:
-                  name: dist.gallery_server
+                  name: dist.gallery-server
                   path: ./packages/gallery_server/dist
 
             - uses: actions/download-artifact@v2
