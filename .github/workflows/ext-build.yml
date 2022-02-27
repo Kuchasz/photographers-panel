@@ -25,7 +25,7 @@ jobs:
                   node-version: '16.x'
                   check-latest: false
 
-            - run: yarn install
+            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/utils
@@ -55,7 +55,7 @@ jobs:
                   node-version: '16.x'
                   check-latest: false
 
-            - run: yarn install
+            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/api
@@ -85,7 +85,7 @@ jobs:
                   node-version: '16.x'
                   check-latest: false
 
-            - run: yarn install
+            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/site
@@ -115,7 +115,7 @@ jobs:
                   node-version: '16.x'
                   check-latest: false
 
-            - run: yarn install
+            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/panel
@@ -145,7 +145,7 @@ jobs:
                   node-version: '16.x'
                   check-latest: false
 
-            - run: yarn install
+            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/gallery-server
@@ -175,7 +175,7 @@ jobs:
                   node-version: '16.x'
                   check-latest: false
 
-            - run: yarn install
+            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/server
@@ -193,7 +193,7 @@ jobs:
 
             # - run: |
             #       cd ./packages/gallery
-            #       yarn install
+            #       yarn install --prefer-offline
             #       yarn run build:prod
 
             - uses: montudor/action-zip@v0.1.0
