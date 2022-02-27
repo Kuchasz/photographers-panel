@@ -248,6 +248,31 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.utils
+                  path: ./packages/utils/dist
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.api
+                  path: ./packages/api/dist
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.gallery_server
+                  path: ./packages/gallery_server/dist
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.panel
+                  path: ./packages/panel/dist
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.site
+                  path: ./packages/site/dist
+
             - run: yarn install --prefer-offline
 
             - run: |
