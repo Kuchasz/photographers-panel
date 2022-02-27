@@ -62,7 +62,7 @@ jobs:
 
             - uses: actions/upload-artifact@v2
               with:
-                  name: dist.utils
+                  name: dist.api
                   path: |
                       packages/api/dist
 
