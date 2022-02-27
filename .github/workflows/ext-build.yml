@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Master.Build
+name: Ext.Master.Build
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -162,7 +162,7 @@ jobs:
                   yarn run build
 
     build_server:
-        needs: [build_utils, build_api, build_site, build_panel, gallery-server]
+        needs: [build_utils, build_api, build_site, build_panel, build_gallery-server]
         runs-on: ubuntu-latest
 
         steps:
