@@ -4,9 +4,9 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AngularWebpackPlugin = require('@ngtools/webpack').AngularWebpackPlugin;
-require('dotenv').config({
-    path: resolve('../.env'),
-});
+// require('dotenv').config({
+//     path: resolve('../.env'),
+// });
 
 const rootModuleDirectory = (packageName) => join(__dirname, '../../node_modules/', packageName);
 
