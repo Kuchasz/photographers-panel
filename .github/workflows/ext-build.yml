@@ -130,7 +130,7 @@ jobs:
 
             - uses: actions/upload-artifact@v2
               with:
-                  name: dist.utils
+                  name: dist.site
                   path: |
                       packages/site/dist
 
@@ -176,7 +176,7 @@ jobs:
 
             - uses: actions/upload-artifact@v2
               with:
-                  name: dist.utils
+                  name: dist.panel
                   path: |
                       packages/panel/dist
 
@@ -225,10 +225,6 @@ jobs:
                   name: dist.gallery-server
                   path: |
                       packages/gallery-server/dist
-
-            - run: |
-                  cd ./packages/gallery-server
-                  yarn run build
 
     build_server:
         name: build/server
