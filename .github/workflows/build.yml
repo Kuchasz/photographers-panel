@@ -12,7 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    build:
+    build.fontend:
         runs-on: ubuntu-latest
 
         steps:
@@ -55,18 +55,15 @@ jobs:
                   yarn install
                   yarn run build
 
-            - run: |
-                  cd ./packages/server
-                  yarn install --production
-                  yarn run build
-
             - uses: actions/upload-artifact@v2
               with:
-                  name: pp.dist
-                  path: .
+                  name: build.dist
+                  path: |
+                      packages/**/dist
+                      packages/**/package.json
 
     upload:
-        needs: [build]
+        needs: [build.fontend]
         runs-on: ubuntu-latest
 
         steps:
@@ -74,8 +71,13 @@ jobs:
 
             - uses: actions/download-artifact@v2
               with:
-                  name: pp.dist
+                  name: build.dist
                   path: .
+
+            - run: |
+                  cd ./packages/server
+                  yarn install --production --focus
+                  yarn run build
 
             - uses: montudor/action-zip@v0.1.0
               with:
