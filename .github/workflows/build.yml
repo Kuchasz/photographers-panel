@@ -67,16 +67,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - uses: actions/checkout@v2
+
             - uses: actions/download-artifact@v2
               with:
                   name: build.dist
                   path: .
 
-            - uses: actions/checkout@v2
-
             - run: |
                   cd ./packages/server
-                  yarn install --production --focus
+                  yarn
                   yarn run build
 
             - uses: montudor/action-zip@v0.1.0
