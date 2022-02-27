@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { Client } from "./entities/Client";
