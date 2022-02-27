@@ -64,7 +64,7 @@ jobs:
 
             - run: |
                   cd ./packages/server
-                  yarn
+                  yarn install
                   yarn run build
 
             - uses: montudor/action-zip@v0.1.0
@@ -81,7 +81,7 @@ jobs:
                   server: ${{ secrets.ftp_server }}
                   username: ${{ secrets.ftp_username }}
                   password: ${{ secrets.ftp_password }}
-                  local-dir: ./packages/package/
+                  local-dir: ./package/
                   server-dir: domains/artifacts/
 #     upload:
 #         needs: [build_fontend]
