@@ -25,14 +25,14 @@ jobs:
                   node-version: '16.x'
                   check-latest: false
 
+            - run: yarn install
+
             - run: |
                   cd ./packages/utils
-                  yarn install
                   yarn run build
 
             - run: |
                   cd ./packages/api
-                  yarn install
                   yarn run build
 
             # - run: |
@@ -42,17 +42,14 @@ jobs:
 
             - run: |
                   cd ./packages/site
-                  yarn install
                   yarn run build:prod
 
             - run: |
                   cd ./packages/panel
-                  yarn install
                   yarn run build:prod
 
             - run: |
                   cd ./packages/gallery-server
-                  yarn install
                   yarn run build
 
             # - uses: actions/upload-artifact@v2
@@ -64,7 +61,6 @@ jobs:
 
             - run: |
                   cd ./packages/server
-                  yarn install
                   yarn run build
 
             - uses: montudor/action-zip@v0.1.0
