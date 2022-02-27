@@ -55,6 +55,16 @@ jobs:
                   yarn install
                   yarn run build
 
+            - run: |
+                  cd ./packages/server
+                  yarn install --production
+                  yarn run build
+
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: pp.dist
+                  path: ./pp
+
     build_server:
         needs: [build_frontends]
         runs-on: ubuntu-latest
@@ -62,47 +72,10 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: c-hive/gha-yarn-cache@v1
-
             - uses: actions/download-artifact@v2
               with:
-                  name: build_site
-                  path: ./packages/site/dist
-
-            - uses: actions/download-artifact@v2
-              with:
-                  name: build_panel
-                  path: ./packages/panel/dist
-
-            - uses: actions/download-artifact@v2
-              with:
-                  name: build_gallery
-                  path: ./packages/gallery/dist
-
-            - uses: actions/download-artifact@v2
-              with:
-                  name: build_utils
-                  path: ./packages/utils
-
-            - uses: actions/download-artifact@v2
-              with:
-                  name: build_api
-                  path: ./packages/api
-
-            - uses: actions/download-artifact@v2
-              with:
-                  name: build_gallery-server
-                  path: ./packages/gallery-server
-
-            - uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '12.x'
-                  check-latest: true
-
-            - run: |
-                  cd ./packages/server
-                  yarn install --production
-                  yarn run build
+                  name: pp.dist
+                  path: .
 
             - uses: montudor/action-zip@v0.1.0
               with:
