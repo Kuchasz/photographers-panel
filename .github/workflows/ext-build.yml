@@ -28,12 +28,12 @@ jobs:
               id: yarn-cache
               with:
                   path: |
-                  **/node_modules
-                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      **/node_modules
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
 
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                  ${{ runner.os }}-yarn-
+                      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                      restore-keys: |
+                      ${{ runner.os }}-yarn-
 
             - run: yarn install --prefer-offline
 
@@ -64,12 +64,12 @@ jobs:
               id: yarn-cache
               with:
                   path: |
-                  **/node_modules
-                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      **/node_modules
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
 
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                  ${{ runner.os }}-yarn-
+                      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                      restore-keys: |
+                      ${{ runner.os }}-yarn-
 
             - uses: actions/download-artifact@v2
               with:
@@ -105,12 +105,12 @@ jobs:
               id: yarn-cache
               with:
                   path: |
-                  **/node_modules
-                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      **/node_modules
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
 
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                  ${{ runner.os }}-yarn-
+                      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                      restore-keys: |
+                      ${{ runner.os }}-yarn-
 
             - uses: actions/download-artifact@v2
               with:
@@ -134,10 +134,6 @@ jobs:
                   path: |
                       packages/site/dist
 
-            - run: |
-                  cd ./packages/site
-                  yarn run build
-
     build_panel:
         needs: [build_utils, build_api]
         runs-on: ubuntu-latest
@@ -155,12 +151,12 @@ jobs:
               id: yarn-cache
               with:
                   path: |
-                  **/node_modules
-                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      **/node_modules
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
 
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                  ${{ runner.os }}-yarn-
+                      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                      restore-keys: |
+                      ${{ runner.os }}-yarn-
 
             - uses: actions/download-artifact@v2
               with:
@@ -184,10 +180,6 @@ jobs:
                   path: |
                       packages/panel/dist
 
-            - run: |
-                  cd ./packages/panel
-                  yarn run build
-
     build_gallery-server:
         needs: [build_utils, build_api]
         runs-on: ubuntu-latest
@@ -205,12 +197,12 @@ jobs:
               id: yarn-cache
               with:
                   path: |
-                  **/node_modules
-                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      **/node_modules
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
 
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                  ${{ runner.os }}-yarn-
+                      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                      restore-keys: |
+                      ${{ runner.os }}-yarn-
 
             - uses: actions/download-artifact@v2
               with:
@@ -255,12 +247,12 @@ jobs:
               id: yarn-cache
               with:
                   path: |
-                  **/node_modules
-                  ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                      **/node_modules
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
 
-                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                  ${{ runner.os }}-yarn-
+                      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                      restore-keys: |
+                      ${{ runner.os }}-yarn-
 
             - run: yarn install --prefer-offline
 
