@@ -69,7 +69,7 @@ jobs:
 
             - uses: montudor/action-zip@v0.1.0
               with:
-                  args: zip -qq -r package.zip node_modules server
+                  args: zip -qq -r package.zip node_modules packages
 
             - run: |
                   mkdir package
