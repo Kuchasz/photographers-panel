@@ -79,8 +79,8 @@ module.exports = {
                 include: [
                     join(__dirname, 'src'),
                     // rootModuleDirectory('@pp/server'),
-                    rootModuleDirectory('@pp/utils'),
-                    rootModuleDirectory('@pp/api'),
+                    // rootModuleDirectory('@pp/utils'),
+                    // rootModuleDirectory('@pp/api'),
                 ],
             },
             {
