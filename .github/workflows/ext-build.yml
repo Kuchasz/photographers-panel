@@ -217,7 +217,7 @@ jobs:
 
             - uses: actions/upload-artifact@v2
               with:
-                  name: dist.utils
+                  name: dist.gallery-server
                   path: |
                       packages/gallery-server/dist
 
