@@ -226,9 +226,9 @@ jobs:
                   path: |
                       packages/gallery-server/dist
 
-    build_server:
-        name: build/server
-        needs: [build_utils, build_api, build_site, build_panel, build_gallery-server]
+    build_gallery:
+        name: build/gallery
+        needs: [build_utils, build_api]
         runs-on: ubuntu-latest
 
         steps:
@@ -259,6 +259,57 @@ jobs:
               with:
                   name: dist.api
                   path: ./packages/api/dist
+
+            - run: yarn install --prefer-offline
+
+            - run: |
+                  cd ./packages/gallery
+                  yarn run build
+
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: dist.gallery
+                  path: |
+                      packages/gallery/dist
+
+    build_server:
+        name: build/server
+        needs: [build_utils, build_api, build_site, build_panel, build_gallery, build_gallery-server]
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '16.x'
+                  cache: 'yarn'
+                  check-latest: false
+
+            - uses: actions/cache@v2
+              id: yarn-cache
+              with:
+                  path: |
+                      **/node_modules
+                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.utils
+                  path: ./packages/utils/dist
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.api
+                  path: ./packages/api/dist
+
+            - uses: actions/download-artifact@v2
+              with:
+                  name: dist.gallery
+                  path: ./packages/gallery/dist
 
             - uses: actions/download-artifact@v2
               with:

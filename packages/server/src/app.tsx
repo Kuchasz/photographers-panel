@@ -18,7 +18,7 @@ import { router as siteRouter } from "./areas/site/routes";
 import { router as panelRouter } from "./areas/panel/routes";
 import { router as mainRouter } from "./areas/routes";
 import { routes } from "@pp/api/dist/site/routes";
-import { runPhotoGalleryServer } from "@pp/gallery-server";
+import { runPhotoGalleryServer } from "@pp/gallery-server/dist";
 import { setEndpoint } from "@pp/api/dist/common";
 
 const { Root }: { Root: any } = require('@pp/site');
