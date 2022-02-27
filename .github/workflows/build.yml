@@ -38,7 +38,7 @@ jobs:
             - run: |
                   cd ./packages/gallery
                   yarn install
-                  yarn run build:prod
+                  npm run build:prod
 
             - run: |
                   cd ./packages/site
