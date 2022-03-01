@@ -14,7 +14,10 @@
         "packages:check": "ncu",
         "packages:bump": "ncu -u"
     },
-  
+    "browserslist": [
+        "> 1%",
+        "Chrome > 65"
+    ],
     "devDependencies": {
         "@angular/animations": "13.2.2",
         "@angular/common": "13.2.2",
