@@ -29,29 +29,29 @@ const tariffPositions: Tariff[] = [
         type: 'WeddingPhotography',
         offerAlias: 'fotografia-slubu-i-wesela',
         requires: [],
-        prices: { 2021: 1800, 2022: 1900, 2023: 1900 },
+        prices: { 2022: 1900, 2023: 1900, 2024: 2100 },
     },
     {
         type: 'WeddingVideo',
         offerAlias: 'filmowanie-slubu-i-wesela',
         requires: [],
-        prices: { 2021: 1800, 2022: 1900, 2023: 1900 },
+        prices: { 2022: 1900, 2023: 1900, 2024: 2100 },
     },
     {
         type: 'WeddingSession',
         offerAlias: 'slubna-sesja-zdjeciowa',
         requires: [],
-        prices: { 2021: 600, 2022: 600, 2023: 600 },
+        prices: { 2022: 600, 2023: 600, 2024: 600 },
     },
     {
         type: 'DvdPackage',
         requires: ['WeddingVideo'],
-        prices: { 2021: 300, 2022: 300, 2023: 300 },
+        prices: { 2022: 300, 2023: 300, 2024: 300 },
     },
     {
         type: 'Afters',
         requires: ['WeddingPhotography', 'WeddingVideo'],
-        prices: { 2021: 200, 2022: 200, 2023: 200 },
+        prices: { 2022: 200, 2023: 200, 2024: 200 },
     },
 ];
 
@@ -59,7 +59,7 @@ const priceAdjustments: PriceAdjustment[] = [
     {
         requires: ['WeddingPhotography', 'WeddingVideo'],
         appliesTo: 'WeddingPhotography',
-        adjustment: { 2021: -1300, 2022: -1300, 2023: -1300 },
+        adjustment: { 2022: -1300, 2023: -1300, 2024: -1500 },
     },
     {
         requires: ['WeddingSession', 'WeddingPhotography'],
