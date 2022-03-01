@@ -264,7 +264,6 @@ jobs:
 
             - run: |
                   cd ./packages/gallery
-                #   npx browserslist@latest --update-db
                   yarn run build
 
             - uses: actions/upload-artifact@v2
