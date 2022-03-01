@@ -264,7 +264,6 @@ jobs:
 
             - run: |
                   cd ./packages/gallery
-                  yarn rebuild
                   yarn run build
 
             - uses: actions/upload-artifact@v2
