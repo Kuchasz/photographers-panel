@@ -14,7 +14,7 @@ on:
 jobs:
     build_utils:
         name: build/utils
-        runs-on: windows-2022
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
     build_api:
         name: build/api
         needs: [build_utils]
-        runs-on: windows-2022
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
@@ -91,7 +91,7 @@ jobs:
     build_site:
         name: build/site
         needs: [build_utils, build_api]
-        runs-on: windows-2022
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
@@ -137,7 +137,7 @@ jobs:
     build_panel:
         name: build/panel
         needs: [build_utils, build_api]
-        runs-on: windows-2022
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
@@ -183,7 +183,7 @@ jobs:
     build_gallery-server:
         name: build/gallery-server
         needs: [build_utils, build_api]
-        runs-on: windows-2022
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
@@ -229,7 +229,7 @@ jobs:
     build_gallery:
         name: build/gallery
         needs: [build_utils, build_api]
-        runs-on: windows-2022
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
@@ -275,7 +275,7 @@ jobs:
     build_server:
         name: build/server
         needs: [build_utils, build_api, build_site, build_panel, build_gallery, build_gallery-server]
-        runs-on: windows-2022
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
@@ -365,7 +365,7 @@ jobs:
                   server-dir: domains/artifacts/
 #     upload:
 #         needs: [build_fontend]
-#         runs-on: windows-2022
+#         runs-on: ubuntu-latest
 
 #         steps:
 #             - uses: actions/checkout@v2
