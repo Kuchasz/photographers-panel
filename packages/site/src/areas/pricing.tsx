@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { routes } from "@pp/api/dist/site/routes";
 import { strings } from "../resources";
 
-type TariffYears = 2021 | 2022 | 2023;
+type TariffYears = 2022 | 2023 | 2024;
 type TariffPositions = 'WeddingPhotography' | 'WeddingVideo' | 'DvdPackage' | 'Afters' | 'WeddingSession';
 type TariffValues = { [P in TariffYears]: number };
 type Tariff = {
@@ -78,7 +78,7 @@ const priceAdjustments: PriceAdjustment[] = [
     },
 ];
 
-const tariffYears: TariffYears[] = [2021, 2022, 2023];
+const tariffYears: TariffYears[] = [2022, 2023, 2024];
 
 const updateTariffs = (
     selectedTariffs: TariffPositions[],
