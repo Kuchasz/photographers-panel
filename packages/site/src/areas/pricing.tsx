@@ -64,17 +64,17 @@ const priceAdjustments: PriceAdjustment[] = [
     {
         requires: ['WeddingSession', 'WeddingPhotography'],
         appliesTo: 'WeddingSession',
-        adjustment: { 2021: -300, 2022: -300, 2023: -300 },
+        adjustment: { 2022: -300, 2023: -300, 2024: -300 },
     },
     {
         requires: ['WeddingSession', 'WeddingVideo'],
         appliesTo: 'WeddingSession',
-        adjustment: { 2021: -300, 2022: -300, 2023: -300 },
+        adjustment: { 2022: -300, 2023: -300, 2024: -300 },
     },
     {
         requiresAll: ['WeddingPhotography', 'WeddingVideo', 'Afters'],
         appliesTo: 'Afters',
-        adjustment: { 2021: 200, 2022: 200, 2023: 200 },
+        adjustment: { 2022: 200, 2023: 200, 2024: -300 },
     },
 ];
 
