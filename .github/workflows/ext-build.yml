@@ -315,7 +315,7 @@ jobs:
             - uses: actions/download-artifact@v2
               with:
                   name: dist.gallery-server
-                  path: ./packages/gallery_server/dist
+                  path: ./packages/gallery-server/dist
 
             - uses: actions/download-artifact@v2
               with:
@@ -328,16 +328,6 @@ jobs:
                   path: ./packages/site/dist
 
             - run: yarn install --prefer-offline
-
-            - run: |
-                  cd ./packages/server
-                  yarn run build
-
-            - uses: actions/upload-artifact@v2
-              with:
-                  name: dist.utils
-                  path: |
-                      packages/server/dist
 
             - run: |
                   cd ./packages/server
