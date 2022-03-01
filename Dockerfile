@@ -37,8 +37,8 @@ RUN yarn build
 WORKDIR /app/packages/gallery
 ADD packages/gallery .
 RUN yarn install
-RUN npm rebuild node-sass
-RUN yarn upgrade caniuse-lite browserlist
+# RUN npm rebuild node-sass
+# RUN yarn upgrade caniuse-lite browserlist
 RUN npx browserslist@latest --update-db
 RUN yarn build
 
