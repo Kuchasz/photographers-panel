@@ -1,4 +1,4 @@
-import * as screenfull from "screenfull";
+import screenfull from "screenfull";
 import {
     ChangeDetectionStrategy,
     Component,

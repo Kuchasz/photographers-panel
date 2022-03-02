@@ -1,6 +1,6 @@
 import * as events from "@pp/api/dist/event";
-import * as screenfull from "screenfull";
 import * as user from "@pp/api/dist/user";
+import screenfull from "screenfull";
 import { ApiService } from "../../service/api.service";
 import {
     ChangeDetectionStrategy,
