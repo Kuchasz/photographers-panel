@@ -12,7 +12,8 @@ import "reflect-metadata";
 const connections: { [galleryId: number]: Promise<Connection> } = {};
 
 const createDb = (databases: string, galleryId: number) => {
-    return connections[galleryId]
+    const existingConnection = connections[galleryId];
+    return existingConnection !== undefined
         ? Promise.resolve(connections[galleryId])
         : (connections[galleryId] = createConnection({
               type: 'sqlite',
