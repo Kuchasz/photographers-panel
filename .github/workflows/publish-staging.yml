@@ -26,7 +26,7 @@ jobs:
                       mv public_nodejs/databases databases_backup
                       rm -rf public_nodejs
                       unzip -q ../artifacts/package.zip
-                      mv packages/server public_nodejs
+                      mv packages/server/dist public_nodejs
                       mv images_backup public_nodejs/public
                       mv databases_backup public_nodejs/databases
                       cd public_nodejs
