@@ -2,11 +2,11 @@ import { AppModule } from "./app.module";
 import { checkIfMobile, checkIfSafari } from "../utils/browser";
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import "./styles.scss";
-import "@angular/compiler";
 import "core-js";
 import "zone.js/dist/zone";
 import "whatwg-fetch";
 import "roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss";
+
 
 // import '@mdi/font';
 

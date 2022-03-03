@@ -84,6 +84,17 @@ module.exports = {
                 ],
             },
             {
+                test: /\.[cm]?js$/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true,
+                        compact: false,
+                        plugins: [linkerPlugin],
+                    },
+                },
+            },
+            {
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
                 parser: {
                     system: true,
