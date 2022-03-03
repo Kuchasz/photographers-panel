@@ -11,6 +11,7 @@ import fs from "fs";
 import multer from "multer";
 import { allowCrossDomain } from "./core";
 import { connection } from "./db";
+import { getModulePath } from "./core/dependencies";
 import { Knex } from "knex";
 import { migrations } from "./migrations";
 import { resolve } from "path";
@@ -22,10 +23,6 @@ import { runPhotoGalleryServer } from "@pp/gallery-server/dist";
 import { setEndpoint } from "@pp/api/dist/common";
 
 const { Root }: { Root: any } = require('@pp/site');
-
-const upload = multer();
-
-const requireModule = (path: string) => resolve(__dirname + `/../../../node_modules/${path}`);
 
 setEndpoint(config.app.appPath!);
 
@@ -79,11 +76,11 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-app.use(express.static(requireModule('@pp/site/dist'), { index: false }));
-app.use([privateGallery.viewGallery.route], express.static(requireModule('@pp/gallery/dist'), { index: false }));
+app.use(express.static(getModulePath('@pp/site/dist'), { index: false }));
+app.use([privateGallery.viewGallery.route], express.static(getModulePath('@pp/gallery/dist'), { index: false }));
 app.use(
     [authPanel.viewLogIn.route, '/panel*', '/panel/*'],
-    express.static(requireModule('@pp/panel/dist'), { index: false })
+    express.static(getModulePath('@pp/panel/dist'), { index: false })
 );
 
 app.use(siteRouter);
@@ -154,7 +151,7 @@ app.get('*', async (req: any, res, next) => {
         return res.redirect('/');
     }
 
-    fs.readFile(requireModule('@pp/site/dist/index.html'), 'utf8', async (err, template) => {
+    fs.readFile(getModulePath('@pp/site/dist/index.html'), 'utf8', async (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);

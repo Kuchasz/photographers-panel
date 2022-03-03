@@ -1,8 +1,8 @@
 import * as auth from "@pp/api/dist/panel/auth";
 import * as config from "../../config";
 import * as fs from "fs";
+import { getModulePath } from "../../core/dependencies";
 import { login } from "../../auth";
-import { requireModule } from "../../core/dependencies";
 import { ResultType } from "@pp/api/dist/common";
 
 export const logIn = async (req: any, res: any) => {
@@ -40,7 +40,7 @@ export const viewLogIn = async (req: any, res: any) => {
         stats: config.stats,
     };
 
-    fs.readFile(requireModule('@pp/panel/dist/index.html'), 'utf8', (err, template) => {
+    fs.readFile(getModulePath('@pp/panel/dist/index.html'), 'utf8', (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
