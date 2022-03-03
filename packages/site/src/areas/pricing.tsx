@@ -74,7 +74,7 @@ const priceAdjustments: PriceAdjustment[] = [
     {
         requiresAll: ['WeddingPhotography', 'WeddingVideo', 'Afters'],
         appliesTo: 'Afters',
-        adjustment: { 2022: 200, 2023: 200, 2024: -300 },
+        adjustment: { 2022: 200, 2023: 200, 2024: 200 },
     },
 ];
 
