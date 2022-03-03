@@ -25,32 +25,6 @@ import {
     getMainBlogs,
     MainBlogsDto,
 } from '@pp/api/dist/panel/blog';
-// import { getSiteEvents, SiteEventDto } from '@pp/api/dist/panel/site';
-
-// const styleCenter = {
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     height: '60px',
-// };
-
-// const slimText = {
-//     fontSize: '0.666em',
-//     color: '#97969B',
-//     fontWeight: 'lighter',
-//     paddingBottom: 5,
-// } as const;
-
-// const titleStyle = {
-//     paddingBottom: 5,
-//     whiteSpace: 'nowrap',
-//     fontWeight: 500,
-// } as const;
-
-// const dataStyle = {
-//     fontSize: '1.2em',
-//     fontWeight: 500,
-// };
 
 const getIconForItem = (e: EventDto) => {
     if (e.type === EventType.CalculatorConfigChanged) return 'calculator';
@@ -162,7 +136,7 @@ export const Dashboard = (props: Props) => {
                         name="leftBlog"
                         style={{ width: 300 }}
                         accepter={SelectPicker}
-                        placement="topEnd"
+                        placement="bottom"
                         searchable={true}
                         data={blogs}
                     />
@@ -174,7 +148,7 @@ export const Dashboard = (props: Props) => {
                         name="rightBlog"
                         style={{ width: 300 }}
                         accepter={SelectPicker}
-                        placement="topEnd"
+                        placement="bottom"
                         searchable={true}
                         data={blogs}
                     />
