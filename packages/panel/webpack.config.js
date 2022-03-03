@@ -135,4 +135,9 @@ module.exports = (env, argv) => ({
         contentBase: path.resolve('./dist'),
         open: true,
     },
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: ['/dist/'],
+    },
 });

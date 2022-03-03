@@ -1,24 +1,31 @@
-.events {
-    width: 400px;
-    height: '100%';
-    .event {
-        .rs-list-item-content {
-            display: flex;
-            user-select: none;
-            .avatar {
-                width: 30px;
-                height: 30px;
-                border-radius: 30px;
+.dashboard {
+    display: flex;
+    height: 100%;
+    padding: 12px;
+
+    .events {
+        width: 400px;
+        height: '100%';
+        margin-right: 12px;
+        .event {
+            .rs-list-item-content {
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-right: 12px;
-            }
-            .rs-icon {
-                margin-right: 6px;
-            }
-            .details {
-                font-size: smaller;
+                user-select: none;
+                .avatar {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 12px;
+                }
+                .rs-icon {
+                    margin-right: 6px;
+                }
+                .details {
+                    font-size: smaller;
+                }
             }
         }
     }

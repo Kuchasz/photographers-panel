@@ -160,7 +160,7 @@ export const pl = {
         tariffs: {
             WeddingPhotography: 'Fotografia ślubu i wesela',
             WeddingVideo: 'Filmowanie ślubu i wesela',
-            WeddingSession: 'Ślubna sesja zdjęciowa',
+            WeddingSession: 'Sesja ślubna w plenerze',
             DvdPackage: 'Komplet płyt DVD z filmem',
             Afters: 'Obsługa imprezy poprawinowej',
         },

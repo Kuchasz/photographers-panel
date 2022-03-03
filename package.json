@@ -4,7 +4,7 @@
     "scripts": {
         "build": "yarn workspaces run build",
         "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'",
-        "start": "node packages/server/dist/app.js"
+        "start": "NODE_ENV=development& node packages/server/dist/app.js"
     },
     "workspaces": [
         "packages/*"

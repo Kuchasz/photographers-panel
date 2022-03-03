@@ -42,6 +42,7 @@ export const postViewGallery = async (req: any, res: any) => {
     const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
         .replace('::ffff:', '')
         .split(',')[0];
+
     await privateGalleryModel.registerVisit(galleryId, address, new Date());
 
     fs.readFile(getModulePath('@pp/gallery/dist/index.html'), 'utf8', (err, template) => {

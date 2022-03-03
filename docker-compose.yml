@@ -7,6 +7,33 @@ services:
       - 'db'
     volumes:
       - node_modules:/app/node_modules
+      - panel-package:/app/packages/panel/dist
+      - gallery-package:/app/packages/gallery/dist
+      - site-package:/app/packages/site/dist
+  panel:
+    image: node:16
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+      - panel-package:/app/packages/panel/dist
+    working_dir: /app/packages/panel
+    command: bash -c "yarn & yarn watch:dev"
+  site:
+    image: node:16
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+      - site-package:/app/packages/site/dist
+    working_dir: /app/packages/site
+    command: bash -c "yarn & yarn watch:dev"
+  gallery:
+    image: node:16
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+      - gallery-package:/app/packages/gallery/dist
+    working_dir: /app/packages/gallery
+    command: bash -c "yarn & yarn watch:dev"
   db:
     image: 'postgres'
     environment:
@@ -20,3 +47,6 @@ services:
 volumes:
   db-data:
   node_modules:
+  panel-package:
+  site-package:
+  gallery-package:

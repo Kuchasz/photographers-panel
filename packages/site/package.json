@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "build:dev": "rimraf ./dist | webpack --mode development",
-        "watch:dev": "rimraf ./dist | webpack --mode development --watch",
+        "watch:dev": "webpack --mode development --watch",
         "build:prod": "webpack --mode production",
         "build": "webpack --mode production"
     },

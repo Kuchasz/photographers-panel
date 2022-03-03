@@ -16,6 +16,7 @@ export const getBlog = async (req: any, res: any) => {
     const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
         .replace('::ffff:', '')
         .split(',')[0];
+
     await blogModel.registerVisit(blog.id, address, new Date());
 
     res.json(blog);

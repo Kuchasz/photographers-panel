@@ -134,4 +134,9 @@ module.exports = {
         contentBase: './dist',
         open: true,
     },
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: ['/dist/'],
+    },
 };

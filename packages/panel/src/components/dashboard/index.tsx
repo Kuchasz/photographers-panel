@@ -101,9 +101,9 @@ export const Dashboard = (props: Props) => {
     };
 
     return (
-        <div style={{ display: 'flex', height: '100%' }}>
+        <div className="dashboard">
             <List bordered className="events" hover>
-                {newEvents.map((item, index) => (
+                {newEvents.slice(0, 100).map((item, index) => (
                     <List.Item className="event" key={index} index={index + 1}>
                         <span
                             className="avatar"
@@ -129,7 +129,12 @@ export const Dashboard = (props: Props) => {
                     </List.Item>
                 ))}
             </List>
-            <Form ref={formRef} model={mainBlogsModel} formValue={formState} onChange={_changeMainBlogs}>
+            <Form
+                style={{ marginLeft: '12px' }}
+                ref={formRef}
+                model={mainBlogsModel}
+                formValue={formState}
+                onChange={_changeMainBlogs}>
                 <FormGroup>
                     <ControlLabel>{translations.dashboard.mainBlogs.leftBlog.label}</ControlLabel>
                     <FormControl

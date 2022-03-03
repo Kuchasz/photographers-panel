@@ -26,35 +26,35 @@ RUN yarn build
 
 WORKDIR /app/packages/api
 ADD packages/api .
-RUN yarn install
+# RUN yarn install
 RUN yarn build
 
 WORKDIR /app/packages/site
 ADD packages/site .
-RUN yarn install
+# RUN yarn install
 RUN yarn build
 
 WORKDIR /app/packages/gallery
 ADD packages/gallery .
-RUN yarn install
-RUN npm rebuild node-sass
-RUN yarn upgrade caniuse-lite browserlist
-RUN npx browserslist@latest --update-db
+# RUN yarn install
+# RUN npm rebuild node-sass
+# RUN yarn upgrade caniuse-lite browserlist
+# RUN npx browserslist@latest --update-db
 RUN yarn build
 
 WORKDIR /app/packages/panel
 ADD packages/panel .
-RUN yarn install
+# RUN yarn install
 RUN yarn build
 
 WORKDIR /app/packages/gallery-server
 ADD packages/gallery-server .
-RUN yarn install
+# RUN yarn install
 RUN yarn build
 
 WORKDIR /app/packages/server
 ADD packages/server .
-RUN yarn install
+# RUN yarn install
 RUN yarn build
 
 # COPY . .

@@ -22,7 +22,7 @@ import { routes } from "@pp/api/dist/site/routes";
 import { runPhotoGalleryServer } from "@pp/gallery-server/dist";
 import { setEndpoint } from "@pp/api/dist/common";
 
-const { Root }: { Root: any } = require('@pp/site');
+let { Root }: { Root: any } = require('@pp/site');
 
 setEndpoint(config.app.appPath!);
 
@@ -137,6 +137,8 @@ app.get('*', async (req: any, res, next) => {
     };
 
     console.log(req.url);
+
+    if (process.env.NODE_ENV === 'development') Root = require('@pp/site');
 
     try {
         const found = Object.values(routes).filter((p) => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
