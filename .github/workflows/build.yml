@@ -76,8 +76,6 @@ jobs:
                   name: dist.utils
                   path: ./packages/utils/dist
 
-            - run: yarn install --prefer-offline
-
             - run: |
                   cd ./packages/api
                   yarn run build
@@ -121,8 +119,6 @@ jobs:
               with:
                   name: dist.api
                   path: ./packages/api/dist
-
-            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/site
@@ -168,8 +164,6 @@ jobs:
                   name: dist.api
                   path: ./packages/api/dist
 
-            - run: yarn install --prefer-offline
-
             - run: |
                   cd ./packages/panel
                   yarn run build
@@ -214,8 +208,6 @@ jobs:
                   name: dist.api
                   path: ./packages/api/dist
 
-            - run: yarn install --prefer-offline
-
             - run: |
                   cd ./packages/gallery-server
                   yarn run build
@@ -259,8 +251,6 @@ jobs:
               with:
                   name: dist.api
                   path: ./packages/api/dist
-
-            - run: yarn install --prefer-offline
 
             - run: |
                   cd ./packages/gallery
@@ -326,16 +316,9 @@ jobs:
                   name: dist.site
                   path: ./packages/site/dist
 
-            - run: yarn install --prefer-offline
-
             - run: |
                   cd ./packages/server
                   yarn run build
-
-            # - run: |
-            #       cd ./packages/gallery
-            #       yarn install --prefer-offline
-            #       yarn run build:prod
 
             - uses: montudor/action-zip@v0.1.0
               with:
