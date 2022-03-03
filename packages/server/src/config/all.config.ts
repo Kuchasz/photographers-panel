@@ -2,8 +2,6 @@ import { getEnv } from "./env";
 
 const env = getEnv();
 
-console.log(env);
-
 export const db = {
     host: env.DB_HOST,
     user: env.DB_USER,

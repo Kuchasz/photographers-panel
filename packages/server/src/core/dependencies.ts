@@ -1,2 +1,3 @@
-import { resolve } from 'path';
-export const requireModule = (path: string) => resolve(__dirname + `../../../../node_modules/${path}`);
+import { resolve } from "path";
+import { resolveFromRoot } from "./paths";
+export const requireModule = (path: string) => resolveFromRoot(`node_modules/${path}`);

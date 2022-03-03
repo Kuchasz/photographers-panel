@@ -1,11 +1,8 @@
 import { config as setConfig } from "dotenv";
-import { resolve } from "path";
+import { resolveFromRoot } from "../core/paths";
 
 setConfig({
-    path:
-        process.env.NODE_ENV === 'production'
-            ? resolve(__dirname + '../../../.env')
-            : resolve(__dirname + '../../../../../.env'),
+    path: resolveFromRoot('.env'),
 });
 
 export const getEnv = () => process.env;
