@@ -30,6 +30,6 @@ jobs:
                       mv images_backup public_nodejs/public
                       mv databases_backup public_nodejs/databases
                       cd public_nodejs
-                      npm install sqlite3
-                      npm install sharp@0.22.1
+                      yarn install sqlite3
+                      yarn install sharp@0.29.3
                       devil www restart kuchasz.usermd.net
