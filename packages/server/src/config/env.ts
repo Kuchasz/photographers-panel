@@ -3,8 +3,8 @@ import { resolve } from "path";
 
 setConfig({
     path:
-        process.env === ('production' as any)
-            ? resolve(__dirname + '../../.env')
+        process.env.NODE_ENV === 'production'
+            ? resolve(__dirname + '../../../.env')
             : resolve(__dirname + '../../../../../.env'),
 });
 
