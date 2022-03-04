@@ -1,12 +1,11 @@
-var resolve = require('path').resolve;
-var join = require('path').join;
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const AngularWebpackPlugin = require('@ngtools/webpack').AngularWebpackPlugin;
+import { join, resolve } from 'path';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { AngularWebpackPlugin } from '@ngtools/webpack';
 import linkerPlugin from '@angular/compiler-cli/linker/babel';
-
-require('dotenv').config({
+import { config } from 'dotenv';
+config({
     path: resolve('../.env'),
 });
 
