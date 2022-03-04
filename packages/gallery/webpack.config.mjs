@@ -5,6 +5,11 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { AngularWebpackPlugin } from '@ngtools/webpack';
 import linkerPlugin from '@angular/compiler-cli/linker/babel';
 import { config } from 'dotenv';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 config({
     path: resolve('../.env'),
 });
