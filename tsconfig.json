@@ -12,6 +12,7 @@
         "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
         "declaration": true,
         "declarationMap": true,
+        "skipLibCheck": true,
         "sourceMap": true,
         // "composite": true /* Enable project compilation */,
         "noEmit": false /* Do not emit outputs. */,
