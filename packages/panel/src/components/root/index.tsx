@@ -1,18 +1,23 @@
-import * as React from 'react';
-import { Dashboard } from '../dashboard/index';
-import { Menu } from '../menu/index';
-import { Galleries } from '../galleries/index';
-import { NavBarInstance } from '../navbar';
+import * as React from "react";
+import { BlogAssignAssets } from "../blogs/blog-assign-assets";
+import { Blogs } from "../blogs";
+import { Dashboard } from "../dashboard/index";
+import { Galleries } from "../galleries/index";
+import { isLoggedIn } from "../../security";
+import { LogIn } from "../login";
+import { Menu } from "../menu/index";
+import { NavBarInstance } from "../navbar";
+import {
+    Redirect,
+    Route,
+    RouteComponentProps,
+    withRouter
+    } from "react-router-dom";
+import { routes } from "../../routes";
+import { SiteStats } from "../site-stats";
+import { Soon } from "../soon";
 // import { Emails } from "../emails";
-import { Blogs } from '../blogs';
-import { Route, Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 // import { RouteComponentProps, withRouter } from "react-router-dom";
-import { routes } from '../../routes';
-import { LogIn } from '../login';
-import { isLoggedIn } from '../../security';
-import { Soon } from '../soon';
-import { SiteStats } from '../site-stats';
-import { BlogAssignAssets } from '../blogs/blog-assign-assets';
 
 interface Props extends RouteComponentProps {}
 
@@ -46,7 +51,7 @@ class RootComponent extends React.Component<Props, State> {
                         <Route
                             exact
                             path={routes.blog.assets}
-                            render={(x) => {
+                            render={(x: any) => {
                                 return <BlogAssignAssets id={x.match.params.id} />;
                             }}
                         />
