@@ -4,7 +4,8 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AngularWebpackPlugin = require('@ngtools/webpack').AngularWebpackPlugin;
-const linkerPlugin = require('@angular/compiler-cli/linker/babel');
+import linkerPlugin from '@angular/compiler-cli/linker/babel';
+
 require('dotenv').config({
     path: resolve('../.env'),
 });
@@ -83,6 +84,9 @@ module.exports = {
                     rootModuleDirectory('@pp/utils'),
                     rootModuleDirectory('@pp/api'),
                 ],
+                options: {
+                    jitMode: false,
+                },
             },
             {
                 test: /\.[cm]?js$/,
