@@ -1,4 +1,4 @@
-import { join, resolve } from 'path';
+import { join, resolve, dirname } from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -8,7 +8,7 @@ import { config } from 'dotenv';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
 config({
     path: resolve('../.env'),
