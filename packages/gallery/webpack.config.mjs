@@ -134,8 +134,8 @@ export default {
         extensions: ['.ts', '.js'],
         modules: [resolve('node_modules'), resolve('../node_modules'), resolve('../../node_modules')],
         fallback: {
-            timers: require.resolve('timers-browserify'),
-            stream: require.resolve('stream-browserify'),
+            // timers: require.resolve('timers-browserify'),
+            // stream: require.resolve('stream-browserify'),
             buffer: false,
         },
     },
