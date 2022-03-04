@@ -1,14 +1,23 @@
-import { join, resolve, dirname } from 'path';
-import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { AngularWebpackPlugin } from '@ngtools/webpack';
-import linkerPlugin from '@angular/compiler-cli/linker/babel';
-import { config } from 'dotenv';
-import { fileURLToPath } from 'url';
+// import { join, resolve, dirname } from 'path';
+// import webpack from 'webpack';
+// import HtmlWebpackPlugin from 'html-webpack-plugin';
+// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+// import { AngularWebpackPlugin } from '@ngtools/webpack';
+// // import linkerPlugin from '@angular/compiler-cli/linker/babel';
+// import { config } from 'dotenv';
+// import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const { join, resolve, dirname } = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { AngularWebpackPlugin } = require('@ngtools/webpack');
+// import linkerPlugin from '@angular/compiler-cli/linker/babel';
+const { config } = require('dotenv');
+// import { fileURLToPath } from 'url';
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 config({
     path: resolve('../.env'),
@@ -47,6 +56,7 @@ var plugins = [
     }),
     new AngularWebpackPlugin({
         tsconfig: resolve(__dirname, './tsconfig.json'),
+        jitMode: false,
         // entryModule: 'src/demo/app.module#AppModule',
         // sourceMap: true,
         // locale: 'en',
@@ -65,7 +75,7 @@ const optimization =
               nodeEnv: process.env.NODE_ENV,
           };
 
-export default {
+module.exports = {
     entry: resolve(__dirname, './src/demo/main.ts'),
     output: {
         filename: 'bundle.js',
@@ -92,17 +102,17 @@ export default {
                     jitMode: false,
                 },
             },
-            {
-                test: /\.[cm]?js$/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        cacheDirectory: true,
-                        compact: false,
-                        plugins: [linkerPlugin],
-                    },
-                },
-            },
+            // {
+            //     test: /\.[cm]?js$/,
+            //     use: {
+            //         loader: 'babel-loader',
+            //         options: {
+            //             cacheDirectory: true,
+            //             compact: false,
+            //             plugins: [linkerPlugin],
+            //         },
+            //     },
+            // },
             {
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
                 parser: {
@@ -134,8 +144,8 @@ export default {
         extensions: ['.ts', '.js'],
         modules: [resolve('node_modules'), resolve('../node_modules'), resolve('../../node_modules')],
         fallback: {
-            // timers: require.resolve('timers-browserify'),
-            // stream: require.resolve('stream-browserify'),
+            timers: require.resolve('timers-browserify'),
+            stream: require.resolve('stream-browserify'),
             buffer: false,
         },
     },
