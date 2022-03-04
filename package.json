@@ -6,11 +6,16 @@
         "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'",
         "start": "NODE_ENV=development& node packages/server/dist/app.js"
     },
+    "browserslist": [
+        "> 1%",
+        "Chrome > 65"
+    ],
     "workspaces": [
         "packages/*"
     ],
     "resolutions": {
         "**/@types/react": "17.0.5",
         "**/@types/serve-static": "1.13.10"
-    }
+    },
+    "dependencies": {}
 }
