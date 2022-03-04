@@ -6,7 +6,7 @@ name: Ext.Master.Build
 # events but only for the master branch
 on:
     push:
-        branches: [master]
+        branches: [master2]
     # pull_request:
     #   branches: [ master ]
 
