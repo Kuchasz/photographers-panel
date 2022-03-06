@@ -10,11 +10,13 @@
 import { join, resolve, dirname } from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { createRequire } from 'module';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { AngularWebpackPlugin } from '@ngtools/webpack';
 import linkerPlugin from '@angular/compiler-cli/linker/babel';
 import { config } from 'dotenv';
 import { fileURLToPath } from 'url';
+const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -148,8 +150,8 @@ export default {
         extensions: ['.ts', '.js'],
         modules: [resolve('node_modules'), resolve('../node_modules'), resolve('../../node_modules')],
         fallback: {
-            timers: import.meta.resolve('timers-browserify'),
-            stream: import.meta.resolve('stream-browserify'),
+            timers: require.resolve('timers-browserify'),
+            stream: require.resolve('stream-browserify'),
             buffer: false,
         },
     },
