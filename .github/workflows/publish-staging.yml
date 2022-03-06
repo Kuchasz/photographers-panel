@@ -26,13 +26,13 @@ jobs:
                       cp public_nodejs/databases databases_backup
                       rm -rf public_nodejs
                       unzip -q ../artifacts/package.zip
-                      cp packages/server/dist public_nodejs
-                      cp packages/api/dist node_modules/@pp/api/dist
-                      cp packages/gallery/dist node_modules/@pp/gallery/dist
-                      cp packages/gallery-server/dist node_modules/@pp/gallery-server/dist
-                      cp packages/panel/dist node_modules/@pp/panel/dist
-                      cp packages/site/dist node_modules/@pp/site/dist
-                      cp packages/utils/dist node_modules/@pp/utils/dist
+                      cp -r packages/server/dist public_nodejs
+                      cp -r packages/api/dist node_modules/@pp/api/dist
+                      cp -r packages/gallery/dist node_modules/@pp/gallery/dist
+                      cp -r packages/gallery-server/dist node_modules/@pp/gallery-server/dist
+                      cp -r packages/panel/dist node_modules/@pp/panel/dist
+                      cp -r packages/site/dist node_modules/@pp/site/dist
+                      cp -r packages/utils/dist node_modules/@pp/utils/dist
                       mv images_backup public_nodejs/public
                       mv databases_backup public_nodejs/databases
                       devil www restart kuchasz.usermd.net
