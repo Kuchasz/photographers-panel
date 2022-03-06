@@ -57,6 +57,10 @@ var plugins = [
     new AngularWebpackPlugin({
         tsconfig: resolve(__dirname, './tsconfig.json'),
         jitMode: false,
+        enableIvy: false,
+        angularCompilerOptions: {
+            enableIvy: false,
+        },
         // entryModule: 'src/demo/app.module#AppModule',
         // sourceMap: true,
         // locale: 'en',

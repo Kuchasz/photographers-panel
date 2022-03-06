@@ -22,42 +22,42 @@ import { routes } from "@pp/api/dist/site/routes";
 import { runPhotoGalleryServer } from "@pp/gallery-server/dist";
 import { setEndpoint } from "@pp/api/dist/common";
 
-let { Root }: { Root: any } = require('@pp/site');
+// let { Root }: { Root: any } = require('@pp/site');
 
 setEndpoint(config.app.appPath!);
 
 require('isomorphic-fetch');
 const Youch = require('youch');
 
-const runMigration = (migration: (connection: Knex) => Promise<boolean>, connection: Knex) =>
-    new Promise<boolean>(async (res, rej) => {
-        const transaction = await connection.transaction();
-        try {
-            const runOrNot = await migration(transaction);
-            await transaction.commit();
-            res(runOrNot);
-        } catch (err) {
-            console.log(err);
-            console.log('Rolling back transaction!');
-            await transaction.rollback();
-            return Promise.reject(err);
-        }
-    });
+// const runMigration = (migration: (connection: Knex) => Promise<boolean>, connection: Knex) =>
+//     new Promise<boolean>(async (res, rej) => {
+//         const transaction = await connection.transaction();
+//         try {
+//             const runOrNot = await migration(transaction);
+//             await transaction.commit();
+//             res(runOrNot);
+//         } catch (err) {
+//             console.log(err);
+//             console.log('Rolling back transaction!');
+//             await transaction.rollback();
+//             return Promise.reject(err);
+//         }
+//     });
 
-const runMigrations = async () => {
-    console.log(`Running ${migrations.length} migrations`);
-    for (let i = 0; i < migrations.length; i++) {
-        try {
-            console.log('----------------------');
-            console.log(`Running Migration ${i + 1}`);
-            const runOrNot = await runMigration(migrations[i], connection);
-            console.log(runOrNot ? 'done' : 'skipped');
-        } catch (err) {
-            console.log('Migrations failed', err);
-            // console.error(err);
-        }
-    }
-};
+// const runMigrations = async () => {
+//     console.log(`Running ${migrations.length} migrations`);
+//     for (let i = 0; i < migrations.length; i++) {
+//         try {
+//             console.log('----------------------');
+//             console.log(`Running Migration ${i + 1}`);
+//             const runOrNot = await runMigration(migrations[i], connection);
+//             console.log(runOrNot ? 'done' : 'skipped');
+//         } catch (err) {
+//             console.log('Migrations failed', err);
+//             // console.error(err);
+//         }
+//     }
+// };
 
 const app = express();
 app.use(express.json());
@@ -121,102 +121,102 @@ app.get('/robots.txt', function (req: any, res: any) {
     res.send(`user-agent: *\nallow: /\n\nsitemap: ${sitemapUrl}`);
 });
 
-app.get('*', async (req: any, res, next) => {
-    if (req.url === '/api') return next();
+// app.get('*', async (req: any, res, next) => {
+//     if (req.url === '/api') return next();
 
-    if (req.url.includes('/public')) return res.sendStatus(404);
+//     if (req.url.includes('/public')) return res.sendStatus(404);
 
-    let desiredRoute: { route: string };
-    let initialState: any;
+//     let desiredRoute: { route: string };
+//     let initialState: any;
 
-    const serverConfig = {
-        stats: {
-            siteId: config.stats.siteId,
-            urlBase: config.stats.urlBase,
-        },
-    };
+//     const serverConfig = {
+//         stats: {
+//             siteId: config.stats.siteId,
+//             urlBase: config.stats.urlBase,
+//         },
+//     };
 
-    console.log(req.url);
+//     console.log(req.url);
 
-    if (process.env.NODE_ENV === 'development') Root = require('@pp/site');
+//     if (process.env.NODE_ENV === 'development') Root = require('@pp/site');
 
-    try {
-        const found = Object.values(routes).filter((p) => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
-        const match = Root.matchPath(req.path, { path: found.route });
+//     try {
+//         const found = Object.values(routes).filter((p) => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
+//         const match = Root.matchPath(req.path, { path: found.route });
 
-        desiredRoute = { route: found.route };
-        initialState = found ? await found.getData(match ? (match.params as any).alias : null) : undefined;
+//         desiredRoute = { route: found.route };
+//         initialState = found ? await found.getData(match ? (match.params as any).alias : null) : undefined;
 
-        console.log(match);
-    } catch (err) {
-        console.error(err);
-        return res.redirect('/');
-    }
+//         console.log(match);
+//     } catch (err) {
+//         console.error(err);
+//         return res.redirect('/');
+//     }
 
-    fs.readFile(getModulePath('@pp/site/dist/index.html'), 'utf8', async (err, template) => {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
+//     fs.readFile(getModulePath('@pp/site/dist/index.html'), 'utf8', async (err, template) => {
+//         if (err) {
+//             console.error(err);
+//             return res.sendStatus(500);
+//         }
 
-        let siteContent = '';
-        const context = {};
-        let helmet: any = {};
+//         let siteContent = '';
+//         const context = {};
+//         let helmet: any = {};
 
-        Root.initializeConfig(serverConfig);
+//         Root.initializeConfig(serverConfig);
 
-        const app = Root.createElement(
-            Root.StaticRouter,
-            { location: req.url, context },
-            Root.createElement(Root.Root, { initialState: { [desiredRoute.route]: initialState } }, null)
-        );
+//         const app = Root.createElement(
+//             Root.StaticRouter,
+//             { location: req.url, context },
+//             Root.createElement(Root.Root, { initialState: { [desiredRoute.route]: initialState } }, null)
+//         );
 
-        try {
-            (global as any).window = {
-                location: req.protocol + '://' + req.get('host') + req.originalUrl,
-            };
-            siteContent = Root.renderToString(app);
-            helmet = Root.renderStatic();
-        } catch (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
+//         try {
+//             (global as any).window = {
+//                 location: req.protocol + '://' + req.get('host') + req.originalUrl,
+//             };
+//             siteContent = Root.renderToString(app);
+//             helmet = Root.renderStatic();
+//         } catch (err) {
+//             console.error(err);
+//             return res.sendStatus(500);
+//         }
 
-        const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
-            .replace('::ffff:', '')
-            .split(',')[0];
+//         const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
+//             .replace('::ffff:', '')
+//             .split(',')[0];
 
-        await siteModel.registerVisit(new Date(), address);
+//         await siteModel.registerVisit(new Date(), address);
 
-        return res.send(`
-            <!DOCTYPE html>
-            <html lang="pl">
-                <head>
-                    ${helmet.title.toString()}
-                    ${helmet.meta.toString()}
-                    <meta charset="UTF-8" />
-                    <meta property="og:locale" content="pl_PL">
-                    <meta property="og:site_name" content="PyszStudio">
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <link rel="shortcut icon" href="/favicon.ico" />
-                    <link href="/main.css" rel="stylesheet" />
-                    <script type="text/javascript">
-                        window.___InitialState___=${JSON.stringify({
-                            [desiredRoute.route]: initialState,
-                        })};
-                        window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>
-                </head>
-                <body>
-                    <div id="root">${siteContent}</div>
-                    <script type="text/javascript" src="/bundle.js"></script>
-                </body>
-            </html>`);
-    });
-});
+//         return res.send(`
+//             <!DOCTYPE html>
+//             <html lang="pl">
+//                 <head>
+//                     ${helmet.title.toString()}
+//                     ${helmet.meta.toString()}
+//                     <meta charset="UTF-8" />
+//                     <meta property="og:locale" content="pl_PL">
+//                     <meta property="og:site_name" content="PyszStudio">
+//                     <meta name="viewport" content="width=device-width, initial-scale=1" />
+//                     <link rel="shortcut icon" href="/favicon.ico" />
+//                     <link href="/main.css" rel="stylesheet" />
+//                     <script type="text/javascript">
+//                         window.___InitialState___=${JSON.stringify({
+//                             [desiredRoute.route]: initialState,
+//                         })};
+//                         window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>
+//                 </head>
+//                 <body>
+//                     <div id="root">${siteContent}</div>
+//                     <script type="text/javascript" src="/bundle.js"></script>
+//                 </body>
+//             </html>`);
+//     });
+// });
 
 const runApp = async () => {
     try {
-        await runMigrations();
+        // await runMigrations();
         await runPhotoGalleryServer(app as any, resolve(__dirname + '/databases'));
         app.listen(5000, () => {
             console.log('Application started...');
