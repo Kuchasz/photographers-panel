@@ -30,4 +30,6 @@ jobs:
                       mv -f public_nodejs/dist/* public_nodejs/
                       mv images_backup public_nodejs/public
                       mv databases_backup public_nodejs/databases
+                      cd public_nodejs
+                      npm install sharp@0.26.3 sqlite3
                       devil www restart kuchasz.usermd.net
