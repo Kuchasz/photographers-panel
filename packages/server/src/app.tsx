@@ -216,7 +216,7 @@ app.get('*', async (req: any, res, next) => {
 
 const runApp = async () => {
     try {
-        // await runMigrations();
+        await runMigrations();
         await runPhotoGalleryServer(app as any, resolve(__dirname + '/databases'));
         app.listen(5000, () => {
             console.log('Application started...');
