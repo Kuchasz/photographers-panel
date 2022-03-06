@@ -12,7 +12,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { AngularWebpackPlugin } = require('@ngtools/webpack');
-// import linkerPlugin from '@angular/compiler-cli/linker/babel';
+import linkerPlugin from '@angular/compiler-cli/linker/babel';
 const { config } = require('dotenv');
 // import { fileURLToPath } from 'url';
 
@@ -107,17 +107,16 @@ module.exports = {
                     enableIvy: false,
                 },
             },
-            // {
-            //     test: /\.[cm]?js$/,
-            //     use: {
-            //         loader: 'babel-loader',
-            //         options: {
-            //             cacheDirectory: true,
-            //             compact: false,
-            //             plugins: [linkerPlugin],
-            //         },
-            //     },
-            // },
+            {
+                test: /\.m?js$/,
+                resolve: { fullySpecified: false },
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        plugins: [linkerPlugin],
+                    },
+                },
+            },
             {
                 test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
                 parser: {
