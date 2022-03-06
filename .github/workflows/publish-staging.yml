@@ -29,5 +29,4 @@ jobs:
                       mv packages/server/dist public_nodejs
                       mv images_backup public_nodejs/public
                       mv databases_backup public_nodejs/databases
-                      yarn install
                       devil www restart kuchasz.usermd.net
