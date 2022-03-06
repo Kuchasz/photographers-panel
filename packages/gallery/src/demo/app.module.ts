@@ -10,7 +10,6 @@ import { fetchGallery } from "../utils/jalbum";
 import { GalleryModule } from "../gallery.module";
 import { GalleryService } from "../service/gallery.service";
 import { getUserName } from "@pp/api/dist/user";
-import "@angular/compiler";
 
 document.querySelector('#state-initializer')?.remove();
 @NgModule({

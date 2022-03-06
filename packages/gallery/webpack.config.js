@@ -104,6 +104,7 @@ module.exports = {
                 ],
                 options: {
                     jitMode: false,
+                    enableIvy: false,
                 },
             },
             // {
