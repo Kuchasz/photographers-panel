@@ -79,7 +79,7 @@ const optimization =
               nodeEnv: process.env.NODE_ENV,
           };
 
-module.exports = {
+export default {
     entry: resolve(__dirname, './src/demo/main.ts'),
     output: {
         filename: 'bundle.js',
