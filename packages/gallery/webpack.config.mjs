@@ -7,17 +7,17 @@
 // import { config } from 'dotenv';
 // import { fileURLToPath } from 'url';
 
-const { join, resolve, dirname } = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { AngularWebpackPlugin } = require('@ngtools/webpack');
+import { join, resolve, dirname } from 'path';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { AngularWebpackPlugin } from '@ngtools/webpack';
 import linkerPlugin from '@angular/compiler-cli/linker/babel';
-const { config } = require('dotenv');
-// import { fileURLToPath } from 'url';
+import { config } from 'dotenv';
+import { fileURLToPath } from 'url';
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 config({
     path: resolve('../.env'),
@@ -148,8 +148,8 @@ module.exports = {
         extensions: ['.ts', '.js'],
         modules: [resolve('node_modules'), resolve('../node_modules'), resolve('../../node_modules')],
         fallback: {
-            timers: require.resolve('timers-browserify'),
-            stream: require.resolve('stream-browserify'),
+            timers: import.meta.resolve('timers-browserify'),
+            stream: import.meta.resolve('stream-browserify'),
             buffer: false,
         },
     },
