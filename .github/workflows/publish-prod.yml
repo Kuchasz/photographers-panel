@@ -22,14 +22,14 @@ jobs:
                   command: |
                       cd domains/pyszstudio.pl/
                       rm -rf node_modules
-                      mv public_nodejs/public images_backup
-                      mv public_nodejs/databases databases_backup
+                      cp public_nodejs/public images_backup
+                      cp public_nodejs/databases databases_backup
                       rm -rf public_nodejs
                       unzip -q ../artifacts/package.zip
-                      mv packages/server/dist public_nodejs
+                      mv -f packages/server public_nodejs
+                      mv -f public_nodejs/dist/* public_nodejs/
                       mv images_backup public_nodejs/public
                       mv databases_backup public_nodejs/databases
                       cd public_nodejs
-                      yarn add sqlite3
-                      yarn add sharp@0.26.3
+                      npm install sharp@0.26.3 sqlite3
                       devil www restart pyszstudio.pl
