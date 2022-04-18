@@ -59,6 +59,7 @@ export const pl = {
         contact: 'Kontakt',
         links: 'Polecamy',
         videos: 'Film',
+        photos: 'Zdjęcia',
         blogs: 'Blog',
         blog: 'Blog',
         private: 'Galeria z wesela',
@@ -70,6 +71,7 @@ export const pl = {
         offer: 'Oferta, oferowane przez nas usługi',
         contact: 'Formularz kontaktowy',
         links: 'Polecamy inne firmy z branży',
+        photos: 'Ślubna sesja zdjęciowa',
         videos: 'Filmy, nasze realizacje filmowe',
         blogs: 'Blog, najnowsze zrealizowane przez nas zdjęcia',
         blog: 'Blog, najnowsze zrealizowane przez nas zdjęcia',
@@ -134,7 +136,7 @@ export const pl = {
         calculator: {
             title: 'Kalkulator ceny',
             description:
-                'Cena umówiona z klientem jest wiążąca, nie ulegnie zmianie wraz ze zmianą cennika. O cenę pozostałych usług proszę pytać przez facebooka, mailowo lub telefonicznie.',
+                'Cena umówiona z klientem jest wiążąca, nie ulegnie zmianie wraz ze zmianą cennika. O cenę pozostałych usług proszę pytać przez facebooka, mailowo lub telefonicznie. Duże rabaty dla usług zamawianych w pakiecie.',
         },
         slogan: {
             title: 'Co <span>nas wyróżnia</span>?',

@@ -52,12 +52,12 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     )}
                 />
                 <Route exact path={routes.contact.route} render={() => <Contact />} />
-                <Route exact path={routes.links.route} render={() => <Links />} />
                 <Route
                     exact
                     path={routes.videos.route}
                     render={() => <Videos initialState={initialState[routes.videos.route]} />}
                 />
+                <Route exact path={routes.links.route} render={() => <Links />} />
                 <Route exact path={routes.private.route} render={() => <PrivateGallery />} />
             </Switch>
         </span>

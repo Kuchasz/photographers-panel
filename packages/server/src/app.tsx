@@ -8,7 +8,6 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs";
-import multer from "multer";
 import { allowCrossDomain } from "./core";
 import { connection } from "./db";
 import { getModulePath } from "./core/dependencies";
@@ -21,6 +20,7 @@ import { router as mainRouter } from "./areas/routes";
 import { routes } from "@pp/api/dist/site/routes";
 import { runPhotoGalleryServer } from "@pp/gallery-server/dist";
 import { setEndpoint } from "@pp/api/dist/common";
+// import multer from "multer";
 
 let { Root }: { Root: any } = require('@pp/site');
 

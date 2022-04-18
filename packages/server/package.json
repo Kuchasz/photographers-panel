@@ -8,7 +8,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "ts-node app.tsx",
         "build": "tsc",
-        "watch": "nodemon --watch . --ext ts,tsx --exec ts-node --ignore '*.test.ts' --delay 2 app.tsx"
+        "watch": "nodemon --watch . --ext ts,tsx,.d.ts --exec ts-node --ignore '*.test.ts' --delay 2 src/app.tsx"
     },
     "author": "",
     "license": "ISC",

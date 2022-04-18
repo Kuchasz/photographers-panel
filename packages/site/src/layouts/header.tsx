@@ -1,23 +1,18 @@
-import React, { useEffect } from "react";
-import {
-    first,
-    last,
-    nextElement,
-    randomElement
-    } from "@pp/utils/dist/array";
+import React from "react";
+import { first, last, nextElement } from "@pp/utils/dist/array";
 import { firstSegment } from "@pp/utils/dist/url";
 import { Headers } from "../components/headers";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { menuItems } from "../menu-items";
 import { routes } from "@pp/api/dist/site/routes";
 import { strings } from "../resources";
 
-const getHeaderBackgroundStyle = (photo: string) => {
-    const url = require(`../images/top/${photo}`);
-    return {
-        backgroundImage: `url(${url})`,
-    };
-};
+// const getHeaderBackgroundStyle = (photo: string) => {
+//     const url = require(`../images/top/${photo}`);
+//     return {
+//         backgroundImage: `url(${url})`,
+//     };
+// };
 
 const getSrc = (photo: string, ext: string) => require(`../images/top/${photo}${ext}`);
 
@@ -97,16 +92,16 @@ export const Header = withRouter((props) => {
                         <Link to={routes.blogs.route} id={selectedItem(props.location.pathname, routes.blogs.route)}>
                             {strings.menu.blog}
                         </Link>
+                        <Link to={routes.photos.route} id={selectedItem(props.location.pathname, routes.photos.route)}>
+                            {strings.menu.photos}
+                        </Link>
+                        <Link to={routes.videos.route} id={selectedItem(props.location.pathname, routes.videos.route)}>
+                            {strings.menu.videos}
+                        </Link>
                         <Link
                             to={routes.contact.route}
                             id={selectedItem(props.location.pathname, routes.contact.route)}>
                             {strings.menu.contact}
-                        </Link>
-                        <Link to={routes.links.route} id={selectedItem(props.location.pathname, routes.links.route)}>
-                            {strings.menu.links}
-                        </Link>
-                        <Link to={routes.videos.route} id={selectedItem(props.location.pathname, routes.videos.route)}>
-                            {strings.menu.videos}
                         </Link>
                         <Link id="gallery" to={routes.private.route}>
                             {strings.menu.private}

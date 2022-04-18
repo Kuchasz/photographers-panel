@@ -193,7 +193,7 @@ export const Pricing = () => {
                                     </span>
                                     <br />
                                     <span>
-                                        Cena z rabatem:
+                                        Cena pakietu:
                                         <span className="final">
                                             <strong>{price.finalPrice} zł</strong>
                                         </span>

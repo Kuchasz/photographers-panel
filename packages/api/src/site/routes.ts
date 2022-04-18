@@ -1,6 +1,6 @@
-import { getBlog, getBlogsList, getLastBlogs } from './blog';
-import { getVideosList } from './video';
-import { getOffersList, getOffer } from './offer';
+import { getBlog, getBlogsList, getLastBlogs } from "./blog";
+import { getOffer, getOffersList } from "./offer";
+import { getVideosList } from "./video";
 
 const empty = () => Promise.resolve({});
 
@@ -14,5 +14,10 @@ export const routes = {
     contact: { fullPage: false, route: '/kontakt', getData: empty },
     videos: { fullPage: false, route: '/filmy', getData: getVideosList },
     links: { fullPage: false, route: '/linki', getData: empty },
+    photos: {
+        fullPage: false,
+        route: '/blog/andrychow-zdjecia-film-fotografia-slubna-plener-reportaz-slubny',
+        getData: () => getBlog('andrychow-zdjecia-film-fotografia-slubna-plener-reportaz-slubny'),
+    },
     private: { fullPage: false, route: '/prywatna', getData: empty },
 };
