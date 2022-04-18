@@ -22,8 +22,8 @@ jobs:
                   command: |
                       cd domains/pyszstudio.pl/
                       rm -rf node_modules
-                      cp -r public_nodejs/public ../images_backup
-                      cp -r public_nodejs/databases ../databases_backup
+                      mv public_nodejs/public ../images_backup
+                      mv public_nodejs/databases ../databases_backup
                       rm -rf public_nodejs
                       unzip -q ../artifacts/package.zip
                       mv -f packages/server public_nodejs
