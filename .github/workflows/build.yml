@@ -319,6 +319,7 @@ jobs:
             - run: |
                   cd ./packages/server
                   yarn run build
+                  cp src/core/logo-watermark.png dist/core/logo-watermark.png
 
             - uses: montudor/action-zip@v0.1.0
               with:
