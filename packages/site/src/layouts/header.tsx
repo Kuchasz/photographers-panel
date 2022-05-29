@@ -81,11 +81,13 @@ export const Header = withRouter((props) => {
                         <Link to={routes.home.route} id={selectedItem(props.location.pathname, routes.home.route)}>
                             {strings.menu.home}
                         </Link>
+                        {/*
                         <Link
                             to={routes.pricing.route}
                             id={selectedItem(props.location.pathname, routes.pricing.route)}>
                             {strings.menu.pricing}
-                        </Link>
+                        </Link> 
+                        */}
                         <Link to={routes.offers.route} id={selectedItem(props.location.pathname, routes.offers.route)}>
                             {strings.menu.offer}
                         </Link>
