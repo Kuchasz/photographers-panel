@@ -6,7 +6,7 @@ const empty = () => Promise.resolve({});
 
 export const routes = {
     home: { fullPage: true, route: '/', getData: getLastBlogs },
-    pricing: { fullPage: false, route: '/cennik', getData: empty },
+    //pricing: { fullPage: false, route: '/cennik', getData: empty },
     offers: { fullPage: false, route: '/oferta', getData: getOffersList },
     offer: { fullPage: false, route: '/oferta/:alias', getData: getOffer },
     blogs: { fullPage: false, route: '/blog', getData: getBlogsList },
