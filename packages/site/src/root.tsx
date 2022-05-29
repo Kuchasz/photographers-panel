@@ -27,7 +27,7 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     path={routes.home.route}
                     render={() => <Home initialState={initialState[routes.home.route]} />}
                 />
-                <Route exact path={routes.pricing.route} render={() => <Pricing />} />
+                {/*<Route exact path={routes.pricing.route} render={() => <Pricing />} />*/}
                 <Route
                     exact
                     path={routes.offers.route}
