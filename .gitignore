@@ -15,3 +15,5 @@ api/**/*.js
 server/**/*.js
 stats.json
 *.sql
+.yarn
+.yarnrc.yml
