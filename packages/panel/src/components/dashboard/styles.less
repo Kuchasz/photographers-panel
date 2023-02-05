@@ -4,28 +4,30 @@
     padding: 12px;
 
     .events {
-        width: 400px;
-        height: '100%';
+        // width: 300px;
+        // height: '100%';
         margin-right: 12px;
+        overflow-y: auto;
         .event {
-            .rs-list-item-content {
+            display: flex;
+            align-items: center;
+            user-select: none;
+            padding-block: 6px;
+            .avatar {
+                width: 30px;
+                height: 30px;
+                border-radius: 30px;
                 display: flex;
-                user-select: none;
-                .avatar {
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-right: 12px;
-                }
-                .rs-icon {
-                    margin-right: 6px;
-                }
-                .details {
-                    font-size: smaller;
-                }
+                align-items: center;
+                justify-content: center;
+                margin-right: 12px;
+            }
+            .rs-icon {
+                margin-right: 6px;
+                text-align: center;
+            }
+            .details {
+                font-size: smaller;
             }
         }
     }

@@ -1,23 +1,12 @@
-import * as React from "react";
-import {
-    Alert,
-    ControlLabel,
-    Form,
-    FormControl,
-    FormGroup,
-    HelpBlock,
-    Icon,
-    List,
-    SelectPicker
-    } from "rsuite";
-import { colorFromString, invertColor } from "@pp/utils/dist/color";
-import { EventDto, EventType, getEventsList } from "@pp/api/dist/event";
-import { formatDateTime, translations } from "../../i18n";
-import { FormInstance } from "rsuite/lib/Form";
-import { mainBlogsModel } from "./main-blogs-model";
-import { ResultType } from "@pp/api/dist/common";
-import { ToolTip } from "../common/tooltip";
-import "./styles.less";
+import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Icon, List, SelectPicker } from 'rsuite';
+import { colorFromString, invertColor } from '@pp/utils/dist/color';
+import { EventDto, EventType, getEventsList } from '@pp/api/dist/event';
+import { formatDateTime, translations } from '../../i18n';
+import { FormInstance } from 'rsuite/lib/Form';
+import { mainBlogsModel } from './main-blogs-model';
+import { ResultType } from '@pp/api/dist/common';
+import { ToolTip } from '../common/tooltip';
+import './styles.less';
 import {
     BlogSelectItem,
     changeMainBlogs,
@@ -25,6 +14,9 @@ import {
     getMainBlogs,
     MainBlogsDto,
 } from '@pp/api/dist/panel/blog';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 const getIconForItem = (e: EventDto) => {
     if (e.type === EventType.CalculatorConfigChanged) return 'calculator';
@@ -62,17 +54,24 @@ const emptyMainBlogs = () => ({
 });
 
 export const Dashboard = (props: Props) => {
-    const [formState, setFormState] = React.useState<MainBlogsDto>(emptyMainBlogs());
-    const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
+    const [formState, setFormState] = useState<MainBlogsDto>(emptyMainBlogs());
+    const [blogs, setBlogs] = useState<BlogSelectItem[]>([]);
     // const [events, setEvents] = React.useState<SiteEventDto[]>([]);
-    const [newEvents, setNewEvents] = React.useState<EventDto[]>([]);
-    const formRef = React.useRef<FormInstance>();
+    const [newEvents, setNewEvents] = useState<EventDto[]>([]);
+    const formRef = useRef<FormInstance>();
+    const parentRef = useRef<HTMLDivElement>(null);
 
-    React.useEffect(() => {
+    const rowVirtualizer = useVirtualizer({
+        count: newEvents.length,
+        getScrollElement: () => parentRef.current!,
+        estimateSize: () => 48.67,
+    });
+
+    useEffect(() => {
         getBlogSelectList().then(setBlogs);
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         getMainBlogs().then(setFormState);
     }, []);
 
@@ -80,7 +79,7 @@ export const Dashboard = (props: Props) => {
     //     getSiteEvents().then(setEvents);
     // }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         getEventsList().then(setNewEvents);
     }, []);
 
@@ -100,35 +99,49 @@ export const Dashboard = (props: Props) => {
         }
     };
 
+    var items = rowVirtualizer.getVirtualItems();
+
     return (
         <div className="dashboard">
-            <List bordered className="events" hover>
-                {newEvents.slice(0, 100).map((item, index) => (
-                    <List.Item className="event" key={index} index={index + 1}>
-                        <span
-                            className="avatar"
-                            style={{
-                                backgroundColor: colorFromString(item.user),
-                                color: invertColor(colorFromString(item.user)),
-                            }}>
-                            {item.user[0]}
-                        </span>
-                        <span>
-                            <div>
-                                <Icon icon={getIconForItem(item)}></Icon>
-                                {getTitleForItem(item)}
+            <div style={{ width: 300, height: '100%' }} ref={parentRef} className="events">
+                <div style={{ height: rowVirtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            transform: `translateY(${items[0]?.start}px)`,
+                        }}>
+                        {items.map((item) => (
+                            <div className="event" key={item.index}>
+                                <span
+                                    className="avatar"
+                                    style={{
+                                        backgroundColor: colorFromString(newEvents[item.index].user),
+                                        color: invertColor(colorFromString(newEvents[item.index].user)),
+                                    }}>
+                                    {newEvents[item.index].user[0]}
+                                </span>
+                                <span>
+                                    <div>
+                                        <Icon icon={getIconForItem(newEvents[item.index])}></Icon>
+                                        {getTitleForItem(newEvents[item.index])}
+                                    </div>
+                                    <div className="details">
+                                        <ToolTip text={newEvents[item.index].occuredOn}>
+                                            <span>
+                                                {newEvents[item.index].user},{' '}
+                                                {formatDateTime(newEvents[item.index].occuredOn)}
+                                            </span>
+                                        </ToolTip>
+                                    </div>
+                                </span>
                             </div>
-                            <div className="details">
-                                <ToolTip text={item.occuredOn}>
-                                    <span>
-                                        {item.user}, {formatDateTime(item.occuredOn)}
-                                    </span>
-                                </ToolTip>
-                            </div>
-                        </span>
-                    </List.Item>
-                ))}
-            </List>
+                        ))}
+                    </div>
+                </div>
+            </div>
             <Form
                 style={{ marginLeft: '12px' }}
                 ref={formRef}
