@@ -20,6 +20,11 @@ rating-request-window {
     flex-direction: column;
     font-weight: inherit;
 
+    .review-invitation{
+        margin-top: 20px;
+        text-align: center;
+    }
+
     header {
         display: grid;
         // grid-template-columns: repeat(5, 1fr);
@@ -34,9 +39,9 @@ rating-request-window {
     }
 
     h2 {
+        margin-top: 0px;
         color: #333;
         text-align: center;
-        margin-top: 20px;
         font-weight: inherit;
     }
 
@@ -73,6 +78,7 @@ rating-request-window {
         margin-top: 40px;
         text-transform: uppercase;
         align-items: center;
+        text-align: center;
         &:hover {
             background-color: #000;
         }

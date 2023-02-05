@@ -8,9 +8,9 @@ export default {
         reviewUs: 'opinia',
     },
     review: {
-        header: 'Prosimy o wystawienie opinii',
+        header: 'Wasze zdanie jest dla nas ważne',
         text:
-            'Mamy nadzieję, że zdjęcia Ci się podobają. Jeśli tak to prosimy o wystawienie pozytywnej opinii. Zamknij to okno jeśli chcesz jak najszybciej wrócić do oglądania zdjęć :)',
+            'Mamy nadzieję, że zdjęcia Ci się podobają. Prosimy o wystawienie pozytywnej opinii. Jeśli chcesz jak najszybciej powrócić do oglądania zdjęć to po prostu zamknij to okno :)',
         button: 'Wystaw opinię',
         acknowledgement: "Dziękujemy za opinię!"
     },

@@ -19,6 +19,9 @@ const names = {
     przyjecie: 'przyjęcie',
     przyjeciu: 'przyjęciu',
     przyjecia: 'przyjęcia',
+    podziekowanie: "podziękowanie",
+    strazacy: "strażacy",
+    polnoc: "północ"
 } as { [name: string]: string };
 
 export const getDirectoryName = (directoryName: string) => {

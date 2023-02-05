@@ -1,11 +1,11 @@
 <div class="overlay">
     <div class="popup">
         <p class="close" (click)="close()">&times;</p>
+        <h2>{{ translations.review.header }}</h2>
         <header [style.grid-template-columns]="'repeat(' + likedPhotos.length / 2 + ', 1fr)'">
             <img *ngFor="let url of likedPhotos" [src]="url" />
         </header>
-        <h2>{{ translations.review.header }}</h2>
-        <div>{{ translations.review.text }}</div>
+        <div class="review-invitation">{{ translations.review.text }}</div>
         <ng-container *ngIf="!requestedWindow">
             <a [href]="reviewUrl" (click)="registerEvent()" target="_blank"><i
                     class="mdi mdi-message-draw"></i>{{ translations.review.button }}</a>
