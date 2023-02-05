@@ -39,7 +39,7 @@
         "less": "4.1.1",
         "less-loader": "8.1.1",
         "mini-css-extract-plugin": "1.6.0",
-        "node-sass": "7.0.0",
+        "node-sass": "npm:sass@^1.58.0",
         "postcss": "8.2.13",
         "postcss-loader": "5.2.0",
         "process": "0.11.10",

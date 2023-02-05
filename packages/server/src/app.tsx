@@ -1,32 +1,31 @@
-import * as authPanel from "@pp/api/dist/panel/auth";
-import * as blogModel from "./models/blog";
-import * as config from "./config";
-import * as offer from "@pp/api/dist/site/offer";
-import * as privateGallery from "@pp/api/dist/site/private-gallery";
-import * as siteModel from "./models/site";
-import compression from "compression";
-import cookieParser from "cookie-parser";
-import express from "express";
-import fs from "fs";
-import { allowCrossDomain } from "./core";
-import { connection } from "./db";
-import { getModulePath } from "./core/dependencies";
-import { Knex } from "knex";
-import { migrations } from "./migrations";
-import { resolve } from "path";
-import { router as siteRouter } from "./areas/site/routes";
-import { router as panelRouter } from "./areas/panel/routes";
-import { router as mainRouter } from "./areas/routes";
-import { routes } from "@pp/api/dist/site/routes";
-import { runPhotoGalleryServer } from "@pp/gallery-server/dist";
-import { setEndpoint } from "@pp/api/dist/common";
+import * as authPanel from '@pp/api/dist/panel/auth';
+import * as blogModel from './models/blog';
+import * as config from './config';
+import * as offer from '@pp/api/dist/site/offer';
+import * as privateGallery from '@pp/api/dist/site/private-gallery';
+import * as siteModel from './models/site';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import fs from 'fs';
+import { allowCrossDomain } from './core';
+import { connection } from './db';
+import { getModulePath } from './core/dependencies';
+import { Knex } from 'knex';
+import { migrations } from './migrations';
+import { resolve } from 'path';
+import { router as siteRouter } from './areas/site/routes';
+import { router as panelRouter } from './areas/panel/routes';
+import { router as mainRouter } from './areas/routes';
+import { routes } from '@pp/api/dist/site/routes';
+import { runPhotoGalleryServer } from '@pp/gallery-server/dist';
+import { setEndpoint } from '@pp/api/dist/common';
+import 'isomorphic-unfetch';
 // import multer from "multer";
 
 let { Root }: { Root: any } = require('@pp/site');
 
 setEndpoint(config.app.appPath!);
-
-require('isomorphic-fetch');
 const Youch = require('youch');
 
 const runMigration = (migration: (connection: Knex) => Promise<boolean>, connection: Knex) =>
@@ -215,11 +214,15 @@ app.get('*', async (req: any, res, next) => {
 });
 
 const runApp = async () => {
+    const host = 'localhost';
+    const port = 5005;
+    const protocol = 'http';
+
     try {
         await runMigrations();
         await runPhotoGalleryServer(app as any, resolve(__dirname + '/databases'));
-        app.listen(5000, () => {
-            console.log('Application started...');
+        app.listen(port, () => {
+            console.log(`Application started... 🚀 at ${protocol}://${host}:${port}`);
         });
     } catch (e) {
         console.log('Error occured running application: ', e);
