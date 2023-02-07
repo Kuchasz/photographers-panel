@@ -142,7 +142,14 @@
         flex-shrink: 0;
         position: relative;
 
+        &:hover {
+            img {
+                filter: brightness(0.75);
+            }
+        }
+
         img {
+            transition: filter 0.25s;
             width: 100%;
             height: 100%;
             object-fit: cover;
