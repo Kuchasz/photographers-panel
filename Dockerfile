@@ -7,7 +7,6 @@ COPY yarn.lock .
 COPY packages/utils/package.json packages/utils/package.json
 COPY packages/api/package.json packages/api/package.json
 COPY packages/gallery/package.json packages/gallery/package.json
-COPY packages/gallery-server/package.json packages/gallery-server/package.json
 COPY packages/panel/package.json packages/panel/package.json
 COPY packages/site/package.json packages/site/package.json
 COPY packages/server/package.json packages/server/package.json
@@ -48,11 +47,6 @@ ADD packages/panel .
 # RUN yarn install
 RUN yarn build
 
-WORKDIR /app/packages/gallery-server
-ADD packages/gallery-server .
-# RUN yarn install
-RUN yarn build
-
 WORKDIR /app/packages/server
 ADD packages/server .
 # RUN yarn install
@@ -73,11 +67,6 @@ RUN yarn build
 
 # COPY --from=packages /app/gallery/node_modules ./
 # WORKDIR /app/gallery
-# RUN yarn install
-# RUN yarn build
-
-# COPY --from=packages /app/gallery-server/node_modules ./
-# WORKDIR /app/gallery-server
 # RUN yarn install
 # RUN yarn build
 
