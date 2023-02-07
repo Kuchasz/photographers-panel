@@ -39,7 +39,7 @@
         "css-loader": "6.7.0",
         "dotenv": "16.0.0",
         "file-loader": "6.2.0",
-        "graphql": "16.3.0",
+        "graphql": "16.6.0",
         "graphql-request": "4.0.0",
         "graphql-tag": "2.12.6",
         "gsap": "3.9.1",
