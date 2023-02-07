@@ -77,6 +77,5 @@ export class GalleryImagesFullscreenComponent implements OnInit {
 
     goBack() {
         this.location.back();
-        document.querySelector('gallery :first-child')!.scrollTo(0, 0);
     }
 }

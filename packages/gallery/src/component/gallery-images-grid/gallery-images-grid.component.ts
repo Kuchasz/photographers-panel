@@ -73,8 +73,8 @@ export class GalleryImagesGridComponent implements OnInit {
 
         const columns =
             this.gallery.config.displayMode === DisplayModes.Compact
-                ? ([[], []] as GalleryImage[][])
-                : ([[], [], [], []] as GalleryImage[][]);
+                ? ([[]] as GalleryImage[][])
+                : ([[], []] as GalleryImage[][]);
 
         this.images$.subscribe((images) => {
             let finalImages: GalleryImage[][] = images.reduce((columns, img) => {

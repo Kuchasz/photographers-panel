@@ -116,7 +116,7 @@ export class GalleryStateComponent {
         // this.onBack.emit();
         this.location.back();
 
-        event.stopPropagation();
+        // event.stopPropagation();
     }
 
     orderPhotos() {}
