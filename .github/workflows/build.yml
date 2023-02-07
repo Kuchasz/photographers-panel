@@ -166,6 +166,7 @@ jobs:
 
             - run: |
                   cd ./packages/panel
+                  yarn install 
                   yarn run build
 
             - uses: actions/upload-artifact@v2
