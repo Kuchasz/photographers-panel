@@ -3,22 +3,24 @@ import { ActivatedRoute } from "@angular/router";
 import { animation } from "./gallery-image.animation";
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     Input,
+    NgZone,
     OnInit,
     Renderer2
-    } from "@angular/core";
+} from "@angular/core";
 import { clamp } from "../../utils/number";
 import { DisplayModes } from "../../config/gallery.config";
-import { Expo, TweenLite } from "gsap";
+import { Expo, gsap } from "gsap";
 import {
     first,
     flatMap,
     map,
     switchMap,
     tap
-    } from "rxjs/operators";
+} from "rxjs/operators";
 import { fromEvent, Observable } from "rxjs";
 import { GalleryConfig } from "../../config";
 import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
@@ -28,7 +30,7 @@ import { GalleryService } from "../../service/gallery.service";
     selector: 'gallery-image',
     templateUrl: './gallery-image.component.html',
     styleUrls: ['./gallery-image.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.Default,
     animations: animation,
 })
 export class GalleryImageComponent implements OnInit {
@@ -42,7 +44,7 @@ export class GalleryImageComponent implements OnInit {
     currentDirectory!: Observable<GalleryDirectory>;
     currentImage!: [GalleryImage, GalleryImage, GalleryImage];
 
-    constructor(public gallery: GalleryService, private el: ElementRef, private route: ActivatedRoute) {}
+    constructor(public gallery: GalleryService, private el: ElementRef, private route: ActivatedRoute, private cdRef: ChangeDetectorRef) { }
 
     ngOnInit() {
         function getRenderedSize(contains: boolean, cWidth: number, cHeight: number, width: number, height: number) {
@@ -141,8 +143,8 @@ export class GalleryImageComponent implements OnInit {
             const clampy = clamp(
                 -originalYOffset * newViewport.zoom,
                 (-(canvasSize.height - imgSize.height) / 2) * newViewport.zoom -
-                    imgSize.height * newViewport.zoom +
-                    canvasSize.height
+                imgSize.height * newViewport.zoom +
+                canvasSize.height
             );
 
             const x =
@@ -234,7 +236,8 @@ export class GalleryImageComponent implements OnInit {
                     ? zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, false)
                     : zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, true);
 
-            TweenLite.to(elToMove, 0.25, {
+            gsap.to(elToMove, {
+                duration: 0.25,
                 translateX: `${newViewport.position.x}px`,
                 translateY: `${newViewport.position.y}px`,
                 scale: newViewport.zoom,
@@ -260,23 +263,24 @@ export class GalleryImageComponent implements OnInit {
                 newViewport.zoom === 1
                     ? e.deltaX > requiredDelta
                         ? {
-                              translateX: `100%`,
-                              translateY: '0%',
-                              onComplete: () => this.gallery.prev(currentDirectoryId),
-                          }
+                            translateX: `100%`,
+                            translateY: '0%',
+                            onComplete: () => { this.gallery.prev(currentDirectoryId); this.cdRef.detectChanges() },
+                        }
                         : e.deltaX < -requiredDelta
-                        ? {
-                              translateX: `-100%`,
-                              translateY: '0%',
-                              onComplete: () => this.gallery.next(currentDirectoryId),
-                          }
-                        : { translateX: '0%' }
+                            ? {
+                                translateX: `-100%`,
+                                translateY: '0%',
+                                onComplete: () => { this.gallery.next(currentDirectoryId); this.cdRef.detectChanges() },
+                            }
+                            : { translateX: '0%' }
                     : {
-                          translateX: `${newViewport.position.x}px`,
-                          translateY: `${newViewport.position.y}px`,
-                      };
+                        translateX: `${newViewport.position.x}px`,
+                        translateY: `${newViewport.position.y}px`,
+                    };
 
-            TweenLite.to(elToMove, 0.25, {
+            gsap.to(elToMove, {
+                duration: 0.25,
                 ...transformations,
                 scale: newViewport.zoom,
                 ease: Expo.easeOut,
@@ -285,7 +289,7 @@ export class GalleryImageComponent implements OnInit {
 
         this.currentImage$.subscribe(() => {
             currentViewport = defaultViewport();
-            TweenLite.set(elToMove, {
+            gsap.set(elToMove, {
                 translateX: `0px`,
                 translateY: `0px`,
                 scale: `1`,

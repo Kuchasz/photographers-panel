@@ -28,7 +28,7 @@ import {
     templateUrl: './gallery-images-fullscreen.component.html',
     styleUrls: ['./gallery-images-fullscreen.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None
 })
 export class GalleryImagesFullscreenComponent implements OnInit {
     @Output() onBack: EventEmitter<void> = new EventEmitter<void>(false);
