@@ -1492,7 +1492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.7, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
   version: 7.20.13
   resolution: "@babel/runtime@npm:7.20.13"
   dependencies:
@@ -1772,7 +1772,7 @@ __metadata:
     css-loader: 6.7.0
     dotenv: 16.0.0
     file-loader: 6.2.0
-    graphql: 16.3.0
+    graphql: 16.6.0
     graphql-request: 4.0.0
     graphql-tag: 2.12.6
     gsap: 3.9.1
@@ -1813,7 +1813,7 @@ __metadata:
   dependencies:
     "@pp/api": "*"
     "@pp/utils": "*"
-    "@tanstack/react-virtual": ^3.0.0-alpha.0
+    "@tanstack/react-virtual": 3.0.0-alpha.0
     "@types/node": 11.15.3
     "@types/react": 17.0.5
     "@types/react-confirm": 0.1.4
@@ -1824,7 +1824,7 @@ __metadata:
     css-loader: 5.2.4
     dotenv: 8.2.0
     file-loader: 6.2.0
-    graphql: 16.3.0
+    graphql: 16.6.0
     graphql-request: 4.0.0
     graphql-tag: 2.12.6
     html-webpack-plugin: 5.3.1
@@ -2017,6 +2017,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@reach/observe-rect@npm:^1.1.0":
+  version: 1.2.0
+  resolution: "@reach/observe-rect@npm:1.2.0"
+  checksum: 7dd903eeaad0e22c6d973bd26265d91eadba56ab5134701ceb3e85214db75339fae94aa7e8b88a65e8daa64bc7cf1b915d4ffcdfd324466b561dc6adc3c6e070
+  languageName: node
+  linkType: hard
+
 "@sindresorhus/is@npm:^0.14.0":
   version: 0.14.0
   resolution: "@sindresorhus/is@npm:0.14.0"
@@ -2040,21 +2047,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-virtual@npm:^3.0.0-alpha.0":
-  version: 3.0.0-beta.43
-  resolution: "@tanstack/react-virtual@npm:3.0.0-beta.43"
+"@tanstack/react-virtual@npm:3.0.0-alpha.0":
+  version: 3.0.0-alpha.0
+  resolution: "@tanstack/react-virtual@npm:3.0.0-alpha.0"
   dependencies:
-    "@tanstack/virtual-core": 3.0.0-beta.43
+    "@babel/runtime": ^7.16.7
+    "@reach/observe-rect": ^1.1.0
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 446415a2974083dc0cfdc3c692c78a2cc1bffa493ccbbe65e0f83b358380685d6e09ba66fbf2f29be985e78c10470e7568f59d303ff02aab04b68b057459a703
-  languageName: node
-  linkType: hard
-
-"@tanstack/virtual-core@npm:3.0.0-beta.43":
-  version: 3.0.0-beta.43
-  resolution: "@tanstack/virtual-core@npm:3.0.0-beta.43"
-  checksum: bec1ebbcc563d521c9e6bbea4e82ecaf80b1d3c40525a2f0f8d98c956020dc12242b7eab8e497126ec3e52a70f0f1ba7c32663d777627e07967a9e4f897cde47
+    react: ">=16"
+  checksum: 46f82711356fe50612c6025ddf739a84eb74249d86c25748fea70a653607089ac830a6a44e537232fdb0879aa7dcdcbee3fce090c66f04bd425eb9a0eb691c2d
   languageName: node
   linkType: hard
 
@@ -6952,10 +6953,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:16.3.0":
-  version: 16.3.0
-  resolution: "graphql@npm:16.3.0"
-  checksum: ba540641e9cd2a8de5b989ff1433b015f232fa73aaef478d6709c1339cd43113347917acb965a5799c004667687852fc8ff0cfaa935eb26374c91c1fd7fdaeb1
+"graphql@npm:16.6.0":
+  version: 16.6.0
+  resolution: "graphql@npm:16.6.0"
+  checksum: bf1d9e3c1938ce3c1a81e909bd3ead1ae4707c577f91cff1ca2eca474bfbc7873d5d7b942e1e9777ff5a8304421dba57a4b76d7a29eb19de8711cb70e3c2415e
   languageName: node
   linkType: hard
 
