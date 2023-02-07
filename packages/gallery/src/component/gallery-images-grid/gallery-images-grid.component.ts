@@ -68,13 +68,13 @@ export class GalleryImagesGridComponent implements OnInit {
             )
         );
 
-        const sumHeights = sum((x: GalleryImage) => x.height + 4);
+        const sumHeights = sum((x: GalleryImage) => x.height/x.width);
         const sortByHeight = sort((x: { height: number }) => x.height);
 
         const columns =
             this.gallery.config.displayMode === DisplayModes.Compact
                 ? ([[]] as GalleryImage[][])
-                : ([[], []] as GalleryImage[][]);
+                : ([[], [], [], []] as GalleryImage[][]);
 
         this.images$.subscribe((images) => {
             let finalImages: GalleryImage[][] = images.reduce((columns, img) => {
@@ -124,7 +124,11 @@ export class GalleryImagesGridComponent implements OnInit {
     }
 
     onImageLoad($event: Event) {
-        ($event.target as HTMLImageElement).className = 'loaded';
+        const image = $event.target as HTMLImageElement;
+
+        const container = image.parentElement as HTMLDivElement;
+
+        container.className += ' loaded';
     }
 
     enableFullscreenMode(imageId: string, directoryId: string) {
