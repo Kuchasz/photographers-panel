@@ -24,6 +24,7 @@ import {
     GalleryVisitsDto,
     deleteGallery,
 } from '@pp/api/dist/panel/private-gallery';
+import { GalleryLikes } from "./gallery-likes";
 
 const getStats = (x: GalleryVisitsDto): ChartStat[] => [
     { label: translations.gallery.stats.todayVisits, value: x.todayVisits },
@@ -45,6 +46,7 @@ interface State {
     showCreateForm: boolean;
     showEditForm: boolean;
     showGalleryViewEmails: boolean;
+    showGalleryViewLikes: boolean;
     galleryToEditId?: number;
 }
 
@@ -60,6 +62,7 @@ export class Galleries extends React.Component<Props, State> {
             showCreateForm: false,
             showEditForm: false,
             showGalleryViewEmails: false,
+            showGalleryViewLikes: false,
             galleryToEditId: undefined,
         };
     }
@@ -131,8 +134,20 @@ export class Galleries extends React.Component<Props, State> {
         });
     };
 
+    onGalleryViewLikes = (selectedGallery: number) => {
+        this.setState({
+            galleryToEditId: selectedGallery,
+            showGalleryViewLikes: true,
+        });
+    };
+
+
     closeGalleryViewEmails = () => {
         this.setState({ showGalleryViewEmails: false, galleryToEditId: undefined });
+    };
+
+    closeGalleryViewLikes = () => {
+        this.setState({ showGalleryViewLikes: false, galleryToEditId: undefined });
     };
 
     closeCreateForm = () => {
@@ -192,6 +207,7 @@ export class Galleries extends React.Component<Props, State> {
                             onEdit={this.onGalleryEdit}
                             onDelete={this.onGalleryDelete}
                             onViewEmails={this.onGalleryViewEmails}
+                            onViewLikes={this.onGalleryViewLikes}
                             selectedGalleryId={this.state.selectedGallery?.id}
                         />
                     </Panel>
@@ -213,6 +229,14 @@ export class Galleries extends React.Component<Props, State> {
                     <GalleryEmails
                         show={this.state.showGalleryViewEmails}
                         close={this.closeGalleryViewEmails}
+                        onNotified={this.onNotified}
+                        id={this.state.galleryToEditId}
+                    />
+                ) : null}
+                 {this.state.galleryToEditId ? (
+                    <GalleryLikes
+                        show={this.state.showGalleryViewLikes}
+                        close={this.closeGalleryViewLikes}
                         onNotified={this.onNotified}
                         id={this.state.galleryToEditId}
                     />

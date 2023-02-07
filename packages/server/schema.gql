@@ -18,6 +18,12 @@ type Like {
   likes: Int!
 }
 
+type LikedPhoto {
+  directoryName: String!
+  fileName: String!
+  likes: Float!
+}
+
 type Mutation {
   connect(name: String!): Client!
   likeImage(clientId: Int!, imageId: String!): Like!
@@ -25,5 +31,6 @@ type Mutation {
 }
 
 type Query {
+  likedPhotos(galleryId: Int!): [LikedPhoto!]!
   likes(clientId: Int!): [Like!]!
 }

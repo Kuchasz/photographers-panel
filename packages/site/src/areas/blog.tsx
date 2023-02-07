@@ -18,7 +18,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
 
     render() {
         if (this.state.blog === undefined) return null;
-        const location = global.window.location;
+        const location = (global as any).window.location;
 
         return (
             <div className="blog">

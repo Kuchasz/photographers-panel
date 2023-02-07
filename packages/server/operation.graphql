@@ -6,6 +6,14 @@ query likes($clientId: Int!){
   }
 }
 
+query likedPhotos($galleryId: Int!){
+  likedPhotos(galleryId: $galleryId){
+      likes,
+      fileName,
+      directoryName
+  }
+}
+
 mutation likeImage($imageId: String!, $clientId: Int!){
   likeImage(imageId: $imageId, clientId: $clientId){
     imageId

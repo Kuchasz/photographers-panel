@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import { BlogListItem, changeBlogVisibility } from "@pp/api/dist/panel/blog";
-import {
-    ButtonToolbar,
-    Divider,
-    Icon,
-    IconButton,
-    Table
-    } from "rsuite";
-import { ToolTip } from "../common/tooltip";
-import { translations } from "../../i18n";
+import React, { useState } from 'react';
+import { BlogListItem, changeBlogVisibility } from '@pp/api/dist/panel/blog';
+import { ButtonToolbar, Divider, Icon, IconButton, Table } from 'rsuite';
+import { ToolTip } from '../common/tooltip';
+import { translations } from '../../i18n';
 
 interface Props {
     onSelect: (item: any) => void;
@@ -126,6 +120,14 @@ export class BlogsList extends React.Component<Props, State> {
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
+                                <ToolTip placement="left" text={translations.blog.list.actions.assignAssets}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="th-large" />}
+                                        onClick={() => this.props.onAssignAssets(blog.id)}
+                                    />
+                                </ToolTip>
+                                <Divider vertical />
                                 <ToolTip placement="left" text={translations.blog.list.actions.edit}>
                                     <IconButton
                                         appearance="subtle"
@@ -139,14 +141,6 @@ export class BlogsList extends React.Component<Props, State> {
                                         appearance="subtle"
                                         icon={<Icon icon="trash2" />}
                                         onClick={() => this.props.onDelete(blog.id)}
-                                    />
-                                </ToolTip>
-                                <Divider vertical />
-                                <ToolTip placement="left" text={translations.blog.list.actions.assignAssets}>
-                                    <IconButton
-                                        appearance="subtle"
-                                        icon={<Icon icon="th-large" />}
-                                        onClick={() => this.props.onAssignAssets(blog.id)}
                                     />
                                 </ToolTip>
                             </ButtonToolbar>

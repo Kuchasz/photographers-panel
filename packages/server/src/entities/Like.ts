@@ -3,7 +3,7 @@ import {
     Entity,
     ManyToOne,
     PrimaryColumn
-    } from "typeorm";
+} from "typeorm";
 import { Client } from "./Client";
 import { Field, Int, ObjectType } from "type-graphql";
 
@@ -17,12 +17,12 @@ export class Like extends BaseEntity {
     @PrimaryColumn({ type: 'int8' })
     clientId!: number;
 
-    @ManyToOne((type) => Client)
+    @ManyToOne(() => Client)
     client!: Client;
 
     @Field()
     liked!: boolean;
 
-    @Field((type) => Int)
+    @Field(() => Int)
     likes!: number;
 }

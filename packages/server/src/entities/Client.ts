@@ -3,13 +3,13 @@ import {
     Column,
     Entity,
     PrimaryGeneratedColumn
-    } from "typeorm";
+} from "typeorm";
 import { Field, Int, ObjectType } from "type-graphql";
 
 @ObjectType()
 @Entity()
 export class Client extends BaseEntity {
-    @Field((type) => Int)
+    @Field(() => Int)
     @PrimaryGeneratedColumn()
     id!: number;
 

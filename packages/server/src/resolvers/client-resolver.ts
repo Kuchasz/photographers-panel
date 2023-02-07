@@ -3,9 +3,9 @@ import {
     Ctx,
     Mutation,
     Resolver
-    } from "type-graphql";
-import { Client } from "../entities/Client";
+} from "type-graphql";
 import { GalleryServerContext } from "../contex";
+import { Client } from "../entities/Client";
 
 @Resolver()
 export class ClientResolver {
@@ -13,6 +13,7 @@ export class ClientResolver {
     connect(@Arg('name') name: string, @Ctx() ctx: GalleryServerContext) {
         const client = new Client();
         client.name = name;
+
         return ctx.db.getRepository(Client).save(client);
     }
 }

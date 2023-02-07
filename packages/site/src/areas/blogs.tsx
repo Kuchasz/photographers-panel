@@ -1,6 +1,6 @@
-import * as React from "react";
-import { BlogListItem, getBlogsList } from "@pp/api/dist/site/blog";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import { BlogListItem, getBlogsList } from '@pp/api/dist/site/blog';
+import { Link } from 'react-router-dom';
 
 type BlogsProps = { initialState?: BlogListItem[] };
 type BlogsState = { blogs?: BlogListItem[] };
@@ -25,14 +25,13 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
                                 ? this.state.blogs.map((blog) => (
                                       <Link key={blog.alias} to={'/blog/' + blog.alias}>
                                           <div className="thumb">
-                                              <img src={blog.photoUrl} alt={blog.photoAlt}></img>
-                                          </div>
-                                          <div className="blog-text">
-                                              <div className="blog-title">{blog.title}</div>
-                                              <div className="blog-date">
-                                                  {new Date(blog.date).toLocaleDateString(undefined, options)}
+                                              <div className="blog-text">
+                                                  <div className="blog-title">{blog.title}</div>
+                                                  <div className="blog-date">
+                                                      {new Date(blog.date).toLocaleDateString(undefined, options)}
+                                                  </div>
                                               </div>
-                                              <div className="blog-content">{blog.content}</div>
+                                              <img src={blog.photoUrl} alt={blog.photoAlt}></img>
                                           </div>
                                       </Link>
                                   ))

@@ -18,10 +18,9 @@ import { router as siteRouter } from './areas/site/routes';
 import { router as panelRouter } from './areas/panel/routes';
 import { router as mainRouter } from './areas/routes';
 import { routes } from '@pp/api/dist/site/routes';
-import { runPhotoGalleryServer } from '@pp/gallery-server/dist';
 import { setEndpoint } from '@pp/api/dist/common';
 import 'isomorphic-unfetch';
-// import multer from "multer";
+import { useGraphApi } from './graph-app';
 
 let { Root }: { Root: any } = require('@pp/site');
 
@@ -220,7 +219,7 @@ const runApp = async () => {
 
     try {
         await runMigrations();
-        await runPhotoGalleryServer(app as any, resolve(__dirname + '/databases'));
+        await useGraphApi(app as any, resolve(__dirname + '/databases'));
         app.listen(port, () => {
             console.log(`Application started... 🚀 at ${protocol}://${host}:${port}`);
         });

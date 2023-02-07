@@ -20,7 +20,7 @@ rating-request-window {
     flex-direction: column;
     font-weight: inherit;
 
-    .review-invitation{
+    .review-invitation {
         margin-top: 20px;
         text-align: center;
     }
@@ -64,7 +64,8 @@ rating-request-window {
         }
     }
 
-    a, span {
+    a,
+    span {
         text-decoration: none;
         padding: 10px 20px 10px 15px;
         display: flex;

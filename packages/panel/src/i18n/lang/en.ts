@@ -202,12 +202,21 @@ export default {
                 delete: 'Delete gallery',
                 notificationsNotSend: 'Notifications not send',
                 viewEmails: 'View emails',
+                viewLikes: 'View likes'
             },
         },
         emailNotifications: {
             notified: 'Subscribers notified.',
             notNotified: 'An error occured while notifying subscribers.',
             title: 'Send email notifications',
+            send: 'Send notification',
+            cancel: 'Cancel',
+            notifyTooltip: 'Click to notify subscribers about gallery being available',
+        },
+        likesBrowser: {
+            notified: 'Subscribers notified.',
+            notNotified: 'An error occured while notifying subscribers.',
+            title: 'Browse likes',
             send: 'Send notification',
             cancel: 'Cancel',
             notifyTooltip: 'Click to notify subscribers about gallery being available',

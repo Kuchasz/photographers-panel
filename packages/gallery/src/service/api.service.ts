@@ -8,7 +8,7 @@ export class ApiService {
     public clientId!: number;
     public galleryId?: number;
 
-    constructor() {}
+    constructor() { }
 
     async connect(name: string, galleryId: number) {
         this.sdk = getSdk(
@@ -16,6 +16,7 @@ export class ApiService {
                 headers: { galleryid: galleryId.toString() },
             })
         );
+
         this.galleryId = galleryId;
 
         const clientIdKey = `${galleryId}.clientId`;

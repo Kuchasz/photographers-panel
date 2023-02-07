@@ -1,24 +1,18 @@
-import React, { useState } from "react";
-import {
-    ButtonToolbar,
-    Divider,
-    Icon,
-    IconButton,
-    Progress,
-    Table
-    } from "rsuite";
-import { GalleryDto } from "@pp/api/dist/panel/private-gallery";
-import { PrivateGalleryState } from "@pp/api/dist/private-gallery";
-import { range } from "@pp/utils/dist/array";
-import { ToolTip } from "../common/tooltip";
-import { translations } from "../../i18n";
-import { trim } from "@pp/utils/dist/string";
+import React, { useState } from 'react';
+import { ButtonToolbar, Divider, Icon, IconButton, Progress, Table } from 'rsuite';
+import { GalleryDto } from '@pp/api/dist/panel/private-gallery';
+import { PrivateGalleryState } from '@pp/api/dist/private-gallery';
+import { range } from '@pp/utils/dist/array';
+import { ToolTip } from '../common/tooltip';
+import { translations } from '../../i18n';
+import { trim } from '@pp/utils/dist/string';
 
 interface Props {
     onSelect: (item: any) => void;
     onEdit: (item: any) => void;
     onDelete: (item: any) => void;
     onViewEmails: (item: any) => void;
+    onViewLikes: (item: any) => void;
     galleries: GalleryDto[];
     loadingGalleries: boolean;
     selectedGalleryId?: number;
@@ -194,6 +188,29 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                     <Table.Cell className="link-group">
                         {(gallery: GalleryDto) => (
                             <ButtonToolbar>
+                                <ToolTip
+                                    placement="left"
+                                    text={
+                                        gallery.pendingNotification
+                                            ? translations.gallery.list.actions.notificationsNotSend
+                                            : translations.gallery.list.actions.viewEmails
+                                    }>
+                                    <IconButton
+                                        appearance="subtle"
+                                        style={gallery.pendingNotification ? { color: '#FFC107' } : {}}
+                                        icon={<Icon icon="envelope-o" />}
+                                        onClick={() => this.props.onViewEmails(gallery.id)}
+                                    />
+                                </ToolTip>
+                                <Divider vertical />
+                                <ToolTip placement="left" text={translations.gallery.list.actions.viewLikes}>
+                                    <IconButton
+                                        appearance="subtle"
+                                        icon={<Icon icon="thumbs-up" />}
+                                        onClick={() => this.props.onViewLikes(gallery.id)}
+                                    />
+                                </ToolTip>
+                                <Divider vertical />
                                 <ToolTip placement="left" text={translations.gallery.list.actions.edit}>
                                     <IconButton
                                         appearance="subtle"
@@ -207,21 +224,6 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                         appearance="subtle"
                                         icon={<Icon icon="trash2" />}
                                         onClick={() => this.props.onDelete(gallery.id)}
-                                    />
-                                </ToolTip>
-                                <Divider vertical />
-                                <ToolTip
-                                    placement="left"
-                                    text={
-                                        gallery.pendingNotification
-                                            ? translations.gallery.list.actions.notificationsNotSend
-                                            : translations.gallery.list.actions.viewEmails
-                                    }>
-                                    <IconButton
-                                        appearance="subtle"
-                                        style={gallery.pendingNotification ? { color: '#FFC107' } : {}}
-                                        icon={<Icon icon="envelope-o" />}
-                                        onClick={() => this.props.onViewEmails(gallery.id)}
                                     />
                                 </ToolTip>
                             </ButtonToolbar>

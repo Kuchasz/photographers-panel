@@ -5,10 +5,12 @@ import {
     Mutation,
     Query,
     Resolver
-    } from "type-graphql";
+} from "type-graphql";
+import { Like } from "../entities/Like";
 import { DeleteResult } from "../entities/DeleteResult";
 import { GalleryServerContext } from "../contex";
-import { Like } from "../entities/Like";
+import { LikedPhoto } from "../entities/LikedPhoto";
+import { groupBy } from "@pp/utils/dist/array";
 
 @Resolver()
 export class LikeResolver {
@@ -47,18 +49,35 @@ export class LikeResolver {
             const likes = likesForImages[image.imageId];
             likesForImages[image.imageId] = likes
                 ? {
-                      ...likes,
-                      likes: likes.likes + 1,
-                      liked: image.clientId === clientId || likes.liked,
-                  }
+                    ...likes,
+                    likes: likes.likes + 1,
+                    liked: image.clientId === clientId || likes.liked,
+                }
                 : ({
-                      imageId: image.imageId,
-                      likes: 1,
-                      liked: image.clientId === clientId,
-                  } as any);
+                    imageId: image.imageId,
+                    likes: 1,
+                    liked: image.clientId === clientId,
+                } as any);
 
             return likesForImages;
         }, {} as { [imageId: string]: Like });
+
+        return Object.values(likes);
+    }
+
+    @Query(() => [LikedPhoto])
+    async likedPhotos(@Arg('galleryId', () => Int) galleryId: number, @Ctx() ctx: GalleryServerContext) {
+        const allLikes = await ctx.db.getRepository(Like).find();
+
+        const imageWithLikes = groupBy(allLikes, l => l.imageId);
+
+        const likes = Object.entries(imageWithLikes)
+            .map(([imageId, likes]) => ({ segments: imageId.split("#"), likes: likes.length }))
+            .map(({ segments: [directory, file], likes }) => ({
+                directoryName: directory.split("-").filter(d => d !== '0').join("_"),
+                fileName: file.split("_")[1],
+                likes
+            }));
 
         return Object.values(likes);
     }

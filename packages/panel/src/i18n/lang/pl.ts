@@ -202,12 +202,21 @@ export default {
                 delete: 'Usun galerię',
                 notificationsNotSend: 'Powiadomienia nie zostały wysłane',
                 viewEmails: 'Zobacz adresy email',
+                viewLikes: 'Zobacz polubione zdjęcia'
             },
         },
         emailNotifications: {
             notified: 'Wysłano powiadomienie.',
             notNotified: 'Wystąpił błąd podczas wysyłania powiadomienia.',
             title: 'Wyślij powiadomienia',
+            send: 'Wyślij powiadomienie',
+            cancel: 'Anuluj',
+            notifyTooltip: 'Kliknij aby powiadomić użytkowników że galeria została uruchomiona',
+        },
+        likesBrowser: {
+            notified: 'Wysłano powiadomienie.',
+            notNotified: 'Wystąpił błąd podczas wysyłania powiadomienia.',
+            title: 'Polubione zdjęcia',
             send: 'Wyślij powiadomienie',
             cancel: 'Anuluj',
             notifyTooltip: 'Kliknij aby powiadomić użytkowników że galeria została uruchomiona',

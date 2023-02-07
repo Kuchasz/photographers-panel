@@ -30,6 +30,12 @@ export const first = <T>(items: T[], predicate: (item: T) => boolean = () => tru
 export const last = <T>(items: T[], predicate: (item: T) => boolean = () => true) =>
     items.filter(predicate).reverse()[0];
 
+export const groupBy = <T>(array: T[], predicate: (value: T, index: number, array: T[]) => string) =>
+    array.reduce((acc, value, index, array) => {
+        (acc[predicate(value, index, array)] ||= []).push(value);
+        return acc;
+    }, {} as { [key: string]: T[] });
+
 export const includesAny = <T>(left: T[], right: T[]): boolean =>
     right.length === 0 ? true : right.some((r) => left.includes(r));
 
