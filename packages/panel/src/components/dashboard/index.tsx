@@ -5,6 +5,7 @@ import { formatDateTime, translations } from '../../i18n';
 import { FormInstance } from 'rsuite/lib/Form';
 import { mainBlogsModel } from './main-blogs-model';
 import { ResultType } from '@pp/api/dist/common';
+import Avatar from 'boring-avatars';
 import { ToolTip } from '../common/tooltip';
 import './styles.less';
 import {
@@ -29,7 +30,7 @@ const getIconForItem = (e: EventDto) => {
         e.type === EventType.NavigatedToRating ||
         e.type === EventType.CloseRatingRequestScreen
     )
-        return 'star-o';
+        return 'star';
 
     return 'trophy';
 };
@@ -44,6 +45,26 @@ const getTitleForItem = (e: EventDto) => {
     if (e.type === EventType.CloseRatingRequestScreen) return translations.events.types.closeRatingRequestScreen;
 
     return '';
+};
+
+const getKindForItem = (e: EventDto) => {
+    if (e.type === EventType.CalculatorConfigChanged) return 'calculator' as const;
+    if (e.type === EventType.PhotoDownloaded) return 'gallery' as const;
+    if (e.type === EventType.PhotoLiked) return 'gallery' as const;
+    if (e.type === EventType.PhotoUnliked) return 'gallery' as const;
+    if (e.type === EventType.DisplayRatingRequestScreen) return 'rating' as const;
+    if (e.type === EventType.NavigatedToRating) return 'rating' as const;
+    if (e.type === EventType.CloseRatingRequestScreen) return 'rating' as const;
+
+    return '' as const;
+};
+
+const getColorForKind = (kind: ReturnType<typeof getKindForItem>) => {
+    if (kind === 'gallery') return '#E55381' as const;
+    if (kind === 'rating') return '#9B9987' as const;
+    if (kind === 'calculator') return '#685762' as const;
+
+    return '#190B28' as const;
 };
 
 type Props = {};
@@ -103,7 +124,7 @@ export const Dashboard = (props: Props) => {
 
     return (
         <div className="dashboard">
-            <div style={{ width: 300, height: '100%' }} ref={parentRef} className="events">
+            <div style={{ width: 400, height: '100%' }} ref={parentRef} className="events">
                 <div style={{ height: rowVirtualizer.getTotalSize(), width: '100%', position: 'relative' }}>
                     <div
                         style={{
@@ -115,27 +136,46 @@ export const Dashboard = (props: Props) => {
                         }}>
                         {items.map((item) => (
                             <div className="event" key={item.index}>
-                                <span
+                                <span className="avatar">
+                                    <div className="avatar-background">
+                                        <Avatar
+                                            size={50}
+                                            name={newEvents[item.index].user}
+                                            variant="marble"
+                                            colors={['#3498ff', '#4caf50', '#FFC107']}
+                                        />
+                                    </div>
+                                    <Icon icon={getIconForItem(newEvents[item.index])}></Icon>
+                                </span>
+
+                                {/* <span
                                     className="avatar"
                                     style={{
                                         backgroundColor: colorFromString(newEvents[item.index].user),
                                         color: invertColor(colorFromString(newEvents[item.index].user)),
                                     }}>
                                     {newEvents[item.index].user[0]}
-                                </span>
+                                </span> */}
                                 <span>
-                                    <div>
-                                        <Icon icon={getIconForItem(newEvents[item.index])}></Icon>
-                                        {getTitleForItem(newEvents[item.index])}
-                                    </div>
+                                    <div className="title">{getTitleForItem(newEvents[item.index])}</div>
+
                                     <div className="details">
-                                        <ToolTip text={newEvents[item.index].occuredOn}>
-                                            <span>
-                                                {newEvents[item.index].user},{' '}
-                                                {formatDateTime(newEvents[item.index].occuredOn)}
-                                            </span>
-                                        </ToolTip>
+                                        <span>{newEvents[item.index].user}</span>
                                     </div>
+                                    <ToolTip text={new Date(newEvents[item.index].occuredOn).toLocaleString()}>
+                                        <div className="details">
+                                            <div
+                                                className="chip"
+                                                style={{
+                                                    backgroundColor: getColorForKind(
+                                                        getKindForItem(newEvents[item.index])
+                                                    ),
+                                                }}>
+                                                {getKindForItem(newEvents[item.index])}
+                                            </div>
+                                            {formatDateTime(newEvents[item.index].occuredOn)}
+                                        </div>
+                                    </ToolTip>
                                 </span>
                             </div>
                         ))}

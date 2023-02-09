@@ -1820,6 +1820,7 @@ __metadata:
     "@types/react-dom": 17.0.5
     "@types/react-router-dom": 5.1.7
     autoprefixer: 10.2.5
+    boring-avatars: ^1.7.0
     chartist: 0.11.4
     css-loader: 5.2.4
     dotenv: 8.2.0
@@ -3994,6 +3995,13 @@ __metadata:
   version: 1.0.0
   resolution: "boolbase@npm:1.0.0"
   checksum: 3e25c80ef626c3a3487c73dbfc70ac322ec830666c9ad915d11b701142fab25ec1e63eff2c450c74347acfd2de854ccde865cd79ef4db1683f7c7b046ea43bb0
+  languageName: node
+  linkType: hard
+
+"boring-avatars@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "boring-avatars@npm:1.7.0"
+  checksum: 5f39a7b3a011ba8651c6bec22c453b42c58c0fc347b3dce5cfea7d4de4208b1296f1fb4efc66ebb598f805124a07c5b8e3b06766f5211e1deb545bbf889230b0
   languageName: node
   linkType: hard
 

@@ -20,9 +20,17 @@ export const formatDateTime = (date: Date) => {
     const olderDateString: any = date;
 
     const olderDate = new Date(olderDateString);
-    const now = new Date();
+    var nowLocal = new Date;
+    var now = Date.UTC(
+        nowLocal.getUTCFullYear(),
+        nowLocal.getUTCMonth(), 
+        nowLocal.getUTCDate(), 
+        nowLocal.getUTCHours(), 
+        nowLocal.getUTCMinutes(), 
+        nowLocal.getUTCSeconds(), 
+        nowLocal.getUTCMilliseconds());
 
-    const timeDiff = (olderDate.getTime() - 3_600_000 - now.getTime()) / 1000;
+    const timeDiff = (olderDate.getTime() - now) / 1000;
 
     if (Math.abs(timeDiff) < 60) return rtf.format(Math.floor(timeDiff), 'second');
 
