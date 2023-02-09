@@ -147,35 +147,26 @@ export const Dashboard = (props: Props) => {
                                     </div>
                                     <Icon icon={getIconForItem(newEvents[item.index])}></Icon>
                                 </span>
-
-                                {/* <span
-                                    className="avatar"
-                                    style={{
-                                        backgroundColor: colorFromString(newEvents[item.index].user),
-                                        color: invertColor(colorFromString(newEvents[item.index].user)),
-                                    }}>
-                                    {newEvents[item.index].user[0]}
-                                </span> */}
                                 <span>
                                     <div className="title">{getTitleForItem(newEvents[item.index])}</div>
-
-                                    <div className="details">
-                                        <span>{newEvents[item.index].user}</span>
-                                    </div>
                                     <ToolTip text={new Date(newEvents[item.index].occuredOn).toLocaleString()}>
-                                        <div className="details">
-                                            <div
-                                                className="chip"
-                                                style={{
-                                                    backgroundColor: getColorForKind(
-                                                        getKindForItem(newEvents[item.index])
-                                                    ),
-                                                }}>
-                                                {getKindForItem(newEvents[item.index])}
-                                            </div>
-                                            {formatDateTime(newEvents[item.index].occuredOn)}
+                                        <div className="details middle">
+                                            <span>
+                                                {newEvents[item.index].user},{' '}
+                                                {formatDateTime(newEvents[item.index].occuredOn)}
+                                            </span>
                                         </div>
                                     </ToolTip>
+
+                                    <div className="details">
+                                        <div
+                                            className="chip"
+                                            style={{
+                                                backgroundColor: getColorForKind(getKindForItem(newEvents[item.index])),
+                                            }}>
+                                            {getKindForItem(newEvents[item.index])}
+                                        </div>
+                                    </div>
                                 </span>
                             </div>
                         ))}
