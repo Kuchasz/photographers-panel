@@ -19,13 +19,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v3
               with:
                   node-version: '14.x'
                   cache: 'yarn'
                   check-latest: false
 
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               id: yarn-cache
               with:
                   path: |
@@ -41,7 +41,7 @@ jobs:
                   cd ./packages/utils
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
                   name: dist.utils
                   path: |
@@ -55,13 +55,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v3
               with:
                   node-version: '14.x'
                   cache: 'yarn'
                   check-latest: false
 
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               id: yarn-cache
               with:
                   path: |
@@ -80,7 +80,7 @@ jobs:
                   cd ./packages/api
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
                   name: dist.api
                   path: |
@@ -94,13 +94,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v3
               with:
                   node-version: '14.x'
                   cache: 'yarn'
                   check-latest: false
 
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               id: yarn-cache
               with:
                   path: |
@@ -124,7 +124,7 @@ jobs:
                   cd ./packages/site
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
                   name: dist.site
                   path: |
@@ -138,13 +138,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v3
               with:
                   node-version: '14.x'
                   cache: 'yarn'
                   check-latest: false
 
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               id: yarn-cache
               with:
                   path: |
@@ -169,7 +169,7 @@ jobs:
                   yarn install 
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
                   name: dist.panel
                   path: |
@@ -183,13 +183,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v3
               with:
                   node-version: '14.x'
                   cache: 'yarn'
                   check-latest: false
 
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               id: yarn-cache
               with:
                   path: |
@@ -213,7 +213,7 @@ jobs:
                   cd ./packages/gallery
                   yarn run build
 
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v3
               with:
                   name: dist.gallery
                   path: |
@@ -227,13 +227,13 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - uses: actions/setup-node@v2
+            - uses: actions/setup-node@v3
               with:
                   node-version: '14.x'
                   cache: 'yarn'
                   check-latest: false
 
-            - uses: actions/cache@v2
+            - uses: actions/cache@v3
               id: yarn-cache
               with:
                   path: |
