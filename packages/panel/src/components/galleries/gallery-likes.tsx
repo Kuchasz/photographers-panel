@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, List, Modal } from 'rsuite';
-import { GalleryEmailDto, getGalleryEmails } from '@pp/api/dist/panel/private-gallery';
+import { GalleryEmailDto, getGalleryForEdit } from '@pp/api/dist/panel/private-gallery';
 import { translations } from '../../i18n';
 import { createGraphApi, GraphApi } from '../../graph-api';
+import { LikedPhoto } from '../../sdk';
 
 interface Props {
     id: number;
@@ -11,14 +12,15 @@ interface Props {
     onNotified: () => void;
 }
 interface State {
-    emails: GalleryEmailDto[];
+    likedPhotos: LikedPhoto[];
+    directPath?: string;
 }
 
-const EmailsList = ({ emails }: { emails: GalleryEmailDto[] }) => (
+const LikedPhotoList = ({ likedPhotos }: { likedPhotos: LikedPhoto[] }) => (
     <div className="likes-list">
         <List>
-            {emails.map((email) => (
-                <List.Item key={email.address}>{email.address}</List.Item>
+            {likedPhotos.map((lp) => (
+                <List.Item key={lp.fileName}>{lp.fileName} - {lp.likes}</List.Item>
             ))}
         </List>
     </div>
@@ -29,15 +31,16 @@ export class GalleryLikes extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        this.state = { emails: [] };
+        this.state = { likedPhotos: [] };
         this.api = createGraphApi('', props.id);
     }
 
     componentDidMount() {
-        this.api.likedPhotos({ galleryId: this.props.id }).then((r) => console.log(r.likedPhotos));
-        // getGalleryEmails(this.props.id).then(({ emails, pendingNotification }) => {
-        //     this.setState({ emails, pendingNotification });
-        // });
+        Promise.all([this.api.likedPhotos({ galleryId: this.props.id }), getGalleryForEdit(this.props.id)]).then(
+            ([likedPhotosResult, gallery]) => {
+                this.setState({ likedPhotos: likedPhotosResult.likedPhotos, directPath: gallery.directPath });
+            }
+        );
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -58,7 +61,7 @@ export class GalleryLikes extends React.Component<Props, State> {
                     <Modal.Title>{translations.gallery.likesBrowser.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <EmailsList emails={this.state.emails} />
+                    <LikedPhotoList likedPhotos={this.state.likedPhotos} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.handleModalHide} appearance="subtle">

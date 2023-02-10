@@ -10,7 +10,7 @@ import { Like } from "../entities/Like";
 import { DeleteResult } from "../entities/DeleteResult";
 import { GalleryServerContext } from "../contex";
 import { LikedPhoto } from "../entities/LikedPhoto";
-import { groupBy } from "@pp/utils/dist/array";
+import { groupBy, sort } from "@pp/utils/dist/array";
 
 @Resolver()
 export class LikeResolver {
@@ -79,6 +79,8 @@ export class LikeResolver {
                 likes
             }));
 
-        return Object.values(likes);
+        const sortLikes = sort(likes, l => l.likes);
+
+        return Object.values(sortLikes);
     }
 }
