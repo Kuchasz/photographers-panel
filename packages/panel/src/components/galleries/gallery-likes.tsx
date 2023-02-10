@@ -16,13 +16,14 @@ interface State {
     directPath?: string;
 }
 
-const LikedPhotoList = ({ likedPhotos }: { likedPhotos: LikedPhoto[] }) => (
+const LikedPhotoList = ({ likedPhotos, galleryPath }: { galleryPath: string; likedPhotos: LikedPhoto[] }) => (
     <div className="likes-list">
-        <List>
-            {likedPhotos.map((lp) => (
-                <List.Item key={lp.fileName}>{lp.fileName} - {lp.likes}</List.Item>
-            ))}
-        </List>
+        {likedPhotos.map((lp) => (
+            <div className="liked-photo" key={lp.fileName}>
+                <img width={200} src={`${galleryPath}/${lp.directoryName}/slides/${lp.fileName}`} />
+                <span>{lp.likes}</span>
+            </div>
+        ))}
     </div>
 );
 
@@ -56,12 +57,14 @@ export class GalleryLikes extends React.Component<Props, State> {
 
     render() {
         return (
-            <Modal className="gallery-likes" show={this.props.show} onHide={this.handleModalHide}>
+            <Modal className="gallery-likes" size="lg" show={this.props.show} onHide={this.handleModalHide}>
                 <Modal.Header>
                     <Modal.Title>{translations.gallery.likesBrowser.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <LikedPhotoList likedPhotos={this.state.likedPhotos} />
+                    {this.state.directPath && (
+                        <LikedPhotoList galleryPath={this.state.directPath} likedPhotos={this.state.likedPhotos} />
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.handleModalHide} appearance="subtle">

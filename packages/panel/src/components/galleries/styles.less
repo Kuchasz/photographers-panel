@@ -1,3 +1,17 @@
+.likes-list {
+    display: flex;
+    // flex-wrap: wrap;
+    flex-direction: column;
+    .liked-photo {
+        display: flex;
+        margin-block: 4px;
+        align-items: center;
+        span {
+            font-size: medium;
+            margin-left: 12px;
+        }
+    }
+}
 .galleries {
     .list {
         .password {
@@ -52,11 +66,11 @@
         }
 
         .rs-btn-toolbar {
-            >.rs-btn {
+            > .rs-btn {
                 margin-left: 0px !important;
             }
 
-            >.rs-divider {
+            > .rs-divider {
                 margin: 0px 6px;
             }
         }
