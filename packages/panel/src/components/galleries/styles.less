@@ -1,3 +1,6 @@
+.gallery-likes{
+    width: 1200px !important;
+}
 .gallery-likes-modal {
     .rs-modal-body {
         max-height: 600px !important;
@@ -16,20 +19,22 @@
             position: relative;
             border-radius: 6px;
             overflow: auto;
+            background-color: #f8f8f8;
             img {
                 // width: 120px;
                 // height: 120px;
-                object-fit: cover;
+                object-fit: contain;
                 object-position: center;
             }
             .like-count {
-                border-radius: 10px;
+                border-radius: 6px;
                 padding-inline: 8px;
                 background-color: lightcoral;
                 position: absolute;
                 font-size: medium;
-                margin-left: 4px;
-                margin-bottom: 4px;
+                font-weight: bold;
+                margin-left: 8px;
+                margin-bottom: 8px;
                 color: white;
                 span {
                     margin-left: 4px;

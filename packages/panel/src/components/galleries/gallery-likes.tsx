@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, List, Modal, Slider } from 'rsuite';
-import { GalleryEmailDto, getGalleryForEdit } from '@pp/api/dist/panel/private-gallery';
+import { getGalleryForEdit } from '@pp/api/dist/panel/private-gallery';
 import { translations } from '../../i18n';
 import { createGraphApi, GraphApi } from '../../graph-api';
 import { LikedPhoto } from '../../sdk';
@@ -84,8 +84,8 @@ export class GalleryLikes extends React.Component<Props, State> {
                             onChange={this.changeThumbSize}
                             tooltip={false}
                             step={30}
-                            min={90}
-                            max={300}></Slider>
+                            min={120}
+                            max={360}></Slider>
                     </div>
                     {this.state.directPath && (
                         <LikedPhotoList thumbSize={this.state.thumbSize} galleryPath={this.state.directPath} likedPhotos={this.state.likedPhotos} />
