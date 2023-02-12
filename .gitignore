@@ -7,7 +7,7 @@ debug.log
 /.idea/
 /.vscode/
 *.secret.config.ts
-server/public/blogs/
+server/public/blogs/**/*.webp
 *.sqlite
 .env*
 utils/**/*.js

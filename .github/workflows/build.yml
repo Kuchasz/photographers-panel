@@ -17,11 +17,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '14.x'
+                  node-version: '16.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -53,11 +53,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '14.x'
+                  node-version: '16.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -71,7 +71,7 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.utils
                   path: ./packages/utils/dist
@@ -92,11 +92,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '14.x'
+                  node-version: '16.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -110,12 +110,12 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.utils
                   path: ./packages/utils/dist
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.api
                   path: ./packages/api/dist
@@ -136,11 +136,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '14.x'
+                  node-version: '16.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -154,12 +154,12 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.utils
                   path: ./packages/utils/dist
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.api
                   path: ./packages/api/dist
@@ -181,11 +181,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '14.x'
+                  node-version: '16.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -199,12 +199,12 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.utils
                   path: ./packages/utils/dist
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.api
                   path: ./packages/api/dist
@@ -225,11 +225,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '14.x'
+                  node-version: '16.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -243,27 +243,27 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-yarn-
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.utils
                   path: ./packages/utils/dist
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.api
                   path: ./packages/api/dist
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.gallery
                   path: ./packages/gallery/dist
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.panel
                   path: ./packages/panel/dist
 
-            - uses: actions/download-artifact@v2
+            - uses: actions/download-artifact@v3
               with:
                   name: dist.site
                   path: ./packages/site/dist
@@ -294,9 +294,9 @@ jobs:
 #         runs-on: ubuntu-latest
 
 #         steps:
-#             - uses: actions/checkout@v2
+#             - uses: actions/checkout@v3
 
-#             - uses: actions/download-artifact@v2
+#             - uses: actions/download-artifact@v3
 #               with:
 #                   name: build.dist
 #                   path: .
