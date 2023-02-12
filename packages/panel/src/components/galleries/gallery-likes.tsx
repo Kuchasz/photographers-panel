@@ -17,11 +17,23 @@ interface State {
     thumbSize: number;
 }
 
-const LikedPhotoList = ({ thumbSize, likedPhotos, galleryPath }: { thumbSize: number, galleryPath: string; likedPhotos: LikedPhoto[] }) => (
+const LikedPhotoList = ({
+    thumbSize,
+    likedPhotos,
+    galleryPath,
+}: {
+    thumbSize: number;
+    galleryPath: string;
+    likedPhotos: LikedPhoto[];
+}) => (
     <div className="likes-list">
         {likedPhotos.map((lp) => (
             <div className="liked-photo" key={lp.fileName}>
-                <img width={thumbSize} height={thumbSize} src={`${galleryPath}/${lp.directoryName}/slides/${lp.fileName}`} />
+                <img
+                    width={thumbSize}
+                    height={thumbSize}
+                    src={`${galleryPath}/${lp.directoryName}/slides/${lp.fileName}`}
+                />
                 <div className="like-count">
                     <Icon icon="heart" />
                     <span>{lp.likes}</span>
@@ -88,7 +100,13 @@ export class GalleryLikes extends React.Component<Props, State> {
                             max={360}></Slider>
                     </div>
                     {this.state.directPath && (
-                        <LikedPhotoList thumbSize={this.state.thumbSize} galleryPath={this.state.directPath} likedPhotos={this.state.likedPhotos} />
+                        <div className="likes-list-container">
+                            <LikedPhotoList
+                                thumbSize={this.state.thumbSize}
+                                galleryPath={this.state.directPath}
+                                likedPhotos={this.state.likedPhotos}
+                            />
+                        </div>
                     )}
                 </Modal.Body>
                 <Modal.Footer>

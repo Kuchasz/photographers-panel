@@ -1,53 +1,62 @@
-.gallery-likes{
+.gallery-likes {
     width: 1200px !important;
 }
 .gallery-likes-modal {
     .rs-modal-body {
         max-height: 600px !important;
-    }
-    .likes-list {
+        overflow-y: hidden !important;
         display: flex;
-        flex-wrap: wrap;
-        // max-height: 1000px;
-        // flex-direction: column;
-        .liked-photo {
+        flex-direction: column;
+        overflow: hidden;
+    }
+    .likes-list-container {
+        overflow-y: auto;
+        .likes-list {
             display: flex;
-            margin-block: 4px;
-            margin-inline: 4px;
-            align-items: flex-end;
-            justify-content: flex-start;
-            position: relative;
-            border-radius: 6px;
-            overflow: auto;
-            background-color: #f8f8f8;
-            img {
-                // width: 120px;
-                // height: 120px;
-                object-fit: contain;
-                object-position: center;
-            }
-            .like-count {
+            flex-wrap: wrap;
+            // overflow-y: scroll;
+            // max-height: 1000px;
+            // flex-direction: column;
+            .liked-photo {
+                display: flex;
+                margin-block: 4px;
+                margin-inline: 4px;
+                align-items: flex-end;
+                justify-content: flex-start;
+                position: relative;
                 border-radius: 6px;
-                padding-inline: 8px;
-                background-color: lightcoral;
-                position: absolute;
-                font-size: medium;
-                font-weight: bold;
-                margin-left: 8px;
-                margin-bottom: 8px;
-                color: white;
-                span {
-                    margin-left: 4px;
+                overflow: auto;
+                background-color: #f8f8f8;
+                img {
+                    // width: 120px;
+                    // height: 120px;
+                    object-fit: contain;
+                    object-position: center;
+                }
+                .like-count {
+                    border-radius: 6px;
+                    padding-inline: 8px;
+                    background-color: lightcoral;
+                    position: absolute;
+                    font-size: medium;
+                    font-weight: bold;
+                    margin-left: 8px;
+                    margin-bottom: 8px;
+                    color: white;
+                    span {
+                        margin-left: 4px;
+                    }
                 }
             }
         }
     }
 }
 .thumbs-size-config {
-    margin: 8px;
+    margin-bottom: 16px;
+    margin-left: 8px;
     display: flex;
     flex-direction: column;
-    .rs-slider{
+    .rs-slider {
         max-width: 200px;
     }
     label {
