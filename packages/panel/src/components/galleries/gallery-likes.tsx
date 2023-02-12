@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon, List, Modal, Slider } from 'rsuite';
 import { getGalleryForEdit } from '@pp/api/dist/panel/private-gallery';
 import { translations } from '../../i18n';
 import { createGraphApi, GraphApi } from '../../graph-api';
 import { LikedPhoto } from '../../sdk';
+import { useLikedImages } from '../../state/likes-images';
 
 interface Props {
     id: number;
@@ -14,7 +15,6 @@ interface Props {
 interface State {
     likedPhotos: LikedPhoto[];
     directPath?: string;
-    thumbSize: number;
 }
 
 const LikedPhotoList = ({
@@ -43,78 +43,65 @@ const LikedPhotoList = ({
     </div>
 );
 
-export class GalleryLikes extends React.Component<Props, State> {
-    private api: GraphApi;
+export const GalleryLikes = (props: Props) => {
+    const api = createGraphApi('', props.id);
 
-    constructor(props: Props) {
-        super(props);
-        this.state = { likedPhotos: [], thumbSize: 120 };
-        this.api = createGraphApi('', props.id);
-    }
+    const likedImages = useLikedImages();
 
-    componentDidMount() {
-        Promise.all([this.api.likedPhotos({ galleryId: this.props.id }), getGalleryForEdit(this.props.id)]).then(
+    const [state, setState] = useState<State>({ likedPhotos: [] });
+
+    useEffect(() => {
+        Promise.all([api.likedPhotos({ galleryId: props.id }), getGalleryForEdit(props.id)]).then(
             ([likedPhotosResult, gallery]) => {
-                this.setState({ likedPhotos: likedPhotosResult.likedPhotos, directPath: gallery.directPath });
+                setState({ ...state, likedPhotos: likedPhotosResult.likedPhotos, directPath: gallery.directPath });
             }
         );
-    }
+    }, []);
 
-    componentDidUpdate(prevProps: Props) {
-        if (this.props.id === prevProps.id) return;
-        // getGalleryEmails(this.props.id).then(({ emails, pendingNotification }) => {
-        //     this.setState({ emails, pendingNotification });
-        // });
-    }
-
-    handleModalHide = () => {
-        this.props.close();
+    const handleModalHide = () => {
+        props.close();
     };
 
-    changeThumbSize = (thumbSize: number) => {
-        this.setState({ thumbSize });
+    const changeThumbSize = (thumbSize: number) => {
+        likedImages.updateThumbSize(thumbSize);
     };
 
-    render() {
-        return (
-            <Modal
-                dialogClassName="gallery-likes-modal"
-                className="gallery-likes"
-                size="lg"
-                show={this.props.show}
-                onHide={this.handleModalHide}>
-                <Modal.Header>
-                    <Modal.Title>{translations.gallery.likesBrowser.title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="thumbs-size-config">
-                        <label>{translations.gallery.likesBrowser.thumbnails}</label>
-                        <Slider
-                            graduated
-                            progress
-                            defaultValue={this.state.thumbSize}
-                            onChange={this.changeThumbSize}
-                            tooltip={false}
-                            step={30}
-                            min={120}
-                            max={360}></Slider>
-                    </div>
-                    {this.state.directPath && (
-                        <div className="likes-list-container">
-                            <LikedPhotoList
-                                thumbSize={this.state.thumbSize}
-                                galleryPath={this.state.directPath}
-                                likedPhotos={this.state.likedPhotos}
-                            />
-                        </div>
-                    )}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.handleModalHide} appearance="subtle">
-                        {translations.gallery.likesBrowser.cancel}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-}
+    return <Modal
+        dialogClassName="gallery-likes-modal"
+        className="gallery-likes"
+        size="lg"
+        show={props.show}
+        onHide={handleModalHide}>
+        <Modal.Header>
+            <Modal.Title>{translations.gallery.likesBrowser.title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <div className="thumbs-size-config">
+                <label>{translations.gallery.likesBrowser.thumbnails}</label>
+                <Slider
+                    graduated
+                    progress
+                    value={likedImages.thumbSize}
+                    onChange={changeThumbSize}
+                    tooltip={false}
+                    step={30}
+                    min={120}
+                    max={360}></Slider>
+            </div>
+            {state.directPath && (
+                <div className="likes-list-container">
+                    <LikedPhotoList
+                        thumbSize={likedImages.thumbSize}
+                        galleryPath={state.directPath}
+                        likedPhotos={state.likedPhotos}
+                    />
+                </div>
+            )}
+        </Modal.Body>
+        <Modal.Footer>
+            <Button onClick={handleModalHide} appearance="subtle">
+                {translations.gallery.likesBrowser.cancel}
+            </Button>
+        </Modal.Footer>
+    </Modal>;
+};
