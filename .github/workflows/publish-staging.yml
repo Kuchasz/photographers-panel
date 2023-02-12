@@ -28,6 +28,7 @@ jobs:
                       unzip -q ../artifacts/package.zip
                       mv -f packages/server public_nodejs
                       mv -f public_nodejs/dist/* public_nodejs/
+                      mkdir public_nodejs/public
                       mv -f images_backup public_nodejs/public/blogs
                       mv -f databases_backup public_nodejs/databases
                       cd public_nodejs
