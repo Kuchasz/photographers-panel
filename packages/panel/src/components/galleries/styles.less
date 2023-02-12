@@ -1,14 +1,40 @@
-.likes-list {
-    display: flex;
-    // flex-wrap: wrap;
-    flex-direction: column;
-    .liked-photo {
+.gallery-likes-modal {
+    .rs-modal-body {
+        max-height: 600px !important;
+    }
+    .likes-list {
         display: flex;
-        margin-block: 4px;
-        align-items: center;
-        span {
-            font-size: medium;
-            margin-left: 12px;
+        flex-wrap: wrap;
+        // max-height: 1000px;
+        // flex-direction: column;
+        .liked-photo {
+            display: flex;
+            margin-block: 4px;
+            margin-inline: 4px;
+            align-items: flex-end;
+            justify-content: flex-start;
+            position: relative;
+            border-radius: 6px;
+            overflow: auto;
+            img {
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                object-position: center;
+            }
+            .like-count {
+                border-radius: 10px;
+                padding-inline: 8px;
+                background-color: lightcoral;
+                position: absolute;
+                font-size: medium;
+                margin-left: 4px;
+                margin-bottom: 4px;
+                color: white;
+                span {
+                    margin-left: 4px;
+                }
+            }
         }
     }
 }

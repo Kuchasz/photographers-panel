@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, List, Modal } from 'rsuite';
+import { Button, Icon, List, Modal } from 'rsuite';
 import { GalleryEmailDto, getGalleryForEdit } from '@pp/api/dist/panel/private-gallery';
 import { translations } from '../../i18n';
 import { createGraphApi, GraphApi } from '../../graph-api';
@@ -21,7 +21,10 @@ const LikedPhotoList = ({ likedPhotos, galleryPath }: { galleryPath: string; lik
         {likedPhotos.map((lp) => (
             <div className="liked-photo" key={lp.fileName}>
                 <img width={200} src={`${galleryPath}/${lp.directoryName}/slides/${lp.fileName}`} />
+                <div className='like-count'>
+                <Icon icon="heart"/>
                 <span>{lp.likes}</span>
+                </div>
             </div>
         ))}
     </div>
@@ -57,7 +60,7 @@ export class GalleryLikes extends React.Component<Props, State> {
 
     render() {
         return (
-            <Modal className="gallery-likes" size="lg" show={this.props.show} onHide={this.handleModalHide}>
+            <Modal dialogClassName='gallery-likes-modal' className="gallery-likes" size="lg" show={this.props.show} onHide={this.handleModalHide}>
                 <Modal.Header>
                     <Modal.Title>{translations.gallery.likesBrowser.title}</Modal.Title>
                 </Modal.Header>
