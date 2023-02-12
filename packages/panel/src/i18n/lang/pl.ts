@@ -217,6 +217,7 @@ export default {
             notified: 'Wysłano powiadomienie.',
             notNotified: 'Wystąpił błąd podczas wysyłania powiadomienia.',
             title: 'Polubione zdjęcia',
+            thumbnails: 'Miniaturki',
             send: 'Wyślij powiadomienie',
             cancel: 'Anuluj',
             notifyTooltip: 'Kliknij aby powiadomić użytkowników że galeria została uruchomiona',

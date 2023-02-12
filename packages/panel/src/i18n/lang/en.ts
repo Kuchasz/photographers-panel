@@ -217,6 +217,7 @@ export default {
             notified: 'Subscribers notified.',
             notNotified: 'An error occured while notifying subscribers.',
             title: 'Browse likes',
+            thumbnails: 'Thumbnails',
             send: 'Send notification',
             cancel: 'Cancel',
             notifyTooltip: 'Click to notify subscribers about gallery being available',

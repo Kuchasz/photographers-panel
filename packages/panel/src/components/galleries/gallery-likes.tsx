@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, List, Modal } from 'rsuite';
+import { Button, Icon, List, Modal, Slider } from 'rsuite';
 import { GalleryEmailDto, getGalleryForEdit } from '@pp/api/dist/panel/private-gallery';
 import { translations } from '../../i18n';
 import { createGraphApi, GraphApi } from '../../graph-api';
@@ -14,16 +14,17 @@ interface Props {
 interface State {
     likedPhotos: LikedPhoto[];
     directPath?: string;
+    thumbSize: number;
 }
 
-const LikedPhotoList = ({ likedPhotos, galleryPath }: { galleryPath: string; likedPhotos: LikedPhoto[] }) => (
+const LikedPhotoList = ({ thumbSize, likedPhotos, galleryPath }: { thumbSize: number, galleryPath: string; likedPhotos: LikedPhoto[] }) => (
     <div className="likes-list">
         {likedPhotos.map((lp) => (
             <div className="liked-photo" key={lp.fileName}>
-                <img width={200} src={`${galleryPath}/${lp.directoryName}/slides/${lp.fileName}`} />
-                <div className='like-count'>
-                <Icon icon="heart"/>
-                <span>{lp.likes}</span>
+                <img width={thumbSize} height={thumbSize} src={`${galleryPath}/${lp.directoryName}/slides/${lp.fileName}`} />
+                <div className="like-count">
+                    <Icon icon="heart" />
+                    <span>{lp.likes}</span>
                 </div>
             </div>
         ))}
@@ -35,7 +36,7 @@ export class GalleryLikes extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        this.state = { likedPhotos: [] };
+        this.state = { likedPhotos: [], thumbSize: 120 };
         this.api = createGraphApi('', props.id);
     }
 
@@ -58,15 +59,36 @@ export class GalleryLikes extends React.Component<Props, State> {
         this.props.close();
     };
 
+    changeThumbSize = (thumbSize: number) => {
+        this.setState({ thumbSize });
+    };
+
     render() {
         return (
-            <Modal dialogClassName='gallery-likes-modal' className="gallery-likes" size="lg" show={this.props.show} onHide={this.handleModalHide}>
+            <Modal
+                dialogClassName="gallery-likes-modal"
+                className="gallery-likes"
+                size="lg"
+                show={this.props.show}
+                onHide={this.handleModalHide}>
                 <Modal.Header>
                     <Modal.Title>{translations.gallery.likesBrowser.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <div className="thumbs-size-config">
+                        <label>{translations.gallery.likesBrowser.thumbnails}</label>
+                        <Slider
+                            graduated
+                            progress
+                            defaultValue={this.state.thumbSize}
+                            onChange={this.changeThumbSize}
+                            tooltip={false}
+                            step={30}
+                            min={90}
+                            max={300}></Slider>
+                    </div>
                     {this.state.directPath && (
-                        <LikedPhotoList galleryPath={this.state.directPath} likedPhotos={this.state.likedPhotos} />
+                        <LikedPhotoList thumbSize={this.state.thumbSize} galleryPath={this.state.directPath} likedPhotos={this.state.likedPhotos} />
                     )}
                 </Modal.Body>
                 <Modal.Footer>
