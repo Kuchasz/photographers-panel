@@ -13,8 +13,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@pp/api": "*",
-        "@pp/site": "*",
         "@types/compression": "1.7.0",
         "@types/cookie-parser": "1.4.2",
         "@types/express-serve-static-core": "4.17.28",
