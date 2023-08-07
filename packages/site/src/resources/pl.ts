@@ -182,6 +182,5 @@ export const pl = {
     },
     blog: {
         shareMessage: 'Aby podzielić się zdjęciami ze znajomymi możesz udostępnić wpis na facebooku',
-        published: 'Opublikowano: ',
     },
 };

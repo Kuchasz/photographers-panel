@@ -27,9 +27,6 @@ export class Blogs extends React.Component<BlogsProps, BlogsState> {
                                           <div className="thumb">
                                               <div className="blog-text">
                                                   <div className="blog-title">{blog.title}</div>
-                                                  <div className="blog-date">
-                                                      {new Date(blog.date).toLocaleDateString(undefined, options)}
-                                                  </div>
                                               </div>
                                               <img src={blog.photoUrl} alt={blog.photoAlt}></img>
                                           </div>

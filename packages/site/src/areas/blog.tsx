@@ -26,12 +26,6 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                 <section>
                     <article className="show">
                         <h1>{this.state.blog.title}</h1>
-                        <sup className="publish-date">
-                            <small>
-                                {strings.blog.published}
-                                {this.state.blog.date}
-                            </small>
-                        </sup>
                         <h2>{this.state.blog.content}</h2>
                         <span>
                             {strings.blog.shareMessage}
