@@ -21,7 +21,7 @@ jobs:
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '16.x'
+                  node-version: '18.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -57,7 +57,7 @@ jobs:
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '16.x'
+                  node-version: '18.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -96,7 +96,7 @@ jobs:
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '16.x'
+                  node-version: '18.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -140,7 +140,7 @@ jobs:
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '16.x'
+                  node-version: '18.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -185,7 +185,7 @@ jobs:
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '16.x'
+                  node-version: '18.x'
                   cache: 'yarn'
                   check-latest: false
 
@@ -229,7 +229,7 @@ jobs:
 
             - uses: actions/setup-node@v3
               with:
-                  node-version: '16.x'
+                  node-version: '18.x'
                   cache: 'yarn'
                   check-latest: false
 
