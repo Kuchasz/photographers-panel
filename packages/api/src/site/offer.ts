@@ -1,5 +1,57 @@
 const offers = [
     {
+        id: '4',
+        title: 'Oferta ślubna',
+        alias: 'oferta-slubna',
+        desc:
+            `<span>Zdjęcia:</span>\r\n
+            <ul>
+            <li>Około 1000 zdjęć na pendrive</li>\r\n
+            <li>Wszystkie zdjęcia poddane obróbce</li>\r\n
+            <li>Galeria internetowa z hasłem</li>\r\n
+            <li>Zdjęcia grupowe, portretowe z rodziną i znajomymi</li>\r\n
+            <li>Do wyboru: 2 albumy ślubne (200 odbitek 15x10cm, 40 odbitek 21x15cm) lub Fotoksiążka 30x30cm - 80 stron</li>\r\n
+            </ul>\r\n\r\n
+            <span>Film:</span>\r\n
+            <ul>
+            <li>3 godzinny film, może być dłuższy lub krótszy</li>\r\n
+            <li>Film full hd na pendrive</li>\r\n
+            <li>Audio w kościele nagrywane rejestratorem</li>\r\n
+            <li>Żyroskopowy stabilizator - gimbal</li>
+            <li>Czołówka, ubieranie (na życzenie), główny film i teledysk</li>\r\n
+            </ul>\r\n\r\n
+            <span>W cenie:</span>\r\n
+            <ul>
+            <li>Dwie osoby - fotograf i kamerzysta</li>\r\n
+            <li>Sesja plenerowa w dniu ślubu</li>\r\n
+            <li>Gotowe materiały do 3 miesięcy od uroczystości</li>\r\n
+            <li>Pracujemy w pierwszy dzień od przygotowań do godz 1:30</li>\r\n
+            <li>Pracujemy w poprawiny (o ile są) do godz 24:00</li>\r\n
+            <li>Nie doliczamy kosztów przejazdu do 100km od Andrychowa</li>\r\n
+            </ul>\r\n\r\n
+            <span>Za dopłatą:</span>\r\n
+            <ul>
+            <li>Poprawiny</li>\r\n
+            <li>Dodatkowa foto-książka</li>\r\n
+            <li>Film na DVD (4 komplety)</li>\r\n
+            <li>Sesja plenerowa w innym terminie</li>\r\n
+            <li>Film i zdjęcia z drona</li>\r\n
+            </ul>\r\n\r\n
+            <span>\r\nDlaczego warto nam zaufać?</span>\r\n<ul>\r\n
+            <li>Ponad 20 lat doświadczenia, fotografowaliśmy setki uroczystości</li>\r\n
+            <li>Nie uciekniemy z wesela nagle, bez konsultacji z Wami</li>\r\n
+            <li>Na weselu nie odmówimy nikomu kto poprosi o zdjęcie</li>\r\n
+            <li>Nie ma ukrytych kosztów. Pakiet jest bardzo bogaty</li>\r\n
+            <li>Kto nie ucieka przed obiektywem zawsze odnajdzie się na zdjęciach i filmie</li>\r\n
+            <li>Pierwsze zdjęcia z wesela zobaczycie na drugi dzień po weselu na naszym blogu - oczywiście jeśli wyrazicie na to zgodę</li>\r\n
+            <li>Staramy się być niewidoczni, nie przeszkadzać</li>\r\n
+            <li>Nie filmujemy i nie fotografujemy gości podczas jedzenia</li>\r\n<li>Żadna niechciana sytuacja nie znajdzie się na zdjęciach i filmie</li>\r\n
+            </ul>`,
+        descshort: 'W kadrze uwieczniamy emocje i wydarzenia',
+        photo: 'fotografia-slubu-wesela-poprawin-wadowice.png',
+        tags: 'fotografia ślubna, zdjęcia, weselna, poprawiny, pamiątka, canon 5d, kraków, bielsko, andrychów',
+    },
+    {
         id: '1',
         title: 'Fotografia ślubu i wesela',
         alias: 'fotografia-slubu-i-wesela',
@@ -29,6 +81,7 @@ const offers = [
         photo: 'plener-zloty-wadowice.png',
         tags: 'plener ślubny, zdjęcia w górach, sesja na torach, andrychów, bielsko, wadowice, kęty',
     },
+
     {
         id: '9',
         title: 'Renowacja i retusz zdjęć',
@@ -51,129 +104,134 @@ const offers = [
     },
 ];
 
-const offerPhotos = [
-    {
+const offerPhotos = {
+    '4': [{
         id: '40',
-        OfferId: '1',
         photourl: '0-sulkowice-wieprz-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-18.jpg',
         alttext: null,
     },
     {
         id: '41',
-        OfferId: '1',
         photourl: '1-kamesznica-wegierska-gorka-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-19.jpg',
         alttext: null,
-    },
-    {
-        id: '50',
-        OfferId: '2',
-        photourl: '10-ndrychow-zdjecia-fotografia-slubna-plener-slubny-33.jpg',
-        alttext: null,
-    },
-    {
-        id: '51',
-        OfferId: '1',
-        photourl: '11-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-26.jpg',
-        alttext: null,
-    },
-    {
-        id: '52',
-        OfferId: '9',
-        photourl: '12-kolorowanie-starych-zdjec-bielsko.jpg',
-        alttext: null,
-    },
-    {
-        id: '53',
-        OfferId: '9',
-        photourl: '13-renowacja-zniszczonych-zdjec-wadowice.jpg',
-        alttext: null,
-    },
-    {
-        id: '153',
-        OfferId: '12',
-        photourl: '13-renowacja-zniszczonych-zdjec-wadowice.jpg',
-        alttext: null,
-    },
-    {
-        id: '54',
-        OfferId: '3',
-        photourl: '14-mloda-para-siedzi-na-schodach-lanckorona.jpg',
-        alttext: null,
-    },
-    {
-        id: '55',
-        OfferId: '3',
-        photourl: '15-pomost-na-zakrzowku.jpg',
-        alttext: null,
-    },
-    {
-        id: '56',
-        OfferId: '3',
-        photourl: '16-sesja-slubna-piknik.jpg',
-        alttext: null,
-    },
-    { id: '57', OfferId: '3', photourl: '17-slubne-obraczki.jpg', alttext: null },
-    {
-        id: '58',
-        OfferId: '3',
-        photourl: '18-czarno-biale-pocalunek.jpg',
-        alttext: null,
-    },
-    {
-        id: '59',
-        OfferId: '3',
-        photourl: '19-zamek-sesja-slubna.jpg',
-        alttext: null,
-    },
-    {
+    }, {
         id: '42',
-        OfferId: '1',
         photourl: '2-targanice-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-1.jpg',
         alttext: null,
     },
     {
-        id: '46',
-        OfferId: '2',
-        photourl: '3-kety-bulowice-andrychow-zdjecia-fotografia-slubna-plener-slubny-33.jpg',
+        id: '45',
+        photourl: '8-kamesznica-wegierska-gorka-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-16.jpg',
+        alttext: null,
+    },
+    { id: '57', photourl: '17-slubne-obraczki.jpg', alttext: null },
+    {
+        id: '58',
+        photourl: '18-czarno-biale-pocalunek.jpg',
+        alttext: null,
+    },],
+    '1': [{
+        id: '40',
+        photourl: '0-sulkowice-wieprz-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-18.jpg',
         alttext: null,
     },
     {
-        id: '47',
-        OfferId: '2',
-        photourl: '4-stara-wies-bestwina-bestwinka-zdjecia-fotografia-slubna-plener-reportaz-slubny-4.jpg',
+        id: '41',
+        photourl: '1-kamesznica-wegierska-gorka-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-19.jpg',
         alttext: null,
-    },
-    {
-        id: '48',
-        OfferId: '2',
-        photourl: '5-stara-wies-bestwina-bestwinka-zdjecia-fotografia-slubna-plener-reportaz-slubny-6.jpg',
+    }, {
+        id: '51',
+        photourl: '11-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-26.jpg',
         alttext: null,
-    },
-    {
-        id: '43',
-        OfferId: '2',
-        photourl: '6-kamesznica-wegierska-gorka-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-0.jpg',
+    }, {
+        id: '42',
+        photourl: '2-targanice-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-1.jpg',
         alttext: null,
-    },
-    {
+    }, {
         id: '44',
-        OfferId: '1',
         photourl: '7-czaniec-wieprz-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-27.jpg',
         alttext: null,
     },
     {
         id: '45',
-        OfferId: '1',
         photourl: '8-kamesznica-wegierska-gorka-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-16.jpg',
+        alttext: null,
+    },],
+    '2': [{
+        id: '50',
+        photourl: '10-ndrychow-zdjecia-fotografia-slubna-plener-slubny-33.jpg',
+        alttext: null,
+    }, {
+        id: '46',
+        photourl: '3-kety-bulowice-andrychow-zdjecia-fotografia-slubna-plener-slubny-33.jpg',
         alttext: null,
     },
     {
-        id: '49',
-        OfferId: '2',
-        photourl: '9-rzyki-frydrychowice-andrychow-zdjecia-fotografia-slubna-plener-slubny-30.jpg',
+        id: '47',
+        photourl: '4-stara-wies-bestwina-bestwinka-zdjecia-fotografia-slubna-plener-reportaz-slubny-4.jpg',
         alttext: null,
     },
-];
+    {
+        id: '48',
+        photourl: '5-stara-wies-bestwina-bestwinka-zdjecia-fotografia-slubna-plener-reportaz-slubny-6.jpg',
+        alttext: null,
+    },
+    {
+        id: '43',
+        photourl: '6-kamesznica-wegierska-gorka-andrychow-zdjecia-fotografia-slubna-plener-reportaz-slubny-0.jpg',
+        alttext: null,
+    },
+
+    {
+        id: '49',
+        photourl: '9-rzyki-frydrychowice-andrychow-zdjecia-fotografia-slubna-plener-slubny-30.jpg',
+        alttext: null,
+    },],
+    '3': [{
+        id: '54',
+        photourl: '14-mloda-para-siedzi-na-schodach-lanckorona.jpg',
+        alttext: null,
+    },
+    {
+        id: '55',
+        photourl: '15-pomost-na-zakrzowku.jpg',
+        alttext: null,
+    },
+    {
+        id: '56',
+        photourl: '16-sesja-slubna-piknik.jpg',
+        alttext: null,
+    },
+    { id: '57', photourl: '17-slubne-obraczki.jpg', alttext: null },
+    {
+        id: '58',
+        photourl: '18-czarno-biale-pocalunek.jpg',
+        alttext: null,
+    },
+    {
+        id: '59',
+        photourl: '19-zamek-sesja-slubna.jpg',
+        alttext: null,
+    },],
+    '9': [
+        {
+            id: '52',
+            photourl: '12-kolorowanie-starych-zdjec-bielsko.jpg',
+            alttext: null,
+        },
+        {
+            id: '53',
+            photourl: '13-renowacja-zniszczonych-zdjec-wadowice.jpg',
+            alttext: null,
+        },],
+    '12': [{
+        id: '153',
+        photourl: '13-renowacja-zniszczonych-zdjec-wadowice.jpg',
+        alttext: null,
+    },
+    ]
+} as Record<string, { id: string, photourl: string, alttext: string | null }[]>;
+
 
 export interface OfferListItem {
     title: string;
@@ -193,25 +251,40 @@ export interface OfferEntry {
     photos: OfferPhoto[];
 }
 
-export const getOffersList = () =>
-    Promise.resolve(
-        offers.map(
-            (o) =>
-                <OfferListItem>{
-                    title: o.title,
-                    alias: o.alias,
-                    summary: o.descshort,
-                    photoUrl: `/media/images/offer/${offerPhotos.filter((op) => op.OfferId === o.id)[0].photourl}`,
-                }
-        )
+export const getOffersList = () => {
+    const offer = offers[0];
+    const photos = offerPhotos[offer.id]
+        .map((p) => ({
+            url: `/media/images/offer/${p.photourl}`,
+            altText: p.alttext,
+        }));
+
+    const result: OfferEntry = {
+        title: offer.title,
+        description: offer.desc,
+        photos,
+    };
+    return Promise.resolve(
+        {
+            offer: result,
+            offers: offers.map(
+                (o) =>
+                    <OfferListItem>{
+                        title: o.title,
+                        alias: o.alias,
+                        summary: o.descshort,
+                        photoUrl: `/media/images/offer/${offerPhotos[o.id][0].photourl}`,
+                    }
+            )
+        }
     );
+}
 
 export const getOffersAliases = () => Promise.resolve(offers.map((o) => o.alias));
 
 export const getOffer = (alias: string) => {
     const offer = offers.filter((o) => o.alias === alias)[0];
-    const photos = offerPhotos
-        .filter((op) => op.OfferId === offer.id)
+    const photos = offerPhotos[offer.id]
         .map((p) => ({
             url: `/media/images/offer/${p.photourl}`,
             altText: p.alttext,

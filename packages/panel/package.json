@@ -51,21 +51,21 @@
         "react-confirm": "0.1.23",
         "react-dom": "17.0.2",
         "react-router-dom": "5.2.0",
-        "resolve-url-loader": "^3.1.5",
-        "rsuite": "^4.11.1",
-        "sass-loader": "^13.3.2",
+        "resolve-url-loader": "3.1.5",
+        "rsuite": "4.11.1",
+        "sass-loader": "13.3.2",
         "style-loader": "2.0.0",
         "terser-webpack-plugin": "5.1.1",
         "ts-loader": "9.1.1",
         "typescript": "4.5.5",
         "url-loader": "4.1.1",
-        "webpack": "^5.89.0",
+        "webpack": "5.89.0",
         "webpack-bundle-analyzer": "4.4.1",
         "webpack-cli": "4.6.0",
-        "webpack-dev-server": "^3.11.3",
+        "webpack-dev-server": "3.11.3",
         "zustand": "3.4.2"
     },
     "dependencies": {
-        "boring-avatars": "^1.7.0"
+        "boring-avatars": "1.7.0"
     }
 }

@@ -30,7 +30,6 @@ export const Offer = ({ alias, initialState }: OfferProps) => {
                             <div className="slides">
                                 {offer.photos.map((p) => (
                                     <div className="slide" key={p.url} style={getImageBackgroundStyle(p.url)}></div>
-                                    // <img key={p.url} src={p.url} alt={p.altText}></img>
                                 ))}
                             </div>
                         ) : null}

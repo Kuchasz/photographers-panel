@@ -130,9 +130,16 @@ export const pl = {
         },
     },
     offer: {
-        title: 'Najczęściej wykonywane usługi',
-        description:
-            'Najczęściej świadczone przez nas usługi. Zapraszamy do kontaktu jeśli czegoś nie uda Ci się tutaj znaleźć.',
+        wedding: {
+            title: 'Oferta ślubna',
+            description:
+                'Jesteśmy gotowi uchwycić każdy niepowtarzalny moment Waszego ślubu, tworząc niezapomniane wspomnienia zarówno w formie fotografii, jak i filmu. Zapraszamy do podróży przez naszą ofertę ślubną, gdzie dbamy o każdy detal, by uwiecznić piękno chwili i stworzyć dla Was niepowtarzalną opowieść w obrazie i dźwięku. Unikamy bycia w centrum uwagi. Staramy się aby gotowe zdjęcia i filmy trafiły do was możliwie najszybciej, bez ukrytych kosztów.',
+        },
+        other: {
+            title: 'Pozostałe usługi',
+            description:
+                'Pozostałe świadczone przez nas usługi. Zapraszamy do kontaktu jeśli czegoś nie uda Ci się tutaj znaleźć.',
+        },
         calculator: {
             title: 'Kalkulator ceny',
             description:
