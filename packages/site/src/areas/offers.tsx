@@ -13,8 +13,8 @@ const getImageBackgroundStyle = (url: string) => {
 };
 
 export const Offers = ({ initialState }: { initialState: { offer: OfferEntry; offers: OfferListItem[] } }) => {
-    const [offers, setOffers] = React.useState(initialState.offers ?? []);
-    const [offer, setOffer] = React.useState(initialState.offer ?? {});
+    const [offers, setOffers] = React.useState(initialState?.offers ?? []);
+    const [offer, setOffer] = React.useState(initialState?.offer ?? {});
 
 
     React.useEffect(() => {
