@@ -7,16 +7,17 @@ export const pl = {
     },
     main: {
         topPhotos: [
-            'pocalunek-na-lozku',
-            'spacer-po-parku',
-            'przytulanie-przy-fontannie',
-            'mloda-para-strobist-przytulanie',
-            'o-zachodzie-slonca',
-            'piknik-nad-rzeka',
-            'james-bond',
-            'spacer-po-lace',
-            'przytulanie-w-sadzie',
-            'pocalunek-na-lozku',
+            'przytulanie-na-schodach',
+            'zdjecia-w-wodzie-zagornik',
+            'zamek-moszna-przytulanie-glowami',
+            'obrazki-dymy',
+            'przytulanie-jeziorko',
+            'buty-pustyna-bledowska',
+            'przytulanie-na-schodach'
+            // 'pocalunek-na-lozku',
+            // 'spacer-po-parku',
+            // 'przytulanie-przy-fontannie',
+            // 'pocalunek-na-lozku',
         ],
     },
     contact: {
