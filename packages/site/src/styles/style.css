@@ -86,7 +86,7 @@ header .background div {
 }
 
 nav {
-    height: 55px;
+    height: 35px;
     margin: 50px 0 0 0;
     float: right;
 }
@@ -119,12 +119,14 @@ nav {
 
 nav a {
     float: left;
-    color: #838384;
-    background-color: black;
+    color: white;
+    /* background-color: black; */
     font-size: 17px;
+    margin-top: 2px;
     height: 100%;
     text-transform: uppercase;
-    padding: 0px 17px;
+    padding: 0px 20px;
+    margin-inline: 5px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -143,6 +145,7 @@ nav #current {
 #gallery {
     /* background-color: #ff4643; */
     background-color: #ce2220;
+    border-radius: 1rem;
 }
 
 a#gallery {
