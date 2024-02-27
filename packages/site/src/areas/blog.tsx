@@ -30,7 +30,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                         <span>
                             {strings.blog.shareMessage}
                             <a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}>
-                                <img src={facebookIcon} />
+                                <img style={{filter: 'invert(1)'}} src={facebookIcon} />
                             </a>
                         </span>
                         <br />

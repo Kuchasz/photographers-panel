@@ -249,12 +249,13 @@ a#gallery:hover {
     float: left;
     min-height: 500px;
 
-    background: linear-gradient(to bottom, #071e29, #0c3448 5px);
+    /* background: linear-gradient(to bottom, #071e29, #0c3448 5px); */
 
     /* #071e29 */
     /* background: #0c3448; */
     /* background: #0f415a url("../images/gallery_bg.jpg") top center repeat-x; */
-    color: #fff;
+    /* color: #fff; */
+    color: #222;
     padding-top: 80px;
     padding-bottom: 10px;
 }
@@ -496,7 +497,7 @@ a#gallery:hover {
 .gallery li h1,
 .offers li h1,
 .pricing li h1 {
-    color: #fff;
+    color: #333;
     font-size: 21px;
     font-weight: normal;
     padding-left: 15px;
@@ -513,7 +514,7 @@ a#gallery:hover {
 .gallery li h3,
 .offers li h3,
 .pricing li h3 {
-    color: #62becc;
+    color: #666;
     font-size: 12px;
     font-weight: normal;
     margin-bottom: -15px;
@@ -557,7 +558,7 @@ a#gallery:hover {
 
 .category:hover {
     /* -webkit-filter: grayscale(50%); */
-    background-color: #1f698e;
+    background-color: #ddd;
 }
 
 .offer article h2,
@@ -600,7 +601,7 @@ a#gallery:hover {
 }
 
 .offers li h2 {
-    color: #62becc;
+    color: #666;
     font-size: 15px;
     text-align: left;
     padding-top: 15px;
@@ -695,7 +696,7 @@ a#gallery:hover {
 .contact_form article textarea {
     width: 370px;
     height: 20px;
-    background-color: #124b67;
+    background-color: #333;
     border: solid 1px #fff;
     color: #fff;
     margin-bottom: 20px;
@@ -704,7 +705,7 @@ a#gallery:hover {
 }
 
 ::-webkit-input-placeholder {
-    color: #62becc;
+    color: #ddd;
     font-weight: normal;
 }
 
@@ -968,7 +969,8 @@ a#gallery:hover {
 footer {
     width: 100%;
     float: left;
-    color: #035682;
+    /* color: #035682; */
+    color: #333;
 }
 
 footer section {
@@ -1009,7 +1011,7 @@ footer .right li a {
     font-size: 12px;
     font-weight: normal;
     padding-top: 4px;
-    color: #035682;
+    /* color: #035682; */
 }
 
 footer .right {
