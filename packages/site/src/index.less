@@ -319,19 +319,19 @@
     color: white;
     flex-grow: 1;
     font-family: 'Century Gothic Light';
-    font-size: 54px;
+    font-size: 48px;
     position: absolute;
     height: 100%;
     width: 100%;
-    display: flex;
+    display: none;
     justify-content: center;
 
     .advantage {
         top: calc(50% - 38px);
         filter: drop-shadow(1px 1px 3px black);
-        transition-timing-function: linear;
+        transition-timing-function: ease-out;
         transition-duration: 0.5s;
-        transition-property: opacity;
+        transition-property: all;
         opacity: 0;
         position: absolute;
         margin: 20px;
@@ -340,6 +340,7 @@
         &.current {
             transition-delay: 2s;
             opacity: 1;
+            transform: scale(1.05);
         }
     }
 }
