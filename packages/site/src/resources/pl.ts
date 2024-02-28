@@ -78,20 +78,6 @@ export const pl = {
         blog: 'Blog, najnowsze zrealizowane przez nas zdjęcia',
         private: 'Strefa klienta, galeria zdjęć z wesela',
     },
-    link: {
-        title: 'Zostań naszym partnerem!',
-        description:
-            'Prowadzisz działalność gospodarczą o podobnej tematyce? Posiadasz swoją własną stronę internetową? Chcesz umieścić tutaj link do swojej strony? Napisz do nas!',
-        linksHeader: 'Podobne strony internetowe',
-        contactNow: 'Skontaktuj się teraz',
-        links: [
-            { label: 'Zespół Songo and Zuza', url: 'https://www.songoandzuza.pl' },
-            { label: 'Zespół Różowa Pantera', url: 'http://www.rozowapantera.pl' },
-            { label: 'Zespół Talizman', url: 'http://www.talizman.net.pl' },
-            { label: 'Foto-Video Admont2', url: 'https://admont.wixsite.com/admont' },
-            { label: 'Zespół Reda', url: 'https://zespolreda.pl' },
-        ],
-    },
     privateGallery: {
         title: 'Galeria zdjęć',
         description:

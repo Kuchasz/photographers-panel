@@ -1,20 +1,17 @@
+import { routes } from "@pp/api/dist/site/routes";
 import * as React from "react";
+import { Route, Switch } from "react-router-dom";
 import { Blog } from "./areas/blog";
 import { Blogs } from "./areas/blogs";
 import { Contact } from "./areas/contact";
-import { Footer } from "./layouts/footer";
-import { Head } from "./layouts/head";
-import { Header } from "./layouts/header";
-import { Headers } from "./components/headers";
 import { Home } from "./areas/home";
-import { Links } from "./areas/links";
 import { Offer } from "./areas/offer";
 import { Offers } from "./areas/offers";
-import { Pricing } from "./areas/pricing";
 import { PrivateGallery } from "./areas/private-gallery";
-import { Route, Switch } from "react-router-dom";
-import { routes } from "@pp/api/dist/site/routes";
 import { Videos } from "./areas/videos";
+import { Headers } from "./components/headers";
+import { Footer } from "./layouts/footer";
+import { Header } from "./layouts/header";
 
 export const Root = ({ initialState }: { initialState?: any }) => (
     <>
@@ -57,7 +54,6 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                     path={routes.videos.route}
                     render={() => <Videos initialState={initialState[routes.videos.route]} />}
                 />
-                <Route exact path={routes.links.route} render={() => <Links />} />
                 <Route exact path={routes.private.route} render={() => <PrivateGallery />} />
             </Switch>
         </span>
