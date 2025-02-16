@@ -1,25 +1,21 @@
+import { Location } from "@angular/common";
+import {
+    Component,
+    OnInit
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import * as events from "@pp/api/dist/event";
 import * as user from "@pp/api/dist/user";
-import { ActivatedRoute, ParamMap } from "@angular/router";
-import {
-    ChangeDetectionStrategy,
-    Component,
-    OnInit,
-    ViewEncapsulation
-    } from "@angular/core";
-import { DisplayModes } from "../../config/gallery.config";
-import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
-import { GalleryService } from "../../service/gallery.service";
 import { getOrRegisterName } from "@pp/utils/dist/user";
-import { Location } from "@angular/common";
+import { DisplayModes } from "../../config/gallery.config";
 import { translations } from "../../i18n";
+import { GalleryService } from "../../service/gallery.service";
 
 @Component({
     selector: 'rating-request-window',
     templateUrl: './rating-request-window.component.html',
     styleUrls: ['./rating-request-window.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class RatingRequestWindowComponent implements OnInit {
     reviewUrl: string = 'https://g.page/pyszstudio/review';

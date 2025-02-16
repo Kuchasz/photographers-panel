@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
     templateUrl: './gallery.component.html',
     changeDetection: ChangeDetectionStrategy.Default,
     styleUrls: ['./gallery.component.scss'],
+    standalone: false
 })
 export class GalleryComponent implements OnDestroy {
     currentUrl: string = '';

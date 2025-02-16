@@ -1,34 +1,27 @@
-import { ActivatedRoute, ParamMap } from "@angular/router";
-import { DisplayModes } from "../../config/gallery.config";
-import {
-    filter,
-    find,
-    first,
-    flatMap,
-    map,
-    switchMap,
-    tap
-    } from "rxjs/operators";
-import { GalleryDirectory, GalleryImage } from "../../service/gallery.state";
-import { GalleryService } from "../../service/gallery.service";
 import { Location } from "@angular/common";
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    OnInit,
+    Output
+} from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs";
 import {
-    ChangeDetectionStrategy,
-    Component,
-    OnInit,
-    ViewEncapsulation,
-    EventEmitter,
-    Output,
-    HostListener,
-} from '@angular/core';
+    flatMap,
+    map,
+    switchMap
+} from "rxjs/operators";
+import { DisplayModes } from "../../config/gallery.config";
+import { GalleryService } from "../../service/gallery.service";
+import { GalleryDirectory, GalleryImage } from "../../service/gallery.state";
 
 @Component({
     selector: 'gallery-images-fullscreen',
     templateUrl: './gallery-images-fullscreen.component.html',
     styleUrls: ['./gallery-images-fullscreen.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    standalone: false
 })
 export class GalleryImagesFullscreenComponent implements OnInit {
     @Output() onBack: EventEmitter<void> = new EventEmitter<void>(false);

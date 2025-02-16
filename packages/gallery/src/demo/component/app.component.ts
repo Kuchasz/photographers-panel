@@ -9,12 +9,16 @@ import { GalleryService } from "../../index";
 import { NavigationEnd, NavigationStart, Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { translations } from "../../i18n";
+import { GalleryModule } from '../../gallery.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CommonModule, GalleryModule]
 })
 export class AppComponent implements OnInit {
     constructor(public gallery: GalleryService, private router: Router, private ts: Title) {

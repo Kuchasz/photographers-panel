@@ -1,37 +1,28 @@
-import * as Hammer from "hammerjs";
-import { ActivatedRoute } from "@angular/router";
-import { animation } from "./gallery-image.animation";
 import {
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
     Input,
-    NgZone,
-    OnInit,
-    Renderer2
+    OnInit
 } from "@angular/core";
-import { clamp } from "../../utils/number";
-import { DisplayModes } from "../../config/gallery.config";
+import { ActivatedRoute } from "@angular/router";
 import { Expo, gsap } from "gsap";
-import {
-    first,
-    flatMap,
-    map,
-    switchMap,
-    tap
-} from "rxjs/operators";
+import * as Hammer from "hammerjs";
 import { fromEvent, Observable } from "rxjs";
+import {
+    map,
+    switchMap
+} from "rxjs/operators";
 import { GalleryConfig } from "../../config";
-import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
+import { DisplayModes } from "../../config/gallery.config";
 import { GalleryService } from "../../service/gallery.service";
-
+import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
+import { clamp } from "../../utils/number";
 @Component({
     selector: 'gallery-image',
     templateUrl: './gallery-image.component.html',
     styleUrls: ['./gallery-image.component.scss'],
-    changeDetection: ChangeDetectionStrategy.Default,
-    animations: animation,
+    standalone: false
 })
 export class GalleryImageComponent implements OnInit {
     @Input() state!: GalleryState;

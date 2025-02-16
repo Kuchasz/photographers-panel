@@ -1,22 +1,21 @@
-import CSSPlugin from "gsap/CSSPlugin";
 import {
-    ChangeDetectionStrategy,
     Component,
     ElementRef,
     HostListener,
     Input,
     OnInit
-    } from "@angular/core";
-import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
-import { GalleryService } from "../../service/gallery.service";
+} from "@angular/core";
+import CSSPlugin from "gsap/CSSPlugin";
 import { GalleryThumbConfig } from "../../config";
+import { GalleryService } from "../../service/gallery.service";
+import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
 const C = CSSPlugin; // here is the gotcha....
 
 @Component({
     selector: 'gallery-thumb',
     templateUrl: './gallery-thumb.component.html',
     styleUrls: ['./gallery-thumb.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GalleryThumbComponent implements OnInit {
     @Input() config!: GalleryThumbConfig;

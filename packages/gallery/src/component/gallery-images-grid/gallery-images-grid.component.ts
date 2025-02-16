@@ -1,32 +1,29 @@
+import {
+    Component,
+    OnInit
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import * as events from "@pp/api/dist/event";
 import * as user from "@pp/api/dist/user";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { ApiService } from "../../service/api.service";
-import {
-    ChangeDetectionStrategy,
-    Component,
-    OnInit,
-    ViewEncapsulation
-    } from "@angular/core";
-import { DisplayModes, GalleryConfig } from "../../config/gallery.config";
+import { getOrRegisterName } from "@pp/utils/dist/user";
+import { Observable } from "rxjs";
 import {
     distinctUntilChanged,
     flatMap,
     map,
     switchMap
-    } from "rxjs/operators";
-import { GalleryDirectory, GalleryImage } from "../../service/gallery.state";
+} from "rxjs/operators";
+import { DisplayModes, GalleryConfig } from "../../config/gallery.config";
+import { ApiService } from "../../service/api.service";
 import { GalleryService } from "../../service/gallery.service";
-import { getOrRegisterName } from "@pp/utils/dist/user";
-import { Observable } from "rxjs";
+import { GalleryDirectory, GalleryImage } from "../../service/gallery.state";
 import { sort, sum } from "../../utils/array";
 
 @Component({
     selector: 'gallery-images-grid',
     templateUrl: './gallery-images-grid.component.html',
     styleUrls: ['./gallery-images-grid.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class GalleryImagesGridComponent implements OnInit {
     currentDirectoryId$!: Observable<string>;
@@ -68,7 +65,7 @@ export class GalleryImagesGridComponent implements OnInit {
             )
         );
 
-        const sumHeights = sum((x: GalleryImage) => x.height/x.width);
+        const sumHeights = sum((x: GalleryImage) => x.height / x.width);
         const sortByHeight = sort((x: { height: number }) => x.height);
 
         const columns =

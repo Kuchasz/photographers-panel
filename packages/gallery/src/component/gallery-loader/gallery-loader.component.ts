@@ -1,9 +1,8 @@
 import {
-    ChangeDetectionStrategy,
     Component,
     Input,
     OnInit
-    } from "@angular/core";
+} from "@angular/core";
 import { GalleryLoaderConfig } from "../../config";
 import { GalleryService } from "../../service/gallery.service";
 
@@ -11,7 +10,7 @@ import { GalleryService } from "../../service/gallery.service";
     selector: 'gallery-loader',
     templateUrl: './gallery-loader.component.html',
     styleUrls: ['./gallery-loader.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GalleryLoaderComponent implements OnInit {
     @Input() config!: GalleryLoaderConfig;

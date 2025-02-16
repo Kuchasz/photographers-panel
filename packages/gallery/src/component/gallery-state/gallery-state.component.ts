@@ -1,35 +1,30 @@
-import * as events from "@pp/api/dist/event";
-import * as user from "@pp/api/dist/user";
-import screenfull from "screenfull";
-import { ApiService } from "../../service/api.service";
+import { Location } from "@angular/common";
 import {
-    ChangeDetectionStrategy,
     Component,
     EventEmitter,
     Input,
     Output
-    } from "@angular/core";
-import { DisplayModes } from "../../config/gallery.config";
-import {
-    find,
-    first,
-    map,
-    tap
-    } from "rxjs/operators";
-import { GalleryConfig } from "../../index";
-import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
-import { GalleryService } from "../../service/gallery.service";
-import { getOrRegisterName } from "@pp/utils/dist/user";
-import { Location } from "@angular/common";
-import { Observable } from "rxjs";
+} from "@angular/core";
 import { Router } from "@angular/router";
+import * as events from "@pp/api/dist/event";
+import * as user from "@pp/api/dist/user";
+import { getOrRegisterName } from "@pp/utils/dist/user";
+import { Observable } from "rxjs";
+import {
+    map
+} from "rxjs/operators";
+import screenfull from "screenfull";
 import { translations } from "../../i18n";
+import { GalleryConfig } from "../../index";
+import { ApiService } from "../../service/api.service";
+import { GalleryService } from "../../service/gallery.service";
+import { GalleryImage, GalleryState } from "../../service/gallery.state";
 
 @Component({
     selector: 'gallery-state',
     templateUrl: './gallery-state.component.html',
     styleUrls: ['./gallery-state.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GalleryStateComponent {
     @Input() state!: GalleryState;
@@ -119,7 +114,7 @@ export class GalleryStateComponent {
         // event.stopPropagation();
     }
 
-    orderPhotos() {}
+    orderPhotos() { }
 
     public download(imgSrc: string, imageId: string, liked: boolean) {
         if (!liked) this.likeImage(imageId);

@@ -15,7 +15,7 @@ const routes: Routes = [
         children: [
             {
                 path: 'fullscreen',
-                // outlet: "sub",
+                // outlet: 'sub',
                 component: GalleryImagesFullscreenComponent,
             },
         ],
@@ -27,4 +27,4 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [{ provide: APP_BASE_HREF, useValue: '/galeria' }],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

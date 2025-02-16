@@ -13,6 +13,7 @@ import { GalleryService } from "../service/gallery.service";
 
 @Directive({
     selector: '[tap]',
+    standalone: false
 })
 export class TapDirective implements OnInit {
     @Input() tap!: void;

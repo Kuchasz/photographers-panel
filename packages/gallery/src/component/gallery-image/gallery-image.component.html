@@ -4,18 +4,18 @@
         <img
             *ngIf="config.displayMode === 1"
             class="prev g-image-img"
-            [lazySrc]="currentImage[0]?.src"
+            [lazySrc]="currentImage[0].src"
             (lazyLoad)="imageLoad($event)"
         />
         <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
         <!-- </div> -->
-        <img class="curr g-image-img" [lazySrc]="currentImage[1]?.src" (lazyLoad)="imageLoad($event)" />
+        <img class="curr g-image-img" [lazySrc]="currentImage[1].src" (lazyLoad)="imageLoad($event)" />
         <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->
         <!-- </div> -->
         <img
             *ngIf="config.displayMode === 1"
             class="next g-image-img"
-            [lazySrc]="currentImage[2]?.src"
+            [lazySrc]="currentImage[2].src"
             (lazyLoad)="imageLoad($event)"
         />
         <!-- <gallery-loader *ngIf="loading" [config]="config.loader"></gallery-loader> -->

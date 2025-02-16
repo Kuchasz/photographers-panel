@@ -14,7 +14,7 @@ export interface GalleryConfig {
     gestures?: boolean;
     style?: any;
     description?: GalleryDescConfig;
-    thumbnails?: GalleryThumbConfig;
+    thumbnails: GalleryThumbConfig;
     loader?: GalleryLoaderConfig;
     navigation?: GalleryNavConfig;
     player?: GalleryPlayConfig;

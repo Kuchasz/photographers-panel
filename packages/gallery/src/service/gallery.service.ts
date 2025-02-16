@@ -5,9 +5,9 @@ import {
     Observable,
     pipe,
     Subject
-    } from "rxjs";
+} from "rxjs";
 import { defaultConfig, defaultState } from "../config/gallery.default";
-import { Directive, Injectable, Optional } from "@angular/core";
+import { Directive, Injectable, Inject, Optional } from "@angular/core";
 import {
     filter,
     finalize,
@@ -17,15 +17,16 @@ import {
     take,
     takeWhile,
     tap
-    } from "rxjs/operators";
+} from "rxjs/operators";
 import { GalleryConfig } from "../config/gallery.config";
 import {
     GalleryDirectory,
     GalleryImage,
     GalleryState,
     ScreenOrientation
-    } from "./gallery.state";
+} from "./gallery.state";
 import { sort } from "@pp/utils/dist/array";
+import { CONFIG } from "../gallery.module";
 
 @Injectable()
 export class GalleryService {
@@ -33,8 +34,12 @@ export class GalleryService {
     config: GalleryConfig = defaultConfig;
     downloadedPhotos: string[] = [];
 
-    constructor(@Optional() config: GalleryConfig) {
+    constructor() {
         this.state = new BehaviorSubject<GalleryState>(defaultState);
+        // this.config = { ...defaultConfig, ...config };
+    }
+
+    public setConfig(config: GalleryConfig) {
         this.config = { ...defaultConfig, ...config };
     }
 
@@ -208,7 +213,7 @@ export class GalleryService {
         this.state.next(newState);
     }
 
-    snapImages(images: GalleryImage[]) {}
+    snapImages(images: GalleryImage[]) { }
 
     displaySnappedImages() {
         const state = this.state.getValue();

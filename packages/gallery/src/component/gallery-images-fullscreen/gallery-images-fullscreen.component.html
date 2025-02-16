@@ -4,7 +4,7 @@
             (onBack)="goBack()"
             [config]="gallery.config"
             [state]="state"
-            [directoryId]="currentDirectoryId$ | async"
+            [directoryId]="(currentDirectoryId$ | async)!"
         ></gallery-state>
 
         <div class="g-image-box">
@@ -12,7 +12,7 @@
 
             <gallery-nav
                 *ngIf="gallery.config.navigation && gallery.config.displayMode === 0"
-                [currentDirectoryId]="currentDirectoryId$ | async"
+                [currentDirectoryId]="(currentDirectoryId$ | async)!"
                 [state]="state"
             ></gallery-nav>
 
@@ -23,10 +23,10 @@
 
         <gallery-thumb
             *ngIf="isFullView"
-            [images]="images$ | async"
-            [directoryId]="currentDirectoryId$ | async"
+            [images]="(images$ | async)!"
+            [directoryId]="(currentDirectoryId$ | async)!"
             [state]="state"
-            [directory]="currentDirectory | async"
+            [directory]="(currentDirectory | async)!"
             [config]="gallery.config.thumbnails"
         ></gallery-thumb>
     </div>

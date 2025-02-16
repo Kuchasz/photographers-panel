@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { GalleryService } from "../../service/gallery.service";
+import { Component, Input } from '@angular/core';
+import { GalleryService } from '../../service/gallery.service';
 import { GalleryState } from "../../service/gallery.state";
-import { Location } from "@angular/common";
+import { CommonModule, Location } from "@angular/common";
 
 @Component({
     selector: 'gallery-nav',
     templateUrl: './gallery-nav.component.html',
     styleUrls: ['./gallery-nav.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class GalleryNavComponent {
     @Input() state!: GalleryState;

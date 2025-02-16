@@ -1,25 +1,30 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 import { GalleryConfig } from "../../config/gallery.config";
 import { GalleryService } from "../../service/gallery.service";
-import { GalleryState } from "../../service/gallery.state";
-import { Router } from "@angular/router";
 
 @Component({
     selector: 'gallery-directories',
-    templateUrl: './gallery-directores.component.html',
+    templateUrl: './gallery-directories.component.html',
     styleUrls: ['./gallery-directories.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
-export class GalleryDirectoriesComponent {
+export class GalleryDirectoriesComponent implements OnInit {
     @Input() config!: GalleryConfig;
     objectKeys = Object.keys;
 
-    constructor(public gallery: GalleryService, private router: Router) {}
+    constructor(public gallery: GalleryService, private router: Router) { }
+
+    ngOnInit(): void {
+        console.log('GalleryDirectoriesComponent');
+        // Additional initialization logic if needed
+    }
 
     getImage(directoryId: string) {
         const state = this.gallery.state.getValue();
         const imageId = state.directoryImages[directoryId][0];
-        return state.images.find((i) => i.id === imageId);
+        return state.images.find((i) => i.id === imageId)!;
     }
 
     getImageCount(directoryId: string) {

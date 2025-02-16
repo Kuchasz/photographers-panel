@@ -4,14 +4,17 @@ import {
     EventEmitter,
     Input,
     Output,
-    Renderer2
+    Renderer2,
+    OnDestroy,
+    OnInit
     } from "@angular/core";
 import { Subject } from "rxjs";
 
 @Directive({
     selector: '[lazyImage]',
+    standalone: false
 })
-export class LazyDirective {
+export class LazyDirective implements OnInit, OnDestroy {
     @Input('thumb')
     thumbUrl!: string;
 
@@ -56,5 +59,13 @@ export class LazyDirective {
         // this.imageLoad.onerror = (err: Error) => {
         // this.lazyWorker.next(undefined);
         // };
+    }
+
+    ngOnInit() {
+        // Implementation of ngOnInit
+    }
+
+    ngOnDestroy() {
+        // Implementation of ngOnDestroy
     }
 }
