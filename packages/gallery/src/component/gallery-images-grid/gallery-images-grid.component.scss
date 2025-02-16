@@ -1,10 +1,6 @@
-gallery-images-grid {
-    // :host {
-    // display: flex;
+:host {
     flex-direction: row;
-    // overflow: hidden;
-    // overflow-x: hidden;
-    width: 100%; //100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     background: white;
@@ -63,7 +59,7 @@ gallery-images-grid {
         }
     }
 
-    &.loaded{
+    &.loaded {
         .background {
             display: flex;
         }

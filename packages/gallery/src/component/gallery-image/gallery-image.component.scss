@@ -23,6 +23,7 @@
         flex: 1;
         align-self: stretch;
         // flex-direction: column;
+        display: flex;
         transform-origin: top left;
         position: relative;
         // margin-bottom: 18px;
@@ -54,6 +55,7 @@
             &.prev,
             &.next {
                 position: absolute;
+                height: 100%;
             }
 
             &.prev {
@@ -62,7 +64,6 @@
 
             &.next {
                 left: 100%;
-                top: 0;
             }
         }
     }

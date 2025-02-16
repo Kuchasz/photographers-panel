@@ -33,7 +33,7 @@ export class GalleryThumbComponent implements OnInit {
         if (e.keyCode === 39) this.gallery.next(this.directoryId);
     };
 
-    constructor(public gallery: GalleryService, private el: ElementRef) {}
+    constructor(public gallery: GalleryService, private el: ElementRef) { }
 
     ngOnInit() {
         // if (this.gallery.config.gestures) {
@@ -94,7 +94,7 @@ export class GalleryThumbComponent implements OnInit {
     getMaxDelta() {
         const width = this.config.width!;
         // console.log(this.images.length * width - width / 2);
-        return -(this.images.length * width);
+        return -(this.images.length * (width + 8)) + width / 2;
     }
 
     getThumbImage(image: GalleryImage) {

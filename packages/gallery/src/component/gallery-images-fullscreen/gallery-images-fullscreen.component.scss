@@ -8,10 +8,15 @@
     }
 }
 
+// &:host{
+
+// }
+
 gallery-images-fullscreen {
     // flex: 1;
     // width: 100%;
-    // display: flex;
+    display: flex;
+    position: relative;
     animation: 0.5s ease-out 0s 1 fadeIn;
 
     // flex-direction: column;
@@ -24,6 +29,8 @@ gallery-images-fullscreen {
 
 .g-container {
     display: flex;
+    top: 0;
+    left: 0;
     height: 100%; //100vh;
     width: 100vw;
     flex-direction: column;

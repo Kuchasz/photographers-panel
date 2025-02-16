@@ -18,11 +18,13 @@ import { DisplayModes } from "../../config/gallery.config";
 import { GalleryService } from "../../service/gallery.service";
 import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
 import { clamp } from "../../utils/number";
+import { animation } from "./gallery-image.animation";
 @Component({
     selector: 'gallery-image',
     templateUrl: './gallery-image.component.html',
     styleUrls: ['./gallery-image.component.scss'],
-    standalone: false
+    standalone: false,
+    animations: [animation]
 })
 export class GalleryImageComponent implements OnInit {
     @Input() state!: GalleryState;

@@ -39,7 +39,8 @@
                             }
                         ],
                         "styles": [
-                            "src/demo/styles.css"
+                            "src/demo/styles.css",
+                            "@mdi/font/css/materialdesignicons.min.css"
                         ],
                         "stylePreprocessorOptions": {
                             "includePaths": [

@@ -17,7 +17,6 @@ export class GalleryDirectoriesComponent implements OnInit {
     constructor(public gallery: GalleryService, private router: Router) { }
 
     ngOnInit(): void {
-        console.log('GalleryDirectoriesComponent');
         // Additional initialization logic if needed
     }
 

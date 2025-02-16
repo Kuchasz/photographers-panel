@@ -19,9 +19,11 @@ import "whatwg-fetch";
 
 // import '@mdi/font';
 
+import { routes } from '../app-routing.module';
+
 bootstrapApplication(AppComponent, {
     providers: [
-        provideRouter([]),
+        provideRouter(routes),
         provideAnimations(),
         {
             provide: APP_INITIALIZER,
@@ -83,9 +85,9 @@ const setViewport = () => {
 
     const v = viewportTricks
         ? {
-              vw: `100%`,
-              vh: `${Math.round((offsetWidth / innerWidth) * innerHeight)}px`,
-          }
+            vw: `100%`,
+            vh: `${Math.round((offsetWidth / innerWidth) * innerHeight)}px`,
+        }
         : { vw: '100%', vh: '100%' };
 
     // console.log(v);

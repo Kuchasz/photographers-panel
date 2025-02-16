@@ -11,6 +11,7 @@ import { Title } from "@angular/platform-browser";
 import { translations } from "../../i18n";
 import { GalleryModule } from '../../gallery.module';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from "@angular/router";
 
 @Component({
     selector: 'app-root',
@@ -18,7 +19,11 @@ import { CommonModule } from '@angular/common';
     styleUrls: ['./app.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, GalleryModule]
+    imports: [
+        CommonModule,
+        RouterModule,
+        GalleryModule
+    ]
 })
 export class AppComponent implements OnInit {
     constructor(public gallery: GalleryService, private router: Router, private ts: Title) {

@@ -26,7 +26,6 @@ import {
     ScreenOrientation
 } from "./gallery.state";
 import { sort } from "@pp/utils/dist/array";
-import { CONFIG } from "../gallery.module";
 
 @Injectable()
 export class GalleryService {
@@ -40,6 +39,7 @@ export class GalleryService {
     }
 
     public setConfig(config: GalleryConfig) {
+        console.log(defaultConfig, config);
         this.config = { ...defaultConfig, ...config };
     }
 
@@ -76,7 +76,7 @@ export class GalleryService {
         this.state.next({
             ...state,
             directories: result.directories,
-            images: sort(images, (x) => x.likes),
+            images: images,
             directoryImages: dirImages,
             currId: undefined,
             prevId: undefined,

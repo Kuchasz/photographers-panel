@@ -49,6 +49,7 @@
     top: 0;
     bottom: 0;
     left: calc(50% - 47.5px);
+    gap: 8px;
     display: flex;
     align-items: center;
     transition: transform ease-out 0.2s;
@@ -58,7 +59,7 @@
 
 .g-thumb {
     // padding: 2px;
-    padding: 8px;
+    // padding: 8px;
     opacity: 0.5;
     transition: transform ease-out 0.2s, opacity ease 0.2s;
     transform: scale(0.9);
@@ -90,7 +91,6 @@
 .g-nav-prev {
     display: flex;
     align-items: center;
-    height: 100%;
     opacity: 0.5;
     padding: 50px 25px;
     user-select: none;

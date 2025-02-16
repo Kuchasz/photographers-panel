@@ -13,7 +13,7 @@ import { getUserName } from "@pp/api/dist/user";
 
 document.querySelector('#state-initializer')?.remove();
 @NgModule({
-    declarations: [],
+    // declarations: [AppComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
