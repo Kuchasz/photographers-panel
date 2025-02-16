@@ -11,6 +11,6 @@
     },
     "devDependencies": {
         "@pp/utils": "*",
-        "typescript": "4.5.5"
+        "typescript": "5.5.0"
     }
 }
