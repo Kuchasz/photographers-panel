@@ -5,10 +5,11 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "ts-node src/app.tsx",
         "build": "tsc",
-        "watch": "nodemon --watch . --ext ts,tsx,.d.ts --exec ts-node --ignore '*.test.ts' --delay 2 src/app.tsx"
+        "build:dev": "tsc --watch",
+        "start": "ts-node src/app.tsx",
+        "start:dev": "nodemon --watch . --ext ts,tsx,.d.ts --exec ts-node --ignore '*.test.ts' --delay 2 src/app.tsx",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "ISC",
@@ -30,7 +31,7 @@
         "express-react-views": "0.11.0",
         "graphql": "15.5.0",
         "graphql-request": "3.4.0",
-        "isomorphic-unfetch": "^4.0.2",
+        "isomorphic-unfetch": "4.0.2",
         "jsonwebtoken": "8.5.1",
         "knex": "0.95.4",
         "multer": "1.4.2",

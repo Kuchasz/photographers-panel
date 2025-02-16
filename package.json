@@ -2,9 +2,16 @@
     "private": true,
     "name": "photographers-panel",
     "scripts": {
-        "build": "yarn workspaces run build",
+        "build": "npm run build --workspaces",
         "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'",
-        "start": "NODE_ENV=development& node packages/server/dist/app.js"
+        "start": "NODE_ENV=development& node packages/server/dist/app.js",
+        "watch": "concurrently \"npm:watch:*\"",
+        "watch:utils": "npm run watch -w @pp/utils",
+        "watch:api": "npm run watch -w @pp/api",
+        "watch:server": "npm run start:dev -w @pp/server",
+        "watch:panel": "npm run watch -w @pp/panel",
+        "watch:gallery": "npm run watch -w @pp/gallery",
+        "watch:site": "npm run watch -w @pp/site"
     },
     "browserslist": [
         "> 1%",
@@ -13,8 +20,11 @@
     "workspaces": [
         "packages/*"
     ],
-    "resolutions": {
+    "overrides": {
         "@types/react": "17.0.2",
         "@types/react-dom": "17.0.2"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
     }
 }

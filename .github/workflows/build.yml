@@ -1,324 +1,35 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Ext.Master.Build
+name: Master.Build
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
     push:
         branches: [master]
-    # pull_request:
-    #   branches: [ master ]
+    pull_request:
+        branches: [master]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    build_utils:
-        name: build/utils
+    build:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
               with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: yarn-cache
+                  node-version: '16'
+            - name: Install dependencies
+              run: npm install
+            - name: Build
+              run: npm run build --workspaces
+            - name: Create package
+              run: |
+                  cd packages/server
+                  zip -r ../../package.zip .
+            - name: Upload package
+              uses: actions/upload-artifact@v2
               with:
-                  path: |
-                      **/node_modules
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-
-            - run: yarn install --prefer-offline
-
-            - run: |
-                  cd ./packages/utils
-                  yarn run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.utils
-                  path: |
-                      packages/utils/dist
-
-    build_api:
-        name: build/api
-        needs: [build_utils]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: |
-                      **/node_modules
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - run: |
-                  cd ./packages/api
-                  yarn run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.api
-                  path: |
-                      packages/api/dist
-
-    build_site:
-        name: build/site
-        needs: [build_utils, build_api]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: |
-                      **/node_modules
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.api
-                  path: ./packages/api/dist
-
-            - run: |
-                  cd ./packages/site
-                  yarn run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.site
-                  path: |
-                      packages/site/dist
-
-    build_panel:
-        name: build/panel
-        needs: [build_utils, build_api]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: |
-                      **/node_modules
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.api
-                  path: ./packages/api/dist
-
-            - run: |
-                  cd ./packages/panel
-                  yarn install --prefer-offline
-                  yarn run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.panel
-                  path: |
-                      packages/panel/dist
-
-    build_gallery:
-        name: build/gallery
-        needs: [build_utils, build_api]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: |
-                      **/node_modules
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.api
-                  path: ./packages/api/dist
-
-            - run: |
-                  cd ./packages/gallery
-                  yarn run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.gallery
-                  path: |
-                      packages/gallery/dist
-
-    build_server:
-        name: build/server
-        needs: [build_utils, build_api, build_site, build_panel, build_gallery]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '18.x'
-                  cache: 'yarn'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: yarn-cache
-              with:
-                  path: |
-                      **/node_modules
-                      ${{ steps.yarn-cache-dir-path.outputs.dir }}
-                  key: ${{ runner.os }}-yarn-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-yarn-
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.api
-                  path: ./packages/api/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.gallery
-                  path: ./packages/gallery/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.panel
-                  path: ./packages/panel/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.site
-                  path: ./packages/site/dist
-
-            - run: |
-                  cd ./packages/server
-                  yarn run build
-                  cp src/core/logo-watermark.png dist/core/logo-watermark.png
-
-            - uses: montudor/action-zip@v0.1.0
-              with:
-                  args: zip -qq -r package.zip node_modules packages package.json yarn.lock
-
-            - run: |
-                  mkdir package
-                  mv package.zip package/package.zip
-
-            - name: upload artifact to stating
-              uses: SamKirkland/FTP-Deploy-Action@4.0.0
-              with:
-                  server: ${{ secrets.ftp_server }}
-                  username: ${{ secrets.ftp_username }}
-                  password: ${{ secrets.ftp_password }}
-                  local-dir: ./package/
-                  server-dir: domains/artifacts/
-#     upload:
-#         needs: [build_fontend]
-#         runs-on: ubuntu-latest
-
-#         steps:
-#             - uses: actions/checkout@v3
-
-#             - uses: actions/download-artifact@v4
-#               with:
-#                   name: build.dist
-#                   path: .
-
-#             - run: |
-#                   cd ./packages/server
-#                   yarn
-#                   yarn run build
-
-#             - uses: montudor/action-zip@v0.1.0
-#               with:
-#                   args: zip -qq -r package.zip node_modules server
-
-#             - run: |
-#                   mkdir package
-#                   mv package.zip package/package.zip
-
-#             - name: upload artifact to stating
-#               uses: SamKirkland/FTP-Deploy-Action@4.0.0
-#               with:
-#                   server: ${{ secrets.ftp_server }}
-#                   username: ${{ secrets.ftp_username }}
-#                   password: ${{ secrets.ftp_password }}
-#                   local-dir: ./packages/package/
-#                   server-dir: domains/artifacts/
+                  name: package
+                  path: package.zip

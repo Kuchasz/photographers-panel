@@ -159,17 +159,17 @@ export default {
         modules: [resolve('node_modules'), resolve('../node_modules'), resolve('../../node_modules')],
     },
     plugins: plugins,
-    // devServer: {
-    //     port: 8081,
-    //     host: '192.168.1.68',
-    //     historyApiFallback: true,
-    //     watchOptions: {
-    //         aggregateTimeout: 300,
-    //         poll: 1000,
-    //     },
-    //     contentBase: './dist',
-    //     open: true,
-    // },
+    devServer: {
+        port: 8081,
+        host: '192.168.1.68',
+        historyApiFallback: true,
+        watchOptions: {
+            aggregateTimeout: 300,
+            poll: 1000,
+        },
+        contentBase: './dist',
+        open: true,
+    },
     watchOptions: {
         aggregateTimeout: 300,
         poll: 1000,

@@ -5,7 +5,9 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "build:dev": "tsc --watch",
+        "watch": "tsc --watch"
     },
     "devDependencies": {
         "tslib": "2.2.0",

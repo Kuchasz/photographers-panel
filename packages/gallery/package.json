@@ -7,12 +7,13 @@
     "types": "dist/index.d.ts",
     "private": true,
     "scripts": {
-        "build:prod": "webpack --mode=production",
         "build": "webpack --mode=production",
-        "start": "webpack-dev-server --hot --inline",
-        "watch:dev": "webpack --mode development --watch",
-        "packages:check": "ncu",
-        "packages:bump": "ncu -u"
+        "build:dev": "webpack --mode development",
+        "start": "webpack-dev-server --hot --inline --mode production",
+        "start:dev": "webpack-dev-server --hot --inline --mode development",
+        "watch": "webpack --mode development --watch",
+        "update:check": "ncu",
+        "update:deps": "ncu -u"
     },
     "devDependencies": {
         "@angular/animations": "13.2.5",
@@ -23,8 +24,8 @@
         "@angular/platform-browser": "13.2.5",
         "@angular/platform-browser-dynamic": "13.2.5",
         "@angular/router": "13.2.5",
-        "@babel/core": "^7.17.5",
-        "@babel/preset-env": "^7.16.11",
+        "@babel/core": "7.17.5",
+        "@babel/preset-env": "7.16.11",
         "@mdi/font": "6.5.95",
         "@ngtools/webpack": "13.2.5",
         "@types/hammerjs": "2.0.41",
@@ -33,7 +34,7 @@
         "@types/xml2js": "0.4.9",
         "autoprefixer": "10.4.2",
         "awesome-typescript-loader": "5.2.1",
-        "babel-loader": "^8.2.3",
+        "babel-loader": "8.2.3",
         "copy-webpack-plugin": "10.2.4",
         "core-js": "3.21.1",
         "css-loader": "6.7.0",
@@ -48,7 +49,7 @@
         "html-webpack-plugin": "5.5.0",
         "material-design-icons": "3.0.1",
         "mini-css-extract-plugin": "2.6.0",
-        "node-sass": "npm:sass@^1.58.0",
+        "sass": "1.85.0",
         "postcss": "8.4.7",
         "postcss-loader": "6.2.1",
         "raw-loader": "4.0.2",
@@ -56,7 +57,7 @@
         "roboto-fontface": "0.10.0",
         "rxjs": "7.5.4",
         "rxjs-compat": "6.6.7",
-        "sass-loader": "^13.3.2",
+        "sass-loader": "13.3.2",
         "screenfull": "6.0.1",
         "stream-browserify": "3.0.0",
         "style-loader": "3.3.1",
@@ -73,6 +74,6 @@
         "zone.js": "0.11.5"
     },
     "dependencies": {
-        "resolve-url-loader": "^3.1.5"
+        "resolve-url-loader": "3.1.5"
     }
 }
