@@ -1,9 +1,10 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     NgZone,
     OnDestroy
-    } from "@angular/core";
+} from "@angular/core";
 import { GalleryService } from "../../service/gallery.service";
 import { Router } from "@angular/router";
 
@@ -16,7 +17,7 @@ import { Router } from "@angular/router";
 })
 export class GalleryComponent implements OnDestroy {
     currentUrl: string = '';
-    constructor(public gallery: GalleryService, zone: NgZone, public router: Router) {
+    constructor(public gallery: GalleryService, zone: NgZone, public cd: ChangeDetectorRef, public router: Router) {
         const screenPortraitQuery = window.matchMedia('(orientation: portrait)');
 
         this.gallery.setOrientation(screenPortraitQuery.matches ? 'portrait' : 'landscape');
@@ -24,6 +25,7 @@ export class GalleryComponent implements OnDestroy {
         this.router.events.subscribe((e: any) => {
             const url = e.url || '';
             this.currentUrl = url.includes('fullscreen') ? 'hidden' : 'scroll';
+            this.cd.markForCheck();
         });
 
         screenPortraitQuery.addListener((e) => {

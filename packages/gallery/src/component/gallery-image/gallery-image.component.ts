@@ -3,15 +3,17 @@ import {
     Component,
     ElementRef,
     Input,
-    OnInit
+    OnInit,
+    OnDestroy
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Expo, gsap } from "gsap";
 import * as Hammer from "hammerjs";
-import { fromEvent, Observable } from "rxjs";
+import { fromEvent, Observable, Subject } from "rxjs";
 import {
     map,
-    switchMap
+    switchMap,
+    takeUntil
 } from "rxjs/operators";
 import { GalleryConfig } from "../../config";
 import { DisplayModes } from "../../config/gallery.config";
@@ -19,6 +21,7 @@ import { GalleryService } from "../../service/gallery.service";
 import { GalleryDirectory, GalleryImage, GalleryState } from "../../service/gallery.state";
 import { clamp } from "../../utils/number";
 import { animation } from "./gallery-image.animation";
+
 @Component({
     selector: 'gallery-image',
     templateUrl: './gallery-image.component.html',
@@ -26,7 +29,7 @@ import { animation } from "./gallery-image.animation";
     standalone: false,
     animations: [animation]
 })
-export class GalleryImageComponent implements OnInit {
+export class GalleryImageComponent implements OnInit, OnDestroy {
     @Input() state!: GalleryState;
     @Input() config!: GalleryConfig;
     loading: boolean = true;
@@ -36,6 +39,9 @@ export class GalleryImageComponent implements OnInit {
     currentImage$!: Observable<[GalleryImage, GalleryImage, GalleryImage]>;
     currentDirectory!: Observable<GalleryDirectory>;
     currentImage!: [GalleryImage, GalleryImage, GalleryImage];
+
+    private destroy$ = new Subject<void>();
+    private hammerEvents: { unsubscribe: () => void }[] = [];
 
     constructor(public gallery: GalleryService, private el: ElementRef, private route: ActivatedRoute, private cdRef: ChangeDetectorRef) { }
 
@@ -57,13 +63,18 @@ export class GalleryImageComponent implements OnInit {
             }.call({ left: 0, right: 0, width: 0, height: 0 });
         }
 
-        this.currentDirectoryId = this.route!.parent!.paramMap.pipe(map((x) => x.get('id')!));
+        this.currentDirectoryId = this.route!.parent!.paramMap.pipe(
+            takeUntil(this.destroy$),
+            map((x) => x.get('id')!)
+        );
 
         this.currentDirectory = this.currentDirectoryId.pipe(
+            takeUntil(this.destroy$),
             switchMap((directoryId) => this.gallery.getDirectory(directoryId))
         );
 
         this.currentImage$ = this.gallery.state.pipe(
+            takeUntil(this.destroy$),
             map((x) => ({
                 images: x.images,
                 currId: x.currId,
@@ -191,96 +202,100 @@ export class GalleryImageComponent implements OnInit {
         // //     // console.log(screenWidth, screenHeight);
         // // });
 
-        fromEvent(mc as any, 'pinchstart panstart').subscribe((e: any) => {
-            // screenWidth = ;//window.innerWidth;
-            // screenHeight = ;
-            canvasSize = {
-                width: elToMove.clientWidth,
-                height: elToMove.clientHeight,
-            };
-            // imgSize = { width: image.clientWidth, height: image.clientHeight };
-            imgSize = getRenderedSize(
-                true,
-                canvasSize.width,
-                canvasSize.height,
-                this.currentImage[1].width,
-                this.currentImage[1].height
-            );
-            pinchStart = {
-                x: e.center.x, // * prevScale,
-                y: e.center.y, //* prevScale
-            };
-            // realPinchStart = {
-            //     x: e.center.x * prevScale - prevX,
-            //     y: e.center.y * prevScale - prevY
-            // };
-        });
+        this.hammerEvents.push(
+            fromEvent(mc as any, 'pinchstart panstart').subscribe((e: any) => {
+                // screenWidth = ;//window.innerWidth;
+                // screenHeight = ;
+                canvasSize = {
+                    width: elToMove.clientWidth,
+                    height: elToMove.clientHeight,
+                };
+                // imgSize = { width: image.clientWidth, height: image.clientHeight };
+                imgSize = getRenderedSize(
+                    true,
+                    canvasSize.width,
+                    canvasSize.height,
+                    this.currentImage[1].width,
+                    this.currentImage[1].height
+                );
+                pinchStart = {
+                    x: e.center.x, // * prevScale,
+                    y: e.center.y, //* prevScale
+                };
+                // realPinchStart = {
+                //     x: e.center.x * prevScale - prevX,
+                //     y: e.center.y * prevScale - prevY
+                // };
+            }),
 
-        fromEvent(mc as any, 'pinch pan').subscribe((e: any) => {
-            if (e.type === 'pan' && (e as any).maxPointers > 1) return;
+            fromEvent(mc as any, 'pinch pan').subscribe((e: any) => {
+                if (e.type === 'pan' && (e as any).maxPointers > 1) return;
 
-            const offsetDelta = {
-                x: e.deltaX,
-                y: e.deltaY,
-            };
+                const offsetDelta = {
+                    x: e.deltaX,
+                    y: e.deltaY,
+                };
 
-            const newViewport =
-                e.type === 'pan'
-                    ? zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, false)
-                    : zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, true);
+                const newViewport =
+                    e.type === 'pan'
+                        ? zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, false)
+                        : zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, true);
 
-            gsap.to(elToMove, {
-                duration: 0.25,
-                translateX: `${newViewport.position.x}px`,
-                translateY: `${newViewport.position.y}px`,
-                scale: newViewport.zoom,
-                ease: Expo.easeOut,
-            });
-        });
+                gsap.to(elToMove, {
+                    duration: 0.25,
+                    translateX: `${newViewport.position.x}px`,
+                    translateY: `${newViewport.position.y}px`,
+                    scale: newViewport.zoom,
+                    ease: Expo.easeOut,
+                });
+            }),
 
-        fromEvent(mc as any, 'pinchend panend').subscribe((e: any) => {
-            if (e.type === 'panend' && (e as any).maxPointers > 1) return;
+            fromEvent(mc as any, 'pinchend panend').subscribe((e: any) => {
+                if (e.type === 'panend' && (e as any).maxPointers > 1) return;
 
-            const offsetDelta = {
-                x: e.deltaX,
-                y: e.deltaY,
-            };
+                const offsetDelta = {
+                    x: e.deltaX,
+                    y: e.deltaY,
+                };
 
-            const newViewport = zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, true);
+                const newViewport = zoomAtPosition(currentViewport, e.scale, pinchStart, offsetDelta, true);
 
-            currentViewport = newViewport;
+                currentViewport = newViewport;
 
-            const requiredDelta = 50;
+                const requiredDelta = 50;
 
-            let transformations =
-                newViewport.zoom === 1
-                    ? e.deltaX > requiredDelta
-                        ? {
-                            translateX: `100%`,
-                            translateY: '0%',
-                            onComplete: () => { this.gallery.prev(currentDirectoryId); this.cdRef.detectChanges() },
-                        }
-                        : e.deltaX < -requiredDelta
+                let transformations =
+                    newViewport.zoom === 1
+                        ? e.deltaX > requiredDelta
                             ? {
-                                translateX: `-100%`,
+                                translateX: `100%`,
                                 translateY: '0%',
-                                onComplete: () => { this.gallery.next(currentDirectoryId); this.cdRef.detectChanges() },
+                                onComplete: () => { this.gallery.prev(currentDirectoryId); this.cdRef.detectChanges() },
                             }
-                            : { translateX: '0%' }
-                    : {
-                        translateX: `${newViewport.position.x}px`,
-                        translateY: `${newViewport.position.y}px`,
-                    };
+                            : e.deltaX < -requiredDelta
+                                ? {
+                                    translateX: `-100%`,
+                                    translateY: '0%',
+                                    onComplete: () => { this.gallery.next(currentDirectoryId); this.cdRef.detectChanges() },
+                                }
+                                : { translateX: '0%' }
+                        : {
+                            translateX: `${newViewport.position.x}px`,
+                            translateY: `${newViewport.position.y}px`,
+                        };
 
-            gsap.to(elToMove, {
-                duration: 0.25,
-                ...transformations,
-                scale: newViewport.zoom,
-                ease: Expo.easeOut,
-            });
-        });
+                gsap.to(elToMove, {
+                    duration: 0.25,
+                    ...transformations,
+                    scale: newViewport.zoom,
+                    ease: Expo.easeOut,
+                });
+            })
+        );
 
-        this.currentImage$.subscribe(() => {
+        this.currentImage$.pipe(
+            takeUntil(this.destroy$)
+        ).subscribe(() => {
             currentViewport = defaultViewport();
             gsap.set(elToMove, {
                 translateX: `0px`,
@@ -288,6 +303,15 @@ export class GalleryImageComponent implements OnInit {
                 scale: `1`,
             });
         });
+    }
+
+    ngOnDestroy() {
+        // Clean up all subscriptions and listeners
+        this.destroy$.next();
+        this.destroy$.complete();
+
+        // Clean up Hammer event subscriptions
+        this.hammerEvents.forEach(subscription => subscription.unsubscribe());
     }
 
     imageLoad(done: boolean) {

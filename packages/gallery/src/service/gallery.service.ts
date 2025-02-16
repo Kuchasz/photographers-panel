@@ -39,7 +39,6 @@ export class GalleryService {
     }
 
     public setConfig(config: GalleryConfig) {
-        console.log(defaultConfig, config);
         this.config = { ...defaultConfig, ...config };
     }
 
