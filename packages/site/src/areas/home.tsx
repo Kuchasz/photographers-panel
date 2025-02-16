@@ -4,7 +4,7 @@ import { getLastBlogs, MostRecentBlogListItem } from "@pp/api/dist/site/blog";
 import { Link } from "react-router-dom";
 import { routes } from "@pp/api/dist/site/routes";
 import { strings } from "../resources";
-import { truncate } from "@pp/utils/dist/string";
+// import { truncate } from "@pp/utils/dist/string";
 
 type HomeProps = { initialState?: MostRecentBlogListItem[] };
 type HomeState = { lastBlogs?: MostRecentBlogListItem[] };
@@ -62,88 +62,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </hgroup>
                     </section>
                 </div>
-                <div className="promo-blogs">
-                    {this.state.lastBlogs.length > 0 ? (
-                        <>
-                            <Link
-                                to={this.getBlogUrlByIndex(2)}
-                                title={this.getBlogTitle(2)}
-                                style={{ gridRow: 1, gridColumn: 1 }}>
-                                <img
-                                    src={this.state.lastBlogs[2].photoUrl}
-                                    alt={this.state.lastBlogs[2].photoAlt}></img>
-                            </Link>
-                            <Link
-                                to={this.getBlogUrlByIndex(3)}
-                                title={this.getBlogTitle(3)}
-                                style={{ gridRow: 2, gridColumn: 1 }}>
-                                <img
-                                    src={this.state.lastBlogs[3].photoUrl}
-                                    alt={this.state.lastBlogs[3].photoAlt}></img>
-                            </Link>
-                            <Link
-                                to={this.getBlogUrlByIndex(4)}
-                                title={this.getBlogTitle(4)}
-                                style={{ gridRow: 1, gridColumn: 2 }}>
-                                <img
-                                    src={this.state.lastBlogs[4].photoUrl}
-                                    alt={this.state.lastBlogs[4].photoAlt}></img>
-                            </Link>
-                            <Link
-                                to={this.getBlogUrlByIndex(5)}
-                                title={this.getBlogTitle(5)}
-                                style={{ gridRow: 2, gridColumn: 2 }}>
-                                <img
-                                    src={this.state.lastBlogs[5].photoUrl}
-                                    alt={this.state.lastBlogs[5].photoAlt}></img>
-                            </Link>
-                            <Link
-                                to={this.getBlogUrlByIndex(0)}
-                                className="main"
-                                style={{ gridRow: '1 / span 2', gridColumn: '3 / span 2' }}>
-                                <div className="overlay">{this.getBlogTitle(0)}</div>
-                                <img
-                                    src={this.state.lastBlogs[0].photoUrl}
-                                    alt={this.state.lastBlogs[0].photoAlt}></img>
-                            </Link>
-                            <Link
-                                to={this.getBlogUrlByIndex(1)}
-                                className="main"
-                                style={{ gridRow: '1 / span 2', gridColumn: '5 / span 2' }}>
-                                <div className="overlay">{this.getBlogTitle(1)}</div>
-                                <img
-                                    src={this.state.lastBlogs[1].photoUrl}
-                                    alt={this.state.lastBlogs[1].photoAlt}></img>
-                            </Link>
-                            <Link to={this.getBlogUrlByIndex(6)} title={this.getBlogTitle(6)} style={{ gridRow: 1 }}>
-                                <img
-                                    src={this.state.lastBlogs[6].photoUrl}
-                                    alt={this.state.lastBlogs[6].photoAlt}></img>
-                            </Link>
-                            <Link to={this.getBlogUrlByIndex(7)} title={this.getBlogTitle(7)} style={{ gridRow: 2 }}>
-                                <img
-                                    src={this.state.lastBlogs[7].photoUrl}
-                                    alt={this.state.lastBlogs[7].photoAlt}></img>
-                            </Link>
-                            <Link to={this.getBlogUrlByIndex(8)} title={this.getBlogTitle(8)} style={{ gridRow: 1 }}>
-                                <img
-                                    src={this.state.lastBlogs[8].photoUrl}
-                                    alt={this.state.lastBlogs[8].photoAlt}></img>
-                            </Link>
-                            <Link to={this.getBlogUrlByIndex(9)} title={this.getBlogTitle(9)} style={{ gridRow: 2 }}>
-                                <img
-                                    src={this.state.lastBlogs[9].photoUrl}
-                                    alt={this.state.lastBlogs[9].photoAlt}></img>
-                            </Link>
-                        </>
-                    ) : null}
-                </div>
                 <div className="article">
                     <section>
                         <h1 dangerouslySetInnerHTML={{ __html: strings.article.title }}></h1>
                         <h2>{strings.article.description}</h2>
 
-                        <article>
+                        {/* <article>
                             <span>
                                 {mostRecentBlog !== undefined ? (
                                     <Link to={this.getBlogUrl(mostRecentBlog)}>
@@ -156,7 +80,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                             <Link to={routes.blogs.route} className="button">
                                 {strings.article.more}
                             </Link>
-                        </article>
+                        </article> */}
 
                         <hgroup>
                             <img width="450" height="344" src={mapImage} alt="malopolskie_map" id="map" />

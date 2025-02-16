@@ -36,11 +36,11 @@ export const Root = ({ initialState }: { initialState?: any }) => (
                         <Offer alias={x.match.params.alias!} initialState={initialState[routes.offer.route]} />
                     )}
                 />
-                <Route
+                {/* <Route
                     exact
                     path={routes.blogs.route}
                     render={() => <Blogs initialState={initialState[routes.blogs.route]} />}
-                />
+                /> */}
                 <Route
                     exact
                     path={routes.blog.route}

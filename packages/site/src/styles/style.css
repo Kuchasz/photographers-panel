@@ -744,8 +744,11 @@ a#gallery:hover {
 }
 
 .article hgroup {
-    width: 480px;
-    float: right;
+    /* width: 480px; */
+    /* float: right; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: -15px;
 }
 

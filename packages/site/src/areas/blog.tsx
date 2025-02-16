@@ -1,8 +1,8 @@
 import * as api from "@pp/api/dist/site/blog";
 import * as React from "react";
-import facebookIcon from "../images/facebook.svg";
+// import facebookIcon from "../images/facebook.svg";
 import { Headers } from "../components/headers";
-import { strings } from "../resources";
+// import { strings } from "../resources";
 
 type BlogProps = { initialState?: api.Blog; alias: string };
 type BlogState = { blog?: api.Blog };
@@ -18,7 +18,7 @@ export class Blog extends React.Component<BlogProps, BlogState> {
 
     render() {
         if (this.state.blog === undefined) return null;
-        const location = (global as any).window.location;
+        // const location = (global as any).window.location;
 
         return (
             <div className="blog">
@@ -27,12 +27,12 @@ export class Blog extends React.Component<BlogProps, BlogState> {
                     <article className="show">
                         <h1>{this.state.blog.title}</h1>
                         <h2>{this.state.blog.content}</h2>
-                        <span>
+                        {/* <span>
                             {strings.blog.shareMessage}
                             <a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}>
                                 <img style={{filter: 'invert(1)'}} src={facebookIcon} />
                             </a>
-                        </span>
+                        </span> */}
                         <br />
                         <br />
                         <div className="photos">

@@ -129,19 +129,19 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     likes(variables: LikesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LikesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<LikesQuery>(LikesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'likes', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<LikesQuery>(LikesDocument as any, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'likes', 'query');
     },
     likedPhotos(variables: LikedPhotosQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LikedPhotosQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<LikedPhotosQuery>(LikedPhotosDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'likedPhotos', 'query');
+      return withWrapper((wrappedRequestHeaders) => client.request<LikedPhotosQuery>(LikedPhotosDocument as any, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'likedPhotos', 'query');
     },
     likeImage(variables: LikeImageMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LikeImageMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<LikeImageMutation>(LikeImageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'likeImage', 'mutation');
+      return withWrapper((wrappedRequestHeaders) => client.request<LikeImageMutation>(LikeImageDocument as any, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'likeImage', 'mutation');
     },
     unlikeImage(variables: UnlikeImageMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UnlikeImageMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UnlikeImageMutation>(UnlikeImageDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'unlikeImage', 'mutation');
+      return withWrapper((wrappedRequestHeaders) => client.request<UnlikeImageMutation>(UnlikeImageDocument as any, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'unlikeImage', 'mutation');
     },
     connectClient(variables: ConnectClientMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ConnectClientMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<ConnectClientMutation>(ConnectClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'connectClient', 'mutation');
+      return withWrapper((wrappedRequestHeaders) => client.request<ConnectClientMutation>(ConnectClientDocument as any, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'connectClient', 'mutation');
     }
   };
 }

@@ -36,16 +36,13 @@ export const Header = withRouter((props) => {
         }, 5000);
     }, [currentAdvantage]);
 
+    const firstItem = first(menuItems, (mi) => firstSegment(props.location.pathname) === mi.route);
+
     return (
         <>
-            <Headers
-                title={first(menuItems, (mi) => firstSegment(props.location.pathname) === mi.route).title}></Headers>
+            <Headers title={firstItem?.title}></Headers>
             <header
-                id={
-                    first(menuItems, (mi) => firstSegment(props.location.pathname) === mi.route).fullPage
-                        ? 'home'
-                        : 'subpage'
-                }>
+                id={firstItem?.fullPage ? 'home' : 'subpage'}>
                 <div className="background">
                     <picture key={prevPhoto + '-p'}>
                         <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.webp')}></source>
@@ -91,9 +88,9 @@ export const Header = withRouter((props) => {
                         <Link to={routes.offers.route} id={selectedItem(props.location.pathname, routes.offers.route)}>
                             {strings.menu.offer}
                         </Link>
-                        <Link to={routes.blogs.route} id={selectedItem(props.location.pathname, routes.blogs.route)}>
+                        {/* <Link to={routes.blogs.route} id={selectedItem(props.location.pathname, routes.blogs.route)}>
                             {strings.menu.blog}
-                        </Link>
+                        </Link> */}
                         <Link to={routes.photos.route} id={selectedItem(props.location.pathname, routes.photos.route)}>
                             {strings.menu.photos}
                         </Link>

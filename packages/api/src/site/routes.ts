@@ -9,7 +9,7 @@ export const routes = {
     //pricing: { fullPage: false, route: '/cennik', getData: empty },
     offers: { fullPage: false, route: '/oferta', getData: getOffersList },
     offer: { fullPage: false, route: '/oferta/:alias', getData: getOffer },
-    blogs: { fullPage: false, route: '/blog', getData: getBlogsList },
+    // blogs: { fullPage: false, route: '/blog', getData: getBlogsList },
     blog: { fullPage: false, route: '/blog/:alias', getData: getBlog },
     contact: { fullPage: false, route: '/kontakt', getData: empty },
     videos: { fullPage: false, route: '/filmy', getData: getVideosList },
