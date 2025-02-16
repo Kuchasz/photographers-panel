@@ -18,7 +18,7 @@
         "@types/express-serve-static-core": "4.17.28",
         "@types/jsonwebtoken": "8.5.1",
         "@types/multer": "1.4.5",
-        "@types/node": "14.0.1",
+        "@types/node": "18.11.18",
         "@types/nodemailer": "6.4.1",
         "@types/serve-static": "1.13.9",
         "@types/sharp": "0.32.0",
