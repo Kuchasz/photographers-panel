@@ -13,7 +13,7 @@ jobs:
 
         steps:
             - name: publish into staging
-              uses: appleboy/ssh-action@v1.2.0
+              uses: fifsky/ssh-action@master
               with:
                   host: ${{ secrets.ssh_host }}
                   username: ${{ secrets.ssh_username }}
