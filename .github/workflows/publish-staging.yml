@@ -15,9 +15,10 @@ jobs:
             - name: publish into staging
               uses: appleboy/ssh-action@v1.2.0
               with:
-                  host: ${{ secrets.ssh_host }}
-                  username: ${{ secrets.ssh_username }}
-                  password: ${{ secrets.ssh_password }}
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USERNAME }}
+                  passphrase: ${{ secrets.SSH_KEYPASS }}
+                  key: ${{ secrets.SSH_KEY }}
                   script: |
                       cd domains/kuchasz.usermd.net/ && \
                       rm -rf node_modules && \
