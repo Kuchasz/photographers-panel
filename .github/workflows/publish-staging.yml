@@ -20,18 +20,18 @@ jobs:
                   password: ${{ secrets.ssh_password }}
                   tryKeyboard: true
                   command: |
-                      cd domains/kuchasz.usermd.net/
-                      rm -rf node_modules
-                      mv public_nodejs/public/blogs images_backup
-                      mv public_nodejs/databases databases_backup
-                      rm -rf public_nodejs
-                      rm -rf packages
-                      rm -rf node_modules
-                      unzip -o -q ../artifacts/package.zip
-                      mv -f packages/server/dist/* packages/server/
-                      mkdir -p packages/server/public
-                      mv -f images_backup packages/server/public/blogs
-                      mv -f databases_backup packages/server/databases
-                      npm install -w @pp/server sharp@0.32.6 sqlite3
-                      mv -f packages/server public_nodejs                   
+                      cd domains/kuchasz.usermd.net/ && \
+                      rm -rf node_modules && \
+                      mv public_nodejs/public/blogs images_backup && \
+                      mv public_nodejs/databases databases_backup && \
+                      rm -rf public_nodejs && \
+                      rm -rf packages && \
+                      rm -rf node_modules && \
+                      unzip -o -q ../artifacts/package.zip && \
+                      mv -f packages/server/dist/* packages/server/ && \
+                      mkdir -p packages/server/public && \
+                      mv -f images_backup packages/server/public/blogs && \
+                      mv -f databases_backup packages/server/databases && \
+                      npm install -w @pp/server sharp@0.32.6 sqlite3 && \
+                      mv -f packages/server public_nodejs && \
                       devil www restart kuchasz.usermd.net
