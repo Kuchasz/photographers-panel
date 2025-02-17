@@ -13,11 +13,12 @@ jobs:
 
         steps:
             - name: publish into staging
-              uses: appleboy/ssh-action@master
+              uses: appleboy/ssh-action@1.2.0
               with:
                   host: ${{ secrets.ssh_host }}
                   username: ${{ secrets.ssh_username }}
                   password: ${{ secrets.ssh_password }}
+                  key: ${{ secrets.ssh_password }}
                   port: 22
                   script: |
                       cd domains/kuchasz.usermd.net/ && \
