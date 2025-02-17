@@ -13,13 +13,12 @@ jobs:
 
         steps:
             - name: publish into staging
-              uses: garygrossgarten/github-action-ssh@release
+              uses: appleboy/ssh-action@v1.2.0
               with:
                   host: ${{ secrets.ssh_host }}
                   username: ${{ secrets.ssh_username }}
                   password: ${{ secrets.ssh_password }}
-                  tryKeyboard: true
-                  command: |
+                  script: |
                       cd domains/kuchasz.usermd.net/ && \
                       rm -rf node_modules && \
                       mv public_nodejs/public/blogs images_backup && \
