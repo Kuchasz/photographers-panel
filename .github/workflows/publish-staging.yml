@@ -16,21 +16,20 @@ jobs:
               uses: appleboy/ssh-action@v1.2.0
               with:
                   host: ${{ secrets.SSH_HOST }}
-                  username: ${{ secrets.SSH_USERNAME }}
                   passphrase: ${{ secrets.SSH_KEYPASS }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
                       cd domains/kuchasz.usermd.net/ && \
                       rm -rf node_modules && \
-                      mv public_nodejs/public/blogs images_backup && \
-                      mv public_nodejs/databases databases_backup && \
+                      [ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup || true && \
+                      [ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup || true && \
                       rm -rf public_nodejs && \
                       rm -rf packages && \
                       rm -rf node_modules && \
                       unzip -o -q ../artifacts/package.zip && \
                       mv -f packages/server/dist/* packages/server/ && \
                       mkdir -p packages/server/public && \
-                      mv -f images_backup packages/server/public/blogs && \
-                      mv -f databases_backup packages/server/databases && \
+                      [ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs || true && \
+                      [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true && \
                       mv -f packages/server public_nodejs && \
                       devil www restart kuchasz.usermd.net
