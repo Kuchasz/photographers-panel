@@ -16,7 +16,7 @@ jobs:
               uses: appleboy/ssh-action@v1.2.0
               with:
                   host: ${{ secrets.SSH_HOST }}
-                  passphrase: ${{ secrets.SSH_KEYPASS }}
+                  username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
                       cd domains/kuchasz.usermd.net/ && \
