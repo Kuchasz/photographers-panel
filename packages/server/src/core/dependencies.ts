@@ -1,6 +1,9 @@
-import path from "path";
+import { dirname, join } from "path";
 
-export function getModulePath(pkgName: string) {
-    return path.dirname(require.resolve(`${pkgName}/package.json`, { paths: [__dirname] }));
+function getModulePath(pkgName: string) {
+    return dirname(require.resolve(`${pkgName}/package.json`, { paths: [__dirname] }));
 }
 
+export function resolveModulePath(pkgName: string, path: string) {
+    return join(getModulePath(pkgName), path);
+}

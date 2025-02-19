@@ -2,7 +2,7 @@ import * as emailModel from "../../models/email";
 import * as fs from "fs";
 import * as privateGallery from "@pp/api/dist/site/private-gallery";
 import * as privateGalleryModel from "../../models/private-gallery";
-import { getModulePath } from "../../core/dependencies";
+import { resolveModulePath } from "../../core/dependencies";
 import { ResultType } from "@pp/api/dist/common";
 import { routes } from "@pp/api/dist/site/routes";
 
@@ -45,7 +45,7 @@ export const postViewGallery = async (req: any, res: any) => {
 
     await privateGalleryModel.registerVisit(galleryId, address, new Date());
 
-    fs.readFile(getModulePath('@pp/gallery/dist/index.html'), 'utf8', (err, template) => {
+    fs.readFile(resolveModulePath('@pp/gallery', 'dist/index.html'), 'utf8', (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);

@@ -10,7 +10,7 @@ import express from 'express';
 import fs from 'fs';
 import { allowCrossDomain } from './core';
 import { connection } from './db';
-import { getModulePath } from './core/dependencies';
+import { resolveModulePath } from './core/dependencies';
 import { Knex } from 'knex';
 import { migrations } from './migrations';
 import path, { resolve } from 'path';
@@ -74,11 +74,11 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-app.use(express.static(path.join(getModulePath('@pp/site'), 'dist'), { index: false }));
-app.use([privateGallery.viewGallery.route], express.static(path.join(getModulePath('@pp/gallery'), 'dist'), { index: false }));
+app.use(express.static(resolveModulePath('@pp/site', 'dist'), { index: false }));
+app.use([privateGallery.viewGallery.route], express.static(resolveModulePath('@pp/gallery', 'dist'), { index: false }));
 app.use(
     [authPanel.viewLogIn.route, '/panel*', '/panel/*'],
-    express.static(path.join(getModulePath('@pp/panel'), 'dist'), { index: false })
+    express.static(resolveModulePath('@pp/panel', 'dist'), { index: false })
 );
 
 app.use(siteRouter);
@@ -151,7 +151,7 @@ app.get('*', async (req: any, res, next) => {
         return res.redirect('/');
     }
 
-    fs.readFile(path.join(getModulePath('@pp/site'), 'dist/index.html'), 'utf8', async (err, template) => {
+    fs.readFile(resolveModulePath('@pp/site', 'dist/index.html'), 'utf8', async (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
@@ -200,8 +200,8 @@ app.get('*', async (req: any, res, next) => {
                     <link href="/main.css" rel="stylesheet" />
                     <script type="text/javascript">
                         window.___InitialState___=${JSON.stringify({
-                            [desiredRoute.route]: initialState,
-                        })};
+            [desiredRoute.route]: initialState,
+        })};
                         window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>
                 </head>
                 <body>
