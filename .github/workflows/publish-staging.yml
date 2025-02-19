@@ -19,7 +19,7 @@ jobs:
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
-                      cd domains/kuchasz.usermd.net/ && \
+                      cd domains/staging.pyszstudio.pl/ && \
                       rm -rf node_modules && \
                       [ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup || true && \
                       [ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup || true && \
@@ -34,4 +34,4 @@ jobs:
                       mv -f packages/server public_nodejs && \
                       npm install -w @pp/server sharp@0.32.6 sqlite3 && \
                       cp .env public_nodejs && \
-                      devil www restart kuchasz.usermd.net
+                      devil www restart staging.pyszstudio.pl
