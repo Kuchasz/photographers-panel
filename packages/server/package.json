@@ -45,10 +45,10 @@
         "reflect-metadata": "0.1.13",
         "sharp": "0.32.6",
         "sqlite": "5.1.1",
-        "ts-node": "9.1.1",
+        "ts-node": "10.7.0",
         "tslib": "2.3.1",
         "type-graphql": "1.1.1",
-        "typeorm": "0.2.32",
+        "typeorm": "0.3.20",
         "typescript": "5.7.3",
         "youch": "2.2.1"
     }
