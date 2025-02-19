@@ -31,5 +31,6 @@ jobs:
                       mkdir -p packages/server/public && \
                       [ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs || true && \
                       [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true && \
+                      npm install -w @pp/server sharp@0.32.6 sqlite3 && \
                       mv -f packages/server public_nodejs && \
                       devil www restart kuchasz.usermd.net
