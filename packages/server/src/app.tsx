@@ -13,7 +13,7 @@ import { connection } from './db';
 import { getModulePath } from './core/dependencies';
 import { Knex } from 'knex';
 import { migrations } from './migrations';
-import { resolve } from 'path';
+import path, { resolve } from 'path';
 import { router as siteRouter } from './areas/site/routes';
 import { router as panelRouter } from './areas/panel/routes';
 import { router as mainRouter } from './areas/routes';
@@ -74,11 +74,11 @@ const raiseErr = (err: Error, req: any, res: any) => {
     });
 };
 
-app.use(express.static(getModulePath('@pp/site/dist'), { index: false }));
-app.use([privateGallery.viewGallery.route], express.static(getModulePath('@pp/gallery/dist'), { index: false }));
+app.use(express.static(path.join(getModulePath('@pp/site'), 'dist'), { index: false }));
+app.use([privateGallery.viewGallery.route], express.static(path.join(getModulePath('@pp/gallery'), 'dist'), { index: false }));
 app.use(
     [authPanel.viewLogIn.route, '/panel*', '/panel/*'],
-    express.static(getModulePath('@pp/panel/dist'), { index: false })
+    express.static(path.join(getModulePath('@pp/panel'), 'dist'), { index: false })
 );
 
 app.use(siteRouter);
@@ -151,7 +151,7 @@ app.get('*', async (req: any, res, next) => {
         return res.redirect('/');
     }
 
-    fs.readFile(getModulePath('@pp/site/dist/index.html'), 'utf8', async (err, template) => {
+    fs.readFile(path.join(getModulePath('@pp/site'), 'dist/index.html'), 'utf8', async (err, template) => {
         if (err) {
             console.error(err);
             return res.sendStatus(500);
