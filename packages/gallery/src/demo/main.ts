@@ -9,7 +9,7 @@ import { ApiService } from '../service/api.service';
 import { fetchGallery } from '../utils/jalbum';
 import { getUserName } from '@pp/api/dist/user';
 import { DisplayModes } from '../config/gallery.config';
-import { GalleryModule } from '../gallery.module';
+// import { GalleryModule } from '../gallery.module';
 // import "./styles.scss";
 import "@angular/compiler";
 // import "core-js";

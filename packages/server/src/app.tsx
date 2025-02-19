@@ -22,8 +22,6 @@ import { setEndpoint } from '@pp/api/dist/common';
 import 'isomorphic-unfetch';
 import { useGraphApi } from './graph-app';
 
-require('dotenv').config()
-
 let { Root }: { Root: any } = require('@pp/site');
 
 setEndpoint(config.app.appPath!);
