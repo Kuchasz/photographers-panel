@@ -18,7 +18,7 @@
         "Chrome > 65"
     ],
     "workspaces": [
-        "packages/*"
+        "packages/*", "public_nodejs"
     ],
     "overrides": {
         "@types/react": "17.0.2",
