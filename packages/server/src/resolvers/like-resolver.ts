@@ -33,7 +33,7 @@ export class LikeResolver {
         @Ctx() ctx: GalleryServerContext
     ) {
         const repository = ctx.db.getRepository(Like);
-        const likeToDelete = await repository.findOne({ imageId, clientId });
+        const likeToDelete = await repository.findOne({ where: { imageId, clientId } });
 
         if (!likeToDelete) return DeleteResult.None;
 
