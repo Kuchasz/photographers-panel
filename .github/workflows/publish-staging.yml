@@ -33,10 +33,7 @@ jobs:
                       [ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs || true && \
                       [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true && \
                       mv -f packages/server public_nodejs && \
-                      npm install -w @pp/server node-addon-api && \
-                      npm install -w @pp/server node-gyp && \
-                      npm install -w @pp/server sharp@0.33.3 && \
-                      npm install -w @pp/server sqlite3 && \
-                      npm install -w @pp/gallery sqlite3 && \
+                      npm install -w @pp/server sharp@0.32.6 && \
+                      npm install -w @pp/gallery -w @pp/server sqlite3 && \
                       cp .env public_nodejs && \
                       devil www restart staging.pyszstudio.pl
