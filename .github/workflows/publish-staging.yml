@@ -34,6 +34,6 @@ jobs:
                       [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true && \
                       cp -rf ../native-packages/* packages/server/node_modules/ && \
                       cp -rf ../native-packages/* packages/gallery/node_modules/ && \
-                      cp .env packages/server && \
+                      cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env && \
                       mv -f packages/server public_nodejs && \
                       devil www restart staging.pyszstudio.pl
