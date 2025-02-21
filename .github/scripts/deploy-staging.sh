@@ -32,6 +32,12 @@ mkdir -p packages/server/public
 echo "🔧 Removing problematic node-gyp..."
 rm -rf node_modules/.bin/node-gyp
 
+echo "⚙️ Copying environment file..."
+cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env
+
+echo "📦 Moving server to final location..."
+mv -f packages/server public_nodejs
+
 echo "📥 Installing dependencies..."
 echo "  ⚙️ Installing sharp..."
 npm install -w @pp/server sharp@0.33.4
@@ -39,12 +45,6 @@ echo "  ⚙️ Installing sqlite3 for server..."
 npm install -w @pp/server sqlite3@5.1.4
 echo "  ⚙️ Installing sqlite3 for gallery..."
 npm install -w @pp/gallery sqlite3@5.1.4
-
-echo "⚙️ Copying environment file..."
-cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env
-
-echo "📦 Moving server to final location..."
-mv -f packages/server public_nodejs
 
 echo "🔄 Restarting web service..."
 devil www restart staging.pyszstudio.pl
