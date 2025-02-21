@@ -38,7 +38,7 @@ mv -f packages/server public_nodejs
 # echo "🔧 Removing problematic node-gyp..."
 # rm -rf node_modules/.bin/node-gyp
 
-rsync -a ../native-packages/ node_modules/ 
+rsync -a ../native-packages/node_modules/ node_modules/ 
 
 # echo "📥 Installing dependencies..."
 # echo "  ⚙️ Installing node-addon-api..."
