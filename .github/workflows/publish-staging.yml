@@ -19,7 +19,7 @@ jobs:
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   source: ".github/scripts/deploy-staging.sh"
-                  target: "domains/staging.pyszstudio.pl/"
+                  target: "~/domains/staging.pyszstudio.pl/"
                   strip_components: 2
 
             - name: Run deployment script
