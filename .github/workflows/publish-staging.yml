@@ -13,19 +13,10 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
-            - name: Copy deployment script
-              uses: appleboy/scp-action@v0.1.7
-              with:
-                  host: ${{ secrets.SSH_HOST }}
-                  username: ${{ secrets.SSH_USERNAME }}
-                  key: ${{ secrets.SSH_KEY }}
-                  source: ".github/scripts/deploy-staging.sh"
-                  target: "/usr/home/kuchasz/deployments"
-                  strip_components: 2
             - name: Run deployment script
               uses: appleboy/ssh-action@v1.2.0
               with:
                   host: ${{ secrets.SSH_HOST }}
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
-                  script_path: ~/deployments/deploy-staging.sh
+                  script_path: .github/scripts/deploy-staging.sh
