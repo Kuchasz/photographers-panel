@@ -19,23 +19,23 @@ jobs:
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
-                      cd domains/staging.pyszstudio.pl/ && \
-                      [ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup || true && \
-                      [ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup || true && \
-                      rm -rf public_nodejs && \
-                      rm -rf packages && \
-                      rm -rf node_modules && \
-                      rm -rf package-lock.json && \
-                      rm -rf package.json && \
-                      unzip -o -q ../artifacts/package.zip && \
-                      mv -f packages/server/dist/* packages/server/ && \
-                      mkdir -p packages/server/public && \
-                      [ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs || true && \
-                      [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true && \
-                      rm -rf node_modules/.bin/node-gyp && \
-                      npm install -w @pp/server sharp@0.33.4 && \
-                      npm install -w @pp/server sqlite3@5.1.4 && \
-                      npm install -w @pp/gallery sqlite3@5.1.4 && \
-                      cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env && \
-                      mv -f packages/server public_nodejs && \
+                      cd domains/staging.pyszstudio.pl/
+                      [ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup || true
+                      [ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup || true
+                      rm -rf public_nodejs
+                      rm -rf packages
+                      rm -rf node_modules
+                      rm -rf package-lock.json
+                      rm -rf package.json
+                      unzip -o -q ../artifacts/package.zip
+                      mv -f packages/server/dist/* packages/server/
+                      mkdir -p packages/server/public
+                      [ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs || true
+                      [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true
+                      rm -rf node_modules/.bin/node-gyp
+                      npm install -w @pp/server sharp@0.33.4
+                      npm install -w @pp/server sqlite3@5.1.4
+                      npm install -w @pp/gallery sqlite3@5.1.4
+                      cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env
+                      mv -f packages/server public_nodejs
                       devil www restart staging.pyszstudio.pl
