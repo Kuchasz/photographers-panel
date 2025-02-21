@@ -38,18 +38,20 @@ mv -f packages/server public_nodejs
 echo "🔧 Removing problematic node-gyp..."
 rm -rf node_modules/.bin/node-gyp
 
-echo "📥 Installing dependencies..."
-echo "  ⚙️ Installing node-addon-api..."
-npm install -w @pp/server node-addon-api@8.3.1
-npm install -w @pp/gallery node-addon-api@8.3.1
-echo "  ⚙️ Installing node-gyp..."
-npm install -w @pp/server node-gyp@11.1.0
-npm install -w @pp/gallery node-gyp@11.1.0
-echo "  ⚙️ Installing sharp..."
-npm install -w @pp/server sharp@0.33.4
-echo "  ⚙️ Installing sqlite3..."
-npm install -w @pp/server sqlite3@5.1.4
-npm install -w @pp/gallery sqlite3@5.1.4
+copy -rf ../native-packages/ node_modules/* 
+
+# echo "📥 Installing dependencies..."
+# echo "  ⚙️ Installing node-addon-api..."
+# npm install -w @pp/server node-addon-api@8.3.1
+# npm install -w @pp/gallery node-addon-api@8.3.1
+# echo "  ⚙️ Installing node-gyp..."
+# npm install -w @pp/server node-gyp@11.1.0
+# npm install -w @pp/gallery node-gyp@11.1.0
+# echo "  ⚙️ Installing sharp..."
+# npm install -w @pp/server sharp@0.33.4
+# echo "  ⚙️ Installing sqlite3..."
+# npm install -w @pp/server sqlite3@5.1.4
+# npm install -w @pp/gallery sqlite3@5.1.4
 
 echo "🔄 Restarting web service..."
 devil www restart staging.pyszstudio.pl
