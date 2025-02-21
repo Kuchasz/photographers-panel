@@ -42,6 +42,9 @@ echo "📥 Installing dependencies..."
 echo "  ⚙️ Installing node-addon-api..."
 npm install -w @pp/server node-addon-api@8.3.1
 npm install -w @pp/gallery node-addon-api@8.3.1
+echo "  ⚙️ Installing node-gyp..."
+npm install -w @pp/server node-gyp@11.1.0
+npm install -w @pp/gallery node-gyp@11.1.0
 echo "  ⚙️ Installing sharp..."
 npm install -w @pp/server sharp@0.33.4
 echo "  ⚙️ Installing sqlite3..."
