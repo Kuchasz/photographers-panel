@@ -19,7 +19,7 @@ jobs:
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   source: ".github/scripts/deploy-staging.sh"
-                  target: "~/domains/staging.pyszstudio.pl/"
+                  target: "~"
 
             - name: Run deployment script
               uses: appleboy/ssh-action@v1.2.0
