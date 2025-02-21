@@ -6,7 +6,7 @@ set -e
 echo "🚀 Starting deployment process..."
 
 echo "📂 Changing to staging directory..."
-cd ../domains/staging.pyszstudio.pl/
+cd domains/staging.pyszstudio.pl/
 
 echo "💾 Backing up existing directories..."
 [ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup && echo "  ✓ Backed up blogs directory" || true
