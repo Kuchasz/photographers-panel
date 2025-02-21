@@ -3,10 +3,10 @@
 # Exit on error
 set -e
 
-echo "🚀 Starting deployment process..."
+echo "🚀 Starting production deployment process..."
 
-echo "📂 Changing to staging directory..."
-cd domains/staging.pyszstudio.pl/
+echo "📂 Changing to production directory..."
+cd domains/pyszstudio.pl/
 
 echo "💾 Backing up existing directories..."
 [ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup && echo "  ✓ Backed up blogs directory" || true
@@ -30,7 +30,7 @@ mkdir -p packages/server/public
 [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases && echo "  ✓ Restored databases directory" || true
 
 echo "⚙️ Copying environment file..."
-cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env
+cp ../env-vars/pyszstudio.pl.env packages/server/.env
 
 echo "📦 Moving server to final location..."
 mv -f packages/server public_nodejs
@@ -42,6 +42,6 @@ echo "🔧 Installing new native packages..."
 npm install sharp@0.32.6 sqlite3@5.1.4
 
 echo "🔄 Restarting web service..."
-devil www restart staging.pyszstudio.pl
+devil www restart pyszstudio.pl
 
-echo "✅ Deployment completed successfully!" 
+echo "✅ Production deployment completed successfully!"

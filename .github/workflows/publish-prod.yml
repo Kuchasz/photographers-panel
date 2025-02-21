@@ -6,30 +6,18 @@ name: Master.Publish.Prod
 # events but only for the master branch
 on: workflow_dispatch
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
     publish_application:
         runs-on: ubuntu-latest
 
         steps:
-            - name: publish into production
-              uses: garygrossgarten/github-action-ssh@release
+            - uses: actions/checkout@v3
+            - name: Run deployment script
+              uses: appleboy/ssh-action@v1.2.0
               with:
-                  host: ${{ secrets.ssh_host }}
-                  username: ${{ secrets.ssh_username }}
-                  password: ${{ secrets.ssh_password }}
-                  tryKeyboard: true
-                  command: |
-                      cd domains/pyszstudio.pl/
-                      rm -rf node_modules
-                      mv public_nodejs/public/blogs images_backup
-                      mv public_nodejs/databases databases_backup
-                      rm -rf public_nodejs
-                      unzip -q ../artifacts/package.zip
-                      mv -f packages/server public_nodejs
-                      mv -f public_nodejs/dist/* public_nodejs/
-                      mkdir -p public_nodejs/public
-                      mv -f images_backup public_nodejs/public/blogs
-                      mv -f databases_backup public_nodejs/databases
-                      cd public_nodejs
-                      npm install sharp@0.32.6 sqlite
-                      devil www restart pyszstudio.pl
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USERNAME }}
+                  key: ${{ secrets.SSH_KEY }}
+                  script_path: .github/scripts/deploy-prod.sh
+                
