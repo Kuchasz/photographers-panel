@@ -18,6 +18,9 @@ rm -rf public_nodejs packages node_modules package-lock.json package.json
 echo "📦 Unzipping new package..."
 unzip -o -q ../artifacts/package.zip
 
+echo "ℹ️ Node.js version:"
+node --version
+
 echo "📝 Moving server dist files..."
 mv -f packages/server/dist/* packages/server/
 
