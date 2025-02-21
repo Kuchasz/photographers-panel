@@ -32,7 +32,9 @@ jobs:
                       mkdir -p packages/server/public && \
                       [ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs || true && \
                       [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true && \
-                      npm install && \
+                      npm install -w packages/server sharp@0.33.4 && \
+                      npm install -w packages/server sqlite3 && \
+                      npm install -w packages/gallery sqlite3 && \
                       cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env && \
                       mv -f packages/server public_nodejs && \
                       devil www restart staging.pyszstudio.pl
