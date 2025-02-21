@@ -29,14 +29,14 @@ mkdir -p packages/server/public
 [ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs && echo "  ✓ Restored blogs directory" || true
 [ -d "databases_backup" ] && mv -f databases_backup packages/server/databases && echo "  ✓ Restored databases directory" || true
 
-echo "🔧 Removing problematic node-gyp..."
-rm -rf node_modules/.bin/node-gyp
-
 echo "⚙️ Copying environment file..."
 cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env
 
 echo "📦 Moving server to final location..."
 mv -f packages/server public_nodejs
+
+echo "🔧 Removing problematic node-gyp..."
+rm -rf node_modules/.bin/node-gyp
 
 echo "📥 Installing dependencies..."
 echo "  ⚙️ Installing sharp..."
