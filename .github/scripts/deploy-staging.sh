@@ -39,11 +39,13 @@ echo "🔧 Removing problematic node-gyp..."
 rm -rf node_modules/.bin/node-gyp
 
 echo "📥 Installing dependencies..."
+echo "  ⚙️ Installing node-addon-api..."
+npm install -w @pp/server node-addon-api@8.3.1
+npm install -w @pp/gallery node-addon-api@8.3.1
 echo "  ⚙️ Installing sharp..."
 npm install -w @pp/server sharp@0.33.4
-echo "  ⚙️ Installing sqlite3 for server..."
+echo "  ⚙️ Installing sqlite3..."
 npm install -w @pp/server sqlite3@5.1.4
-echo "  ⚙️ Installing sqlite3 for gallery..."
 npm install -w @pp/gallery sqlite3@5.1.4
 
 echo "🔄 Restarting web service..."
