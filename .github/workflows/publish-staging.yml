@@ -20,7 +20,7 @@ jobs:
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   source: ".github/scripts/deploy-staging.sh"
-                  target: "~"
+                  target: "/usr/home/kuchasz"
 
             - name: Run deployment script
               uses: appleboy/ssh-action@v1.2.0
@@ -29,5 +29,5 @@ jobs:
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
-                      chmod +x domains/staging.pyszstudio.pl/deploy-staging.sh
-                      ./domains/staging.pyszstudio.pl/deploy-staging.sh
+                      chmod +x deploy-staging.sh
+                      ./deploy-staging.sh
