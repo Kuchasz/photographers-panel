@@ -38,7 +38,10 @@ mv -f packages/server public_nodejs
 # echo "🔧 Removing problematic node-gyp..."
 # rm -rf node_modules/.bin/node-gyp
 
+echo "🔧 Removing old native packages..."
 rm -rf node_modules/.bin/node-gyp node_modules/sharp/ node_modules/sqlite3/
+
+echo "🔧 Installing new native packages..."
 npm install sharp@0.32.6 sqlite3@5.1.4
 
 # rsync -a ../native-packages/node_modules/ node_modules/ 
