@@ -35,10 +35,10 @@ cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env
 echo "📦 Moving server to final location..."
 mv -f packages/server public_nodejs
 
-echo "🔧 Removing problematic node-gyp..."
-rm -rf node_modules/.bin/node-gyp
+# echo "🔧 Removing problematic node-gyp..."
+# rm -rf node_modules/.bin/node-gyp
 
-copy -rf ../native-packages/ node_modules/* 
+rsync -a ../native-packages/ node_modules/ 
 
 # echo "📥 Installing dependencies..."
 # echo "  ⚙️ Installing node-addon-api..."
