@@ -3,39 +3,47 @@
 # Exit on error
 set -e
 
-cd domains/staging.pyszstudio.pl/
+echo "🚀 Starting deployment process..."
 
-# Backup existing directories if they exist
-[ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup || true
-[ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup || true
+echo "📂 Changing to staging directory..."
+cd ../domains/staging.pyszstudio.pl/
 
-# Clean up existing files
+echo "💾 Backing up existing directories..."
+[ -d "public_nodejs/public/blogs" ] && mv public_nodejs/public/blogs images_backup && echo "  ✓ Backed up blogs directory" || true
+[ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup && echo "  ✓ Backed up databases directory" || true
+
+echo "🧹 Cleaning up existing files..."
 rm -rf public_nodejs packages node_modules package-lock.json package.json
 
-# Unzip new package
+echo "📦 Unzipping new package..."
 unzip -o -q ../artifacts/package.zip
 
-# Move server dist files
+echo "📝 Moving server dist files..."
 mv -f packages/server/dist/* packages/server/
 
-# Create public directory and restore backups
+echo "📁 Creating public directory and restoring backups..."
 mkdir -p packages/server/public
-[ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs || true
-[ -d "databases_backup" ] && mv -f databases_backup packages/server/databases || true
+[ -d "images_backup" ] && mv -f images_backup packages/server/public/blogs && echo "  ✓ Restored blogs directory" || true
+[ -d "databases_backup" ] && mv -f databases_backup packages/server/databases && echo "  ✓ Restored databases directory" || true
 
-# Remove problematic node-gyp
+echo "🔧 Removing problematic node-gyp..."
 rm -rf node_modules/.bin/node-gyp
 
-# Install dependencies
+echo "📥 Installing dependencies..."
+echo "  ⚙️ Installing sharp..."
 npm install -w @pp/server sharp@0.33.4
+echo "  ⚙️ Installing sqlite3 for server..."
 npm install -w @pp/server sqlite3@5.1.4
+echo "  ⚙️ Installing sqlite3 for gallery..."
 npm install -w @pp/gallery sqlite3@5.1.4
 
-# Copy environment file
+echo "⚙️ Copying environment file..."
 cp ../env-vars/staging.pyszstudio.pl.env packages/server/.env
 
-# Move server to final location
+echo "📦 Moving server to final location..."
 mv -f packages/server public_nodejs
 
-# Restart the web service
-devil www restart staging.pyszstudio.pl 
+echo "🔄 Restarting web service..."
+devil www restart staging.pyszstudio.pl
+
+echo "✅ Deployment completed successfully!" 
