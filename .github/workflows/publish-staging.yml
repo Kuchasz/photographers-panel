@@ -29,5 +29,5 @@ jobs:
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
                   script: |
-                      chmod +x ./deploy-staging.sh
-                      deploy-staging.sh
+                      chmod +x deployments/deploy-staging.sh
+                      deployments/deploy-staging.sh
