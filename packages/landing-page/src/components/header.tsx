@@ -9,7 +9,7 @@ import { type MenuItem, menuItems } from "~/menu-items";
 import { Headers } from "../components/headers";
 import { strings } from "../resources";
 
-const getSrc = (photo: string, ext: string) => `/images/top/${photo}${ext}`;
+const getSrc = (photo: string, ext: string) => `/images/top-new/${photo}${ext}`;
 
 const selectedItem = (selectedPath: string, path: string) =>
     firstSegment(selectedPath) === path ? 'current' : undefined;
@@ -36,24 +36,24 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
 
     return (
         <div className="relative w-full h-full">
-            <picture key={prevPhoto} className="absolute inset-0 transition-opacity duration-1000 ease-out">
-                <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.webp')} />
-                <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} />
+            <picture key={prevPhoto} className="absolute contrast-85 inset-0 transition-opacity duration-1000 ease-out">
+                <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
+                {/* <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} /> */}
                 <img
                     alt={prevPhoto.split('-').join(' ')}
                     className="w-full h-full object-cover"
-                    src={getSrc(prevPhoto, '.webp')} />
+                    src={getSrc(prevPhoto, '.jpg')} />
             </picture>
-            <picture key={currentPhoto} className="absolute inset-0 transition-opacity duration-1000 ease-out opacity-0 animate-fade-in">
-                <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.webp')} />
-                <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, '-600w.webp')} />
+            <picture key={currentPhoto} className="absolute contrast-85 inset-0 transition-opacity duration-1000 ease-out opacity-0 animate-fade-in">
+                <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.jpg')} />
+                {/* <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, '-600w.webp')} /> */}
                 <img
                     alt={currentPhoto.split('-').join(' ')}
                     className="w-full h-full object-cover"
-                    src={getSrc(currentPhoto, '.webp')} />
+                    src={getSrc(currentPhoto, '.jpg')} />
             </picture>
-            <div className="absolute inset-0 bg-black/50"></div>
-            <div className="absolute h-1/4 inset-0 bg-gradient-to-t from-transparent to-black"></div>
+            <div className="absolute inset-0 bg-black/20"></div>
+            {/* <div className="absolute h-1/4 inset-0 bg-gradient-to-t from-transparent to-black"></div> */}
         </div>
     );
 };
@@ -75,7 +75,7 @@ export const Header = () => {
         <div>
             <Headers title={firstItem?.title}></Headers>
 
-            <div className="relative min-h-96 overflow-hidden">
+            <div className="relative overflow-hidden h-[60vh]">
                 <div className="-z-10 absolute h-full w-full">
                     <ImageCarousel photos={strings.main.topPhotos} />
                 </div>
@@ -86,15 +86,15 @@ export const Header = () => {
                         </span>
                     ))}
                 </span> */}
-                <nav className="text-white px-4 py-2 flex items-center justify-between w-full">
+                <nav className="text-white px-12 py-6 flex items-center justify-between w-full">
                     <div className="leading-none">
-                        <div className="text-2xl leading-none font-medium">
+                        <div className="text-xl leading-none opacity-75 font-medium">
                             <span>PYSZ</span>
                             <span className="font-semibold">STUDIO</span>
                         </div>
-                        <div>FOTOGRAFIA I FILM</div>
+                        <div className="text-xs leading-none opacity-50">FOTOGRAFIA I FILM</div>
                     </div>
-                    <div className="flex gap-4 uppercase">
+                    <div className="flex gap-8 uppercase">
                         <Link href={routes.offers.route} id={selectedItem(pathname, routes.offers.route)}>
                             {strings.menu.offer}
                         </Link>
@@ -114,7 +114,6 @@ export const Header = () => {
                         {strings.menu.private}
                     </Link>
                 </nav>
-
             </div>
         </div>
     );

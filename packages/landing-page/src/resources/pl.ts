@@ -7,13 +7,13 @@ export const pl = {
     },
     main: {
         topPhotos: [
-            'przytulanie-na-schodach',
-            'zdjecia-w-wodzie-zagornik',
-            'zamek-moszna-przytulanie-glowami',
-            'obrazki-dymy',
-            'przytulanie-jeziorko',
-            'buty-pustyna-bledowska',
-            'przytulanie-na-schodach'
+            'andrychow-fotografia-slubna-32',
+            'andrychow-fotografia-slubna-78',
+            'andrychow-fotografia-slubna-90',
+            'andrychow-fotografia-slubna-92',
+            'andrychow-fotografia-slubna-95',
+            'andrychow-fotografia-slubna-239',
+            'andrychow-fotografia-slubna-243'
         ],
     },
     contact: {
