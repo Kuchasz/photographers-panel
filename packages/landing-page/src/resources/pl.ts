@@ -59,7 +59,7 @@ export const pl = {
         photos: 'Zdjęcia',
         blogs: 'Blog',
         blog: 'Blog',
-        private: 'Galeria z wesela',
+        private: 'Strefa klienta',
     },
     pageTitles: {
         home: 'Fotografia, zdjęcia ślubne Andrychów, Bielsko, Wadowice, Kęty',

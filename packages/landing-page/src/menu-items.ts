@@ -2,7 +2,7 @@ import { routes } from "@pp/api/dist/site/routes";
 import { strings } from "./resources";
 import { zip } from "@pp/utils/dist/array";
 
-type MenuItem = {
+export type MenuItem = {
     route: string;
     fullPage: boolean;
     label: string;

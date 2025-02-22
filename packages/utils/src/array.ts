@@ -25,10 +25,10 @@ export const sort = <T>(arr: T[], fn: (x: T) => number) => {
 
 export const sum = <T>(arr: T[], selector: (item: T) => number) => arr.reduce((sum, curr) => sum + selector(curr), 0);
 
-export const first = <T>(items: T[], predicate: (item: T) => boolean = () => true) => items.filter(predicate)[0];
+export const first = <T>(items: T[], predicate: (item: T) => boolean = () => true) => items.filter(predicate)[0]!;
 
 export const last = <T>(items: T[], predicate: (item: T) => boolean = () => true) =>
-    items.filter(predicate).reverse()[0];
+    items.filter(predicate).reverse()[0]!;
 
 export const groupBy = <T>(array: T[], predicate: (value: T, index: number, array: T[]) => string) =>
     array.reduce((acc, value, index, array) => {

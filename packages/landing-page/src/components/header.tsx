@@ -5,7 +5,7 @@ import { firstSegment } from "@pp/utils/dist/url";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { menuItems } from "~/menu-items";
+import { type MenuItem, menuItems } from "~/menu-items";
 import { Headers } from "../components/headers";
 import { strings } from "../resources";
 
@@ -21,13 +21,13 @@ interface ImageCarouselProps {
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }) => {
     const [{ currentPhoto, prevPhoto }, setCurrentPhoto] = React.useState({
-        prevPhoto: last(photos),
-        currentPhoto: first(photos),
+        prevPhoto: last(photos) as string,
+        currentPhoto: first(photos) as string,
     });
 
     React.useEffect(() => {
         const timer = setTimeout(() => {
-            const nextPhoto = nextElement(photos, currentPhoto);
+            const nextPhoto = nextElement(photos, currentPhoto) as string;
             setCurrentPhoto({ currentPhoto: nextPhoto, prevPhoto: currentPhoto });
         }, interval);
 
@@ -35,8 +35,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
     }, [currentPhoto, photos, interval]);
 
     return (
-        <div className="relative w-full h-96">
-            <picture key={prevPhoto + '-p'} className="absolute inset-0 transition-opacity duration-1000 ease-out">
+        <div className="relative w-full h-full">
+            <picture key={prevPhoto} className="absolute inset-0 transition-opacity duration-1000 ease-out">
                 <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.webp')} />
                 <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} />
                 <img
@@ -44,7 +44,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
                     className="w-full h-full object-cover"
                     src={getSrc(prevPhoto, '.webp')} />
             </picture>
-            <picture key={currentPhoto + '-c'} className="absolute inset-0 transition-opacity duration-1000 ease-out opacity-0 animate-fade-in">
+            <picture key={currentPhoto} className="absolute inset-0 transition-opacity duration-1000 ease-out opacity-0 animate-fade-in">
                 <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.webp')} />
                 <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, '-600w.webp')} />
                 <img
@@ -52,6 +52,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
                     className="w-full h-full object-cover"
                     src={getSrc(currentPhoto, '.webp')} />
             </picture>
+            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="absolute h-1/4 inset-0 bg-gradient-to-t from-transparent to-black"></div>
         </div>
     );
 };
@@ -62,43 +64,40 @@ export const Header = () => {
 
     React.useEffect(() => {
         setTimeout(() => {
-            const nextAdvantage = nextElement(strings.offer.slogan.advantages, currentAdvantage);
+            const nextAdvantage = nextElement(strings.offer.slogan.advantages, currentAdvantage) as string;
             setCurrentAdvantage(nextAdvantage);
         }, 5000);
     }, [currentAdvantage]);
 
-    const firstItem = first(menuItems, (mi) => firstSegment(pathname) === mi.route);
+    const firstItem = first(menuItems, (mi) => firstSegment(pathname) === mi.route) as MenuItem;
 
     return (
-        <>
+        <div>
             <Headers title={firstItem?.title}></Headers>
-            <header>
-                <ImageCarousel photos={strings.main.topPhotos} />
-                <span>
+
+            <div className="relative min-h-96 overflow-hidden">
+                <div className="-z-10 absolute h-full w-full">
+                    <ImageCarousel photos={strings.main.topPhotos} />
+                </div>
+                {/* <span>
                     {strings.offer.slogan.advantages.map((adv) => (
                         <span key={adv} className={`transition-all duration-500 ease-out ${adv === currentAdvantage ? 'opacity-100 scale-105' : 'opacity-0'}`}>
                             {adv}
                         </span>
                     ))}
-                </span>
-                <div>
-                    <nav>
-                        <Link href={routes.home.route} id={selectedItem(pathname, routes.home.route)}>
-                            {strings.menu.home}
-                        </Link>
-                        {/*
-                        <Link
-                            href={routes.pricing.route}
-                            id={selectedItem(pathname, routes.pricing.route)}>
-                            {strings.menu.pricing}
-                        </Link> 
-                        */}
+                </span> */}
+                <nav className="text-white px-4 py-2 flex items-center justify-between w-full">
+                    <div className="leading-none">
+                        <div className="text-2xl leading-none font-medium">
+                            <span>PYSZ</span>
+                            <span className="font-semibold">STUDIO</span>
+                        </div>
+                        <div>FOTOGRAFIA I FILM</div>
+                    </div>
+                    <div className="flex gap-4 uppercase">
                         <Link href={routes.offers.route} id={selectedItem(pathname, routes.offers.route)}>
                             {strings.menu.offer}
                         </Link>
-                        {/* <Link href={routes.blogs.route} id={selectedItem(pathname, routes.blogs.route)}>
-                            {strings.menu.blog}
-                        </Link> */}
                         <Link href={routes.photos.route} id={selectedItem(pathname, routes.photos.route)}>
                             {strings.menu.photos}
                         </Link>
@@ -110,19 +109,13 @@ export const Header = () => {
                             id={selectedItem(pathname, routes.contact.route)}>
                             {strings.menu.contact}
                         </Link>
-                        <Link id="gallery" href={routes.private.route}>
-                            {strings.menu.private}
-                        </Link>
-                    </nav>
-                </div>
-                <div>
-                    <div>
-                        <span>PYSZ</span>
-                        <span>STUDIO</span>
                     </div>
-                    <div>FOTOGRAFIA I FILM</div>
-                </div>
-            </header>
-        </>
+                    <Link id="gallery" href={routes.private.route}>
+                        {strings.menu.private}
+                    </Link>
+                </nav>
+
+            </div>
+        </div>
     );
 };
