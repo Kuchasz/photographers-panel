@@ -12,7 +12,7 @@ import { sum } from "@pp/utils/dist/array";
 export const getUrl = async (password: string): Promise<PrivateGalleryUrlCheckResult> => {
     const [gallery] = await connection('PrivateGallery')
         .leftOuterJoin('Blog', 'Blog.Id', 'PrivateGallery.Blog_id')
-        .where({ Password: password })
+        .where({ 'PrivateGallery.Password': password })
         .select(
             'PrivateGallery.Id',
             'PrivateGallery.State',

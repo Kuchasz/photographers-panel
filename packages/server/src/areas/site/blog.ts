@@ -1,23 +1,16 @@
+import * as blog from "@pp/api/dist/site/blog";
 import * as blogModel from "../../models/blog";
 
-export const getLastBlogs = async (_req: any, res: any) => {
-    const blog = await blogModel.getMostRecent();
-    res.json(blog);
+export const getLastBlogs = async (): Promise<blog.BlogListItem[]> => {
+    return await blogModel.getMostRecent();
 };
 
-export const getBlogsList = async (_req: any, res: any) => {
-    const blogs = await blogModel.getList();
-    res.json(blogs);
+export const getBlogsList = async (): Promise<blog.BlogListItem[]> => {
+    return await blogModel.getList();
 };
 
-export const getBlog = async (req: any, res: any) => {
-    const blog = await blogModel.get(req.params.alias);
-
-    const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
-        .replace('::ffff:', '')
-        .split(',')[0];
-
-    await blogModel.registerVisit(blog.id, address, new Date());
-
-    res.json(blog);
+export const getBlog = async (alias: string): Promise<blog.Blog> => {
+    const blog = await blogModel.get(alias);
+    await blogModel.registerVisit(blog.id, 'unknown', new Date()); // TODO: Get IP from request
+    return blog;
 };

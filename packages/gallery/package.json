@@ -15,14 +15,14 @@
         "watch": "ng build --watch --configuration development"
     },
     "dependencies": {
-        "@angular/animations": "19.1.6",
-        "@angular/common": "19.1.6",
-        "@angular/core": "19.1.6",
-        "@angular/platform-browser": "19.1.6",
-        "@angular/platform-browser-dynamic": "19.1.6",
-        "@angular/router": "19.1.6",
-        "@angular/cdk": "19.1.4",
-        "@angular-devkit/build-angular": "19.1.6",
+        "@angular/animations": "19.1.7",
+        "@angular/common": "19.1.7",
+        "@angular/core": "19.1.7",
+        "@angular/platform-browser": "19.1.7",
+        "@angular/platform-browser-dynamic": "19.1.7",
+        "@angular/router": "19.1.7",
+        "@angular/cdk": "19.1.5",
+        "@angular-devkit/build-angular": "19.1.8",
         "@mdi/font": "6.5.95",
         "@pp/api": "*",
         "@pp/utils": "*",
@@ -43,7 +43,6 @@
         "fast-xml-parser": "4.3.5"
     },
     "devDependencies": {
-        "@angular/cli": "19.1.7",
         "@types/node": "20.11.16",
         "sass": "1.70.0",
         "typescript": "5.7.3"

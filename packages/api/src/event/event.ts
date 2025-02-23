@@ -1,5 +1,5 @@
-import { f, Result } from "./common";
-import { UserName } from "./user";
+import { f, Result } from "../common";
+import { UserName } from "../user";
 
 export enum EventType {
     CalculatorConfigChanged = 0,

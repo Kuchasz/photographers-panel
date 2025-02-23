@@ -3,21 +3,18 @@ import * as messageModel from "../../models/message";
 import { ResultType } from "@pp/api/dist/common";
 import { sendEmail } from "../../messages";
 
-export const send = async (req: any, res: any) => {
-    const mesg = req.body as message.Message;
-
-    const error = messageModel.validate(mesg);
+export const send = async (data: message.Message): Promise<message.SendResult> => {
+    const error = messageModel.validate(data);
 
     if (error) {
-        res.json({ type: ResultType.Error, error });
-        return;
+        return { type: ResultType.Error, error };
     }
 
     try {
-        await sendEmail(mesg.name, mesg.email, mesg.content);
-        res.json({ type: ResultType.Success });
+        await sendEmail(data.name, data.email, data.content);
+        return { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        res.json({ type: ResultType.Error, error: 'InternalError' });
+        return { type: ResultType.Error, error: 'InternalError' };
     }
 };

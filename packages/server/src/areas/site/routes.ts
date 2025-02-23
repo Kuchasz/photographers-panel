@@ -4,25 +4,55 @@ import * as message from "@pp/api/dist/site/message";
 import * as messageController from "./message";
 import * as privateGallery from "@pp/api/dist/site/private-gallery";
 import * as privateGalleryController from "./private-gallery";
-import { Router as createRouter, Router } from "express";
+import { Router as createRouter } from "express";
+import { createExpressEndpoints, initServer } from '@ts-rest/express';
+import { siteContract } from '@pp/api/dist/contracts';
 
 const r = createRouter();
+const s = initServer();
 
-r.get(blog.getLastBlogs.route, blogController.getLastBlogs);
-r.get(blog.getBlogsList.route, blogController.getBlogsList);
-r.get(blog.getBlog.route, blogController.getBlog);
+const siteImplementation = s.router(siteContract, {
+    blog: {
+        getLastBlogs: async () => {
+            const result = await blogController.getLastBlogs();
+            return { status: 200 as const, body: result };
+        },
+        getBlogsList: async () => {
+            const result = await blogController.getBlogsList();
+            return { status: 200 as const, body: result };
+        },
+        getBlog: async ({ params }) => {
+            const result = await blogController.getBlog(params.alias);
+            return { status: 200 as const, body: result };
+        },
+    },
+    message: {
+        send: async ({ body }) => {
+            const result = await messageController.send(body);
+            return { status: 200 as const, body: result };
+        },
+    },
+    privateGallery: {
+        subscribeForNotification: async ({ body }) => {
+            const result = await privateGalleryController.subscribeForNotification(body);
+            return { status: 200 as const, body: result };
+        },
+        getGalleryUrl: async ({ params }) => {
+            const result = await privateGalleryController.getGalleryUrl(params.password);
+            return { status: 200 as const, body: result };
+        },
+        viewGallery: async ({ req }) => {
+            const result = await privateGalleryController.getViewGallery(req);
+            return { status: 200 as const, body: result };
+        },
+        postViewGallery: async ({ req }) => {
+            const result = await privateGalleryController.postViewGallery(req);
+            return { status: 200 as const, body: result };
+        },
+    },
+});
 
-r.post(message.send.route, messageController.send);
+// Mount ts-rest router
+createExpressEndpoints(siteContract, siteImplementation, r);
 
-r.post(privateGallery.subscribeForNotification.route, privateGalleryController.subscribeForNotification);
-r.get(privateGallery.getGalleryUrl.route, privateGalleryController.getGalleryUrl);
-r.post(
-    [`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.route}/*`],
-    privateGalleryController.postViewGallery
-);
-r.get(
-    [`${privateGallery.viewGallery.route}`, `${privateGallery.viewGallery.route}/*`],
-    privateGalleryController.getViewGallery
-);
-
-export const router = r as Router;
+export const router = r;

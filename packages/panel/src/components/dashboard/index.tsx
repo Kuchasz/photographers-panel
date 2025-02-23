@@ -1,6 +1,6 @@
 import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Icon, List, SelectPicker } from 'rsuite';
 import { colorFromString, invertColor } from '@pp/utils/dist/color';
-import { EventDto, EventType, getEventsList } from '@pp/api/dist/event';
+import { EventDto, EventType, getEventsList } from '@pp/api/dist/event/event';
 import { formatDateTime, translations } from '../../i18n';
 import { FormInstance } from 'rsuite/lib/Form';
 import { mainBlogsModel } from './main-blogs-model';

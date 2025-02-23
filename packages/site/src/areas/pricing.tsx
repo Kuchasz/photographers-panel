@@ -1,4 +1,4 @@
-import * as events from "@pp/api/dist/event";
+import * as events from "@pp/api/dist/event/event";
 import * as user from "@pp/api/dist/user";
 import linkPhoto from "../images/page_offer_photo.png";
 import React from "react";

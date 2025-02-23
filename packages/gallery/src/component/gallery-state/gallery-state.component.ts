@@ -6,7 +6,7 @@ import {
     Output
 } from "@angular/core";
 import { Router } from "@angular/router";
-import * as events from "@pp/api/dist/event";
+import * as events from "@pp/api/dist/event/event";
 import * as user from "@pp/api/dist/user";
 import { getOrRegisterName } from "@pp/utils/dist/user";
 import { Observable } from "rxjs";

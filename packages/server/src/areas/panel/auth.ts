@@ -4,13 +4,12 @@ import * as fs from "fs";
 import { resolveModulePath } from "../../core/dependencies";
 import { login } from "../../auth";
 import { ResultType } from "@pp/api/dist/common";
+import { Response } from "express";
 
-export const logIn = async (req: any, res: any) => {
-    let result: auth.LogInResult | undefined = undefined;
-
+export const logIn = async (credentials: auth.UserCredentials, res: Response): Promise<auth.LogInResult> => {
     try {
-        const tokens = await login(req.body as auth.UserCredentials);
-        result = {
+        const tokens = await login(credentials);
+        const result: auth.LogInResult = {
             type: ResultType.Success,
             result: {
                 authToken: tokens.encodedToken,
@@ -23,33 +22,35 @@ export const logIn = async (req: any, res: any) => {
             httpOnly: true,
             maxAge: config.auth.maxAge * 1000,
         }); //secure the cookie!!
+        return result;
     } catch (err) {
         console.log(err);
-        result = {
+        return {
             type: ResultType.Error,
             error: 'ErrorOccuredWhileLogIn',
             errorMessage: JSON.stringify(err),
         };
     }
-
-    res.json(result);
 };
 
-export const viewLogIn = async (req: any, res: any) => {
+export const viewLogIn = async (): Promise<string> => {
     const serverConfig = {
         stats: config.stats,
     };
 
-    fs.readFile(resolveModulePath('@pp/panel', 'dist/index.html'), 'utf8', (err, template) => {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
-        return res.send(
-            template.replace(
-                `<div id="state-initializer">{initial_state}</div>`,
-                `<script type="text/javascript">window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>`
-            )
-        );
+    return new Promise((resolve, reject) => {
+        fs.readFile(resolveModulePath('@pp/panel', 'dist/index.html'), 'utf8', (err, template) => {
+            if (err) {
+                console.error(err);
+                reject(err);
+                return;
+            }
+            resolve(
+                template.replace(
+                    `<div id="state-initializer">{initial_state}</div>`,
+                    `<script type="text/javascript">window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>`
+                )
+            );
+        });
     });
 };

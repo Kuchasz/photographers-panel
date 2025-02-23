@@ -1,5 +1,5 @@
 import { connection } from "../db";
-import { EventType } from "@pp/api/dist/event";
+import { EventType } from "@pp/api/dist/event/event";
 import { UserName } from "@pp/api/dist/user";
 
 export const registerEvent = async (type: EventType, user: UserName) => {

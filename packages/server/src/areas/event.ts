@@ -1,28 +1,22 @@
-import * as event from "@pp/api/dist/event";
+import * as event from "@pp/api/dist/event/event";
 import * as eventModel from "../models/event";
 import * as user from "@pp/api/dist/user";
 import { ResultType } from "@pp/api/dist/common";
 
-export const registerEvent = async (req: any, res: any) => {
-    let result: event.RegisterEventResult | undefined = undefined;
-
+export const registerEvent = async (data: event.EventDto): Promise<event.RegisterEventResult> => {
     try {
-        const { type, user } = req.body as { type: event.EventType; user: user.UserName };
-        await eventModel.registerEvent(type, user);
-        result = { type: ResultType.Success };
+        await eventModel.registerEvent(data.type, data.user);
+        return { type: ResultType.Success };
     } catch (err) {
         console.log(err);
-        result = {
+        return {
             type: ResultType.Error,
             error: 'ErrorOccuredWhileRegisteringEvent',
             errorMessage: JSON.stringify(err),
         };
     }
-
-    res.json(result);
 };
 
-export const getEventsList = async (_req: any, res: any) => {
-    const events = await eventModel.getList();
-    res.json(events);
+export const getEventsList = async (): Promise<event.EventDto[]> => {
+    return await eventModel.getList();
 };
