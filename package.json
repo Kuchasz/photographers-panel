@@ -18,13 +18,15 @@
         "Chrome > 65"
     ],
     "workspaces": [
-        "packages/*", "public_nodejs"
+        "packages/*",
+        "public_nodejs"
     ],
     "overrides": {
         "@types/react": "17.0.2",
         "@types/react-dom": "17.0.2"
     },
     "devDependencies": {
+        "@phosphor-icons/react": "^2.1.7",
         "concurrently": "^8.2.2"
     }
 }

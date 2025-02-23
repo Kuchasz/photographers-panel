@@ -3,7 +3,9 @@
 import { routes } from "@pp/api/dist/site/routes";
 import Image from "next/image";
 import Link from "next/link";
+import { InstagramLogo, FacebookLogo, Envelope, Phone } from "@phosphor-icons/react";
 import { strings } from "../resources";
+import { Button } from "../components/button";
 
 export default function Home() {
 
@@ -18,12 +20,9 @@ export default function Home() {
             <h1 className="mb-4 font-serif text-3xl font-light text-stone-800">{strings.offer.slogan.middle.title}</h1>
             <h2 className="mb-8 text-lg font-light leading-relaxed text-stone-600">{strings.offer.slogan.middle.description}</h2>
 
-            <Link 
-              href={routes.offers.route}
-              className="inline-block rounded-full border-2 border-stone-200 bg-white px-8 py-3 text-stone-800 transition duration-300 hover:border-stone-300 hover:bg-stone-50 hover:shadow-lg"
-            >
+            <Button href={routes.offers.route}>
               {strings.offer.slogan.middle.more}
-            </Link>
+            </Button>
           </article>
 
           <hgroup className="grid gap-12 md:grid-cols-2">
@@ -59,9 +58,46 @@ export default function Home() {
             <h2 className="font-light italic tracking-wide text-stone-600">{strings.contact.slogan.description}</h2>
           </div>
 
-          <div className="text-center">
-            <h1 className="mb-3 font-serif text-2xl font-light text-stone-800">{strings.contact.email}</h1>
-            <h2 className="text-xl text-stone-400 hover:text-stone-500">{strings.contact.phone}</h2>
+          <div className="mx-auto max-w-3xl">
+            <div className="mb-12 flex justify-center">
+              <Button href={routes.contact.route}>
+                {strings.contact.form.submit}
+              </Button>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-center gap-12">
+              <Link 
+                href={`tel:${strings.contact.phone}`}
+                className="inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
+                  <Phone size={20} weight="light" />
+                </span>
+                <span className="font-serif text-xl font-light">{strings.contact.phone}</span>
+              </Link>
+              <Link
+                href="https://instagram.com/pyszstudio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
+                  <InstagramLogo size={20} weight="light" />
+                </span>
+                <span className="font-serif text-xl font-light">@pyszstudio</span>
+              </Link>
+              <Link
+                href="https://facebook.com/pyszstudio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
+                  <FacebookLogo size={20} weight="light" />
+                </span>
+                <span className="font-serif text-xl font-light">@pyszstudio</span>
+              </Link>
+            </div>
           </div>
         </section>
       </div>
