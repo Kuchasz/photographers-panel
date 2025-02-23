@@ -255,7 +255,7 @@ export const getOffersList = () => {
     const offer = offers[0];
     const photos = offerPhotos[offer.id]
         .map((p) => ({
-            url: `/media/images/offer/${p.photourl}`,
+            url: `/images/offer/${p.photourl}`,
             altText: p.alttext,
         }));
 
@@ -273,7 +273,7 @@ export const getOffersList = () => {
                         title: o.title,
                         alias: o.alias,
                         summary: o.descshort,
-                        photoUrl: `/media/images/offer/${offerPhotos[o.id][0].photourl}`,
+                        photoUrl: `/images/offer/${offerPhotos[o.id][0].photourl}`,
                     }
             )
         }
@@ -286,7 +286,7 @@ export const getOffer = (alias: string) => {
     const offer = offers.filter((o) => o.alias === alias)[0];
     const photos = offerPhotos[offer.id]
         .map((p) => ({
-            url: `/media/images/offer/${p.photourl}`,
+            url: `/images/offer/${p.photourl}`,
             altText: p.alttext,
         }));
 
