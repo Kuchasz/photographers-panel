@@ -160,21 +160,23 @@ export const Header = () => {
                         </div>
                     </div>
                 </nav>
-                <div className="relative flex h-full w-full items-center justify-center">
-                    <span className="text-center text-3xl font-extralight text-white md:text-4xl lg:text-5xl">
-                        {strings.offer.slogan.advantages.map((adv) => (
-                            <span 
-                                key={adv} 
-                                className={`absolute w-full transition-all duration-2500 ease-out ${
-                                    adv === currentAdvantage 
-                                        ? 'opacity-100 scale-105' 
-                                        : 'opacity-0'
-                                }`}
-                            >
-                                {adv}
-                            </span>
-                        ))}
-                    </span>
+                <div className="relative flex h-full w-full items-center justify-center text-white">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="relative h-32 w-full px-4 md:h-40 lg:h-48">
+                            {strings.offer.slogan.advantages.map((adv) => (
+                                <span 
+                                    key={adv} 
+                                    className={`absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-extralight transition-all duration-2500 ease-out md:text-4xl lg:text-5xl ${
+                                        adv === currentAdvantage 
+                                            ? 'opacity-100 scale-105' 
+                                            : 'opacity-0'
+                                    }`}
+                                >
+                                    {adv}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
