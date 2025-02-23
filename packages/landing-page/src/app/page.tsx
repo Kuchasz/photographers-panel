@@ -41,16 +41,6 @@ export default function Home() {
         <section>
           <h1 dangerouslySetInnerHTML={{ __html: strings.article.title }}></h1>
           <h2>{strings.article.description}</h2>
-
-          <hgroup>
-            <Image
-              width={450}
-              height={344}
-              src="/images/map.png"
-              alt="malopolskie_map"
-              id="map"
-            />
-          </hgroup>
         </section>
       </div>
       <div>

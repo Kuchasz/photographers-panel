@@ -36,20 +36,20 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
 
     return (
         <div className="relative w-full h-full">
-            <picture key={prevPhoto} className="absolute contrast-85 inset-0 transition-opacity duration-1000 ease-out">
+            <picture key={prevPhoto} className="absolute contrast-85 inset-0 transition-all duration-[6000ms] ease-out scale-100">
                 <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
                 {/* <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} /> */}
                 <img
                     alt={prevPhoto.split('-').join(' ')}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-center object-cover"
                     src={getSrc(prevPhoto, '.jpg')} />
             </picture>
-            <picture key={currentPhoto} className="absolute contrast-85 inset-0 transition-opacity duration-1000 ease-out opacity-0 animate-fade-in">
+            <picture key={currentPhoto} className="absolute contrast-85 inset-0 animate-fade-and-zoom">
                 <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.jpg')} />
                 {/* <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, '-600w.webp')} /> */}
                 <img
                     alt={currentPhoto.split('-').join(' ')}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-center object-cover"
                     src={getSrc(currentPhoto, '.jpg')} />
             </picture>
             <div className="absolute inset-0 bg-black/20"></div>
@@ -75,26 +75,12 @@ export const Header = () => {
         <div>
             <Headers title={firstItem?.title}></Headers>
 
-            <div className="relative overflow-hidden h-[60vh]">
+            <div className="relative flex flex-col items-center overflow-hidden h-screen">
                 <div className="-z-10 absolute h-full w-full">
                     <ImageCarousel photos={strings.main.topPhotos} />
                 </div>
-                {/* <span>
-                    {strings.offer.slogan.advantages.map((adv) => (
-                        <span key={adv} className={`transition-all duration-500 ease-out ${adv === currentAdvantage ? 'opacity-100 scale-105' : 'opacity-0'}`}>
-                            {adv}
-                        </span>
-                    ))}
-                </span> */}
-                <nav className="text-white px-12 py-6 flex items-center justify-between w-full">
-                    <div className="leading-none">
-                        <div className="text-xl leading-none opacity-75 font-medium">
-                            <span>PYSZ</span>
-                            <span className="font-semibold">STUDIO</span>
-                        </div>
-                        <div className="text-xs leading-none opacity-50">FOTOGRAFIA I FILM</div>
-                    </div>
-                    <div className="flex gap-8 uppercase">
+                <nav className="border-b-2 border-white text-white max-w-7xl uppercase px-12 py-8 flex items-center justify-between w-full">
+                    <div className="flex items-center gap-12 font-light tracking-wider">
                         <Link href={routes.offers.route} id={selectedItem(pathname, routes.offers.route)}>
                             {strings.menu.offer}
                         </Link>
@@ -104,16 +90,33 @@ export const Header = () => {
                         <Link href={routes.videos.route} id={selectedItem(pathname, routes.videos.route)}>
                             {strings.menu.videos}
                         </Link>
+                    </div>
+                    <div className="leading-none flex flex-col gap-1 items-center">
+                        <div className="text-3xl leading-none font-light">
+                            <span>PYSZ</span>
+                            <span className="font-semibold">STUDIO</span>
+                        </div>
+                        <div className="text-xs leading-none tracking-widest opacity-75">FOTOGRAFIA I FILM</div>
+                    </div>
+                    <div className="flex items-center gap-12 font-light tracking-wider">
                         <Link
                             href={routes.contact.route}
                             id={selectedItem(pathname, routes.contact.route)}>
                             {strings.menu.contact}
                         </Link>
+                        <Link className="uppercase border-b-2 px-2 py-1 border-white" href={routes.private.route}>
+                            {strings.menu.private}
+                        </Link>
                     </div>
-                    <Link id="gallery" href={routes.private.route}>
-                        {strings.menu.private}
-                    </Link>
+
                 </nav>
+                <span className="text-5xl text-white font-extralight relative w-full h-full">
+                    {strings.offer.slogan.advantages.map((adv) => (
+                        <span key={adv} className={`absolute w-full h-full flex items-center justify-center transition-all duration-2500 ease-out ${adv === currentAdvantage ? 'opacity-100 scale-105' : 'opacity-0'}`}>
+                            {adv}
+                        </span>
+                    ))}
+                </span>
             </div>
         </div>
     );
