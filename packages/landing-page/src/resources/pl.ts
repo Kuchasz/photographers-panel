@@ -1,9 +1,8 @@
 export const pl = {
     article: {
-        title: 'Gdzie <span>działamy</span>?',
+        title: 'Gdzie działamy?',
         description:
-            'Wykonujemy zdjęcia i filmy nie tylko na terenie Andrychowa. Mamy za sobą wiele realizacji w Kętach, Wadowicach, Bielsku-Białej czy Krakowie. Pojedziemy wszędzie gdzie nas zaprosicie.',
-        more: 'POZOSTAŁE WPISY Z BLOGA',
+            'Wykonujemy zdjęcia i filmy nie tylko na terenie Andrychowa. Mamy za sobą wiele realizacji w Katowicach, Kętach, Wadowicach, Bielsku-Białej czy Krakowie. Pojedziemy wszędzie gdzie nas zaprosicie. Nie doliczamy dodatkowych kosztów za dojazd do 100km od Andrychowa.',
     },
     main: {
         topPhotos: [
@@ -17,6 +16,7 @@ export const pl = {
         ],
     },
     contact: {
+        map: 'Znajdź nas na mapie',
         slogan: {
             title: 'Skontaktuj się z nami!',
             description: 'Zapytaj o wszelkie wątpliwości drogą elektroniczną lub telefonicznie',
@@ -174,4 +174,12 @@ export const pl = {
     blog: {
         shareMessage: 'Aby podzielić się zdjęciami ze znajomymi możesz udostępnić wpis na facebooku',
     },
+    opinions: {
+        title: "Opinie",
+        subtitle: "Co mówią o nas nasi klienci",
+        sources: {
+            google: "google",
+            facebook: "facebook"
+        }
+    }
 };
