@@ -108,13 +108,18 @@ export const Header = () => {
                         </div>
 
                         <div className="flex flex-col items-center gap-1">
-                            <div className="text-2xl font-light leading-none text-white md:text-3xl">
-                                <span className="tracking-wider">PYSZ</span>
-                                <span className="font-medium tracking-wide">STUDIO</span>
-                            </div>
-                            <div className="text-[10px] font-light leading-none tracking-[0.2em] text-white/75 md:text-xs">
-                                FOTOGRAFIA I FILM
-                            </div>
+                            <Link 
+                                href="/"
+                                className="flex flex-col items-center gap-1 transition duration-300 hover:opacity-90"
+                            >
+                                <div className="text-2xl font-light leading-none text-white md:text-3xl">
+                                    <span className="tracking-wider">PYSZ</span>
+                                    <span className="font-medium tracking-wide">STUDIO</span>
+                                </div>
+                                <div className="text-[10px] font-light leading-none tracking-[0.2em] text-white/75 md:text-xs">
+                                    FOTOGRAFIA I FILM
+                                </div>
+                            </Link>
                         </div>
 
                         <div className="hidden items-center gap-6 font-light tracking-wider text-white/90 transition-colors md:flex md:gap-8 lg:gap-12">
