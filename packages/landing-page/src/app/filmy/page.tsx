@@ -1,30 +1,41 @@
 'use client';
 
-import React from "react";
-import { getVideosList, type VideoListItem } from "@pp/api/dist/site/video";
+import { tsr } from "~/api";
 import { strings } from "~/resources";
 
-type VideosPageProps = {
-    initialState?: VideoListItem[];
-};
+export default function VideosPage() {
+    // const [videos, setVideos] = React.useState<VideoListItem[]>(initialState ?? []);
 
-export default function VideosPage({ initialState }: VideosPageProps) {
-    const [videos, setVideos] = React.useState<VideoListItem[]>(initialState ?? []);
+    // const api = tsr.useQueryClient();
 
-    React.useEffect(() => {
-        const fetchVideos = async () => {
-            try {
-                const response = await getVideosList();
-                setVideos(response);
-            } catch (error) {
-                console.error('Failed to fetch videos:', error);
-            }
-        };
+    const { data } = tsr.video.getVideosList.useQuery({ queryKey: ['videos'], initialData: [] });
 
-        if (!initialState) {
-            void fetchVideos();
-        }
-    }, [initialState]);
+    console.log(data);
+
+    const videos = data?.body ?? [];
+
+    // const { data} = api.
+
+    // const { data, isLoading, error } = useApi.useQuery({
+    // const { data, isLoading, error } = useApi.useQuery({
+    //     path: '/videos',
+    //     method: 'GET',
+    // });
+
+    // React.useEffect(() => {
+    //     const fetchVideos = async () => {
+    //         try {
+    //             const response = await getVideosList();
+    //             setVideos(response);
+    //         } catch (error) {
+    //             console.error('Failed to fetch videos:', error);
+    //         }
+    //     };
+
+    //     if (!initialState) {
+    //         void fetchVideos();
+    //     }
+    // }, [initialState]);
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
@@ -41,7 +52,7 @@ export default function VideosPage({ initialState }: VideosPageProps) {
                 <section className="mx-auto max-w-7xl">
                     <div className="grid gap-8 md:gap-12">
                         {videos.map((video) => (
-                            <div 
+                            <div
                                 key={video.videoUrl}
                                 className="group relative overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
                             >

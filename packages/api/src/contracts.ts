@@ -4,10 +4,11 @@ import { LogInError, UserCredentials } from './panel/auth';
 import * as blog from "./panel/blog";
 import * as privateGallery from "./panel/private-gallery";
 import * as site from "./panel/site";
-import { SiteEventDto, SiteVisitsDto } from './panel/site';
+import { getSiteVisits, SiteEventDto, SiteVisitsDto } from './panel/site';
 import * as siteBlog from "./site/blog";
 import * as siteMessage from "./site/message";
 import * as siteGallery from "./site/private-gallery";
+import * as siteVideo from "./site/video";
 import * as auth from "./panel/auth";
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
@@ -43,7 +44,7 @@ export const panelContract = c.router({
     site: {
         getSiteVisits: {
             method: 'GET',
-            path: '/api/panel/site-stats/:start/:end',
+            path: getSiteVisits.route,
             responses: {
                 200: c.type<SiteVisitsDto>(),
             },
@@ -348,4 +349,13 @@ export const siteContract = c.router({
             body: c.type<{ galleryUrl: string; galleryId: number }>(),
         },
     },
+    video: {
+        getVideosList: {
+            method: 'GET',
+            path: siteVideo.getVideosList.route,
+            responses: {
+                200: c.type<siteVideo.VideoListItem[]>(),
+            },
+        },
+    }
 });

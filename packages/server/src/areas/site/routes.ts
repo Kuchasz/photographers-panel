@@ -7,6 +7,7 @@ import * as privateGalleryController from "./private-gallery";
 import { Router as createRouter } from "express";
 import { createExpressEndpoints, initServer } from '@ts-rest/express';
 import { siteContract } from '@pp/api/dist/contracts';
+import { getVideosList } from "./video";
 
 const r = createRouter();
 const s = initServer();
@@ -50,9 +51,16 @@ const siteImplementation = s.router(siteContract, {
             return { status: 200 as const, body: result };
         },
     },
+    video: {
+        getVideosList: async () => {
+            const result = await getVideosList();
+            return { status: 200 as const, body: result };
+        },
+    },
 });
 
 // Mount ts-rest router
 createExpressEndpoints(siteContract, siteImplementation, r);
 
 export const router = r;
+

@@ -4,6 +4,8 @@ import { type Metadata } from "next";
 import { Footer } from "~/components/footer";
 import { Header } from "~/components/header";
 import { Headers } from "~/components/headers";
+import { ApiProvider } from "~/api-provider";
+
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -19,9 +21,11 @@ export default function RootLayout({
       <body>
         <Headers />
         <Header />
-        <span>
-          {children}
-        </span>
+        <ApiProvider>
+          <span>
+            {children}
+          </span>
+        </ApiProvider>
         <Footer />
       </body>
     </html>
