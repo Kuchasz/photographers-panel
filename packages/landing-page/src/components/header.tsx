@@ -79,27 +79,27 @@ export const Header = () => {
                 <div className="-z-10 absolute h-full w-full">
                     <ImageCarousel photos={strings.main.topPhotos} />
                 </div>
-                <nav className="relative w-full border-b border-white/30 bg-black/20 backdrop-blur-sm">
+                <nav className="relative w-full border-b border-white/10 backdrop-blur-sm">
                     <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-8 lg:px-12">
                         {/* Mobile menu button can be added here if needed */}
-                        
-                        <div className="hidden items-center gap-6 text-sm font-light tracking-wider text-white/90 transition-colors md:flex md:gap-8 lg:gap-12">
-                            <Link 
-                                href={routes.offers.route} 
+
+                        <div className="hidden items-center gap-6 font-light tracking-wider text-white/90 transition-colors md:flex md:gap-8 lg:gap-12">
+                            <Link
+                                href={routes.offers.route}
                                 id={selectedItem(pathname, routes.offers.route)}
                                 className="hover:text-white"
                             >
                                 {strings.menu.offer}
                             </Link>
-                            <Link 
-                                href={routes.photos.route} 
+                            <Link
+                                href={routes.photos.route}
                                 id={selectedItem(pathname, routes.photos.route)}
                                 className="hover:text-white"
                             >
                                 {strings.menu.photos}
                             </Link>
-                            <Link 
-                                href={routes.videos.route} 
+                            <Link
+                                href={routes.videos.route}
                                 id={selectedItem(pathname, routes.videos.route)}
                                 className="hover:text-white"
                             >
@@ -117,7 +117,7 @@ export const Header = () => {
                             </div>
                         </div>
 
-                        <div className="hidden items-center gap-6 text-sm font-light tracking-wider text-white/90 transition-colors md:flex md:gap-8 lg:gap-12">
+                        <div className="hidden items-center gap-6 font-light tracking-wider text-white/90 transition-colors md:flex md:gap-8 lg:gap-12">
                             <Link
                                 href={routes.contact.route}
                                 id={selectedItem(pathname, routes.contact.route)}
@@ -125,7 +125,7 @@ export const Header = () => {
                             >
                                 {strings.menu.contact}
                             </Link>
-                            <Link 
+                            <Link
                                 href={routes.private.route}
                                 className="border-b border-white/80 px-2 py-1 uppercase transition-colors hover:border-white hover:text-white"
                             >
@@ -150,7 +150,7 @@ export const Header = () => {
                                 <Link href={routes.contact.route} id={selectedItem(pathname, routes.contact.route)}>
                                     {strings.menu.contact}
                                 </Link>
-                                <Link 
+                                <Link
                                     href={routes.private.route}
                                     className="border-b border-white/80 px-2 py-1 uppercase"
                                 >
@@ -160,24 +160,6 @@ export const Header = () => {
                         </div>
                     </div>
                 </nav>
-                <div className="relative flex h-full w-full items-center justify-center text-white">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="relative h-32 w-full px-4 md:h-40 lg:h-48">
-                            {strings.offer.slogan.advantages.map((adv) => (
-                                <span 
-                                    key={adv} 
-                                    className={`absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 text-center text-3xl font-extralight transition-all duration-2500 ease-out md:text-4xl lg:text-5xl ${
-                                        adv === currentAdvantage 
-                                            ? 'opacity-100 scale-105' 
-                                            : 'opacity-0'
-                                    }`}
-                                >
-                                    {adv}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     );

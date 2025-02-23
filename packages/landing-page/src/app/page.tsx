@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-b from-rose-50 to-white">
+      <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
         <section className="container mx-auto px-4 py-24">
           <h1 className="mb-6 font-serif text-5xl font-light tracking-wide text-stone-800 md:text-6xl lg:text-7xl" dangerouslySetInnerHTML={{ __html: strings.offer.slogan.title }}></h1>
           <h2 className="mb-16 font-light italic tracking-wide text-stone-600 md:text-xl lg:text-2xl">{strings.offer.slogan.description}</h2>
@@ -20,7 +20,7 @@ export default function Home() {
 
             <Link 
               href={routes.offers.route}
-              className="inline-block rounded-full border-2 border-rose-200 bg-white px-8 py-3 text-stone-800 transition duration-300 hover:border-rose-300 hover:bg-rose-50 hover:shadow-lg"
+              className="inline-block rounded-full border-2 border-stone-200 bg-white px-8 py-3 text-stone-800 transition duration-300 hover:border-stone-300 hover:bg-stone-50 hover:shadow-lg"
             >
               {strings.offer.slogan.middle.more}
             </Link>
@@ -30,7 +30,7 @@ export default function Home() {
             <ul className="space-y-6">
               {strings.offer.slogan.advantages.slice(0, 4).map((adv) => (
                 <li key={adv} className="flex items-center text-stone-700">
-                  <span className="mr-3 text-rose-300">♥</span>
+                  <span className="mr-3 text-stone-300">♥</span>
                   <span className="font-light tracking-wide">{adv}</span>
                 </li>
               ))}
@@ -38,7 +38,7 @@ export default function Home() {
             <ul className="space-y-6">
               {strings.offer.slogan.advantages.slice(4).map((adv) => (
                 <li key={adv} className="flex items-center text-stone-700">
-                  <span className="mr-3 text-rose-300">♥</span>
+                  <span className="mr-3 text-stone-300">♥</span>
                   <span className="font-light tracking-wide">{adv}</span>
                 </li>
               ))}
@@ -61,14 +61,14 @@ export default function Home() {
 
           <div className="mb-20 text-center">
             <h1 className="mb-3 font-serif text-2xl font-light text-stone-800">{strings.contact.email}</h1>
-            <h2 className="text-xl text-rose-400 hover:text-rose-500">{strings.contact.phone}</h2>
+            <h2 className="text-xl text-stone-400 hover:text-stone-500">{strings.contact.phone}</h2>
           </div>
         </section>
       </div>
 
-      <div className="bg-rose-50">
+      <div className="bg-stone-50">
         <section className="container mx-auto px-4 py-16">
-          <div className="mb-10 h-px bg-rose-100"></div>
+          <div className="mb-10 h-px bg-stone-100"></div>
           <address className="text-center font-light tracking-wide text-stone-600">
             {strings.contact.address.map((addr) => (
               <div key={addr} className="mb-2">
