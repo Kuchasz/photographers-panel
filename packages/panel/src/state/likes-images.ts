@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type State = {
@@ -6,7 +6,12 @@ export type State = {
     updateThumbSize: (thumbSize: number) => void;
 };
 
-export const useLikedImages = create<State>(persist((set, _) => ({
-    thumbSize: 120,
-    updateThumbSize: (thumbSize: number) => set(() => ({ thumbSize }))
-}), { name: 'likes-thumbs-config' }));
+export const useLikedImages = create(
+    persist<State>(
+        (set) => ({
+            thumbSize: 120,
+            updateThumbSize: (thumbSize: number) => set(() => ({ thumbSize }))
+        }),
+        { name: 'likes-thumbs-config' }
+    )
+);

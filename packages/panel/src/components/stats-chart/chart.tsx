@@ -1,4 +1,4 @@
-import ChartistGraph from "react-chartist";
+// import ChartistGraph from "react-chartist";
 import React from "react";
 import { getDayAndMonth } from "@pp/utils/dist/date";
 
@@ -23,6 +23,6 @@ const getData = (items: ChartData[]) => ({
 
 export const Chart = ({ items }: { items: ChartData[] }) => (
     <div className="chart">
-        <ChartistGraph data={getData(items)} options={chartOptions} type={'Line'} />
+        {/* <ChartistGraph data={getData(items)} options={chartOptions} type={'Line'} /> */}
     </div>
 );

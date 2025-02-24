@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { distinctBy, replace, union } from "@pp/utils/dist/array";
 import { getBlogAssets } from "@pp/api/dist/panel/blog";
 import { v4 } from "@pp/utils/dist/uuid";
