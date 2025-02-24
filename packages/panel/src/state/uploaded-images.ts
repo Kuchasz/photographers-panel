@@ -16,7 +16,6 @@ export const isActive = (status: Status): status is ActiveStatus => status === '
 
 export type UploadedImage = {
     blogId: number;
-
     originId: Id;
     file: File;
     name: string;

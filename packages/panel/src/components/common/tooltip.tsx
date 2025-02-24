@@ -1,6 +1,6 @@
 import { Tooltip, Whisper } from 'rsuite';
 import React from 'react';
-import { TypeAttributes } from 'rsuite/esm/internals/types';
+import { type TypeAttributes } from 'rsuite/esm/internals/types';
 
 interface ToolTipProps {
     placement?: TypeAttributes.Placement;

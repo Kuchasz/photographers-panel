@@ -1,7 +1,7 @@
 import React from 'react';
 import { DateRangePicker, Button } from 'rsuite';
 import { ToolTip } from '../common/tooltip';
-import { ValueType } from 'rsuite/esm/DateRangePicker';
+import { type ValueType } from 'rsuite/esm/DateRangePicker';
 import { MagicWand } from '@phosphor-icons/react';
 
 interface Props {

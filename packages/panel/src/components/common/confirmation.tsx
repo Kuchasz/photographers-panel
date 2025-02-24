@@ -1,26 +1,39 @@
 import * as React from 'react';
-import { confirmable, createConfirmation } from 'react-confirm';
+import { confirmable, createConfirmation, ConfirmDialog } from 'react-confirm';
 import { Modal, Button } from 'rsuite';
 
 interface ConfirmationProps {
     confirmation: string;
-    proceed: (x: boolean) => void;
-    options: { title: string };
+    proceedLabel?: string;
+    cancelLabel?: string;
+    title?: string;
     show: boolean;
+    proceed: (value: boolean) => void;
+    dismiss: () => void;
+    cancel: () => void;
 }
 
-const ConfirmationComponent = (props: ConfirmationProps) => (
-    <Modal backdrop={true} open={props.show} onClose={() => props.proceed(false)}>
+const ConfirmationComponent: ConfirmDialog<ConfirmationProps, boolean> = ({
+    show,
+    proceed,
+    dismiss,
+    cancel,
+    confirmation,
+    title = 'Confirm',
+    proceedLabel = 'Ok',
+    cancelLabel = 'Cancel'
+}) => (
+    <Modal backdrop={true} open={show} onClose={dismiss}>
         <Modal.Header>
-            <Modal.Title>{props.options.title}</Modal.Title>
+            <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{props.confirmation}</Modal.Body>
+        <Modal.Body>{confirmation}</Modal.Body>
         <Modal.Footer>
-            <Button onClick={() => props.proceed(true)} appearance="primary">
-                Ok
+            <Button onClick={() => proceed(true)} appearance="primary">
+                {proceedLabel}
             </Button>
-            <Button onClick={() => props.proceed(false)} appearance="subtle">
-                Cancel
+            <Button onClick={cancel} appearance="subtle">
+                {cancelLabel}
             </Button>
         </Modal.Footer>
     </Modal>
@@ -31,5 +44,16 @@ const Confirmation = confirmable(ConfirmationComponent);
 const confirmInternal = createConfirmation(Confirmation);
 
 export const confirm = (text: string, title: string) => {
-    return confirmInternal({ confirmation: text, options: { title } });
+    return confirmInternal({
+        confirmation: text,
+        title,
+        proceedLabel: 'Ok',
+        cancelLabel: 'Cancel',
+        show: true,
+        proceed: (value: boolean) => {
+            console.log(value);
+        },
+        dismiss: () => { },
+        cancel: () => { }
+    });
 };
