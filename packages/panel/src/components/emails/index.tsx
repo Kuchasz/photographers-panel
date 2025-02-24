@@ -5,10 +5,10 @@ import './styles.less';
 export const Emails = () => (
     <div className="emails">
         <div className="list">
-            <Panel header={'Galleries'}></Panel>
+            <Panel header="Galleries"></Panel>
         </div>
         <div className="emails">
-            <Panel header={'Emails'}></Panel>
+            <Panel header="Emails"></Panel>
         </div>
     </div>
 );

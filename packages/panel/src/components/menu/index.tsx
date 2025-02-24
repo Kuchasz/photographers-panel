@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Sidenav, Nav, Icon } from 'rsuite';
+import { Sidenav, Nav } from 'rsuite';
+import * as icons from '@rsuite/icons';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { routes } from '../../routes';
 import { translations } from '../../i18n';
@@ -12,22 +13,22 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-    { route: routes.home, icon: 'home', text: translations.menu.home },
-    { route: routes.stats, icon: 'signal', text: translations.menu.stats },
+    { route: routes.home, icon: icons.Send, text: translations.menu.home },
+    { route: routes.stats, icon: icons.LineChart, text: translations.menu.stats },
     // { route: routes.emails, icon: "envelope-o", text: 'Emails' },
-    { route: routes.galleries, icon: 'leaf', text: translations.menu.galleries },
-    { route: routes.blog.list, icon: 'flag', text: translations.menu.blogs },
+    { route: routes.galleries, icon: icons.Image, text: translations.menu.galleries },
+    { route: routes.blog.list, icon: icons.CloudReflash, text: translations.menu.blogs },
     {
         route: routes.comments,
-        icon: 'comments',
+        icon: icons.Message,
         text: translations.menu.comments,
     },
     // { route: routes.login, icon: "trash", text: 'LogIn' }
 ];
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps { }
 
-interface State {}
+interface State { }
 
 class MenuComponent extends React.Component<Props, State> {
     handleItemClick = (route: string) => {
@@ -51,7 +52,7 @@ class MenuComponent extends React.Component<Props, State> {
                                     key={id}
                                     eventKey={mi.route}
                                     active={activeItem === mi.route}
-                                    icon={<Icon icon={mi.icon} />}>
+                                    icon={mi.icon}>
                                     {mi.text}
                                 </Nav.Item>
                             ))}
