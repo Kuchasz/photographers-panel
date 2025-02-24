@@ -1,5 +1,6 @@
 import React from 'react';
-import { Navbar, Nav, Icon, Alert } from 'rsuite';
+import { Navbar, Nav, Message, useToaster } from 'rsuite';
+import { SignOut } from '@phosphor-icons/react';
 import { translations } from '../../i18n';
 import * as security from '../../security';
 import './styles.less';
@@ -9,9 +10,13 @@ interface Props {
 }
 
 export const NavBarInstance = (props: Props) => {
+    const toaster = useToaster();
+
     const logOut = () => {
         security.logOut();
-        Alert.success(translations.login.loggedOut);
+        toaster.push(
+            <Message type="success">{translations.login.loggedOut}</Message>
+        );
     };
 
     return (
@@ -24,7 +29,7 @@ export const NavBarInstance = (props: Props) => {
             <Navbar.Body>
                 <Nav pullRight>
                     {props.canLogOut && (
-                        <Nav.Item onClick={logOut} icon={<Icon icon="power-off" />}>
+                        <Nav.Item onClick={logOut} icon={<SignOut size={16} />}>
                             {translations.login.logoutButton}
                         </Nav.Item>
                     )}

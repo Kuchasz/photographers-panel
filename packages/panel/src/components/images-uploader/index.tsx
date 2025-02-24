@@ -3,15 +3,20 @@ import { all } from "@pp/utils/dist/array";
 import {
     Badge,
     FlexboxGrid,
-    Icon,
-    IconProps,
     List,
     Loader,
     Nav,
     Popover,
     Progress,
     Whisper
-    } from "rsuite";
+} from "rsuite";
+import { 
+    ArrowCircleUp, 
+    CaretUp, 
+    Check, 
+    Clock, 
+    X 
+} from '@phosphor-icons/react';
 import { formatFileSize, formatTransfer } from "@pp/utils/dist/file";
 import {
     isActive,
@@ -20,7 +25,7 @@ import {
     State,
     UploadedImage,
     useUploadedImages
-    } from "../../state/uploaded-images";
+} from "../../state/uploaded-images";
 import { ResultType } from "@pp/api/dist/common";
 import { translations } from "../../i18n";
 import { truncate } from "@pp/utils/dist/string";
@@ -88,7 +93,7 @@ const UploadHeader = () => {
             <Badge
                 content={
                     <span>
-                        <Icon icon="sort-up" /> {totalProgress}%
+                        <CaretUp size={16} /> {totalProgress}%
                     </span>
                 }
             />
@@ -102,11 +107,11 @@ const UploadHeader = () => {
 };
 
 const getStatusIcon = (image: UploadedImage) => {
-    if (isQueued(image.status)) return <Icon icon="clock-o" size="lg"></Icon>;
+    if (isQueued(image.status)) return <Clock size={20} />;
 
-    if (image.status === 'successful') return <Icon style={{ color: '#4caf50' }} icon="check" size="lg"></Icon>;
+    if (image.status === 'successful') return <Check size={20} style={{ color: '#4caf50' }} />;
 
-    if (image.status === 'failed') return <Icon style={{ color: '#f44336' }} icon="close" size="lg"></Icon>;
+    if (image.status === 'failed') return <X size={20} style={{ color: '#f44336' }} />;
 
     if (image.status === 'processing') return <Loader size="xs" speed="slow" />;
 
@@ -123,13 +128,13 @@ const getStatus = (image: UploadedImage) => {
 const UploadsListItem = ({ id }: { id: string }) => {
     const item = useUploadedImages((x) => x.images.find((xx) => xx.originId === id));
 
-    if (!item) throw 'that should not hapeen';
+    if (!item) throw 'that should not happen';
 
     return (
         <List.Item className={isActive(item.status) ? 'active' : ''} key={item.originId}>
             <FlexboxGrid>
                 <FlexboxGrid.Item colspan={1}>
-                    <Icon icon="sort-up" />
+                    <CaretUp size={16} />
                 </FlexboxGrid.Item>
                 <FlexboxGrid.Item colspan={20}>
                     {truncate(40, item.name)} <span className="file-size-separator">|</span>
@@ -143,7 +148,8 @@ const UploadsListItem = ({ id }: { id: string }) => {
                 strokeWidth={3}
                 status={getStatus(item)}
                 showInfo={false}
-                percent={item.progress}></Progress.Line>
+                percent={item.progress}
+            />
         </List.Item>
     );
 };
@@ -175,7 +181,7 @@ const getProper = (images: UploadedImage[]) => {
         .reduce((acc, cur) => [...acc, ...cur], []);
 };
 
-const LoaderIcon = (props: Omit<IconProps, 'icon'>) => {
+const LoaderIcon = () => {
     const items = useUploadedImages(
         (x) => getProper(x.images),
         (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === (n as any[]).reduce((acc, cur) => acc + cur.loaded, 0)
@@ -185,7 +191,7 @@ const LoaderIcon = (props: Omit<IconProps, 'icon'>) => {
 
     return (
         <div className="images-uploader-status">
-            <Icon icon="arrow-circle-o-up" {...props} />
+            <ArrowCircleUp size={16} />
             <Progress.Circle percent={totalProgress} strokeWidth={8} showInfo={false} />
         </div>
     );
@@ -197,15 +203,11 @@ export const ImagesUploader = () => {
         (p, n) => ''.concat(...p.map((pi) => pi.originId)) === ''.concat(...(n as any[]).map((ni) => ni.originId))
     );
 
-    //when no uploads then show all finnished uploads
-    //if some uploads are in progress then show all uploads (even completed) from the same batches
     const proper = getProper(uploadedImages);
-
-    // const proper: any[] = JSON.parse(`[{"blogId":"304","file":{},"size":20592894,"name":"PF7B4400a.jpg","lastBytesPerSecond": 856924, "originId":"PF7B4400a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":true,"processed":false,"processing":false,"progress":7.631575267058614,"loaded":1571588,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17102851,"name":"PF7B4404-adawdawdaw-adawda.jpg","originId":"PF7B4404a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":100,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":17484072,"name":"PF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410aPF7B4410a.jpg","originId":"PF7B4410a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":true,"processing":false,"progress":50,"error":"Sineting went wrong", "loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":18416382,"name":"PF7B4412a.jpg","originId":"PF7B4412a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15054983,"name":"PF7B4419a.jpg","originId":"PF7B4419a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19282284,"name":"PF7B4422a.jpg","originId":"PF7B4422a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":23073856,"name":"PF7B4425a.jpg","originId":"PF7B4425a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":14300644,"name":"PF7B4431a.jpg","originId":"PF7B4431a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15274610,"name":"PF7B4435a.jpg","originId":"PF7B4435a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":15279244,"name":"PF7B4437a.jpg","originId":"PF7B4437a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":16170972,"name":"PF7B4443a.jpg","originId":"PF7B4443a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19577973,"name":"PF7B4448a.jpg","originId":"PF7B4448a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":12073713,"name":"PF7B4453a.jpg","originId":"PF7B4453a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":8275481,"name":"PF7B4458a.jpg","originId":"PF7B4458a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":19041735,"name":"PF7B4465a.jpg","originId":"PF7B4465a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13898841,"name":"PF7B4474a.jpg","originId":"PF7B4474a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"},{"blogId":"304","file":{},"size":13385373,"name":"PF7B4480a.jpg","originId":"PF7B4480a.jpg3042e2e794e-1dca-4eae-9dff-1521a51a883b","current":false,"processed":false,"processing":false,"progress":0,"loaded":0,"batchId":"2e2e794e-1dca-4eae-9dff-1521a51a883b"}]`);
 
     return (
         <Whisper trigger="click" placement="rightEnd" speaker={<UploadsPopup images={proper} />}>
-            {<Nav.Item icon={<LoaderIcon />}>{translations.menu.transfers}</Nav.Item>}
+            <Nav.Item icon={<LoaderIcon />}>{translations.menu.transfers}</Nav.Item>
         </Whisper>
     );
 };

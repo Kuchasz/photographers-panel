@@ -8,7 +8,7 @@ interface BlogAssignAssetsModalProps extends BlogAssignAssetsProps {
     closeAssignAssets: () => void;
 }
 
-interface BlogAssignAssetsModalState {}
+interface BlogAssignAssetsModalState { }
 
 export class BlogAssignAssetsModal extends React.Component<BlogAssignAssetsModalProps, BlogAssignAssetsModalState> {
     constructor(props: BlogAssignAssetsModalProps) {
@@ -21,7 +21,7 @@ export class BlogAssignAssetsModal extends React.Component<BlogAssignAssetsModal
 
     render() {
         return (
-            <Modal full show={this.props.showBlogAssignAssets} onHide={this.handleModalHide}>
+            <Modal size="full" open={this.props.showBlogAssignAssets} onClose={this.handleModalHide}>
                 <Modal.Header>
                     <Modal.Title>{translations.blog.assignAssets.title}</Modal.Title>
                 </Modal.Header>

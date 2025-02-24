@@ -1,10 +1,11 @@
 import * as React from "react";
 import {
-    Alert,
     Button,
-    Icon,
-    Panel
-    } from "rsuite";
+    Message,
+    Panel,
+    useToaster
+} from "rsuite";
+import { Plus } from '@phosphor-icons/react';
 import { ChartStat } from "../stats-chart/stats";
 import { confirm } from "../common/confirmation";
 import { GalleriesList } from "./galleries-list";
@@ -51,6 +52,8 @@ interface State {
 }
 
 export class Galleries extends React.Component<Props, State> {
+    private toaster = useToaster();
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -119,10 +122,14 @@ export class Galleries extends React.Component<Props, State> {
         if (confirmed) {
             const result = await deleteGallery(selectedGallery);
             if (result.type === ResultType.Success) {
-                Alert.success(translations.gallery.delete.deleted);
+                this.toaster.push(
+                    <Message type="success">{translations.gallery.delete.deleted}</Message>
+                );
                 this.fetchGalleries();
             } else {
-                Alert.error(translations.gallery.delete.notDeleted);
+                this.toaster.push(
+                    <Message type="error">{translations.gallery.delete.notDeleted}</Message>
+                );
             }
         }
     };
@@ -197,7 +204,7 @@ export class Galleries extends React.Component<Props, State> {
                     <Panel
                         header={
                             <Button onClick={this.showCreateForm} color="green">
-                                <Icon icon="plus" /> {translations.gallery.create.button}
+                                <Plus size={16} /> {translations.gallery.create.button}
                             </Button>
                         }>
                         <GalleriesList
@@ -217,30 +224,30 @@ export class Galleries extends React.Component<Props, State> {
                     showCreateForm={this.state.showCreateForm}
                     closeCreateForm={this.closeCreateForm}
                 />
-                {this.state.galleryToEditId ? (
+                {this.state.galleryToEditId && (
                     <GalleryEdit
                         onSaved={this.gallerySave}
                         showEditForm={this.state.showEditForm}
                         closeEditForm={this.closeEditForm}
                         id={this.state.galleryToEditId}
                     />
-                ) : null}
-                {this.state.galleryToEditId ? (
+                )}
+                {this.state.galleryToEditId && (
                     <GalleryEmails
                         show={this.state.showGalleryViewEmails}
                         close={this.closeGalleryViewEmails}
                         onNotified={this.onNotified}
                         id={this.state.galleryToEditId}
                     />
-                ) : null}
-                 {this.state.galleryToEditId ? (
+                )}
+                {this.state.galleryToEditId && (
                     <GalleryLikes
                         show={this.state.showGalleryViewLikes}
                         close={this.closeGalleryViewLikes}
                         onNotified={this.onNotified}
                         id={this.state.galleryToEditId}
                     />
-                ) : null}
+                )}
             </div>
         );
     }

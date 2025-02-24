@@ -1,16 +1,17 @@
 import React from "react";
 import {
-    Alert,
     Button,
-    Icon,
     List,
-    Modal
-    } from "rsuite";
+    Message,
+    Modal,
+    useToaster
+} from "rsuite";
 import { GalleryEmailDto, getGalleryEmails, notifySubscribers } from "@pp/api/dist/panel/private-gallery";
 import { ResultType } from "@pp/api/dist/common";
 import { ToolTip } from "../common/tooltip";
 import { translations } from "../../i18n";
 import { trim } from "@pp/utils/dist/string";
+import { Bell } from "@phosphor-icons/react";
 
 interface Props {
     id: number;
@@ -45,6 +46,8 @@ export class GalleryEmails extends React.Component<Props, State> {
         this.state = { emails: [], pendingNotification: false, isLoading: false };
     }
 
+    private toaster = useToaster();
+
     componentDidMount() {
         getGalleryEmails(this.props.id).then(({ emails, pendingNotification }) => {
             this.setState({ emails, pendingNotification });
@@ -67,11 +70,15 @@ export class GalleryEmails extends React.Component<Props, State> {
         const result = await notifySubscribers(this.props.id);
 
         if (result.type === ResultType.Success) {
-            Alert.success(translations.gallery.emailNotifications.notified);
+            this.toaster.push(
+                <Message type="success">{translations.gallery.emailNotifications.notified}</Message>
+            );
             this.handleModalHide();
             this.props.onNotified();
         } else {
-            Alert.error(translations.gallery.emailNotifications.notNotified);
+            this.toaster.push(
+                <Message type="error">{translations.gallery.emailNotifications.notNotified}</Message>
+            );
         }
 
         this.setState({ isLoading: false, pendingNotification: false });
@@ -79,7 +86,7 @@ export class GalleryEmails extends React.Component<Props, State> {
 
     render() {
         return (
-            <Modal className="gallery-emails" show={this.props.show} onHide={this.handleModalHide}>
+            <Modal className="gallery-emails" open={this.props.show} onClose={this.handleModalHide}>
                 <Modal.Header>
                     <Modal.Title>{translations.gallery.emailNotifications.title}</Modal.Title>
                 </Modal.Header>
@@ -93,7 +100,7 @@ export class GalleryEmails extends React.Component<Props, State> {
                             disabled={!this.state.pendingNotification}
                             appearance="primary"
                             loading={this.state.isLoading}>
-                            <Icon icon="bell-o" /> {translations.gallery.emailNotifications.send}
+                            <Bell size={16} /> {translations.gallery.emailNotifications.send}
                         </Button>
                     </ToolTip>
                     <Button onClick={this.handleModalHide} appearance="subtle">

@@ -13,17 +13,21 @@ import {
 } from '@pp/api/dist/panel/blog';
 import {
     Button,
-    Icon,
-    Loader,
-    Progress,
-    Alert,
-    Whisper,
-    Popover,
-    FormGroup,
-    ControlLabel,
-    FormControl,
     Form,
+    Loader,
+    Message,
+    Popover,
+    Progress,
+    useToaster,
+    Whisper,
 } from 'rsuite';
+import {
+    Camera,
+    Clock,
+    Star,
+    StarHalf,
+    Trash
+} from '@phosphor-icons/react';
 
 type BlogAssetsListItem = Partial<BlogAssetsListItemDto>;
 
@@ -36,25 +40,25 @@ interface OverlayButtonProps {
 const OverlayButtons = ({ isMain, onSetAsMain, onDelete }: OverlayButtonProps) => (
     <div className="overlay-button">
         <ToolTip text={isMain ? translations.blog.assignAssets.isMain : translations.blog.assignAssets.setAsMain}>
-            <Icon
-                onClick={(e: MouseEvent) => {
+            <span
+                onClick={(e: any) => {
                     if (!isMain) onSetAsMain();
                     e.stopPropagation();
                 }}
-                className={!isMain ? 'hideable' : ''}
-                icon={isMain ? 'star' : 'star-o'}
-            />
+                className={!isMain ? 'hideable' : ''}>
+                {isMain ? <Star size={16} /> : <StarHalf size={16} />}
+            </span>
         </ToolTip>
         {!isMain && (
             <ToolTip text={translations.blog.assignAssets.delete}>
-                <Icon
-                    onClick={(e: MouseEvent) => {
+                <span
+                    onClick={(e: any) => {
                         onDelete();
                         e.stopPropagation();
                     }}
-                    className="hideable"
-                    icon="trash-o"
-                />
+                    className="hideable">
+                    <Trash size={16} />
+                </span>
             </ToolTip>
         )}
     </div>
@@ -93,10 +97,10 @@ export class AssetDescriptor extends React.Component<AssetDescriptorProps, { alt
                     loading="lazy"
                     src={item.url}></img>
                 <Form fluid>
-                    <FormGroup>
-                        <ControlLabel>{translations.blog.assignAssets.description}</ControlLabel>
-                        <FormControl onChange={this.changeAlt} value={this.state.altText} name="description" />
-                    </FormGroup>
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.blog.assignAssets.description}</Form.ControlLabel>
+                        <Form.Control onChange={this.changeAlt} value={this.state.altText} name="description" />
+                    </Form.Group>
                 </Form>
             </Popover>
         );
@@ -137,7 +141,7 @@ const AssetUploadingThumb = React.memo(({ id }: { id: string }) => {
     return (
         <AssetsListItem className="thumb">
             {item.status === 'failed' && <Loader inverse center />}
-            {isQueued(item.status) && <Icon style={{ color: 'white' }} icon="clock-o" size="lg"></Icon>}
+            {isQueued(item.status) && <Clock size={20} style={{ color: 'white' }} />}
             {isActive(item.status) && (
                 <Progress.Line strokeWidth={3} showInfo={false} status={'active'} percent={item.progress} />
             )}
@@ -161,23 +165,21 @@ const AssetUploadButton = ({ onAssetsChosen }: AssetUploadButtonProps) => {
         const res = range(files.length).map((i) => ({
             file: files[i],
             url: files[i].name,
-        })); //await Promise.all(range(files.length).map((x) => read(files[x])));
+        }));
         onAssetsChosen(res);
     };
 
     return (
         <AssetsListItem className="add-btn">
-            <>
-                <Button appearance="subtle" onClick={triggerFileSelect}>
-                    <Icon icon="camera-retro" size="lg"></Icon>
-                </Button>
-                <input onChange={handleFilesChange} ref={inputRef} type="file" accept="image/*" multiple></input>
-            </>
+            <Button appearance="subtle" onClick={triggerFileSelect}>
+                <Camera size={20} />
+            </Button>
+            <input onChange={handleFilesChange} ref={inputRef} type="file" accept="image/*" multiple></input>
         </AssetsListItem>
     );
 };
 
-const AssetsListItem: React.FC<{ className: string; onClick?: () => void }> = ({ children, className, onClick }) => (
+const AssetsListItem: React.FC<React.PropsWithChildren<{ className: string; onClick?: () => void }>> = ({ children, className, onClick }) => (
     <div onClick={onClick} className={`item ${className}`}>
         {children}
     </div>
@@ -232,9 +234,11 @@ const AssetsList = ({
 export interface BlogAssignAssetsProps {
     id: number;
 }
-interface BlogAssignAssetsState {}
+interface BlogAssignAssetsState { }
 
 export class BlogAssignAssets extends React.Component<BlogAssignAssetsProps, BlogAssignAssetsState> {
+    private toaster = useToaster();
+
     constructor(props: BlogAssignAssetsProps) {
         super(props);
     }
@@ -291,10 +295,14 @@ export class BlogAssignAssets extends React.Component<BlogAssignAssetsProps, Blo
             if (result.type === ResultType.Success) {
                 const { deleteAsset } = useUploadedImages.getState();
 
-                Alert.success(translations.blog.assignAssets.assetRemoved);
+                this.toaster.push(
+                    <Message type="success">{translations.blog.assignAssets.assetRemoved}</Message>
+                );
                 deleteAsset(assetId);
             } else {
-                Alert.error(translations.blog.assignAssets.assetNotRemoved);
+                this.toaster.push(
+                    <Message type="error">{translations.blog.assignAssets.assetNotRemoved}</Message>
+                );
             }
         });
     };

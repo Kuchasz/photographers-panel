@@ -111,7 +111,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
             </Drawer.Header>
             <Drawer.Body>
                 <Form
-                    ref={formRef}
+                    ref={formRef as React.Ref<FormInstance>}
                     model={galleryModel}
                     formValue={formState}
                     formError={formError}

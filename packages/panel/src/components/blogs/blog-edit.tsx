@@ -63,7 +63,7 @@ export const BlogEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props) =>
             </Drawer.Header>
             <Drawer.Body>
                 <Form
-                    ref={formRef}
+                    ref={formRef as React.Ref<FormInstance>}
                     model={blogModel(id)}
                     formValue={formState}
                     formError={formError}

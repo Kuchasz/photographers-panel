@@ -1,10 +1,11 @@
 import * as React from "react";
 import {
-    Alert,
     Button,
-    Icon,
-    Panel
-    } from "rsuite";
+    Message,
+    Panel,
+    useToaster
+} from "rsuite";
+import { Plus } from '@phosphor-icons/react';
 import { BlogAssignAssetsModal } from "./blog-assign-assets-modal";
 import { BlogCreate } from "./blog-create";
 import { BlogEdit } from "./blog-edit";
@@ -14,12 +15,12 @@ import {
     deleteBlog,
     getBlogsList,
     getBlogVisits
-    } from "@pp/api/dist/panel/blog";
+} from "@pp/api/dist/panel/blog";
 import { BlogsList } from "./blogs-list";
 import { ChartStat } from "../stats-chart/stats";
 import { confirm } from "../common/confirmation";
 import { ResultType } from "@pp/api/dist/common";
-import { RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { routes } from "../../routes";
 import { StatsChart } from "../stats-chart";
 import { translations } from "../../i18n";
@@ -33,85 +34,56 @@ const getStats = (x: BlogVisitsDto): ChartStat[] => [
     { label: translations.blog.stats.bestDayVisits, value: x.bestDay.visits },
 ];
 
-interface Props extends RouteComponentProps {}
+export const Blogs: React.FC = () => {
+    const [isLoadingBlogs, setIsLoadingBlogs] = React.useState(false);
+    const [blogs, setBlogs] = React.useState<BlogListItem[]>([]);
+    const [selectedBlog, setSelectedBlog] = React.useState<BlogListItem>();
+    const [showCreateForm, setShowCreateForm] = React.useState(false);
+    const [showEditForm, setShowEditForm] = React.useState(false);
+    const [showAssignAssets, setShowAssignAssets] = React.useState(false);
+    const [blogToEditId, setBlogToEditId] = React.useState<number>();
 
-interface State {
-    isLoadingBlogs: boolean;
-    blogs: BlogListItem[];
-    selectedBlog?: BlogListItem;
-    showCreateForm: boolean;
-    showEditForm: boolean;
-    showAssignAssets: boolean;
-    blogToEditId?: number;
-}
+    const navigate = useNavigate();
+    const toaster = useToaster();
 
-export class Blogs extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            isLoadingBlogs: false,
-            blogs: [],
-            selectedBlog: undefined,
-            showCreateForm: false,
-            showEditForm: false,
-            showAssignAssets: false,
-            blogToEditId: undefined,
-        };
-    }
+    const fetchBlogs = React.useCallback(() => {
+        setIsLoadingBlogs(true);
+        getBlogsList().then((blogs) => {
+            setBlogs(blogs);
+            setIsLoadingBlogs(false);
+            onBlogSelected(blogs[0]);
+        });
+    }, []);
 
-    componentDidMount() {
-        this.fetchBlogs();
-    }
+    React.useEffect(() => {
+        fetchBlogs();
+    }, [fetchBlogs]);
 
-    fetchBlogs = () => {
-        this.setState(
-            () => ({ isLoadingBlogs: true }),
-            () => {
-                getBlogsList().then((blogs) => {
-                    const selectedBlog = blogs[0]; //.id;
-                    this.setState({
-                        blogs,
-                        isLoadingBlogs: false,
-                    });
-                    this.onBlogSelected(selectedBlog);
-                });
-            }
+    const onBlogSelected = (selectedBlog: BlogListItem) => {
+        if (selectedBlog === selectedBlog) return;
+        setSelectedBlog(selectedBlog);
+    };
+
+    const onBlogEdit = (selectedBlog: number) => {
+        setBlogToEditId(selectedBlog);
+        setShowEditForm(true);
+    };
+
+    const onVisibilityChange = (selectedBlog: number, visibility: boolean) => {
+        setBlogs(prevBlogs => 
+            prevBlogs.map(blog => 
+                blog.id === selectedBlog 
+                    ? { ...blog, visible: visibility }
+                    : blog
+            )
         );
     };
 
-    onBlogSelected = (selectedBlog: BlogListItem) => {
-        if (selectedBlog === this.state.selectedBlog) return;
-
-        this.setState((_state) => ({
-            selectedBlog,
-        }));
+    const onAssignAssets = (selectedBlog: number) => {
+        navigate(routes.blog.assets.replace(':id', String(selectedBlog)));
     };
 
-    onBlogEdit = (selectedBlog: number) => {
-        this.setState({
-            blogToEditId: selectedBlog,
-            showEditForm: true,
-        });
-    };
-
-    onVisibilityChange = (selectedBlog: number, visibility: boolean) => {
-        const blog = this.state.blogs.find((b) => b.id === selectedBlog);
-        if (blog) {
-            blog.visible = visibility;
-        }
-    };
-
-    onAssignAssets = (selectedBlog: number) => {
-        // this.setState({
-        //     blogToEditId: selectedBlog,
-        //     showAssignAssets: true
-        // });
-
-        //blog/:id/assets
-        this.props.history.push(routes.blog.assets.replace(':id', String(selectedBlog)));
-    };
-
-    onBlogDelete = async (selectedBlog: number) => {
+    const onBlogDelete = async (selectedBlog: number) => {
         const confirmed = await confirm(
             translations.blog.delete.confirmationContent,
             translations.blog.delete.confirmationHeader
@@ -119,86 +91,77 @@ export class Blogs extends React.Component<Props, State> {
         if (confirmed) {
             const result = await deleteBlog(selectedBlog);
             if (result.type === ResultType.Success) {
-                Alert.success(translations.blog.delete.deleted);
-                this.fetchBlogs();
+                toaster.push(
+                    <Message type="success">{translations.blog.delete.deleted}</Message>
+                );
+                fetchBlogs();
             } else {
-                Alert.error(translations.blog.delete.notDeleted);
+                toaster.push(
+                    <Message type="error">{translations.blog.delete.notDeleted}</Message>
+                );
             }
         }
     };
 
-    closeCreateForm = () => {
-        this.setState({ showCreateForm: false });
-    };
+    const closeCreateForm = () => setShowCreateForm(false);
+    const showCreateFormHandler = () => setShowCreateForm(true);
+    const closeEditForm = () => setShowEditForm(false);
+    const closeAssignAssets = () => setShowAssignAssets(false);
 
-    showCreateForm = () => {
-        this.setState({ showCreateForm: true });
-    };
-
-    closeEditForm = () => {
-        this.setState({ showEditForm: false });
-    };
-
-    closeAssignAssets = () => {
-        this.setState({ showAssignAssets: false });
-    };
-
-    render() {
-        return (
-            <div className="blogs">
-                <Panel>
-                    <StatsChart
-                        fetchChartStatsData={async (s, e, i) => {
-                            const result = await getBlogVisits(s, e, i);
-                            const stats = getStats(result);
-                            const data = result.dailyVisits.map((dv) => ({
-                                date: dv.date,
-                                value: dv.visits,
-                            }));
-                            return { data, stats };
-                        }}
-                        selectedItem={this.state.selectedBlog!}
+    return (
+        <div className="blogs">
+            <Panel>
+                <StatsChart
+                    fetchChartStatsData={async (s, e, i) => {
+                        const result = await getBlogVisits(s, e, i);
+                        const stats = getStats(result);
+                        const data = result.dailyVisits.map((dv) => ({
+                            date: dv.date,
+                            value: dv.visits,
+                        }));
+                        return { data, stats };
+                    }}
+                    selectedItem={selectedBlog!}
+                />
+            </Panel>
+            <div className="list">
+                <Panel
+                    header={
+                        <Button onClick={showCreateFormHandler} color="green">
+                            <Plus size={16} /> {translations.blog.create.button}
+                        </Button>
+                    }>
+                    <BlogsList
+                        blogs={blogs}
+                        loadingBlogs={isLoadingBlogs}
+                        onSelect={onBlogSelected}
+                        onEdit={onBlogEdit}
+                        onAssignAssets={onAssignAssets}
+                        onDelete={onBlogDelete}
+                        onVisibilityChange={onVisibilityChange}
                     />
                 </Panel>
-                <div className="list">
-                    <Panel
-                        header={
-                            <Button onClick={this.showCreateForm} color="green">
-                                <Icon icon="plus" /> {translations.blog.create.button}
-                            </Button>
-                        }>
-                        <BlogsList
-                            blogs={this.state.blogs}
-                            loadingBlogs={this.state.isLoadingBlogs}
-                            onSelect={this.onBlogSelected}
-                            onEdit={this.onBlogEdit}
-                            onAssignAssets={this.onAssignAssets}
-                            onDelete={this.onBlogDelete}
-                            onVisibilityChange={this.onVisibilityChange}
-                        />
-                    </Panel>
-                </div>
-                <BlogCreate
-                    onAdded={this.fetchBlogs}
-                    showCreateForm={this.state.showCreateForm}
-                    closeCreateForm={this.closeCreateForm}
-                />
-                {this.state.blogToEditId ? (
-                    <BlogEdit
-                        onSaved={this.fetchBlogs}
-                        showEditForm={this.state.showEditForm}
-                        closeEditForm={this.closeEditForm}
-                        id={this.state.blogToEditId}
-                    />
-                ) : null}
-                {this.state.blogToEditId ? (
-                    <BlogAssignAssetsModal
-                        showBlogAssignAssets={this.state.showAssignAssets}
-                        closeAssignAssets={this.closeAssignAssets}
-                        id={this.state.blogToEditId}
-                    />
-                ) : null}
             </div>
-        );
-    }
-}
+            <BlogCreate
+                onAdded={fetchBlogs}
+                showCreateForm={showCreateForm}
+                closeCreateForm={closeCreateForm}
+            />
+            {blogToEditId && (
+                <BlogEdit
+                    onSaved={fetchBlogs}
+                    showEditForm={showEditForm}
+                    closeEditForm={closeEditForm}
+                    id={blogToEditId}
+                />
+            )}
+            {blogToEditId && (
+                <BlogAssignAssetsModal
+                    showBlogAssignAssets={showAssignAssets}
+                    closeAssignAssets={closeAssignAssets}
+                    id={blogToEditId}
+                />
+            )}
+        </div>
+    );
+};

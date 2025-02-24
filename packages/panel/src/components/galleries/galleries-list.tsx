@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
-import { ButtonToolbar, Divider, Icon, IconButton, Progress, Table } from 'rsuite';
+import {
+    Book,
+    Envelope,
+    Eye,
+    EyeSlash,
+    PencilSimple,
+    ThumbsUp,
+    Trash
+} from '@phosphor-icons/react';
 import { GalleryDto } from '@pp/api/dist/panel/private-gallery';
 import { PrivateGalleryState } from '@pp/api/dist/private-gallery';
 import { range } from '@pp/utils/dist/array';
-import { ToolTip } from '../common/tooltip';
-import { translations } from '../../i18n';
 import { trim } from '@pp/utils/dist/string';
+import React, { useState } from 'react';
+import { ButtonToolbar, Divider, IconButton, Progress, Table } from 'rsuite';
+import { translations } from '../../i18n';
+import { ToolTip } from '../common/tooltip';
 
 interface Props {
     onSelect: (item: any) => void;
@@ -17,9 +26,9 @@ interface Props {
     loadingGalleries: boolean;
     selectedGalleryId?: number;
 }
-interface State {}
+interface State { }
 
-const getColorFromGalleryState = (galleryState: PrivateGalleryState): any => {
+const getColorFromGalleryState = (galleryState: PrivateGalleryState): string => {
     switch (galleryState) {
         case PrivateGalleryState.Available:
             return '#4CAF50';
@@ -32,13 +41,13 @@ const getColorFromGalleryState = (galleryState: PrivateGalleryState): any => {
     }
 };
 
-const getIconFromGalleryState = (galleryState: PrivateGalleryState): any => {
+const getIconFromGalleryState = (galleryState: PrivateGalleryState) => {
     switch (galleryState) {
         case PrivateGalleryState.Available:
-            return 'btn-on';
+            return <Eye size={24} />;
         case PrivateGalleryState.TurnedOff:
         case PrivateGalleryState.NotReady:
-            return 'btn-off';
+            return <EyeSlash size={24} />;
         default:
             throw new Error('Not handled GalleryState!');
     }
@@ -105,7 +114,7 @@ const Password = ({ password }: { password: string }) => {
             </span>
             {passwordRevealed ? null : (
                 <span onClick={revealPass} className="cover">
-                    <Icon icon="eye" />
+                    <Eye size={16} />
                 </span>
             )}
         </span>
@@ -119,7 +128,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 rowHeight={50}
                 virtualized={true}
                 shouldUpdateScroll={true}
-                onDataUpdated={() => {}}
+                onDataUpdated={() => { }}
                 loading={this.props.loadingGalleries}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item)}
@@ -128,29 +137,27 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 }
                 data={this.props.galleries}>
                 <Table.Column width={50} align="center">
-                    <Table.HeaderCell></Table.HeaderCell>
+                    <Table.HeaderCell>{''}</Table.HeaderCell>
                     <Table.Cell dataKey="state">
                         {(gallery: GalleryDto) => (
                             <ToolTip text={stateTooltips[gallery.state]}>
-                                <Icon
-                                    icon={getIconFromGalleryState(gallery.state)}
-                                    style={{
-                                        fontSize: '24px',
-                                        marginTop: '-2px',
-                                        color: getColorFromGalleryState(gallery.state),
-                                    }}
-                                />
+                                <span style={{ color: getColorFromGalleryState(gallery.state) }}>
+                                    {getIconFromGalleryState(gallery.state)}
+                                </span>
                             </ToolTip>
                         )}
                     </Table.Cell>
                 </Table.Column>
 
                 <Table.Column width={50} align="center">
-                    <Table.HeaderCell></Table.HeaderCell>
+                    <Table.HeaderCell>{''}</Table.HeaderCell>
                     <Table.Cell dataKey="blog">
                         {(gallery: GalleryDto) => (
                             <ToolTip text={gallery.blogId ? blogTooltips.Available : blogTooltips.None}>
-                                <Icon icon="book" style={{ color: getColorFromBlogEntry(gallery.blogId) }} />
+                                <Book
+                                    size={16}
+                                    color={getColorFromBlogEntry(gallery.blogId)}
+                                />
                             </ToolTip>
                         )}
                     </Table.Cell>
@@ -184,7 +191,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                 </Table.Column>
 
                 <Table.Column width={200} align="center" fixed="right">
-                    <Table.HeaderCell></Table.HeaderCell>
+                    <Table.HeaderCell>{''}</Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(gallery: GalleryDto) => (
                             <ButtonToolbar>
@@ -198,7 +205,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                     <IconButton
                                         appearance="subtle"
                                         style={gallery.pendingNotification ? { color: '#FFC107' } : {}}
-                                        icon={<Icon icon="envelope-o" />}
+                                        icon={<Envelope size={16} />}
                                         onClick={() => this.props.onViewEmails(gallery.id)}
                                     />
                                 </ToolTip>
@@ -206,7 +213,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                 <ToolTip placement="left" text={translations.gallery.list.actions.viewLikes}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Icon icon="thumbs-up" />}
+                                        icon={<ThumbsUp size={16} />}
                                         onClick={() => this.props.onViewLikes(gallery.id)}
                                     />
                                 </ToolTip>
@@ -214,7 +221,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                 <ToolTip placement="left" text={translations.gallery.list.actions.edit}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Icon icon="edit2" />}
+                                        icon={<PencilSimple size={16} />}
                                         onClick={() => this.props.onEdit(gallery.id)}
                                     />
                                 </ToolTip>
@@ -222,7 +229,7 @@ export class GalleriesList extends React.PureComponent<Props, State> {
                                 <ToolTip placement="left" text={translations.gallery.list.actions.delete}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Icon icon="trash2" />}
+                                        icon={<Trash size={16} />}
                                         onClick={() => this.props.onDelete(gallery.id)}
                                     />
                                 </ToolTip>

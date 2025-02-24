@@ -1,9 +1,11 @@
 import React from 'react';
-import { Icon, DateRangePicker, Button } from 'rsuite';
+import { DateRangePicker, Button } from 'rsuite';
 import { ToolTip } from '../common/tooltip';
+import { ValueType } from 'rsuite/esm/DateRangePicker';
+import { MagicWand } from '@phosphor-icons/react';
 
 interface Props {
-    onRangeChange: (ranges: [(Date | undefined)?, (Date | undefined)?]) => void;
+    onRangeChange: (value: ValueType, event: React.SyntheticEvent) => void;
     startDate: Date;
     endDate: Date;
     autoDisabled: boolean;
@@ -25,7 +27,7 @@ export const StatsRange = (props: Props) => (
     <div className="range">
         <ToolTip placement="topStart" text={props.autoDisabled ? disabledTooltip : enabledTooltip}>
             <Button size="lg" onClick={props.onAutoChanged} className="auto">
-                <Icon className={props.autoDisabled ? 'disabled' : ''} icon="magic" />
+                <MagicWand className={props.autoDisabled ? 'disabled' : ''} />
             </Button>
         </ToolTip>
 

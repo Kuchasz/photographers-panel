@@ -3,6 +3,7 @@ import { addMonths } from "@pp/utils/dist/date";
 import { Chart, ChartData } from "./chart";
 import { ChartStat, ChartStats } from "./stats";
 import { StatsRange } from "./stats-range";
+import type { ValueType } from 'rsuite/DateRangePicker';
 import "./styles.less";
 
 type StatsItem = {
@@ -78,9 +79,13 @@ export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, S
         });
     }
 
-    onDateRangeChanged = ([startDate, endDate]: [(Date | undefined)?, (Date | undefined)?]) => {
-        if (startDate === undefined || endDate === undefined) return;
+    onDateRangeChanged = (value: ValueType) => {
+        if (!Array.isArray(value) || !value[0] || !value[1]) return;
+        
+        const [startDate, endDate] = value as [Date, Date];
+        
         this.setState(() => ({ disableAutoDate: true, startDate, endDate }));
+        
         if (this.props.selectedItem) {
             this.setState(() => ({
                 isLoading: true,

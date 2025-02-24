@@ -1,8 +1,14 @@
-import { Alert, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Icon, List, SelectPicker } from 'rsuite';
+import { 
+    Form, 
+    List, 
+    Message, 
+    SelectPicker,
+    useToaster 
+} from 'rsuite';
 import { colorFromString, invertColor } from '@pp/utils/dist/color';
 import { EventDto, EventType, getEventsList } from '@pp/api/dist/event/event';
 import { formatDateTime, translations } from '../../i18n';
-import { FormInstance } from 'rsuite/lib/Form';
+import type { FormInstance } from 'rsuite';
 import { mainBlogsModel } from './main-blogs-model';
 import { ResultType } from '@pp/api/dist/common';
 import Avatar from 'boring-avatars';
@@ -18,21 +24,27 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useEffect, useRef, useState } from 'react';
 import React from 'react';
+import { 
+    Calculator, 
+    Image, 
+    Star, 
+    Trophy 
+} from '@phosphor-icons/react';
 
 const getIconForItem = (e: EventDto) => {
-    if (e.type === EventType.CalculatorConfigChanged) return 'calculator';
+    if (e.type === EventType.CalculatorConfigChanged) return <Calculator size={16} />;
 
     if (e.type === EventType.PhotoDownloaded || e.type === EventType.PhotoLiked || e.type === EventType.PhotoUnliked)
-        return 'image';
+        return <Image size={16} />;
 
     if (
         e.type === EventType.DisplayRatingRequestScreen ||
         e.type === EventType.NavigatedToRating ||
         e.type === EventType.CloseRatingRequestScreen
     )
-        return 'star';
+        return <Star size={16} />;
 
-    return 'trophy';
+    return <Trophy size={16} />;
 };
 
 const getTitleForItem = (e: EventDto) => {
@@ -77,10 +89,11 @@ const emptyMainBlogs = () => ({
 export const Dashboard = (props: Props) => {
     const [formState, setFormState] = useState<MainBlogsDto>(emptyMainBlogs());
     const [blogs, setBlogs] = useState<BlogSelectItem[]>([]);
-    // const [events, setEvents] = React.useState<SiteEventDto[]>([]);
     const [newEvents, setNewEvents] = useState<EventDto[]>([]);
+    const [formError, setFormError] = useState({});
     const formRef = useRef<FormInstance>();
     const parentRef = useRef<HTMLDivElement>(null);
+    const toaster = useToaster();
 
     const rowVirtualizer = useVirtualizer({
         count: newEvents.length,
@@ -96,10 +109,6 @@ export const Dashboard = (props: Props) => {
         getMainBlogs().then(setFormState);
     }, []);
 
-    // React.useEffect(() => {
-    //     getSiteEvents().then(setEvents);
-    // }, []);
-
     useEffect(() => {
         getEventsList().then(setNewEvents);
     }, []);
@@ -107,17 +116,22 @@ export const Dashboard = (props: Props) => {
     const _changeMainBlogs = (b: MainBlogsDto) => {
         setFormState(b);
 
-        if (formRef.current) {
-            const formIsValid = formRef.current.check();
-            if (!formIsValid) return;
-            changeMainBlogs(b).then((result) => {
-                if (result.type === ResultType.Success) {
-                    Alert.success(translations.dashboard.mainBlogs.edited);
-                } else {
-                    Alert.error(translations.dashboard.mainBlogs.notEdited);
-                }
-            });
-        }
+        if (!formRef.current) return;
+        
+        const formIsValid = formRef.current.check();
+        if (!formIsValid) return;
+
+        changeMainBlogs(b).then((result) => {
+            if (result.type === ResultType.Success) {
+                toaster.push(
+                    <Message type="success">{translations.dashboard.mainBlogs.edited}</Message>
+                );
+            } else {
+                toaster.push(
+                    <Message type="error">{translations.dashboard.mainBlogs.notEdited}</Message>
+                );
+            }
+        });
     };
 
     var items = rowVirtualizer.getVirtualItems();
@@ -145,7 +159,7 @@ export const Dashboard = (props: Props) => {
                                             colors={['#3498ff', '#4caf50', '#FFC107']}
                                         />
                                     </div>
-                                    <Icon icon={getIconForItem(newEvents[item.index])}></Icon>
+                                    {getIconForItem(newEvents[item.index])}
                                 </span>
                                 <span>
                                     <div className="title">{getTitleForItem(newEvents[item.index])}</div>
@@ -157,7 +171,6 @@ export const Dashboard = (props: Props) => {
                                             </span>
                                         </div>
                                     </ToolTip>
-
                                     <div className="details">
                                         <div
                                             className="chip"
@@ -175,13 +188,15 @@ export const Dashboard = (props: Props) => {
             </div>
             <Form
                 style={{ marginLeft: '12px' }}
-                ref={formRef}
+                ref={formRef as React.Ref<FormInstance>}
                 model={mainBlogsModel}
                 formValue={formState}
+                formError={formError}
+                onCheck={setFormError}
                 onChange={_changeMainBlogs}>
-                <FormGroup>
-                    <ControlLabel>{translations.dashboard.mainBlogs.leftBlog.label}</ControlLabel>
-                    <FormControl
+                <Form.Group>
+                    <Form.ControlLabel>{translations.dashboard.mainBlogs.leftBlog.label}</Form.ControlLabel>
+                    <Form.Control
                         name="leftBlog"
                         style={{ width: 300 }}
                         accepter={SelectPicker}
@@ -189,11 +204,11 @@ export const Dashboard = (props: Props) => {
                         searchable={true}
                         data={blogs}
                     />
-                    <HelpBlock tooltip>{translations.dashboard.mainBlogs.leftBlog.hint}</HelpBlock>
-                </FormGroup>
-                <FormGroup>
-                    <ControlLabel>{translations.dashboard.mainBlogs.rightBlog.label}</ControlLabel>
-                    <FormControl
+                    <Form.HelpText tooltip>{translations.dashboard.mainBlogs.leftBlog.hint}</Form.HelpText>
+                </Form.Group>
+                <Form.Group>
+                    <Form.ControlLabel>{translations.dashboard.mainBlogs.rightBlog.label}</Form.ControlLabel>
+                    <Form.Control
                         name="rightBlog"
                         style={{ width: 300 }}
                         accepter={SelectPicker}
@@ -201,8 +216,8 @@ export const Dashboard = (props: Props) => {
                         searchable={true}
                         data={blogs}
                     />
-                    <HelpBlock tooltip>{translations.dashboard.mainBlogs.rightBlog.hint}</HelpBlock>
-                </FormGroup>
+                    <Form.HelpText tooltip>{translations.dashboard.mainBlogs.rightBlog.hint}</Form.HelpText>
+                </Form.Group>
             </Form>
         </div>
     );
