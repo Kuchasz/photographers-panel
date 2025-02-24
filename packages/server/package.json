@@ -7,8 +7,8 @@
     "scripts": {
         "build": "tsc",
         "build:dev": "tsc --watch",
-        "start": "ts-node src/app.tsx",
-        "start:dev": "nodemon --watch . --ext ts,tsx,.d.ts --exec ts-node --ignore '*.test.ts' --delay 2 src/app.tsx",
+        "start": "tsx src/app.tsx",
+        "start:dev": "nodemon --watch . --ext ts,tsx,.d.ts --exec tsx --ignore '*.test.ts' --delay 2 src/app.tsx",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
@@ -47,7 +47,7 @@
         "reflect-metadata": "0.1.13",
         "sharp": "0.32.6",
         "sqlite3": "5.1.4",
-        "ts-node": "10.7.0",
+        "tsx": "4.19.3",
         "tslib": "2.3.1",
         "type-graphql": "1.1.1",
         "typeorm": "0.3.20",

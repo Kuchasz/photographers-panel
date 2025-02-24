@@ -3,7 +3,8 @@ import { BlogListItem, changeBlogVisibility } from '@pp/api/dist/panel/blog';
 import { ButtonToolbar, Divider, IconButton, Table } from 'rsuite';
 import { ToolTip } from '../common/tooltip';
 import { translations } from '../../i18n';
-import { EyeClosed, Eye, Trash, Pencil, Grid2X2Plus } from 'lucide-react';
+import { EyeClosed, Eye, Trash, Pencil, GridFour } from '@phosphor-icons/react';
+
 
 
 interface Props {
@@ -125,7 +126,7 @@ export class BlogsList extends React.Component<Props, State> {
                                 <ToolTip placement="left" text={translations.blog.list.actions.assignAssets}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Grid2X2Plus size={16} />}
+                                        icon={<GridFour size={16} />}
                                         onClick={() => this.props.onAssignAssets(blog.id)}
                                     />
                                 </ToolTip>

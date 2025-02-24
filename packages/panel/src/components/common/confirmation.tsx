@@ -10,7 +10,7 @@ interface ConfirmationProps {
 }
 
 const ConfirmationComponent = (props: ConfirmationProps) => (
-    <Modal backdrop={true} show={props.show} onHide={() => props.proceed(false)}>
+    <Modal backdrop={true} open={props.show} onClose={() => props.proceed(false)}>
         <Modal.Header>
             <Modal.Title>{props.options.title}</Modal.Title>
         </Modal.Header>

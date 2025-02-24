@@ -8,59 +8,55 @@ import { LogIn } from "../login";
 import { Menu } from "../menu/index";
 import { NavBarInstance } from "../navbar";
 import {
-    Redirect,
+    Navigate,
     Route,
-    RouteComponentProps,
-    withRouter
-    } from "react-router-dom";
+    Routes,
+    useLocation
+} from "react-router-dom";
 import { routes } from "../../routes";
 import { SiteStats } from "../site-stats";
 import { Soon } from "../soon";
-// import { Emails } from "../emails";
-// import { RouteComponentProps, withRouter } from "react-router-dom";
 
-interface Props extends RouteComponentProps {}
+interface Props { }
 
-interface State {}
+export const Root: React.FC<Props> = () => {
+    const location = useLocation();
+    const canLogOut = location.pathname !== routes.login;
+    const fullPageView =
+        !canLogOut ||
+        [routes.emails, routes.comments, routes.home, routes.stats].includes(location.pathname);
 
-class RootComponent extends React.Component<Props, State> {
-    render() {
-        const canLogOut = this.props.location.pathname !== routes.login;
-        const fullPageView =
-            !canLogOut ||
-            [routes.emails, routes.comments, routes.home, routes.stats].includes(this.props.location.pathname);
+    if (!isLoggedIn() && canLogOut) {
+        return <Navigate to={routes.login} />;
+    }
 
-        return !isLoggedIn() && canLogOut ? (
-            <Redirect to={routes.login} />
-        ) : (
-            <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <NavBarInstance canLogOut={canLogOut} />
-                <div id="layout">
-                    {canLogOut && (
-                        <div>
-                            <Menu />
-                        </div>
-                    )}
-                    <div id="content" className={fullPageView ? 'full-page' : ''}>
-                        <Route exact path={routes.home} component={Dashboard} />
-                        <Route exact path={routes.stats} component={SiteStats} />
-                        <Route exact path={routes.galleries} component={Galleries} />
-                        <Route exact path={routes.emails} component={Soon} />
-                        <Route exact path={routes.comments} component={Soon} />
-                        <Route exact path={routes.blog.list} component={Blogs} />
-                        <Route
-                            exact
-                            path={routes.blog.assets}
-                            render={(x: any) => {
-                                return <BlogAssignAssets id={x.match.params.id} />;
-                            }}
-                        />
-                        <Route exact path={routes.login} component={LogIn} />
+    return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <NavBarInstance canLogOut={canLogOut} />
+            <div id="layout">
+                {canLogOut && (
+                    <div>
+                        <Menu />
                     </div>
+                )}
+                <div id="content" className={fullPageView ? 'full-page' : ''}>
+                    <Routes>
+                        <Route path={routes.home} element={<Dashboard />} />
+                        <Route path={routes.stats} element={<SiteStats />} />
+                        <Route path={routes.galleries} element={<Galleries />} />
+                        <Route path={routes.emails} element={<Soon />} />
+                        <Route path={routes.comments} element={<Soon />} />
+                        <Route path={routes.blog.list} element={<Blogs />} />
+                        <Route
+                            path={routes.blog.assets}
+                            element={
+                                <BlogAssignAssets id={parseInt(location.pathname.split('/').pop() || '0')} />
+                            }
+                        />
+                        <Route path={routes.login} element={<LogIn />} />
+                    </Routes>
                 </div>
             </div>
-        );
-    }
-}
-
-export const Root = withRouter((props) => <RootComponent {...props} />);
+        </div>
+    );
+};

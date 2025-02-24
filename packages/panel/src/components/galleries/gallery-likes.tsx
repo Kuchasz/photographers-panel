@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Icon, List, Modal, Slider } from 'rsuite';
+import { Button, List, Modal, Slider } from 'rsuite';
 import { getGalleryForEdit } from '@pp/api/dist/panel/private-gallery';
+import { Heart } from '@phosphor-icons/react';
 import { translations } from '../../i18n';
 import { createGraphApi, GraphApi } from '../../graph-api';
 import { LikedPhoto } from '../../sdk';
@@ -35,7 +36,7 @@ const LikedPhotoList = ({
                     src={`${galleryPath}/${lp.directoryName}/slides/${lp.fileName}`}
                 />
                 <div className="like-count">
-                    <Icon icon="heart" />
+                    <Heart size={16} />
                     <span>{lp.likes}</span>
                 </div>
             </div>
@@ -70,8 +71,8 @@ export const GalleryLikes = (props: Props) => {
         dialogClassName="gallery-likes-modal"
         className="gallery-likes"
         size="lg"
-        show={props.show}
-        onHide={handleModalHide}>
+        open={props.show}
+        onClose={handleModalHide}>
         <Modal.Header>
             <Modal.Title>{translations.gallery.likesBrowser.title}</Modal.Title>
         </Modal.Header>

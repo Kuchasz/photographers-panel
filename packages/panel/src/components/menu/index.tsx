@@ -1,9 +1,9 @@
+import { ChartLine, Cloud, House, Image, MessengerLogo } from '@phosphor-icons/react';
 import * as React from 'react';
-import { Sidenav, Nav } from 'rsuite';
-import * as icons from '@rsuite/icons';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { routes } from '../../routes';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Nav, Sidenav } from 'rsuite';
 import { translations } from '../../i18n';
+import { routes } from '../../routes';
 import { ImagesUploader } from '../images-uploader';
 import './styles.less';
 interface MenuItem {
@@ -13,59 +13,53 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-    { route: routes.home, icon: icons.Send, text: translations.menu.home },
-    { route: routes.stats, icon: icons.LineChart, text: translations.menu.stats },
+    { route: routes.home, icon: <House size={16} />, text: translations.menu.home },
+    { route: routes.stats, icon: <ChartLine size={16} />, text: translations.menu.stats },
     // { route: routes.emails, icon: "envelope-o", text: 'Emails' },
-    { route: routes.galleries, icon: icons.Image, text: translations.menu.galleries },
-    { route: routes.blog.list, icon: icons.CloudReflash, text: translations.menu.blogs },
+    { route: routes.galleries, icon: <Image size={16} />, text: translations.menu.galleries },
+    { route: routes.blog.list, icon: <Cloud size={16} />, text: translations.menu.blogs },
     {
         route: routes.comments,
-        icon: icons.Message,
+        icon: <MessengerLogo size={16} />,
         text: translations.menu.comments,
     },
     // { route: routes.login, icon: "trash", text: 'LogIn' }
 ];
 
-interface Props extends RouteComponentProps { }
+export const Menu: React.FC = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const activeItem = location.pathname.toLowerCase();
 
-interface State { }
-
-class MenuComponent extends React.Component<Props, State> {
-    handleItemClick = (route: string) => {
-        this.props.history.push(route);
+    const handleItemClick = (eventKey: string | undefined) => {
+        if (eventKey) {
+            navigate(eventKey);
+        }
     };
 
-    render() {
-        const activeItem = this.props.location.pathname.toLowerCase();
-
-        return (
-            <div className="side-menu">
-                <Sidenav
-                    style={{ height: '100%' }}
-                    onSelect={this.handleItemClick}
-                    activeKey={activeItem}
-                    expanded={false}>
-                    <Sidenav.Body>
-                        <Nav>
-                            {menuItems.map((mi, id) => (
-                                <Nav.Item
-                                    key={id}
-                                    eventKey={mi.route}
-                                    active={activeItem === mi.route}
-                                    icon={mi.icon}>
-                                    {mi.text}
-                                </Nav.Item>
-                            ))}
-                        </Nav>
-                        <Nav>
-                            {/* {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>Transfers</Nav.Item>} */}
-                            <ImagesUploader />
-                        </Nav>
-                    </Sidenav.Body>
-                </Sidenav>
-            </div>
-        );
-    }
-}
-
-export const Menu = withRouter((props) => <MenuComponent {...props} />);
+    return (
+        <div className="side-menu">
+            <Sidenav
+                style={{ height: '100%' }}
+                expanded={false}>
+                <Sidenav.Body>
+                    <Nav onSelect={handleItemClick} activeKey={activeItem}>
+                        {menuItems.map((mi, id) => (
+                            <Nav.Item
+                                key={id}
+                                eventKey={mi.route}
+                                active={activeItem === mi.route}
+                                icon={mi.icon}>
+                                {mi.text}
+                            </Nav.Item>
+                        ))}
+                    </Nav>
+                    <Nav>
+                        {/* {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>Transfers</Nav.Item>} */}
+                        <ImagesUploader />
+                    </Nav>
+                </Sidenav.Body>
+            </Sidenav>
+        </div>
+    );
+};
