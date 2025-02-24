@@ -4,38 +4,16 @@ import { tsr } from "~/api";
 import { strings } from "~/resources";
 
 export default function VideosPage() {
-    // const [videos, setVideos] = React.useState<VideoListItem[]>(initialState ?? []);
 
-    // const api = tsr.useQueryClient();
+    const { data, isLoading } = tsr.video.getVideosList.useQuery({ queryKey: ['videos'] });
 
-    const { data } = tsr.video.getVideosList.useQuery({ queryKey: ['videos'], initialData: [] });
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-    console.log(data);
-
-    const videos = data?.body ?? [];
-
-    // const { data} = api.
-
-    // const { data, isLoading, error } = useApi.useQuery({
-    // const { data, isLoading, error } = useApi.useQuery({
-    //     path: '/videos',
-    //     method: 'GET',
-    // });
-
-    // React.useEffect(() => {
-    //     const fetchVideos = async () => {
-    //         try {
-    //             const response = await getVideosList();
-    //             setVideos(response);
-    //         } catch (error) {
-    //             console.error('Failed to fetch videos:', error);
-    //         }
-    //     };
-
-    //     if (!initialState) {
-    //         void fetchVideos();
-    //     }
-    // }, [initialState]);
+    if (data?.status !== 200) {
+        return <div>Error</div>;
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
@@ -51,7 +29,7 @@ export default function VideosPage() {
 
                 <section className="mx-auto max-w-7xl">
                     <div className="grid gap-8 md:gap-12">
-                        {videos.map((video) => (
+                        {data.body.map((video) => (
                             <div
                                 key={video.videoUrl}
                                 className="group relative overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
@@ -59,13 +37,13 @@ export default function VideosPage() {
                                 <div className="relative aspect-video w-full">
                                     <iframe
                                         src={video.videoUrl}
-                                        title={video.title || 'Wedding Video'}
+                                        title={video?.title}
                                         className="absolute inset-0 h-full w-full"
                                         allow="autoplay; encrypted-media; picture-in-picture"
                                         allowFullScreen
                                     />
                                 </div>
-                                {video.title && (
+                                {video?.title && (
                                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/80 to-transparent p-6 opacity-0 transition duration-300 group-hover:opacity-100">
                                         <h2 className="font-serif text-xl font-light text-white">
                                             {video.title}

@@ -1,7 +1,7 @@
-import React from "react";
-import { getOffersList, OfferEntry, OfferListItem } from "@pp/api/dist/site/offer";
-import { Link } from "react-router-dom";
+import { OfferEntry, OfferListItem } from "@pp/api/dist/site/offer";
 import { routes } from "@pp/api/dist/site/routes";
+import React from "react";
+import { Link } from "react-router-dom";
 import { strings } from "../resources";
 
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);
@@ -18,10 +18,10 @@ export const Offers = ({ initialState }: { initialState: { offer: OfferEntry; of
 
 
     React.useEffect(() => {
-        getOffersList().then(x => {
-            setOffers(x.offers);
-            setOffer(x.offer);
-        });
+        // getOffersList().then(x => {
+        //     setOffers(x.offers);
+        //     setOffer(x.offer);
+        // });
     }, []);
 
     return (

@@ -9,6 +9,7 @@ import * as siteBlog from "./site/blog";
 import * as siteMessage from "./site/message";
 import * as siteGallery from "./site/private-gallery";
 import * as siteVideo from "./site/video";
+import * as siteOffer from "./site/offer";
 import * as auth from "./panel/auth";
 import { initContract } from '@ts-rest/core';
 import { z } from 'zod';
@@ -356,6 +357,23 @@ export const siteContract = c.router({
             responses: {
                 200: c.type<siteVideo.VideoListItem[]>(),
             },
+        },
+    },
+    offer: {
+        getOffersList: {
+            method: 'GET',
+            path: '/api/offer/get-offers-list',
+            responses: {
+                200: c.type<{ offer: siteOffer.OfferEntry, offers: siteOffer.OfferListItem[] }>(),
+            },
+        },
+        getOffer: {
+            method: 'GET',
+            path: '/api/offer/get-offer',
+            responses: {
+                200: c.type<siteOffer.OfferEntry>(),
+            },
+            query: c.type<{ alias: string }>(),
         },
     }
 });

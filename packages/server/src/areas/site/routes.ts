@@ -8,6 +8,7 @@ import { Router as createRouter } from "express";
 import { createExpressEndpoints, initServer } from '@ts-rest/express';
 import { siteContract } from '@pp/api/dist/contracts';
 import { getVideosList } from "./video";
+import { getOffer, getOffersList } from "./offer";
 
 const r = createRouter();
 const s = initServer();
@@ -54,6 +55,16 @@ const siteImplementation = s.router(siteContract, {
     video: {
         getVideosList: async () => {
             const result = await getVideosList();
+            return { status: 200 as const, body: result };
+        },
+    },
+    offer: {
+        getOffersList: async () => {
+            const result = await getOffersList();
+            return { status: 200 as const, body: result };
+        },
+        getOffer: async ({ query }) => {
+            const result = await getOffer(query.alias);
             return { status: 200 as const, body: result };
         },
     },

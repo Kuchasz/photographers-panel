@@ -1,10 +1,10 @@
 'use client';
 
-import React from "react";
-import { getOffersList, type OfferEntry, type OfferListItem } from "@pp/api/dist/site/offer";
-import Link from "next/link";
-import Image from "next/image";
 import { routes } from "@pp/api/dist/site/routes";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { tsr } from "~/api";
 import { strings } from "~/resources";
 
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);
@@ -16,32 +16,17 @@ const getImageBackgroundStyle = (url: string): React.CSSProperties => ({
     backgroundRepeat: 'no-repeat'
 });
 
-type InitialState = {
-    offer: OfferEntry;
-    offers: OfferListItem[];
-};
+export default function OffersPage() {
 
-type OffersListResponse = {
-    offer: OfferEntry;
-    offers: OfferListItem[];
-};
+    const { data, isLoading } = tsr.offer.getOffersList.useQuery({ queryKey: ['offers-list'] });
 
-export default function OffersPage({ initialState }: { initialState: InitialState }) {
-    const [offers, setOffers] = React.useState<OfferListItem[]>(initialState?.offers ?? []);
-    const [offer, setOffer] = React.useState<OfferEntry>(initialState?.offer ?? {});
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
-    React.useEffect(() => {
-        const fetchOffers = async () => {
-            try {
-                const response = await getOffersList() as OffersListResponse;
-                setOffers(response.offers);
-                setOffer(response.offer);
-            } catch (error) {
-                console.error('Failed to fetch offers:', error);
-            }
-        };
-        void fetchOffers();
-    }, []);
+    if (data?.status !== 200) {
+        return <div>Error</div>;
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
@@ -59,9 +44,9 @@ export default function OffersPage({ initialState }: { initialState: InitialStat
                         </header>
 
                         <article className="space-y-16">
-                            {offer.photos?.length > 0 && (
+                            {data.body.offer.photos.length > 0 && (
                                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                                    {offer.photos.map((photo) => (
+                                    {data.body.offer.photos.map((photo) => (
                                         <div
                                             key={photo.url}
                                             className="group aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
@@ -72,9 +57,9 @@ export default function OffersPage({ initialState }: { initialState: InitialStat
                                     ))}
                                 </div>
                             )}
-                            <div 
+                            <div
                                 className="prose prose-lg mx-auto max-w-none prose-headings:font-serif prose-headings:font-light prose-headings:text-stone-800 prose-p:font-light prose-p:leading-relaxed prose-p:text-stone-600"
-                                dangerouslySetInnerHTML={{ __html: offer.description }} 
+                                dangerouslySetInnerHTML={{ __html: data.body.offer.description }}
                             />
                         </article>
                     </article>
@@ -91,9 +76,9 @@ export default function OffersPage({ initialState }: { initialState: InitialStat
                         </header>
 
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {offers.filter((_i, id) => id > 3).map((offer) => (
-                                <Link 
-                                    href={getOfferUrl(offer.alias)} 
+                            {data.body.offers.filter((_i, id) => id > 3).map((offer) => (
+                                <Link
+                                    href={getOfferUrl(offer.alias)}
                                     key={offer.alias}
                                     className="group overflow-hidden rounded-lg bg-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                                 >

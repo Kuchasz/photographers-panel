@@ -1,5 +1,5 @@
+import { OfferEntry } from "@pp/api/dist/site/offer";
 import React from "react";
-import { getOffer, OfferEntry } from "@pp/api/dist/site/offer";
 import { Headers } from "../components/headers";
 
 const getImageBackgroundStyle = (url: string) => {
@@ -15,7 +15,7 @@ export const Offer = ({ alias, initialState }: OfferProps) => {
     const [offer, setOffer] = React.useState(initialState ?? {});
 
     React.useEffect(() => {
-        getOffer(alias).then(setOffer);
+        // getOffer(alias).then(setOffer);
     }, []);
 
     return (

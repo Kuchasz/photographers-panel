@@ -1,5 +1,5 @@
 import { getBlog, getBlogsList, getLastBlogs } from "./blog";
-import { getOffer, getOffersList } from "./offer";
+
 import { getVideosList } from "./video";
 
 const empty = () => Promise.resolve({});
@@ -7,8 +7,8 @@ const empty = () => Promise.resolve({});
 export const routes = {
     home: { fullPage: true, route: '/', getData: getLastBlogs },
     //pricing: { fullPage: false, route: '/cennik', getData: empty },
-    offers: { fullPage: false, route: '/oferta', getData: getOffersList },
-    offer: { fullPage: false, route: '/oferta/:alias', getData: getOffer },
+    offers: { fullPage: false, route: '/oferta', getData: empty },
+    offer: { fullPage: false, route: '/oferta/:alias', getData: empty },
     // blogs: { fullPage: false, route: '/blog', getData: getBlogsList },
     blog: { fullPage: false, route: '/blog/:alias', getData: getBlog },
     contact: { fullPage: false, route: '/kontakt', getData: empty },

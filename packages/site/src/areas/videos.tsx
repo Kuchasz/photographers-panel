@@ -1,6 +1,5 @@
+import { VideoListItem } from "@pp/api/dist/site/video";
 import * as React from "react";
-import { getVideosList, VideoListItem } from "@pp/api/dist/site/video";
-import { Link } from "react-router-dom";
 
 type BlogsProps = { initialState?: VideoListItem[] };
 type BlogsState = { videos?: VideoListItem[] };
@@ -10,7 +9,7 @@ export class Videos extends React.Component<BlogsProps, BlogsState> {
 
     componentDidMount() {
         if (this.state.videos === undefined) {
-            getVideosList().then((videos) => this.setState({ videos }));
+            // getVideosList().then((videos) => this.setState({ videos }));
         }
     }
 

@@ -66,7 +66,7 @@ const videos = [
 ];
 
 export const getVideosList = async (): Promise<VideoListItem[]> => {
-    return videos.map(video => ({
+    return Promise.resolve(videos.map(video => ({
         videoUrl: video.videourl,
-    }));
+    })));
 };

@@ -92,14 +92,14 @@ app.get('/sitemap.txt', async (req: any, res: any) => {
     const protocol = getProtocol(req);
 
     const blogsUrls = blogAliases.map((alias) => `${protocol}://${req.headers.host}/blog/${alias}`);
-    const offersUrls = (await offer.getOffersAliases()).map(
-        (alias) => `${protocol}://${req.headers.host}/oferta/${alias}`
-    );
+    // const offersUrls = (await offer.getOffersAliases()).map(
+    //     (alias) => `${protocol}://${req.headers.host}/oferta/${alias}`
+    // );
     const routesUrls = Object.values(routes)
         .filter((x) => !x.route.includes(':'))
         .map((r) => `${protocol}://${req.headers.host}${r.route}`);
 
-    const urls = blogsUrls.concat(routesUrls).concat(offersUrls);
+    const urls = blogsUrls.concat(routesUrls);//.concat(offersUrls);
 
     res.type('text/plain');
     res.send(urls.join('\r\n'));
