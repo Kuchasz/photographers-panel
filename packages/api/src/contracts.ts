@@ -27,7 +27,7 @@ export const panelContract = c.router({
     auth: {
         logIn: {
             method: 'POST',
-            path: auth.logIn.route,
+            path: '/api/panel/log-in',
             responses: {
                 200: c.type<Result<LogInError, LogInResponse>>(),
             },
@@ -35,7 +35,7 @@ export const panelContract = c.router({
         },
         viewLogIn: {
             method: 'GET',
-            path: auth.viewLogIn.route,
+            path: '/panel',
             responses: {
                 200: c.otherResponse({ contentType: 'text/html', body: z.string() }),
                 500: c.type<string>(),
@@ -45,7 +45,7 @@ export const panelContract = c.router({
     site: {
         getSiteVisits: {
             method: 'GET',
-            path: getSiteVisits.route,
+            path: '/api/panel/site-stats/:start/:end',
             responses: {
                 200: c.type<SiteVisitsDto>(),
             },
@@ -56,7 +56,7 @@ export const panelContract = c.router({
         },
         getSiteEvents: {
             method: 'GET',
-            path: site.getSiteEvents.route,
+            path: '/api/panel/site-events',
             responses: {
                 200: c.type<SiteEventDto[]>(),
             },
@@ -65,21 +65,21 @@ export const panelContract = c.router({
     blog: {
         getBlogSelectList: {
             method: 'GET',
-            path: blog.getBlogSelectList.route,
+            path: '/api/panel/blog-select-list',
             responses: {
                 200: c.type<blog.BlogSelectItem[]>(),
             },
         },
         getBlogsList: {
             method: 'GET',
-            path: blog.getBlogsList.route,
+            path: '/api/panel/blogs-list',
             responses: {
                 200: c.type<blog.BlogListItem[]>(),
             },
         },
         createBlog: {
             method: 'POST',
-            path: blog.createBlog.route,
+            path: '/api/panel/create-blog',
             responses: {
                 200: c.type<blog.CreateBlogResult>(),
             },
@@ -87,7 +87,7 @@ export const panelContract = c.router({
         },
         checkAliasIsUnique: {
             method: 'GET',
-            path: blog.checkAliasIsUnique.route,
+            path: '/api/panel/blog-alias-unique/:alias/:blogId?',
             responses: {
                 200: c.type<boolean>(),
             },
@@ -95,7 +95,7 @@ export const panelContract = c.router({
         },
         changeBlogVisibility: {
             method: 'POST',
-            path: blog.changeBlogVisibility.route,
+            path: '/api/panel/blog-change-visibility',
             responses: {
                 200: c.type<blog.ChangeBlogVisibilityResult>(),
             },
@@ -103,7 +103,7 @@ export const panelContract = c.router({
         },
         changeMainBlogAsset: {
             method: 'POST',
-            path: blog.changeMainBlogAsset.route,
+            path: '/api/panel/blog-change-main-asset',
             responses: {
                 200: c.type<blog.ChangeMainBlogAssetResult>(),
             },
@@ -111,7 +111,7 @@ export const panelContract = c.router({
         },
         editBlog: {
             method: 'POST',
-            path: blog.editBlog.route,
+            path: '/api/panel/edit-blog',
             responses: {
                 200: c.type<blog.BlogEditResult>(),
             },
@@ -119,7 +119,7 @@ export const panelContract = c.router({
         },
         getBlogForEdit: {
             method: 'GET',
-            path: blog.getBlogForEdit.route,
+            path: '/api/panel/blog-for-edit/:blogId',
             responses: {
                 200: c.type<blog.BlogEditDto>(),
             },
@@ -127,7 +127,7 @@ export const panelContract = c.router({
         },
         deleteBlog: {
             method: 'POST',
-            path: blog.deleteBlog.route,
+            path: '/api/panel/remove-blog',
             responses: {
                 200: c.type<blog.DeleteBlogResult>(),
             },
@@ -135,7 +135,7 @@ export const panelContract = c.router({
         },
         uploadBlogAsset: {
             method: 'POST',
-            path: blog.uploadBlogAsset.route,
+            path: '/api/panel/upload-blog-asset',
             responses: {
                 200: c.type<blog.UploadBlogAssetResult>(),
             },
@@ -143,7 +143,7 @@ export const panelContract = c.router({
         },
         getBlogAssets: {
             method: 'GET',
-            path: blog.getBlogAssets.route,
+            path: '/api/panel/blog-assets/:blogId',
             responses: {
                 200: c.type<blog.BlogAssetsListItemDto[]>(),
             },
@@ -151,7 +151,7 @@ export const panelContract = c.router({
         },
         deleteBlogAsset: {
             method: 'POST',
-            path: blog.deleteBlogAsset.route,
+            path: '/api/panel/remove-blog-asset',
             responses: {
                 200: c.type<blog.DeleteBlogAssetResult>(),
             },
@@ -159,7 +159,7 @@ export const panelContract = c.router({
         },
         changeBlogAssetAlt: {
             method: 'POST',
-            path: blog.changeBlogAssetAlt.route,
+            path: '/api/panel/change-blog-asset-alt',
             responses: {
                 200: c.type<blog.ChangeBlogAssetAltResult>(),
             },
@@ -167,7 +167,7 @@ export const panelContract = c.router({
         },
         getBlogVisits: {
             method: 'GET',
-            path: blog.getBlogVisits.route,
+            path: '/api/panel/blog-stats/:start/:end/:blogId',
             responses: {
                 200: c.type<blog.BlogVisitsDto>(),
             },
@@ -175,14 +175,14 @@ export const panelContract = c.router({
         },
         getMainBlogs: {
             method: 'GET',
-            path: blog.getMainBlogs.route,
+            path: '/api/panel/main-blogs',
             responses: {
                 200: c.type<blog.MainBlogsDto>(),
             },
         },
         changeMainBlogs: {
             method: 'POST',
-            path: blog.changeMainBlogs.route,
+            path: '/api/panel/change-main-blogs',
             responses: {
                 200: c.type<blog.ChangeMainBlogsResult>(),
             },
@@ -192,14 +192,14 @@ export const panelContract = c.router({
     privateGallery: {
         getGalleriesList: {
             method: 'GET',
-            path: privateGallery.getGalleriesList.route,
+            path: '/api/panel/galleries-list',
             responses: {
                 200: c.type<privateGallery.GalleryDto[]>(),
             },
         },
         getGalleryVisits: {
             method: 'GET',
-            path: privateGallery.getGalleryVisits.route,
+            path: '/api/panel/gallery-stats/:start/:end/:galleryId',
             responses: {
                 200: c.type<privateGallery.GalleryVisitsDto>(),
             },
@@ -207,7 +207,7 @@ export const panelContract = c.router({
         },
         checkPasswordIsUnique: {
             method: 'GET',
-            path: privateGallery.checkPasswordIsUnique.route,
+            path: '/api/panel/gallery-password-unique/:password/:galleryId?',
             responses: {
                 200: c.type<boolean>(),
             },
@@ -215,7 +215,7 @@ export const panelContract = c.router({
         },
         createGallery: {
             method: 'POST',
-            path: privateGallery.createGallery.route,
+            path: '/api/panel/create-gallery',
             responses: {
                 200: c.type<privateGallery.CreateGalleryResult>(),
             },
@@ -223,7 +223,7 @@ export const panelContract = c.router({
         },
         getGalleryForEdit: {
             method: 'GET',
-            path: privateGallery.getGalleryForEdit.route,
+            path: '/api/panel/gallery-for-edit/:galleryId',
             responses: {
                 200: c.type<privateGallery.GalleryEditDto>(),
             },
@@ -231,7 +231,7 @@ export const panelContract = c.router({
         },
         editGallery: {
             method: 'POST',
-            path: privateGallery.editGallery.route,
+            path: '/api/panel/edit-gallery',
             responses: {
                 200: c.type<privateGallery.EditGalleryResult>(),
             },
@@ -239,7 +239,7 @@ export const panelContract = c.router({
         },
         deleteGallery: {
             method: 'POST',
-            path: privateGallery.deleteGallery.route,
+            path: '/api/panel/remove-gallery',
             responses: {
                 200: c.type<privateGallery.DeleteGalleryResult>(),
             },
@@ -247,7 +247,7 @@ export const panelContract = c.router({
         },
         getGalleryEmails: {
             method: 'GET',
-            path: privateGallery.getGalleryEmails.route,
+            path: '/api/panel/gallery-emails/:galleryId',
             responses: {
                 200: c.type<privateGallery.GalleryEmailsDto>(),
             },
@@ -255,7 +255,7 @@ export const panelContract = c.router({
         },
         notifySubscribers: {
             method: 'POST',
-            path: privateGallery.notifySubscribers.route,
+            path: '/api/panel/notify-subscribers',
             responses: {
                 200: c.type<privateGallery.NotifySubscribersResult>(),
             },
@@ -267,7 +267,7 @@ export const panelContract = c.router({
 export const eventContract = c.router({
     registerEvent: {
         method: 'POST',
-        path: event.reqisterEvent.route,
+        path: '/api/register-event',
         responses: {
             200: c.type<event.RegisterEventResult>(),
         },
@@ -275,7 +275,7 @@ export const eventContract = c.router({
     },
     getEventsList: {
         method: 'GET',
-        path: event.getEventsList.route,
+        path: '/api/events-list',
         responses: {
             200: c.type<event.EventDto[]>(),
         },
@@ -286,21 +286,21 @@ export const siteContract = c.router({
     blog: {
         getLastBlogs: {
             method: 'GET',
-            path: siteBlog.getLastBlogs.route,
+            path: '/api/last-blogs',
             responses: {
                 200: c.type<siteBlog.BlogListItem[]>(),
             },
         },
         getBlogsList: {
             method: 'GET',
-            path: siteBlog.getBlogsList.route,
+            path: '/api/blogs-list',
             responses: {
                 200: c.type<siteBlog.BlogListItem[]>(),
             },
         },
         getBlog: {
             method: 'GET',
-            path: siteBlog.getBlog.route,
+            path: '/api/blog/:alias',
             responses: {
                 200: c.type<siteBlog.Blog>(),
             },
@@ -310,7 +310,7 @@ export const siteContract = c.router({
     message: {
         send: {
             method: 'POST',
-            path: siteMessage.send.route,
+            path: '/api/send-message',
             responses: {
                 200: c.type<siteMessage.SendResult>(),
             },
@@ -320,7 +320,7 @@ export const siteContract = c.router({
     privateGallery: {
         subscribeForNotification: {
             method: 'POST',
-            path: siteGallery.subscribeForNotification.route,
+            path: '/api/subscribe-for-notification',
             responses: {
                 200: c.type<siteGallery.SubscribtionResult>(),
             },
@@ -328,7 +328,7 @@ export const siteContract = c.router({
         },
         getGalleryUrl: {
             method: 'GET',
-            path: siteGallery.getGalleryUrl.route,
+            path: '/api/private-gallery-url/:password',
             responses: {
                 200: c.type<siteGallery.PrivateGalleryUrlCheckResult>(),
             },
@@ -336,14 +336,14 @@ export const siteContract = c.router({
         },
         viewGallery: {
             method: 'GET',
-            path: siteGallery.viewGallery.route,
+            path: '/galeria',
             responses: {
                 200: c.otherResponse({ contentType: 'text/html', body: z.string() }),
             },
         },
         postViewGallery: {
             method: 'POST',
-            path: siteGallery.viewGallery.route,
+            path: '/galeria',
             responses: {
                 200: c.otherResponse({ contentType: 'text/html', body: z.string() }),
             },
@@ -353,7 +353,7 @@ export const siteContract = c.router({
     video: {
         getVideosList: {
             method: 'GET',
-            path: siteVideo.getVideosList.route,
+            path: '/api/videos-list',
             responses: {
                 200: c.type<siteVideo.VideoListItem[]>(),
             },

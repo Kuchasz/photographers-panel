@@ -2,24 +2,26 @@
 
 import * as commonPrivateGallery from "@pp/api/dist/private-gallery";
 import * as privateGallery from "@pp/api/dist/site/private-gallery";
+import { type PrivateGalleryUrlCheckResult, type SubscribtionResult } from "@pp/api/dist/site/private-gallery";
 import { ResultType } from "@pp/api/dist/common";
 import { strings } from "~/resources";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { tsr } from "~/api";
 
 type GalleryState = {
     password: string;
     email: string;
     isLoading: boolean;
     isLoadingNotification: boolean;
-    result?: privateGallery.PrivateGalleryUrlCheckResult;
-    notificationResult?: privateGallery.SubscribtionResult;
+    result?: PrivateGalleryUrlCheckResult;
+    notificationResult?: SubscribtionResult;
 };
 
 const getContent = (
     isLoading: boolean,
-    result?: privateGallery.PrivateGalleryUrlCheckResult
+    result?: PrivateGalleryUrlCheckResult
 ): { title: string; description: string } => {
     if (isLoading || !result) {
         return {
@@ -82,11 +84,16 @@ export default function PrivateGallery() {
 
         setState(prev => ({ ...prev, isLoading: true }));
         try {
-            const result = await privateGallery.getGalleryUrl(state.password);
-            const passwordReset = !result.gallery;
+            const result = await tsr.privateGallery.getGalleryUrl.query({ params: { password: state.password } });
+
+            if (result.status !== 200) {
+                return;
+            }
+
+            const passwordReset = !result.body.gallery;
             setState(prev => ({
                 ...prev,
-                result,
+                result: result.body,
                 isLoading: false,
                 password: passwordReset ? '' : prev.password,
             }));
@@ -101,13 +108,20 @@ export default function PrivateGallery() {
 
         setState(prev => ({ ...prev, isLoadingNotification: true }));
         try {
-            const result = await privateGallery.subscribeForNotification({
-                privateGalleryId: state.result.gallery.id,
-                email: state.email,
+            const result = await tsr.privateGallery.subscribeForNotification.mutate({
+                body: {
+                    privateGalleryId: state.result.gallery.id,
+                    email: state.email,
+                },
             });
+
+            if (result.status !== 200) {
+                return;
+            }
+
             setState(prev => ({
                 ...prev,
-                notificationResult: result,
+                notificationResult: result.body,
                 isLoadingNotification: false,
             }));
         } catch (error) {

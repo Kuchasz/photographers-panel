@@ -5,13 +5,6 @@ import React, { use } from "react";
 import { tsr } from "~/api";
 import { Headers } from "~/components/headers";
 
-const getImageBackgroundStyle = (url: string): React.CSSProperties => ({
-    backgroundImage: `url(${url})`,
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat'
-});
-
 type OfferProps = {
     params: Promise<{
         alias: string;
