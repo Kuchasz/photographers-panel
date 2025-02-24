@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BlogSelectItem, getBlogSelectList } from "@pp/api/dist/panel/blog";
 import { editGallery, GalleryEditDto, getGalleryForEdit } from "@pp/api/dist/panel/private-gallery";
-import { FormInstance } from "rsuite/lib/Form";
+import type { FormInstance } from 'rsuite';
 import { galleryModel } from "./gallery-model";
 import { PrivateGalleryState } from "@pp/api/dist/private-gallery";
 import { ResultType } from "@pp/api/dist/common";
@@ -10,13 +10,10 @@ import {
     Drawer,
     Button,
     Form,
-    FormGroup,
-    ControlLabel,
-    FormControl,
-    HelpBlock,
     ButtonToolbar,
     SelectPicker,
-    Alert,
+    useToaster,
+    Message
 } from 'rsuite';
 
 interface Props {
@@ -58,6 +55,9 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const [blogs, setBlogs] = React.useState<BlogSelectItem[]>([]);
     const formRef = React.useRef<FormInstance>();
+    const [formError, setFormError] = React.useState({});
+    const [formValue, setFormValue] = React.useState<GalleryEditDto>();
+    const toaster = useToaster();
 
     React.useEffect(() => {
         getBlogSelectList().then(setBlogs);
@@ -71,84 +71,91 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
     }, [id]);
 
     const submitEditGallery = async () => {
-        if (formRef.current) {
-            const result = await formRef.current.checkAsync();
+        if (!formRef.current) return;
 
-            const { formError } = formRef.current.state as any;
-            const { formValue } = formRef.current.props as any;
-            const passwordNotDirty = formValue.password === initialGalery.password;
-            const onlyErrorIsPassword =
-                Object.keys(formError).length === 1 && Object.keys(formError).includes('password');
-            const ignoreErrors = passwordNotDirty && onlyErrorIsPassword;
+        formRef.current.check()
 
-            if (ignoreErrors === false && result.hasError) return;
+        const result = await formRef.current.checkAsync();
 
-            formRef.current.cleanErrors();
+        const passwordNotDirty = formValue?.password === initialGalery.password;
+        const onlyErrorIsPassword =
+            Object.keys(formError).length === 1 && Object.keys(formError).includes('password');
+        const ignoreErrors = passwordNotDirty && onlyErrorIsPassword;
 
-            setIsLoading(true);
-            editGallery(id, formState).then((result) => {
-                setIsLoading(false);
-                if (result.type === ResultType.Success) {
-                    Alert.success(translations.gallery.edit.edited);
-                    closeEditForm();
-                    onSaved();
-                } else {
-                    Alert.error(translations.gallery.edit.notEdited);
-                }
-            });
-        }
+        if (ignoreErrors === false && result.hasError) return;
+
+        formRef.current.cleanErrors();
+
+        setIsLoading(true);
+        editGallery(id, formState).then((result) => {
+            setIsLoading(false);
+            if (result.type === ResultType.Success) {
+                toaster.push(
+                    <Message type="success">{translations.gallery.edit.edited}</Message>
+                );
+                closeEditForm();
+                onSaved();
+            } else {
+                toaster.push(
+                    <Message type="error">{translations.gallery.edit.notEdited}</Message>
+                );
+            }
+        });
+
     };
 
     return (
-        <Drawer size="xs" placement="right" show={showEditForm} onHide={closeEditForm}>
+        <Drawer open={showEditForm} onClose={closeEditForm}>
             <Drawer.Header>
                 <Drawer.Title>{translations.gallery.edit.title}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>
                 <Form
                     ref={formRef}
-                    model={galleryModel(id)}
+                    model={galleryModel}
                     formValue={formState}
+                    formError={formError}
+                    onCheck={setFormError}
                     onChange={(x) => setFormState(x as GalleryEditDto)}>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.date.label}</ControlLabel>
-                        <FormControl name="date" type="date" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.date.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.title.label}</ControlLabel>
-                        <FormControl name="title" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.title.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.notes.label}</ControlLabel>
-                        <FormControl name="notes" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.notes.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.state.label}</ControlLabel>
-                        <FormControl
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.gallery.edit.details.date.label}</Form.ControlLabel>
+                        <Form.Control name="date" type="date" />
+                        <Form.HelpText tooltip>{translations.gallery.edit.details.date.hint}</Form.HelpText>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.gallery.edit.details.title.label}</Form.ControlLabel>
+                        <Form.Control name="title" />
+                        <Form.HelpText tooltip>{translations.gallery.edit.details.title.hint}</Form.HelpText>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.gallery.edit.details.notes.label}</Form.ControlLabel>
+                        <Form.Control name="notes" />
+                        <Form.HelpText tooltip>{translations.gallery.edit.details.notes.hint}</Form.HelpText>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.gallery.edit.details.state.label}</Form.ControlLabel>
+                        <Form.Control
                             name="state"
                             style={{ width: 300 }}
                             accepter={SelectPicker}
                             searchable={false}
                             data={states}
                         />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.state.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.password.label}</ControlLabel>
-                        <FormControl name="password" checkAsync />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.password.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.directPath.label}</ControlLabel>
-                        <FormControl name="directPath" />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.directPath.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <ControlLabel>{translations.gallery.edit.details.blog.label}</ControlLabel>
-                        <FormControl
+                        <Form.HelpText tooltip>{translations.gallery.edit.details.state.hint}</Form.HelpText>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.gallery.edit.details.password.label}</Form.ControlLabel>
+                        <Form.Control name="password" checkAsync />
+                        <Form.HelpText tooltip>{translations.gallery.edit.details.password.hint}</Form.HelpText>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.gallery.edit.details.directPath.label}</Form.ControlLabel>
+                        <Form.Control name="directPath" />
+                        <Form.HelpText tooltip>{translations.gallery.edit.details.directPath.hint}</Form.HelpText>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.ControlLabel>{translations.gallery.edit.details.blog.label}</Form.ControlLabel>
+                        <Form.Control
                             name="blog"
                             style={{ width: 300 }}
                             accepter={SelectPicker}
@@ -156,9 +163,9 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                             searchable={true}
                             data={blogs}
                         />
-                        <HelpBlock tooltip>{translations.gallery.edit.details.blog.hint}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
+                        <Form.HelpText tooltip>{translations.gallery.edit.details.blog.hint}</Form.HelpText>
+                    </Form.Group>
+                    <Form.Group>
                         <ButtonToolbar>
                             <Button onClick={submitEditGallery} appearance="primary" loading={isLoading}>
                                 {translations.gallery.edit.save}
@@ -172,7 +179,7 @@ export const GalleryEdit = ({ id, showEditForm, closeEditForm, onSaved }: Props)
                                 {translations.gallery.edit.cancel}
                             </Button>
                         </ButtonToolbar>
-                    </FormGroup>
+                    </Form.Group>
                 </Form>
             </Drawer.Body>
         </Drawer>

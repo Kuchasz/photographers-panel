@@ -13,8 +13,8 @@ export const blogModel = (blogId?: number) =>
             .minLength(10, translations.validation.minLength(10))
             .maxLength(200, translations.validation.maxLength(200))
             .pattern(/^[a-z0-9-]*$/, translations.validation.lowercaseAndNumbers)
-            .pattern(/^([a-z0-9]+-){3,}([a-z0-9]+)$/, translations.validation.pattern('aaa-bbb-ccc'))
-            .addRule(checkAliasIsUnique(blogId), translations.validation.unique),
+            .pattern(/^([a-z0-9]+-){3,}([a-z0-9]+)$/, translations.validation.pattern('aaa-bbb-ccc')),
+            // .addRule(checkAliasIsUnique(blogId), translations.validation.unique),
         date: Schema.Types.DateType().isRequired(translations.validation.required),
         content: Schema.Types.StringType()
             .isRequired(translations.validation.required)

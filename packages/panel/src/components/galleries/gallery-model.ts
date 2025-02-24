@@ -3,7 +3,7 @@ import { PrivateGalleryState } from "@pp/api/dist/private-gallery";
 import { Schema } from "rsuite";
 import { translations } from "../../i18n";
 
-export const galleryModel = (galleryId?: number) =>
+export const galleryModel =
     Schema.Model({
         date: Schema.Types.DateType().isRequired(translations.validation.required),
         title: Schema.Types.StringType()
@@ -23,8 +23,8 @@ export const galleryModel = (galleryId?: number) =>
             .containsUppercaseLetter(translations.validation.containUppercaseLetter)
             .containsLowercaseLetter(translations.validation.containLowercaseLetter)
             .containsNumber(translations.validation.containNumber)
-            .minLength(8, translations.validation.minLength(8))
-            .addRule(checkPasswordIsUnique(galleryId), translations.validation.unique),
+            .minLength(8, translations.validation.minLength(8)),
+        // .addRule(checkPasswordIsUnique(galleryId), translations.validation.unique),
         directPath: Schema.Types.StringType()
             .isURL(translations.validation.url)
             .pattern(/https:\/\/[\w.\/-]+[^\/]$/, translations.validation.pattern('https://example.com')),
