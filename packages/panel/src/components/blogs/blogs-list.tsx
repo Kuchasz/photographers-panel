@@ -3,6 +3,8 @@ import { BlogListItem, changeBlogVisibility } from '@pp/api/dist/panel/blog';
 import { ButtonToolbar, Divider, IconButton, Table } from 'rsuite';
 import { ToolTip } from '../common/tooltip';
 import { translations } from '../../i18n';
+import { EyeClosed, Eye, Trash, Pencil, Grid2X2Plus } from 'lucide-react';
+
 
 interface Props {
     onSelect: (item: any) => void;
@@ -54,7 +56,7 @@ const VisibilityIcon = ({ id, initialVisibility, onVisibilityChange }: Visibilit
                 style={{ color: visible ? '#4CAF50' : '#F44336' }}
                 loading={isLoading}
                 appearance="subtle"
-                icon={<Icon icon={visible ? 'eye' : 'eye-slash'} />}
+                icon={visible ? <Eye size={16} /> : <EyeClosed size={16} />}
             />
         </ToolTip>
     );
@@ -72,13 +74,13 @@ export class BlogsList extends React.Component<Props, State> {
                 rowHeight={50}
                 virtualized={true}
                 shouldUpdateScroll={true}
-                onDataUpdated={() => {}}
+                onDataUpdated={() => { }}
                 loading={this.props.loadingBlogs}
                 height={400}
                 onRowClick={(item: any) => this.props.onSelect(item)}
                 data={this.props.blogs}>
                 <Table.Column width={100} align="center">
-                    <Table.HeaderCell></Table.HeaderCell>
+                    {/* <Table.HeaderCell></Table.HeaderCell> */}
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <VisibilityIcon
@@ -116,14 +118,14 @@ export class BlogsList extends React.Component<Props, State> {
                 </Table.Column>
 
                 <Table.Column width={200} align="center" fixed="right">
-                    <Table.HeaderCell></Table.HeaderCell>
+                    {/* <Table.HeaderCell></Table.HeaderCell> */}
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>
                                 <ToolTip placement="left" text={translations.blog.list.actions.assignAssets}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Icon icon="th-large" />}
+                                        icon={<Grid2X2Plus size={16} />}
                                         onClick={() => this.props.onAssignAssets(blog.id)}
                                     />
                                 </ToolTip>
@@ -131,7 +133,7 @@ export class BlogsList extends React.Component<Props, State> {
                                 <ToolTip placement="left" text={translations.blog.list.actions.edit}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Icon icon="edit2" />}
+                                        icon={<Pencil size={16} />}
                                         onClick={() => this.props.onEdit(blog.id)}
                                     />
                                 </ToolTip>
@@ -139,7 +141,7 @@ export class BlogsList extends React.Component<Props, State> {
                                 <ToolTip placement="left" text={translations.blog.list.actions.delete}>
                                     <IconButton
                                         appearance="subtle"
-                                        icon={<Icon icon="trash2" />}
+                                        icon={<Trash size={16} />}
                                         onClick={() => this.props.onDelete(blog.id)}
                                     />
                                 </ToolTip>
