@@ -21,7 +21,7 @@ type Like {
 type LikedPhoto {
   directoryName: String!
   fileName: String!
-  likes: Float!
+  likes: Int!
 }
 
 type Mutation {

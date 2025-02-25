@@ -1,13 +1,14 @@
-import { Field, ObjectType } from "type-graphql";
+import { GraphQLString } from "graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class LikedPhoto {
-    @Field()
+    @Field(() => Int)
     likes!: number;
 
-    @Field()
+    @Field(() => GraphQLString)
     directoryName!: string;
 
-    @Field()
+    @Field(() => GraphQLString)
     fileName!: string;
 }

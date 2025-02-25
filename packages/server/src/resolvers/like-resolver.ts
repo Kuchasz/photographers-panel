@@ -11,12 +11,13 @@ import { DeleteResult } from "../entities/DeleteResult";
 import { GalleryServerContext } from "../contex";
 import { LikedPhoto } from "../entities/LikedPhoto";
 import { groupBy, sort } from "@pp/utils/dist/array";
+import { GraphQLString } from "graphql";
 
 @Resolver()
 export class LikeResolver {
     @Mutation(() => Like)
     async likeImage(
-        @Arg('imageId') imageId: string,
+        @Arg('imageId', () => GraphQLString) imageId: string,
         @Arg('clientId', () => Int) clientId: number,
         @Ctx() ctx: GalleryServerContext
     ) {
@@ -28,7 +29,7 @@ export class LikeResolver {
 
     @Mutation(() => DeleteResult)
     async unlikeImage(
-        @Arg('imageId') imageId: string,
+        @Arg('imageId', () => GraphQLString) imageId: string,
         @Arg('clientId', () => Int) clientId: number,
         @Ctx() ctx: GalleryServerContext
     ) {

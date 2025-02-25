@@ -6,12 +6,13 @@ import {
 } from "typeorm";
 import { Client } from "./Client";
 import { Field, Int, ObjectType } from "type-graphql";
+import { GraphQLBoolean, GraphQLString } from "graphql";
 
 @ObjectType()
 @Entity()
 export class Like extends BaseEntity {
-    @Field()
-    @PrimaryColumn()
+    @Field(() => GraphQLString)
+    @PrimaryColumn({ type: 'varchar' })
     imageId!: string;
 
     @PrimaryColumn({ type: 'int8' })
@@ -20,7 +21,7 @@ export class Like extends BaseEntity {
     @ManyToOne(() => Client)
     client!: Client;
 
-    @Field()
+    @Field(() => GraphQLBoolean)
     liked!: boolean;
 
     @Field(() => Int)
