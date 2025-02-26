@@ -70,7 +70,7 @@ const processImages = ({ images, updateImage, finalizeUpload }: State) => {
     );
 };
 
-useUploadedImages.subscribe(processImages);
+// useUploadedImages.subscribe(processImages);
 
 const calculateTotalItemsProgress = (items: UploadedImage[]) => {
     const loadedBytes = items.reduce((acc, cur) => acc + cur.loaded, 0);
@@ -196,6 +196,9 @@ export const ImagesUploader = () => {
 
     const proper = getProper(uploadedImages);
 
+    console.log('ImagesUploader');
+
+    return null;
     return (
         <Whisper trigger="click" placement="rightEnd" speaker={<UploadsPopup images={proper} />}>
             <Nav.Item icon={<LoaderIcon />}>{translations.menu.transfers}</Nav.Item>

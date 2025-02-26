@@ -76,12 +76,13 @@ export class BlogsList extends React.Component<Props, State> {
                 virtualized={true}
                 shouldUpdateScroll={true}
                 onDataUpdated={() => { }}
+                fillHeight
                 loading={this.props.loadingBlogs}
-                height={400}
+                
                 onRowClick={(item: any) => this.props.onSelect(item)}
                 data={this.props.blogs}>
                 <Table.Column width={100} align="center">
-                    {/* <Table.HeaderCell></Table.HeaderCell> */}
+                    <Table.HeaderCell>{''}</Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <VisibilityIcon
@@ -119,7 +120,7 @@ export class BlogsList extends React.Component<Props, State> {
                 </Table.Column>
 
                 <Table.Column width={200} align="center" fixed="right">
-                    {/* <Table.HeaderCell></Table.HeaderCell> */}
+                    <Table.HeaderCell>{''}</Table.HeaderCell>
                     <Table.Cell className="link-group">
                         {(blog: BlogListItem) => (
                             <ButtonToolbar>

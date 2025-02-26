@@ -56,6 +56,7 @@ export const useUploadedImages = create<State>((set, get) => ({
     imagesFetchedForBlogs: [],
     uploadImages: (images) =>
         set((state) => {
+            console.log('uploadImages');
             const batchId = v4();
             const newImages = union(
                 state.images,
@@ -75,6 +76,7 @@ export const useUploadedImages = create<State>((set, get) => ({
         }),
     updateImage: (id) => (changes) =>
         set((state) => {
+            console.log('updateImage');
             const image = state.images.find((x) => x.originId === id);
             if (!image) return { images: state.images };
             return {
@@ -82,6 +84,7 @@ export const useUploadedImages = create<State>((set, get) => ({
             };
         }),
     fetchAssets: async (blogId) => {
+        console.log('fetchAssets');
         const state = get();
         if (state.imagesFetchedForBlogs.includes(blogId)) return;
 
@@ -94,6 +97,7 @@ export const useUploadedImages = create<State>((set, get) => ({
     },
     updateAsset: (id) => (changes) =>
         set((state) => {
+            console.log('updateAsset');
             const asset = state.assets.find((x) => x.id === id);
             if (!asset) return { assets: state.assets };
             return {
@@ -101,11 +105,15 @@ export const useUploadedImages = create<State>((set, get) => ({
             };
         }),
     deleteAsset: (id) =>
-        set((state) => ({
-            assets: state.assets.filter((a) => a.id !== id),
-        })),
+        set((state) => {
+            console.log('deleteAsset');
+            return {
+                assets: state.assets.filter((a) => a.id !== id),
+            };
+        }),
     finalizeUpload: (originId, changes, asset) =>
         set((state) => {
+            console.log('finalizeUpload');
             const image = state.images.find((x) => x.originId === originId);
             if (!image) return { images: state.images, assets: state.assets };
             return {

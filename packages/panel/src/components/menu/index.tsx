@@ -13,20 +13,22 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-    { route: routes.home, icon: <House size={16} />, text: translations.menu.home },
-    { route: routes.stats, icon: <ChartLine size={16} />, text: translations.menu.stats },
+    { route: routes.home, icon: <House size={24} />, text: translations.menu.home },
+    { route: routes.stats, icon: <ChartLine size={24} />, text: translations.menu.stats },
     // { route: routes.emails, icon: "envelope-o", text: 'Emails' },
-    { route: routes.galleries, icon: <Image size={16} />, text: translations.menu.galleries },
-    { route: routes.blog.list, icon: <Cloud size={16} />, text: translations.menu.blogs },
+    { route: routes.galleries, icon: <Image size={24} />, text: translations.menu.galleries },
+    { route: routes.blog.list, icon: <Cloud size={24} />, text: translations.menu.blogs },
     {
         route: routes.comments,
-        icon: <MessengerLogo size={16} />,
+        icon: <MessengerLogo size={24} />,
         text: translations.menu.comments,
     },
     // { route: routes.login, icon: "trash", text: 'LogIn' }
 ];
 
 export const Menu: React.FC = () => {
+    console.log('Menu');
+
     const navigate = useNavigate();
     const location = useLocation();
     const activeItem = location.pathname.toLowerCase();
@@ -56,7 +58,7 @@ export const Menu: React.FC = () => {
                     </Nav>
                     <Nav>
                         {/* {<Nav.Item icon={<Icon icon="arrow-circle-o-up" />}>Transfers</Nav.Item>} */}
-                        <ImagesUploader />
+                        {/* <ImagesUploader /> */}
                     </Nav>
                 </Sidenav.Body>
             </Sidenav>

@@ -30,6 +30,8 @@ export const Root: React.FC<Props> = () => {
         return <Navigate to={routes.login} />;
     }
 
+    console.log('Root');
+
     return (
         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <NavBarInstance canLogOut={canLogOut} />

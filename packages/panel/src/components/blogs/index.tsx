@@ -70,9 +70,9 @@ export const Blogs: React.FC = () => {
     };
 
     const onVisibilityChange = (selectedBlog: number, visibility: boolean) => {
-        setBlogs(prevBlogs => 
-            prevBlogs.map(blog => 
-                blog.id === selectedBlog 
+        setBlogs(prevBlogs =>
+            prevBlogs.map(blog =>
+                blog.id === selectedBlog
                     ? { ...blog, visible: visibility }
                     : blog
             )
@@ -126,6 +126,8 @@ export const Blogs: React.FC = () => {
             </Panel>
             <div className="list">
                 <Panel
+                bordered
+                    bodyFill
                     header={
                         <Button onClick={showCreateFormHandler} color="green">
                             <Plus size={16} /> {translations.blog.create.button}

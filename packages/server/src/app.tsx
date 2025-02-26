@@ -1,4 +1,3 @@
-import * as authPanel from '@pp/api/dist/panel/auth';
 import * as config from './config';
 import * as blogModel from './models/blog';
 // import * as offer from '@pp/api/dist/site/offer';
@@ -66,9 +65,13 @@ app.use(allowCrossDomain);
 // app.use(express.static(resolveModulePath('@pp/site', 'dist'), { index: false }));
 app.use([privateGallery.viewGallery.route], express.static(resolveModulePath('@pp/gallery', 'dist'), { index: false }));
 app.use(
-    [authPanel.viewLogIn.route, '/panel*', '/panel/*'],
+    ['/panel'],
     express.static(resolveModulePath('@pp/panel', 'dist'), { index: false })
 );
+
+app.get("/panel/*", (req, res) => {
+    res.sendFile(resolveModulePath('@pp/panel', 'dist/index.html'));
+});
 
 app.use(siteRouter);
 app.use(panelRouter);

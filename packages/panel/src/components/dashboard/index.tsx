@@ -87,6 +87,8 @@ const emptyMainBlogs = () => ({
 });
 
 export const Dashboard = (props: Props) => {
+    console.log('Dashboard');
+
     const [formState, setFormState] = useState<MainBlogsDto>(emptyMainBlogs());
     const [blogs, setBlogs] = useState<BlogSelectItem[]>([]);
     const [newEvents, setNewEvents] = useState<EventDto[]>([]);
@@ -102,15 +104,15 @@ export const Dashboard = (props: Props) => {
     });
 
     useEffect(() => {
-        getBlogSelectList().then(setBlogs);
+        // getBlogSelectList().then(setBlogs);
     }, []);
 
     useEffect(() => {
-        getMainBlogs().then(setFormState);
+        // getMainBlogs().then(setFormState);
     }, []);
 
     useEffect(() => {
-        getEventsList().then(setNewEvents);
+        // getEventsList().then(setNewEvents);
     }, []);
 
     const _changeMainBlogs = (b: MainBlogsDto) => {

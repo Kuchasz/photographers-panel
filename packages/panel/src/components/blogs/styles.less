@@ -1,16 +1,22 @@
 .blogs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
     .list {
+        flex-grow: 1;
         .link-group .rs-table-cell-content {
             padding: 5px;
         }
 
         .rs-btn-toolbar {
-            >.rs-btn {
+            > .rs-btn {
                 margin-left: 0px !important;
             }
 
-            >.rs-divider {
+            > .rs-divider {
                 margin: 0px 6px;
+                height: auto;
             }
         }
     }
@@ -39,7 +45,7 @@
                 }
             }
 
-            input[type="file"] {
+            input[type='file'] {
                 position: absolute !important;
                 clip: rect(1px 1px 1px 1px);
             }
