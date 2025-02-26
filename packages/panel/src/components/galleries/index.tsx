@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import {
     Button,
     Message,
@@ -38,217 +39,187 @@ const getStats = (x: GalleryVisitsDto): ChartStat[] => [
 
 interface Props {}
 
-interface State {
-    isLoadingGalleries: boolean;
-    visits: VisitsSummaryDto[];
-    galleries: GalleryDto[];
-    selectedGallery?: GalleryDto;
-    stats: ChartStat[];
-    showCreateForm: boolean;
-    showEditForm: boolean;
-    showGalleryViewEmails: boolean;
-    showGalleryViewLikes: boolean;
-    galleryToEditId?: number;
-}
+export const Galleries: React.FC<Props> = () => {
+    const toaster = useToaster();
+    
+    const [isLoadingGalleries, setIsLoadingGalleries] = useState(false);
+    const [visits, setVisits] = useState<VisitsSummaryDto[]>([]);
+    const [galleries, setGalleries] = useState<GalleryDto[]>([]);
+    const [selectedGallery, setSelectedGallery] = useState<GalleryDto | undefined>(undefined);
+    const [stats, setStats] = useState<ChartStat[]>([]);
+    const [showCreateForm, setShowCreateForm] = useState(false);
+    const [showEditForm, setShowEditForm] = useState(false);
+    const [showGalleryViewEmails, setShowGalleryViewEmails] = useState(false);
+    const [showGalleryViewLikes, setShowGalleryViewLikes] = useState(false);
+    const [galleryToEditId, setGalleryToEditId] = useState<number | undefined>(undefined);
 
-export class Galleries extends React.Component<Props, State> {
-    private toaster = useToaster();
+    useEffect(() => {
+        fetchGalleries();
+    }, []);
 
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            visits: [],
-            isLoadingGalleries: false,
-            galleries: [],
-            stats: [],
-            selectedGallery: undefined,
-            showCreateForm: false,
-            showEditForm: false,
-            showGalleryViewEmails: false,
-            showGalleryViewLikes: false,
-            galleryToEditId: undefined,
-        };
-    }
+    const fetchGalleries = () => {
+        setIsLoadingGalleries(true);
+        
+        getGalleriesList().then((galleries) => {
+            const firstGallery = galleries[0];
+            setGalleries(galleries);
+            setIsLoadingGalleries(false);
 
-    componentDidMount() {
-        this.fetchGalleries();
-    }
-
-    fetchGalleries = () => {
-        this.setState(
-            () => ({ isLoadingGalleries: true }),
-            () => {
-                getGalleriesList().then((galleries) => {
-                    const selectedGallery = galleries[0]; //.id;
-                    this.setState({
-                        galleries,
-                        isLoadingGalleries: false,
-                    });
-
-                    this.onGallerySelected(selectedGallery);
-                });
+            if (firstGallery) {
+                onGallerySelected(firstGallery);
             }
-        );
-    };
-
-    onGallerySelected = (selectedGallery: GalleryDto) => {
-        if (selectedGallery === this.state.selectedGallery) return;
-
-        // const gallery = this.state.galleries.filter((x) => x.id === selectedGallery)[0];
-        // const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(gallery.date);
-        // const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(gallery.date), 1);
-
-        this.setState((_state) => ({
-            selectedGallery,
-        }));
-
-        // getGalleryVisits(selectedGallery).then((resp) =>
-        //     this.setState({ stats: getStats(resp), visits: resp.dailyVisits })
-        // );
-    };
-
-    onGalleryEdit = (selectedGallery: number) => {
-        this.setState({
-            galleryToEditId: selectedGallery,
-            showEditForm: true,
         });
     };
 
-    onGalleryDelete = async (selectedGallery: number) => {
+    const onGallerySelected = (gallery: GalleryDto) => {
+        if (gallery === selectedGallery) return;
+
+        // const startDate = disableAutoDate ? startDate : new Date(gallery.date);
+        // const endDate = disableAutoDate ? endDate : addMonths(new Date(gallery.date), 1);
+
+        setSelectedGallery(gallery);
+
+        // getGalleryVisits(gallery).then((resp) => {
+        //     setStats(getStats(resp));
+        //     setVisits(resp.dailyVisits);
+        // });
+    };
+
+    const onGalleryEdit = (selectedGalleryId: number) => {
+        setGalleryToEditId(selectedGalleryId);
+        setShowEditForm(true);
+    };
+
+    const onGalleryDelete = async (selectedGalleryId: number) => {
         const confirmed = await confirm(
             translations.gallery.delete.confirmationContent,
             translations.gallery.delete.confirmationHeader
         );
+        
         if (confirmed) {
-            const result = await deleteGallery(selectedGallery);
+            const result = await deleteGallery(selectedGalleryId);
             if (result.type === ResultType.Success) {
-                this.toaster.push(
+                toaster.push(
                     <Message type="success">{translations.gallery.delete.deleted}</Message>
                 );
-                this.fetchGalleries();
+                fetchGalleries();
             } else {
-                this.toaster.push(
+                toaster.push(
                     <Message type="error">{translations.gallery.delete.notDeleted}</Message>
                 );
             }
         }
     };
 
-    onGalleryViewEmails = (selectedGallery: number) => {
-        this.setState({
-            galleryToEditId: selectedGallery,
-            showGalleryViewEmails: true,
-        });
+    const onGalleryViewEmails = (selectedGalleryId: number) => {
+        setGalleryToEditId(selectedGalleryId);
+        setShowGalleryViewEmails(true);
     };
 
-    onGalleryViewLikes = (selectedGallery: number) => {
-        this.setState({
-            galleryToEditId: selectedGallery,
-            showGalleryViewLikes: true,
-        });
+    const onGalleryViewLikes = (selectedGalleryId: number) => {
+        setGalleryToEditId(selectedGalleryId);
+        setShowGalleryViewLikes(true);
     };
 
-
-    closeGalleryViewEmails = () => {
-        this.setState({ showGalleryViewEmails: false, galleryToEditId: undefined });
+    const closeGalleryViewEmails = () => {
+        setShowGalleryViewEmails(false);
+        setGalleryToEditId(undefined);
     };
 
-    closeGalleryViewLikes = () => {
-        this.setState({ showGalleryViewLikes: false, galleryToEditId: undefined });
+    const closeGalleryViewLikes = () => {
+        setShowGalleryViewLikes(false);
+        setGalleryToEditId(undefined);
     };
 
-    closeCreateForm = () => {
-        this.setState({ showCreateForm: false });
+    const closeCreateForm = () => {
+        setShowCreateForm(false);
     };
 
-    showCreateForm = () => {
-        this.setState({ showCreateForm: true });
+    const handleShowCreateForm = () => {
+        setShowCreateForm(true);
     };
 
-    closeEditForm = () => {
-        this.setState({ showEditForm: false, galleryToEditId: undefined });
+    const closeEditForm = () => {
+        setShowEditForm(false);
+        setGalleryToEditId(undefined);
     };
 
-    gallerySave = () => {
-        this.setState({ showEditForm: false, galleryToEditId: undefined });
-        this.fetchGalleries();
+    const gallerySave = () => {
+        setShowEditForm(false);
+        setGalleryToEditId(undefined);
+        fetchGalleries();
     };
 
-    onNotified = () => {
-        this.setState({ showGalleryViewEmails: false, galleryToEditId: undefined });
-        this.fetchGalleries();
+    const onNotified = () => {
+        setShowGalleryViewEmails(false);
+        setGalleryToEditId(undefined);
+        fetchGalleries();
     };
 
-    showEditForm = () => {
-        this.setState({ showEditForm: true });
-    };
-
-    render() {
-        return (
-            <div className="galleries">
-                <Panel>
-                    <StatsChart
-                        fetchChartStatsData={async (s, e, i) => {
-                            const result = await getGalleryVisits(s, e, i);
-                            const stats = getStats(result);
-                            const data = result.dailyVisits.map((dv) => ({
-                                date: dv.date,
-                                value: dv.visits,
-                            }));
-                            return { data, stats };
-                        }}
-                        selectedItem={this.state.selectedGallery!}
+    return (
+        <div className="galleries">
+            <Panel>
+                <StatsChart
+                    fetchChartStatsData={async (s, e, i) => {
+                        const result = await getGalleryVisits(s, e, i);
+                        const stats = getStats(result);
+                        const data = result.dailyVisits.map((dv) => ({
+                            date: dv.date,
+                            value: dv.visits,
+                        }));
+                        return { data, stats };
+                    }}
+                    selectedItem={selectedGallery!}
+                />
+            </Panel>
+            <div className="list">
+                <Panel
+                    header={
+                        <Button onClick={handleShowCreateForm} color="green">
+                            <Plus size={16} /> {translations.gallery.create.button}
+                        </Button>
+                    }>
+                    <GalleriesList
+                        galleries={galleries}
+                        loadingGalleries={isLoadingGalleries}
+                        onSelect={onGallerySelected}
+                        onEdit={onGalleryEdit}
+                        onDelete={onGalleryDelete}
+                        onViewEmails={onGalleryViewEmails}
+                        onViewLikes={onGalleryViewLikes}
+                        selectedGalleryId={selectedGallery?.id}
                     />
                 </Panel>
-                <div className="list">
-                    <Panel
-                        header={
-                            <Button onClick={this.showCreateForm} color="green">
-                                <Plus size={16} /> {translations.gallery.create.button}
-                            </Button>
-                        }>
-                        <GalleriesList
-                            galleries={this.state.galleries}
-                            loadingGalleries={this.state.isLoadingGalleries}
-                            onSelect={this.onGallerySelected}
-                            onEdit={this.onGalleryEdit}
-                            onDelete={this.onGalleryDelete}
-                            onViewEmails={this.onGalleryViewEmails}
-                            onViewLikes={this.onGalleryViewLikes}
-                            selectedGalleryId={this.state.selectedGallery?.id}
-                        />
-                    </Panel>
-                </div>
-                <GalleryCreate
-                    onAdded={() => this.fetchGalleries()}
-                    showCreateForm={this.state.showCreateForm}
-                    closeCreateForm={this.closeCreateForm}
-                />
-                {this.state.galleryToEditId && (
-                    <GalleryEdit
-                        onSaved={this.gallerySave}
-                        showEditForm={this.state.showEditForm}
-                        closeEditForm={this.closeEditForm}
-                        id={this.state.galleryToEditId}
-                    />
-                )}
-                {this.state.galleryToEditId && (
-                    <GalleryEmails
-                        show={this.state.showGalleryViewEmails}
-                        close={this.closeGalleryViewEmails}
-                        onNotified={this.onNotified}
-                        id={this.state.galleryToEditId}
-                    />
-                )}
-                {this.state.galleryToEditId && (
-                    <GalleryLikes
-                        show={this.state.showGalleryViewLikes}
-                        close={this.closeGalleryViewLikes}
-                        onNotified={this.onNotified}
-                        id={this.state.galleryToEditId}
-                    />
-                )}
             </div>
-        );
-    }
-}
+            <GalleryCreate
+                onAdded={fetchGalleries}
+                showCreateForm={showCreateForm}
+                closeCreateForm={closeCreateForm}
+            />
+            {galleryToEditId && (
+                <GalleryEdit
+                    onSaved={gallerySave}
+                    showEditForm={showEditForm}
+                    closeEditForm={closeEditForm}
+                    id={galleryToEditId}
+                />
+            )}
+            {galleryToEditId && (
+                <GalleryEmails
+                    show={showGalleryViewEmails}
+                    close={closeGalleryViewEmails}
+                    onNotified={onNotified}
+                    id={galleryToEditId}
+                />
+            )}
+            {galleryToEditId && (
+                <GalleryLikes
+                    show={showGalleryViewLikes}
+                    close={closeGalleryViewLikes}
+                    onNotified={onNotified}
+                    id={galleryToEditId}
+                />
+            )}
+        </div>
+    );
+};

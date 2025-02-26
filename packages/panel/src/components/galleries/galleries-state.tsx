@@ -1,47 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { addMonths } from "@pp/utils/dist/date";
 import { GalleryDto, getGalleriesList, getGalleryVisits } from "@pp/api/dist/panel/private-gallery";
 import { VisitsSummaryDto } from "@pp/api/dist/panel/visits";
 
-interface Props {}
-interface State {
-    selectedGallery: number;
-    galleries: GalleryDto[];
-    disableAutoDate: boolean;
-    isLoading: boolean;
-    startDate: Date;
-    endDate: Date;
-    stats: any;
-    visits: VisitsSummaryDto[];
-}
+interface GalleriesStateProps {}
 
-export class GalleriesState extends React.Component<Props, State> {
-    componentDidMount() {
+export const GalleriesState: React.FC<GalleriesStateProps> = () => {
+    const [selectedGallery, setSelectedGallery] = useState<number>(0);
+    const [galleries, setGalleries] = useState<GalleryDto[]>([]);
+    const [disableAutoDate, setDisableAutoDate] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [startDate, setStartDate] = useState<Date>(new Date());
+    const [endDate, setEndDate] = useState<Date>(new Date());
+    const [stats, setStats] = useState<any>(null);
+    const [visits, setVisits] = useState<VisitsSummaryDto[]>([]);
+
+    useEffect(() => {
         getGalleriesList().then((galleries) => {
-            const selectedGallery = galleries[0].id;
+            const firstGalleryId = galleries[0]?.id;
 
-            this.setState({
-                galleries,
-            });
+            setGalleries(galleries);
 
-            this.onGallerySelected(selectedGallery);
+            if (firstGalleryId) {
+                onGallerySelected(firstGalleryId);
+            }
         });
-    }
+    }, []);
 
-    onGallerySelected = (selectedGallery: number) => {
-        if (selectedGallery === this.state.selectedGallery) return;
+    const onGallerySelected = (galleryId: number) => {
+        if (galleryId === selectedGallery) return;
 
-        const gallery = this.state.galleries.filter((x) => x.id === selectedGallery)[0];
+        const gallery = galleries.find((x) => x.id === galleryId);
+        
+        if (!gallery) return;
 
-        const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(gallery.date);
-        const endDate = this.state.disableAutoDate ? this.state.endDate : addMonths(new Date(gallery.date), 1);
+        const newStartDate = disableAutoDate ? startDate : new Date(gallery.date);
+        const newEndDate = disableAutoDate ? endDate : addMonths(new Date(gallery.date), 1);
 
-        this.setState(() => ({
-            isLoading: true,
-            startDate,
-            endDate,
-            selectedGallery,
-        }));
+        setIsLoading(true);
+        setStartDate(newStartDate);
+        setEndDate(newEndDate);
+        setSelectedGallery(galleryId);
 
         const randomStats = () => ({
             today: Math.floor(Math.random() * 300),
@@ -52,12 +51,17 @@ export class GalleriesState extends React.Component<Props, State> {
             emails: Math.floor(Math.random() * 20),
         });
 
-        getGalleryVisits(startDate, endDate, selectedGallery).then((resp) =>
-            this.setState({
-                isLoading: false,
-                stats: randomStats(),
-                visits: resp.dailyVisits,
-            })
-        );
+        getGalleryVisits(newStartDate, newEndDate, galleryId).then((resp) => {
+            setIsLoading(false);
+            setStats(randomStats());
+            setVisits(resp.dailyVisits);
+        });
     };
-}
+
+    return (
+        <div>
+            {/* You can add your UI components here */}
+            {/* This component seems to be primarily for state management */}
+        </div>
+    );
+};

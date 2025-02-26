@@ -1,7 +1,7 @@
 import { OfferEntry, OfferListItem } from "@pp/api/dist/site/offer";
 import { routes } from "@pp/api/dist/site/routes";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { strings } from "../resources";
 
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);

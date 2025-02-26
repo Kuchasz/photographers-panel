@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     Button,
     List,
@@ -19,11 +19,6 @@ interface Props {
     close: () => void;
     onNotified: () => void;
 }
-interface State {
-    emails: GalleryEmailDto[];
-    pendingNotification: boolean;
-    isLoading: boolean;
-}
 
 const formatEmail = (address: string) => {
     const [userPart, domainPart] = address.split('@');
@@ -40,74 +35,71 @@ const EmailsList = ({ emails }: { emails: GalleryEmailDto[] }) => (
     </div>
 );
 
-export class GalleryEmails extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = { emails: [], pendingNotification: false, isLoading: false };
-    }
+export const GalleryEmails = ({ id, show, close, onNotified }: Props) => {
+    const [emails, setEmails] = useState<GalleryEmailDto[]>([]);
+    const [pendingNotification, setPendingNotification] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const toaster = useToaster();
 
-    private toaster = useToaster();
-
-    componentDidMount() {
-        getGalleryEmails(this.props.id).then(({ emails, pendingNotification }) => {
-            this.setState({ emails, pendingNotification });
+    const fetchEmails = () => {
+        getGalleryEmails(id).then(({ emails, pendingNotification }) => {
+            setEmails(emails);
+            setPendingNotification(pendingNotification);
         });
-    }
-
-    componentDidUpdate(prevProps: Props) {
-        if (this.props.id === prevProps.id) return;
-        getGalleryEmails(this.props.id).then(({ emails, pendingNotification }) => {
-            this.setState({ emails, pendingNotification });
-        });
-    }
-
-    handleModalHide = () => {
-        this.props.close();
     };
 
-    notifySubscribers = async () => {
-        this.setState({ isLoading: true });
-        const result = await notifySubscribers(this.props.id);
+    useEffect(() => {
+        if (show) {
+            fetchEmails();
+        }
+    }, [id, show]);
+
+    const handleModalHide = () => {
+        close();
+    };
+
+    const notifySubscriberss = async () => {
+        setIsLoading(true);
+        const result = await notifySubscribers(id);
 
         if (result.type === ResultType.Success) {
-            this.toaster.push(
+            toaster.push(
                 <Message type="success">{translations.gallery.emailNotifications.notified}</Message>
             );
-            this.handleModalHide();
-            this.props.onNotified();
+            handleModalHide();
+            onNotified();
         } else {
-            this.toaster.push(
+            toaster.push(
                 <Message type="error">{translations.gallery.emailNotifications.notNotified}</Message>
             );
         }
 
-        this.setState({ isLoading: false, pendingNotification: false });
+        setIsLoading(false);
+        setPendingNotification(false);
     };
 
-    render() {
-        return (
-            <Modal className="gallery-emails" open={this.props.show} onClose={this.handleModalHide}>
-                <Modal.Header>
-                    <Modal.Title>{translations.gallery.emailNotifications.title}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <EmailsList emails={this.state.emails} />
-                </Modal.Body>
-                <Modal.Footer>
-                    <ToolTip placement="left" text={translations.gallery.emailNotifications.notifyTooltip}>
-                        <Button
-                            onClick={this.notifySubscribers}
-                            disabled={!this.state.pendingNotification}
-                            appearance="primary"
-                            loading={this.state.isLoading}>
-                            <Bell size={16} /> {translations.gallery.emailNotifications.send}
-                        </Button>
-                    </ToolTip>
-                    <Button onClick={this.handleModalHide} appearance="subtle">
-                        {translations.gallery.emailNotifications.cancel}
+    return (
+        <Modal className="gallery-emails" open={show} onClose={handleModalHide}>
+            <Modal.Header>
+                <Modal.Title>{translations.gallery.emailNotifications.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <EmailsList emails={emails} />
+            </Modal.Body>
+            <Modal.Footer>
+                <ToolTip placement="left" text={translations.gallery.emailNotifications.notifyTooltip}>
+                    <Button
+                        onClick={notifySubscriberss}
+                        disabled={!pendingNotification}
+                        appearance="primary"
+                        loading={isLoading}>
+                        <Bell size={16} /> {translations.gallery.emailNotifications.send}
                     </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-}
+                </ToolTip>
+                <Button onClick={handleModalHide} appearance="subtle">
+                    {translations.gallery.emailNotifications.cancel}
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+};

@@ -5,48 +5,45 @@ import { Headers } from "../components/headers";
 // import { strings } from "../resources";
 
 type BlogProps = { initialState?: api.Blog; alias: string };
-type BlogState = { blog?: api.Blog };
 
-export class Blog extends React.Component<BlogProps, BlogState> {
-    state = this.props.initialState !== undefined ? { blog: this.props.initialState } : { blog: undefined };
+export const Blog = ({ initialState, alias }: BlogProps) => {
+    const [blog, setBlog] = React.useState<api.Blog | undefined>(initialState);
 
-    componentDidMount() {
-        if (this.state.blog === undefined) {
-            api.getBlog(this.props.alias).then((blog) => this.setState({ blog }));
+    React.useEffect(() => {
+        if (blog === undefined) {
+            api.getBlog(alias).then(setBlog);
         }
-    }
+    }, [alias]);
 
-    render() {
-        if (this.state.blog === undefined) return null;
-        // const location = (global as any).window.location;
+    if (blog === undefined) return null;
+    // const location = (global as any).window.location;
 
-        return (
-            <div className="blog">
-                <Headers title={`${this.state.blog.title} (blog)`} />
-                <section>
-                    <article className="show">
-                        <h1>{this.state.blog.title}</h1>
-                        <h2>{this.state.blog.content}</h2>
-                        {/* <span>
-                            {strings.blog.shareMessage}
-                            <a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}>
-                                <img style={{filter: 'invert(1)'}} src={facebookIcon} />
-                            </a>
-                        </span> */}
-                        <br />
-                        <br />
-                        <div className="photos">
-                            {this.state.blog.assets.map((p) => (
-                                <img key={p.url} src={p.url} alt={p.alt} loading="lazy" />
-                            ))}
-                        </div>
-                    </article>
-                </section>
-                <div id="fb-root"></div>
-            </div>
-        );
-    }
-}
+    return (
+        <div className="blog">
+            {/* <Headers title={`${blog.title} (blog)`} /> */}
+            <section>
+                <article className="show">
+                    <h1>{blog.title}</h1>
+                    <h2>{blog.content}</h2>
+                    {/* <span>
+                        {strings.blog.shareMessage}
+                        <a href={`https://www.facebook.com/sharer/sharer.php?u=${location}`}>
+                            <img style={{filter: 'invert(1)'}} src={facebookIcon} />
+                        </a>
+                    </span> */}
+                    <br />
+                    <br />
+                    <div className="photos">
+                        {blog.assets.map((p) => (
+                            <img key={p.url} src={p.url} alt={p.alt} loading="lazy" />
+                        ))}
+                    </div>
+                </article>
+            </section>
+            <div id="fb-root"></div>
+        </div>
+    );
+};
 
 {
     /* <div class="blog">

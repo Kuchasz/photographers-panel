@@ -47,6 +47,9 @@ export type State = {
     finalizeUpload: (originId: Id, changes: Partial<UploadedImage>, asset: BlogAsset) => void;
 };
 
+export type Selector<T> = (state: State) => T;
+export type EqualityFn<T> = (prev: T, next: T) => boolean;
+
 export const useUploadedImages = create<State>((set, get) => ({
     images: [],
     assets: [],
@@ -111,3 +114,7 @@ export const useUploadedImages = create<State>((set, get) => ({
             };
         }),
 }));
+
+// useUploadedImages.subscribe = (listener: (state: State, prevState: State) => void) => {
+//     return useUploadedImages.subscribe(listener);
+// };

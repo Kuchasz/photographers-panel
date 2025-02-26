@@ -39,6 +39,10 @@ export default defineConfig(({ command, mode }) => ({
         outDir: 'dist',
         sourcemap: mode === 'development',
         minify: mode === 'production',
+        terserOptions: {
+            compress: mode === 'production',
+            mangle: mode === 'production',
+        },
         rollupOptions: {
             input: {
                 main: resolve(__dirname, 'index.html')

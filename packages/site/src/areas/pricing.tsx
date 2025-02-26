@@ -4,7 +4,7 @@ import linkPhoto from "../images/page_offer_photo.png";
 import React from "react";
 import { distinctBy, includesAll, includesAny } from "@pp/utils/dist/array";
 import { getOrRegisterName } from "@pp/utils/dist/user";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { routes } from "@pp/api/dist/site/routes";
 import { strings } from "../resources";
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { addMonths } from "@pp/utils/dist/date";
 import { Chart, ChartData } from "./chart";
 import { ChartStat, ChartStats } from "./stats";
@@ -21,106 +21,80 @@ interface Props<Item extends StatsItem> {
     fetchChartStatsData: (startDate: Date, endDate: Date, item: number) => Promise<ChartStatsData>;
 }
 
-interface State {
-    isLoading: boolean;
-    disableAutoDate: boolean;
-    startDate: Date;
-    endDate: Date;
-    stats: ChartStat[];
-    items: ChartData[];
-}
+export function StatsChart<T extends StatsItem>({ selectedItem, fetchChartStatsData }: Props<T>) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [disableAutoDate, setDisableAutoDate] = useState(false);
+    const [startDate, setStartDate] = useState(addMonths(new Date(), -1));
+    const [endDate, setEndDate] = useState(new Date());
+    const [stats, setStats] = useState<ChartStat[]>([]);
+    const [items, setItems] = useState<ChartData[]>([]);
 
-export class StatsChart<T extends StatsItem> extends React.Component<Props<T>, State> {
-    constructor(props: Props<T>) {
-        super(props);
-        this.state = {
-            isLoading: false,
-            disableAutoDate: false,
-            startDate: addMonths(new Date(), -1),
-            endDate: new Date(),
-            stats: [],
-            items: [],
-        };
-    }
-
-    toggleAutoDate = () => {
-        this.setState(({ disableAutoDate }) => ({
-            disableAutoDate: !disableAutoDate,
-        }));
+    const toggleAutoDate = () => {
+        setDisableAutoDate(!disableAutoDate);
     };
 
-    componentDidMount() {
-        if (!this.props.selectedItem) return;
-        this.fetchStats();
-    }
+    const fetchStats = () => {
+        if (!selectedItem) return;
+        
+        setIsLoading(true);
 
-    componentDidUpdate?(prevProps: Readonly<Props<T>>) {
-        if (prevProps.selectedItem?.id === this.props.selectedItem?.id) return;
-        this.fetchStats();
-    }
+        const newStartDate = disableAutoDate ? startDate : new Date(selectedItem.date);
+        const newEndDate = disableAutoDate
+            ? endDate
+            : addMonths(new Date(selectedItem.date), 1);
 
-    fetchStats() {
-        this.setState({ isLoading: true });
-
-        const startDate = this.state.disableAutoDate ? this.state.startDate : new Date(this.props.selectedItem.date);
-        const endDate = this.state.disableAutoDate
-            ? this.state.endDate
-            : addMonths(new Date(this.props.selectedItem.date), 1);
-
-        this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
-            // console.log(resp.data);
-            this.setState({
-                isLoading: false,
-                stats: resp.stats,
-                items: resp.data,
-                startDate,
-                endDate,
-            });
+        fetchChartStatsData(newStartDate, newEndDate, selectedItem.id).then((resp) => {
+            setIsLoading(false);
+            setStats(resp.stats);
+            setItems(resp.data);
+            setStartDate(newStartDate);
+            setEndDate(newEndDate);
         });
-    }
+    };
 
-    onDateRangeChanged = (value: ValueType) => {
+    useEffect(() => {
+        if (selectedItem) {
+            fetchStats();
+        }
+    }, [selectedItem?.id, disableAutoDate]);
+
+    const onDateRangeChanged = (value: ValueType) => {
         if (!Array.isArray(value) || !value[0] || !value[1]) return;
         
-        const [startDate, endDate] = value as [Date, Date];
+        const [newStartDate, newEndDate] = value as [Date, Date];
         
-        this.setState(() => ({ disableAutoDate: true, startDate, endDate }));
+        setDisableAutoDate(true);
+        setStartDate(newStartDate);
+        setEndDate(newEndDate);
         
-        if (this.props.selectedItem) {
-            this.setState(() => ({
-                isLoading: true,
-            }));
+        if (selectedItem) {
+            setIsLoading(true);
 
-            this.props.fetchChartStatsData(startDate, endDate, this.props.selectedItem.id).then((resp) => {
-                // console.log(resp.data);
-                this.setState({
-                    isLoading: false,
-                    stats: resp.stats,
-                    items: resp.data,
-                });
+            fetchChartStatsData(newStartDate, newEndDate, selectedItem.id).then((resp) => {
+                setIsLoading(false);
+                setStats(resp.stats);
+                setItems(resp.data);
             });
         }
     };
 
-    render() {
-        return (
-            <div className="stats-chart">
-                <header>
-                    <StatsRange
-                        onAutoChanged={this.toggleAutoDate}
-                        autoDisabled={this.state.disableAutoDate}
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onRangeChange={this.onDateRangeChanged}
-                    />
-                    <span>
-                        {this.state.stats != null ? (
-                            <ChartStats isLoading={this.state.isLoading} stats={this.state.stats} />
-                        ) : null}
-                    </span>
-                </header>
-                <Chart items={this.state.items}></Chart>
-            </div>
-        );
-    }
+    return (
+        <div className="stats-chart">
+            <header>
+                <StatsRange
+                    onAutoChanged={toggleAutoDate}
+                    autoDisabled={disableAutoDate}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onRangeChange={onDateRangeChanged}
+                />
+                <span>
+                    {stats != null ? (
+                        <ChartStats isLoading={isLoading} stats={stats} />
+                    ) : null}
+                </span>
+            </header>
+            <Chart items={items} />
+        </div>
+    );
 }

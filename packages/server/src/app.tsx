@@ -1,28 +1,27 @@
 import * as authPanel from '@pp/api/dist/panel/auth';
-import * as blogModel from './models/blog';
 import * as config from './config';
-import * as offer from '@pp/api/dist/site/offer';
+import * as blogModel from './models/blog';
+// import * as offer from '@pp/api/dist/site/offer';
 import * as privateGallery from '@pp/api/dist/site/private-gallery';
-import * as siteModel from './models/site';
+// import * as siteModel from './models/site';
+import { setEndpoint } from '@pp/api/dist/common';
+import { routes } from '@pp/api/dist/site/routes';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import fs from 'fs';
-import { allowCrossDomain } from './core';
-import { connection } from './db';
-import { resolveModulePath } from './core/dependencies';
+import 'isomorphic-unfetch';
 import { Knex } from 'knex';
-import { migrations } from './migrations';
-import path, { resolve } from 'path';
-import { router as siteRouter } from './areas/site/routes';
+import { resolve } from 'path';
 import { router as panelRouter } from './areas/panel/routes';
 import { router as mainRouter } from './areas/routes';
-import { routes } from '@pp/api/dist/site/routes';
-import { setEndpoint } from '@pp/api/dist/common';
-import 'isomorphic-unfetch';
+import { router as siteRouter } from './areas/site/routes';
+import { allowCrossDomain } from './core';
+import { resolveModulePath } from './core/dependencies';
+import { connection } from './db';
 import { useGraphApi } from './graph-app';
+import { migrations } from './migrations';
 
-let { Root }: { Root: any } = require('@pp/site');
+// let { Root }: { Root: any } = require('@pp/site');
 
 setEndpoint(config.app.appPath!);
 const Youch = require('youch');
@@ -64,17 +63,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(allowCrossDomain);
 
-const raiseErr = (err: Error, req: any, res: any) => {
-    const youch = new Youch(err, req);
-
-    youch.toHTML().then((html: string) => {
-        res.writeHead(500, { 'content-type': 'text/html' });
-        res.write(html);
-        res.end();
-    });
-};
-
-app.use(express.static(resolveModulePath('@pp/site', 'dist'), { index: false }));
+// app.use(express.static(resolveModulePath('@pp/site', 'dist'), { index: false }));
 app.use([privateGallery.viewGallery.route], express.static(resolveModulePath('@pp/gallery', 'dist'), { index: false }));
 app.use(
     [authPanel.viewLogIn.route, '/panel*', '/panel/*'],
@@ -122,94 +111,96 @@ app.get('/robots.txt', function (req: any, res: any) {
 app.get('*', async (req: any, res, next) => {
     if (req.url === '/api') return next();
 
-    if (req.url.includes('/public')) return res.sendStatus(404);
+    // if (req.url.includes('/public')) return res.sendStatus(404);
 
-    let desiredRoute: { route: string };
-    let initialState: any;
+    res.sendStatus(404);
 
-    const serverConfig = {
-        stats: {
-            siteId: config.stats.siteId,
-            urlBase: config.stats.urlBase,
-        },
-    };
+    // let desiredRoute: { route: string };
+    // let initialState: any;
 
-    console.log(req.url);
+    // const serverConfig = {
+    //     stats: {
+    //         siteId: config.stats.siteId,
+    //         urlBase: config.stats.urlBase,
+    //     },
+    // };
 
-    if (process.env.NODE_ENV === 'development') Root = require('@pp/site');
+    // console.log(req.url);
 
-    try {
-        const found = Object.values(routes).filter((p) => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
-        const match = Root.matchPath(req.path, { path: found.route });
+    // if (process.env.NODE_ENV === 'development') Root = require('@pp/site');
 
-        desiredRoute = { route: found.route };
-        initialState = found ? await found.getData(match ? (match.params as any).alias : null) : undefined;
+    // try {
+    //     const found = Object.values(routes).filter((p) => Root.matchPath(req.path, { path: p.route, exact: true }))[0];
+    //     const match = Root.matchPath(req.path, { path: found.route });
 
-        console.log(match);
-    } catch (err) {
-        console.error(err);
-        return res.redirect('/');
-    }
+    //     desiredRoute = { route: found.route };
+    //     initialState = found ? await found.getData(match ? (match.params as any).alias : null) : undefined;
 
-    fs.readFile(resolveModulePath('@pp/site', 'dist/index.html'), 'utf8', async (err, template) => {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
+    //     console.log(match);
+    // } catch (err) {
+    //     console.error(err);
+    //     return res.redirect('/');
+    // }
 
-        let siteContent = '';
-        const context = {};
-        let helmet: any = {};
+    // fs.readFile(resolveModulePath('@pp/site', 'dist/index.html'), 'utf8', async (err, template) => {
+    //     if (err) {
+    //         console.error(err);
+    //         return res.sendStatus(500);
+    //     }
 
-        Root.initializeConfig(serverConfig);
+    //     let siteContent = '';
+    //     const context = {};
+    //     let helmet: any = {};
 
-        const app = Root.createElement(
-            Root.StaticRouter,
-            { location: req.url, context },
-            Root.createElement(Root.Root, { initialState: { [desiredRoute.route]: initialState } }, null)
-        );
+    //     Root.initializeConfig(serverConfig);
 
-        try {
-            (global as any).window = {
-                location: req.protocol + '://' + req.get('host') + req.originalUrl,
-            };
-            siteContent = Root.renderToString(app);
-            helmet = Root.renderStatic();
-        } catch (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
+    //     const app = Root.createElement(
+    //         Root.StaticRouter,
+    //         { location: req.url, context },
+    //         Root.createElement(Root.Root, { initialState: { [desiredRoute.route]: initialState } }, null)
+    //     );
 
-        const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
-            .replace('::ffff:', '')
-            .split(',')[0];
+    //     try {
+    //         (global as any).window = {
+    //             location: req.protocol + '://' + req.get('host') + req.originalUrl,
+    //         };
+    //         siteContent = Root.renderToString(app);
+    //         helmet = Root.renderStatic();
+    //     } catch (err) {
+    //         console.error(err);
+    //         return res.sendStatus(500);
+    //     }
 
-        await siteModel.registerVisit(new Date(), address);
+    //     const address = (req.header('x-forwarded-for') || req.connection.remoteAddress)
+    //         .replace('::ffff:', '')
+    //         .split(',')[0];
 
-        return res.send(`
-            <!DOCTYPE html>
-            <html lang="pl">
-                <head>
-                    ${helmet.title.toString()}
-                    ${helmet.meta.toString()}
-                    <meta charset="UTF-8" />
-                    <meta property="og:locale" content="pl_PL">
-                    <meta property="og:site_name" content="PyszStudio">
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <link rel="shortcut icon" href="/favicon.ico" />
-                    <link href="/main.css" rel="stylesheet" />
-                    <script type="text/javascript">
-                        window.___InitialState___=${JSON.stringify({
-            [desiredRoute.route]: initialState,
-        })};
-                        window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>
-                </head>
-                <body>
-                    <div id="root">${siteContent}</div>
-                    <script type="text/javascript" src="/bundle.js"></script>
-                </body>
-            </html>`);
-    });
+    //     await siteModel.registerVisit(new Date(), address);
+
+    //     return res.send(`
+    //         <!DOCTYPE html>
+    //         <html lang="pl">
+    //             <head>
+    //                 ${helmet.title.toString()}
+    //                 ${helmet.meta.toString()}
+    //                 <meta charset="UTF-8" />
+    //                 <meta property="og:locale" content="pl_PL">
+    //                 <meta property="og:site_name" content="PyszStudio">
+    //                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+    //                 <link rel="shortcut icon" href="/favicon.ico" />
+    //                 <link href="/main.css" rel="stylesheet" />
+    //                 <script type="text/javascript">
+    //                     window.___InitialState___=${JSON.stringify({
+    //         [desiredRoute.route]: initialState,
+    //     })};
+    //                     window.___ServerConfig___=${JSON.stringify(serverConfig)}</script>
+    //             </head>
+    //             <body>
+    //                 <div id="root">${siteContent}</div>
+    //                 <script type="text/javascript" src="/bundle.js"></script>
+    //             </body>
+    //         </html>`);
+    // });
 });
 
 const runApp = async () => {

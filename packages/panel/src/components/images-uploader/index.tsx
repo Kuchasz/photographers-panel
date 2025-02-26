@@ -80,10 +80,7 @@ const calculateTotalItemsProgress = (items: UploadedImage[]) => {
 };
 
 const UploadHeader = () => {
-    const items = useUploadedImages(
-        (x) => getProper(x.images),
-        (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === (n as any[]).reduce((acc, cur) => acc + cur.loaded, 0)
-    );
+    const items = useUploadedImages((state) => getProper(state.images));
 
     const leftImages = items.filter((x) => isActive(x.status) || isQueued(x.status)).length;
     const totalProgress = calculateTotalItemsProgress(items);
@@ -182,10 +179,7 @@ const getProper = (images: UploadedImage[]) => {
 };
 
 const LoaderIcon = () => {
-    const items = useUploadedImages(
-        (x) => getProper(x.images),
-        (p, n) => p.reduce((acc, cur) => acc + cur.loaded, 0) === (n as any[]).reduce((acc, cur) => acc + cur.loaded, 0)
-    );
+    const items = useUploadedImages((state) => getProper(state.images));
 
     const totalProgress = calculateTotalItemsProgress(items);
 
@@ -198,10 +192,7 @@ const LoaderIcon = () => {
 };
 
 export const ImagesUploader = () => {
-    const uploadedImages = useUploadedImages(
-        (x) => getProper(x.images),
-        (p, n) => ''.concat(...p.map((pi) => pi.originId)) === ''.concat(...(n as any[]).map((ni) => ni.originId))
-    );
+    const uploadedImages = useUploadedImages((state) => getProper(state.images));
 
     const proper = getProper(uploadedImages);
 

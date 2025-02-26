@@ -1,43 +1,40 @@
 import { VideoListItem } from "@pp/api/dist/site/video";
 import * as React from "react";
 
-type BlogsProps = { initialState?: VideoListItem[] };
-type BlogsState = { videos?: VideoListItem[] };
+type VideosProps = { initialState?: VideoListItem[] };
 
-export class Videos extends React.Component<BlogsProps, BlogsState> {
-    state = this.props.initialState !== undefined ? { videos: this.props.initialState } : { videos: undefined };
+export const Videos = ({ initialState }: VideosProps) => {
+    const [videos, setVideos] = React.useState<VideoListItem[] | undefined>(initialState);
 
-    componentDidMount() {
-        if (this.state.videos === undefined) {
-            // getVideosList().then((videos) => this.setState({ videos }));
+    React.useEffect(() => {
+        if (videos === undefined) {
+            // getVideosList().then(setVideos);
         }
-    }
+    }, []);
 
-    render() {
-        return (
-            <div className="videos">
-                <section>
-                    {this.state.videos?.map((v) => (
-                        <div key={v.videoUrl} className="video">
-                            {/* <div className="ripple">
-                                <div></div>
-                                <div></div>
-                            </div> */}
-                            <iframe
-                                key={v.videoUrl}
-                                width="560"
-                                height="315"
-                                src={v.videoUrl}
-                                frameBorder="0"
-                                allow="autoplay; encrypted-media;"
-                                allowFullScreen></iframe>
-                        </div>
-                    ))}
-                </section>
-            </div>
-        );
-    }
-}
+    return (
+        <div className="videos">
+            <section>
+                {videos?.map((v) => (
+                    <div key={v.videoUrl} className="video">
+                        {/* <div className="ripple">
+                            <div></div>
+                            <div></div>
+                        </div> */}
+                        <iframe
+                            key={v.videoUrl}
+                            width="560"
+                            height="315"
+                            src={v.videoUrl}
+                            frameBorder="0"
+                            allow="autoplay; encrypted-media;"
+                            allowFullScreen></iframe>
+                    </div>
+                ))}
+            </section>
+        </div>
+    );
+};
 
 // <div class="gallery">
 //     <section>

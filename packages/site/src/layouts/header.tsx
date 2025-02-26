@@ -2,7 +2,7 @@ import React from "react";
 import { first, last, nextElement } from "@pp/utils/dist/array";
 import { firstSegment } from "@pp/utils/dist/url";
 import { Headers } from "../components/headers";
-import { Link, withRouter } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import { menuItems } from "../menu-items";
 import { routes } from "@pp/api/dist/site/routes";
 import { strings } from "../resources";
@@ -19,7 +19,9 @@ const getSrc = (photo: string, ext: string) => require(`../images/top/${photo}${
 const selectedItem = (selectedPath: string, path: string) =>
     firstSegment(selectedPath) === path ? 'current' : undefined;
 
-export const Header = withRouter((props) => {
+export const Header = () => {
+    const location = useLocation();
+    
     const [{ currentPhoto, prevPhoto }, setCurrentPhoto] = React.useState({
         prevPhoto: last(strings.main.topPhotos),
         currentPhoto: first(strings.main.topPhotos),
@@ -27,20 +29,22 @@ export const Header = withRouter((props) => {
     const [currentAdvantage, setCurrentAdvantage] = React.useState(strings.offer.slogan.advantages[0]);
 
     React.useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             const nextAdvantage = nextElement(strings.offer.slogan.advantages, currentAdvantage);
             setCurrentAdvantage(nextAdvantage);
 
             const nextPhoto = nextElement(strings.main.topPhotos, currentPhoto);
             setCurrentPhoto({ currentPhoto: nextPhoto, prevPhoto: currentPhoto });
         }, 5000);
-    }, [currentAdvantage]);
+        
+        return () => clearTimeout(timer);
+    }, [currentAdvantage, currentPhoto]);
 
-    const firstItem = first(menuItems, (mi) => firstSegment(props.location.pathname) === mi.route);
+    const firstItem = first(menuItems, (mi) => firstSegment(location.pathname) === mi.route);
 
     return (
         <>
-            <Headers title={firstItem?.title}></Headers>
+            <Headers title={firstItem?.title} />
             <header
                 id={firstItem?.fullPage ? 'home' : 'subpage'}>
                 <div className="background">
@@ -75,31 +79,31 @@ export const Header = withRouter((props) => {
                 </span>
                 <div className="menu">
                     <nav>
-                        <Link to={routes.home.route} id={selectedItem(props.location.pathname, routes.home.route)}>
+                        <Link to={routes.home.route} id={selectedItem(location.pathname, routes.home.route)}>
                             {strings.menu.home}
                         </Link>
                         {/*
                         <Link
                             to={routes.pricing.route}
-                            id={selectedItem(props.location.pathname, routes.pricing.route)}>
+                            id={selectedItem(location.pathname, routes.pricing.route)}>
                             {strings.menu.pricing}
                         </Link> 
                         */}
-                        <Link to={routes.offers.route} id={selectedItem(props.location.pathname, routes.offers.route)}>
+                        <Link to={routes.offers.route} id={selectedItem(location.pathname, routes.offers.route)}>
                             {strings.menu.offer}
                         </Link>
-                        {/* <Link to={routes.blogs.route} id={selectedItem(props.location.pathname, routes.blogs.route)}>
+                        {/* <Link to={routes.blogs.route} id={selectedItem(location.pathname, routes.blogs.route)}>
                             {strings.menu.blog}
                         </Link> */}
-                        <Link to={routes.photos.route} id={selectedItem(props.location.pathname, routes.photos.route)}>
+                        <Link to={routes.photos.route} id={selectedItem(location.pathname, routes.photos.route)}>
                             {strings.menu.photos}
                         </Link>
-                        <Link to={routes.videos.route} id={selectedItem(props.location.pathname, routes.videos.route)}>
+                        <Link to={routes.videos.route} id={selectedItem(location.pathname, routes.videos.route)}>
                             {strings.menu.videos}
                         </Link>
                         <Link
                             to={routes.contact.route}
-                            id={selectedItem(props.location.pathname, routes.contact.route)}>
+                            id={selectedItem(location.pathname, routes.contact.route)}>
                             {strings.menu.contact}
                         </Link>
                         <Link id="gallery" to={routes.private.route}>
@@ -117,4 +121,4 @@ export const Header = withRouter((props) => {
             </header>
         </>
     );
-});
+};

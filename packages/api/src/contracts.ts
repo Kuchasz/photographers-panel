@@ -275,7 +275,7 @@ export const eventContract = c.router({
     },
     getEventsList: {
         method: 'GET',
-        path: '/api/events-list',
+        path: '/api/events',
         responses: {
             200: c.type<event.EventDto[]>(),
         },

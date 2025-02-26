@@ -9,7 +9,7 @@ import './index.less';
 import { BrowserRouter } from 'react-router-dom';
 import { StaticRouter, matchPath } from 'react-router';
 import { renderToString } from 'react-dom/server';
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 import { initialize } from './config';
 
 if (typeof document !== 'undefined') {
@@ -41,6 +41,6 @@ export const Root = {
     StaticRouter,
     renderToString,
     matchPath,
-    renderStatic: Helmet.renderStatic,
+    renderStatic: null,//Helmet.renderStatic,
     initializeConfig: initialize,
 } as any;

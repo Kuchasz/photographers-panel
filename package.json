@@ -11,7 +11,7 @@
         "watch:server": "npm run start:dev -w @pp/server",
         "watch:panel": "npm run watch -w @pp/panel",
         "watch:gallery": "npm run watch -w @pp/gallery",
-        "watch:site": "npm run watch -w @pp/site"
+        "watch:landing-page": "npm run watch -w @pp/landing-page"
     },
     "browserslist": [
         "> 1%",

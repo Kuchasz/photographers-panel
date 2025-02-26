@@ -21,12 +21,12 @@ export const NavBarInstance = (props: Props) => {
 
     return (
         <Navbar className="top-bar" appearance="inverse">
-            <Navbar.Header>
+            <Navbar.Brand>
                 <a href="#" className="navbar-brand logo">
                     Photographers Panel
                 </a>
-            </Navbar.Header>
-            <Navbar.Body>
+            </Navbar.Brand>
+            <Nav>
                 <Nav pullRight>
                     {props.canLogOut && (
                         <Nav.Item onClick={logOut} icon={<SignOut size={16} />}>
@@ -34,7 +34,7 @@ export const NavBarInstance = (props: Props) => {
                         </Nav.Item>
                     )}
                 </Nav>
-            </Navbar.Body>
+            </Nav>
         </Navbar>
     );
 };
