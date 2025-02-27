@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import 'rsuite/styles/index.less';
 import { Root } from './components/root/index';
 import './index.less';
+import './global.css';
 import { BrowserRouter } from 'react-router-dom';
 
 const container = document.getElementById('root');

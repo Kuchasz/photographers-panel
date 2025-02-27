@@ -126,7 +126,7 @@ export const Blogs: React.FC = () => {
             </Panel>
             <div className="list">
                 <Panel
-                bordered
+                    bordered
                     bodyFill
                     header={
                         <Button onClick={showCreateFormHandler} color="green">
