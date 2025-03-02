@@ -6,6 +6,8 @@ import Link from "next/link";
 import React from "react";
 import { tsr } from "~/api";
 import { strings } from "~/resources";
+import { getPayload } from "payload";
+import payloadConfig from "~/payload.config";
 
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);
 
@@ -16,16 +18,25 @@ const getImageBackgroundStyle = (url: string): React.CSSProperties => ({
     backgroundRepeat: 'no-repeat'
 });
 
-export default function OffersPage() {
+export default async function OffersPage() {
+    const payload = await getPayload({
+        config: payloadConfig,
+    });
 
-    const { data, isLoading } = tsr.offer.getOffersList.useQuery({ queryKey: ['offers-list'] });
+    // Fetch offers from PayloadCMS
+    const { docs: offers } = await payload.find({
+        collection: 'offers',
+        sort: ['order'],
+    });
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    // Find the wedding offer (assuming it has a specific ID or property)
+    const weddingOffer = offers.find(offer => offer.isWedding) || offers[0];
+    
+    // Filter other offers
+    const otherOffers = offers.filter(offer => offer !== weddingOffer);
 
-    if (data?.status !== 200) {
-        return <div>Error</div>;
+    if (!offers.length) {
+        return <div>No offers found</div>;
     }
 
     return (
@@ -44,9 +55,9 @@ export default function OffersPage() {
                         </header>
 
                         <article className="space-y-16">
-                            {data.body.offer.photos.length > 0 && (
+                            {weddingOffer.photos && weddingOffer.photos.length > 0 && (
                                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                                    {data.body.offer.photos.map((photo) => (
+                                    {weddingOffer.photos.map((photo) => (
                                         <div
                                             key={photo.url}
                                             className="group aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
@@ -59,7 +70,7 @@ export default function OffersPage() {
                             )}
                             <div
                                 className="prose prose-lg mx-auto max-w-none prose-headings:font-serif prose-headings:font-light prose-headings:text-stone-800 prose-p:font-light prose-p:leading-relaxed prose-p:text-stone-600"
-                                dangerouslySetInnerHTML={{ __html: data.body.offer.description }}
+                                dangerouslySetInnerHTML={{ __html: weddingOffer.description }}
                             />
                         </article>
                     </article>
@@ -76,7 +87,7 @@ export default function OffersPage() {
                         </header>
 
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {data.body.offers.filter((_i, id) => id > 3).map((offer) => (
+                            {otherOffers.map((offer) => (
                                 <Link
                                     href={getOfferUrl(offer.alias)}
                                     key={offer.alias}

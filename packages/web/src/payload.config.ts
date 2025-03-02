@@ -14,6 +14,8 @@ import { Blog } from './collections/blog/Blog'
 import { Video } from './collections/videos/Video'
 import { Event } from './collections/site/Event'
 import { SiteVisit } from './collections/site/SiteVisit'
+import { Offer } from './collections/offers/offer'
+import { OfferMedia } from './collections/offers/offer-media'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PrivateGallery, Blog, Video, Event, SiteVisit],
+  collections: [Users, Media, PrivateGallery, Blog, Video, Event, SiteVisit, Offer, OfferMedia],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET ?? '',
   typescript: {
