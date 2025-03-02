@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { type MenuItem, menuItems } from "~/menu-items";
-import { Headers } from "../components/headers";
+import { Headers } from "./headers";
 import { strings } from "../resources";
 
 const getSrc = (photo: string, ext: string) => `/images/top-new/${photo}${ext}`;

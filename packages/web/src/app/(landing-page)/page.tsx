@@ -3,8 +3,8 @@
 import { FacebookLogo, InstagramLogo, MapPin, Phone, Star } from "@phosphor-icons/react";
 import { routes } from "@pp/api/dist/site/routes";
 import Link from "next/link";
-import { Button } from "../components/button";
-import { strings } from "../resources";
+import { Button } from "../../components/button";
+import { strings } from "../../resources";
 import { useEffect, useState } from "react";
 
 type Opinion = {

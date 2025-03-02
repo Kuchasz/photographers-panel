@@ -2,24 +2,20 @@
     "private": true,
     "name": "photographers-panel",
     "scripts": {
-        "build": "npm run build --workspaces",
+        "build": "pnpm run build --filter=*",
         "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'",
         "start": "NODE_ENV=development& node packages/server/dist/app.js",
-        "watch": "concurrently \"npm:watch:*\"",
-        "watch:utils": "npm run watch -w @pp/utils",
-        "watch:api": "npm run watch -w @pp/api",
-        "watch:server": "npm run start:dev -w @pp/server",
-        "watch:panel": "npm run watch -w @pp/panel",
-        "watch:gallery": "npm run watch -w @pp/gallery",
-        "watch:landing-page": "npm run watch -w @pp/landing-page"
+        "watch": "concurrently \"pnpm run watch:*\"",
+        "watch:utils": "pnpm run watch --filter=@pp/utils",
+        "watch:api": "pnpm run watch --filter=@pp/api",
+        "watch:server": "pnpm run start:dev --filter=@pp/server",
+        "watch:panel": "pnpm run watch --filter=@pp/panel",
+        "watch:gallery": "pnpm run watch --filter=@pp/gallery",
+        "watch:web": "pnpm run watch --filter=@pp/web"
     },
     "browserslist": [
         "> 1%",
         "Chrome > 65"
-    ],
-    "workspaces": [
-        "packages/*",
-        "public_nodejs"
     ],
     "overrides": {
         "@types/react": "18.3.0",
@@ -32,7 +28,11 @@
         "@phosphor-icons/react": "2.1.7",
         "concurrently": "^8.2.2"
     },
-    "peerDependencies": {
-      
+    "peerDependencies": {},
+    "packageManager": "pnpm@8.15.4",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "sharp"
+        ]
     }
 }
