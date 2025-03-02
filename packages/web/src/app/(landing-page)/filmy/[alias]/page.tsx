@@ -68,22 +68,6 @@ export default async function VideoDetailPage({ params }: VideoDetailPageProps) 
                             allowFullScreen
                         />
                     </div>
-
-                    {video.tags && (
-                        <div className="mt-8">
-                            <h2 className="mb-3 text-xl font-light text-stone-700">Tags</h2>
-                            <div className="flex flex-wrap gap-2">
-                                {video.tags.split(',').map((tag, index) => (
-                                    <span
-                                        key={index}
-                                        className="px-3 py-1 bg-stone-200 text-stone-700 text-sm rounded-full"
-                                    >
-                                        {tag.trim()}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </main>
         </div>

@@ -59,10 +59,9 @@ export const Video: CollectionConfig = {
         if (!value) return 'Video URL is required'
         if (
           typeof value === 'string' &&
-          !value.includes('youtube.com/embed/') &&
-          !value.includes('vimeo.com')
+          !value.includes('youtube.com/embed/')
         ) {
-          return 'Video URL must be a valid YouTube or Vimeo embed URL'
+          return 'Video URL must be a valid YouTube embed URL like https://www.youtube.com/embed/some_video_id'
         }
         return true
       }) as TextFieldSingleValidation,
