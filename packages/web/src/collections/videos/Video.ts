@@ -14,8 +14,9 @@ export const Video: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'alias', 'updatedAt']
+    defaultColumns: ['title', 'alias', 'updatedAt'],
   },
+  defaultSort: 'order',
   fields: [
     {
       name: 'title',
@@ -27,6 +28,15 @@ export const Video: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+    },
+    {
+      name: 'order',
+      type: 'number',
+      admin: {
+        position: 'sidebar',
+        description: 'Used for manual sorting of videos',
+      },
+      defaultValue: 0,
     },
     {
       name: 'desc',

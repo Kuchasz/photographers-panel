@@ -214,10 +214,5 @@ export const Blog: CollectionConfig = {
         },
       ],
     },
-  ],
-  versions: {
-    drafts: {
-      autosave: true,
-    },
-  },
+  ]
 }

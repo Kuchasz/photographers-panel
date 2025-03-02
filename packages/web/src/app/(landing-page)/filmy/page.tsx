@@ -1,19 +1,16 @@
-'use client';
-
-import { tsr } from "~/api";
+import { getPayload } from "payload";
 import { strings } from "~/resources";
+import payloadConfig from "~/payload.config";
 
-export default function VideosPage() {
+export default async function VideosPage() {
+    const payload = await getPayload({
+        config: payloadConfig,
+    });
 
-    const { data, isLoading } = tsr.video.getVideosList.useQuery({ queryKey: ['videos'] });
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (data?.status !== 200) {
-        return <div>Error</div>;
-    }
+    const { docs: videos } = await payload.find({
+        collection: 'videos',
+        sort: ['order'],
+    });
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
@@ -29,7 +26,7 @@ export default function VideosPage() {
 
                 <section className="mx-auto max-w-7xl">
                     <div className="grid gap-8 md:gap-12">
-                        {data.body.map((video) => (
+                        {videos.map((video) => (
                             <div
                                 key={video.videoUrl}
                                 className="group relative overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
