@@ -3,8 +3,9 @@
 import React from "react";
 import Image from "next/image";
 import { ResultType } from "@pp/api/dist/common";
-import { send, type SendResult } from "@pp/api/dist/site/message";
+import { type SendResult } from "@pp/api/dist/site/message";
 import { strings } from "~/resources";
+import { sendMessage } from "./actions";
 
 type ContactFormData = {
     name: string;
@@ -29,7 +30,7 @@ export default function ContactPage() {
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            const response = await send(formData);
+            const response = await sendMessage(formData);
             setResult(response);
             if (response.type === ResultType.Success) {
                 setFormData(prev => ({ ...prev, content: '' }));
@@ -63,7 +64,7 @@ export default function ContactPage() {
                                         <p key={line}>{line}</p>
                                     ))}
                                 </div>
-                                
+
                                 <div>
                                     <p>
                                         <span className="font-medium text-stone-800">{strings.contact.emailLabel}</span>{' '}
@@ -78,7 +79,7 @@ export default function ContactPage() {
 
                             <form className="relative space-y-6" onSubmit={e => e.preventDefault()}>
                                 {isLoading && (
-                                    <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-white/80 backdrop-blur-sm">
+                                    <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-white/75">
                                         <p className="text-lg font-light text-stone-800">
                                             {strings.contact.form.sendingMessage}
                                         </p>
@@ -86,11 +87,10 @@ export default function ContactPage() {
                                 )}
 
                                 {result && (
-                                    <div className={`rounded-lg border p-4 ${
-                                        result.type === ResultType.Success 
-                                            ? 'border-green-100 bg-green-50 text-green-800' 
+                                    <div className={`rounded-lg border p-4 ${result.type === ResultType.Success
+                                            ? 'border-green-100 bg-green-50 text-green-800'
                                             : 'border-red-100 bg-red-50 text-red-800'
-                                    }`}>
+                                        }`}>
                                         <p className="text-sm">
                                             {result.type === ResultType.Success
                                                 ? strings.contact.form.messageSent
@@ -103,6 +103,7 @@ export default function ContactPage() {
                                     type="text"
                                     name="name"
                                     value={formData.name}
+                                    disabled={isLoading}
                                     onChange={handleInputChange}
                                     placeholder={strings.contact.form.name}
                                     className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
@@ -112,6 +113,7 @@ export default function ContactPage() {
                                     type="email"
                                     name="email"
                                     value={formData.email}
+                                    disabled={isLoading}
                                     onChange={handleInputChange}
                                     placeholder={strings.contact.form.email}
                                     className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
@@ -120,6 +122,7 @@ export default function ContactPage() {
                                 <textarea
                                     name="content"
                                     value={formData.content}
+                                    disabled={isLoading}
                                     onChange={handleInputChange}
                                     placeholder={strings.contact.form.content}
                                     className="h-32 w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
