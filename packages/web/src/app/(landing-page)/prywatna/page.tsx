@@ -2,21 +2,18 @@
 
 import * as commonPrivateGallery from "@pp/api/dist/private-gallery";
 import * as privateGallery from "@pp/api/dist/site/private-gallery";
-import { type PrivateGalleryUrlCheckResult, type SubscribtionResult } from "@pp/api/dist/site/private-gallery";
-import { ResultType } from "@pp/api/dist/common";
-import { strings } from "~/resources";
+import { type PrivateGalleryUrlCheckResult } from "@pp/api/dist/site/private-gallery";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { tsr } from "~/api";
+import { strings } from "~/resources";
+import { checkGalleryPassword } from "./actions";
 
 type GalleryState = {
     password: string;
     email: string;
     isLoading: boolean;
-    isLoadingNotification: boolean;
     result?: PrivateGalleryUrlCheckResult;
-    notificationResult?: SubscribtionResult;
 };
 
 const getContent = (
@@ -66,7 +63,6 @@ export default function PrivateGallery() {
         password: '',
         email: '',
         isLoading: false,
-        isLoadingNotification: false,
     });
 
     const viewGalleryRef = useRef<HTMLFormElement>(null);
@@ -75,58 +71,23 @@ export default function PrivateGallery() {
         setState(prev => ({ ...prev, password }));
     };
 
-    const handleEmailChange = (email: string) => {
-        setState(prev => ({ ...prev, email }));
-    };
-
     const getPrivateGalleryUrl = async () => {
         if (!state.password) return;
 
         setState(prev => ({ ...prev, isLoading: true }));
         try {
-            const result = await tsr.privateGallery.getGalleryUrl.query({ params: { password: state.password } });
+            const result = await checkGalleryPassword(state.password);
 
-            if (result.status !== 200) {
-                return;
-            }
-
-            const passwordReset = !result.body.gallery;
+            const passwordReset = !result.gallery;
             setState(prev => ({
                 ...prev,
-                result: result.body,
+                result: result,
                 isLoading: false,
                 password: passwordReset ? '' : prev.password,
             }));
         } catch (error) {
             setState(prev => ({ ...prev, isLoading: false }));
             console.error('Failed to get gallery URL:', error);
-        }
-    };
-
-    const subscribeForNotification = async () => {
-        if (!state.result?.gallery) return;
-
-        setState(prev => ({ ...prev, isLoadingNotification: true }));
-        try {
-            const result = await tsr.privateGallery.subscribeForNotification.mutate({
-                body: {
-                    privateGalleryId: state.result.gallery.id,
-                    email: state.email,
-                },
-            });
-
-            if (result.status !== 200) {
-                return;
-            }
-
-            setState(prev => ({
-                ...prev,
-                notificationResult: result.body,
-                isLoadingNotification: false,
-            }));
-        } catch (error) {
-            setState(prev => ({ ...prev, isLoadingNotification: false }));
-            console.error('Failed to subscribe for notification:', error);
         }
     };
 
@@ -163,40 +124,6 @@ export default function PrivateGallery() {
                             </div>
                         )}
 
-                        {state.result?.gallery?.state === commonPrivateGallery.PrivateGalleryState.NotReady && (
-                            <div className="space-y-6 rounded-lg border border-stone-200 bg-white p-6">
-                                {state.isLoadingNotification && (
-                                    <div className="text-stone-600">{strings.privateGallery.notification.subscribing}</div>
-                                )}
-                                {state.notificationResult?.type === ResultType.Success && (
-                                    <div className="text-green-600">{strings.privateGallery.notification.subscribedSuccessfully}</div>
-                                )}
-                                {state.notificationResult?.type === ResultType.Error && (
-                                    <div className="text-red-600">
-                                        {strings.privateGallery.notification.errors[state.notificationResult.error]}
-                                    </div>
-                                )}
-                                <div className="space-y-4">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder={strings.privateGallery.notification.email}
-                                        onChange={(e) => handleEmailChange(e.target.value)}
-                                        value={state.email}
-                                        className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 text-stone-800 outline-none transition duration-200 placeholder:text-stone-400 focus:border-stone-400"
-                                        required
-                                    />
-                                    <button
-                                        onClick={subscribeForNotification}
-                                        disabled={state.isLoadingNotification}
-                                        className="inline-block rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50"
-                                    >
-                                        {strings.privateGallery.notification.subscribe}
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
                         {state.result?.gallery && (
                             <div className="space-y-6">
                                 {state.result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available ? (
@@ -217,7 +144,7 @@ export default function PrivateGallery() {
                                             {strings.privateGallery.enterGallery}
                                         </button>
                                     </>
-                                ) : state.result.blog ? (
+                                ) : state.result.blog?.title ? (
                                     <div className="space-y-4">
                                         <p className="text-stone-600">
                                             {strings.privateGallery.blogAvailable.replace(':title', state.result.blog.title)}
