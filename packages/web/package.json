@@ -21,6 +21,7 @@
     "@payloadcms/next": "^3.25.0",
     "@payloadcms/payload-cloud": "^3.25.0",
     "@payloadcms/richtext-lexical": "^3.25.0",
+    "@payloadcms/translations": "^3.25.0",
     "@t3-oss/env-nextjs": "^0.10.1",
     "geist": "^1.3.0",
     "graphql": "^16.8.1",

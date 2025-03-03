@@ -21,3 +21,4 @@ stats.json
 .pnpm-store/
 .pnpm-debug.log
 pnpm-lock.yaml
+offer-media/

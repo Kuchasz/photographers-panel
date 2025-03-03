@@ -353,12 +353,7 @@ export interface Offer {
   } | null;
   descshort: string;
   photo: number | OfferMedia;
-  photos?:
-    | {
-        photo: number | OfferMedia;
-        id?: string | null;
-      }[]
-    | null;
+  photos: (number | OfferMedia)[];
   tags: string;
   updatedAt: string;
   createdAt: string;
@@ -669,12 +664,7 @@ export interface OffersSelect<T extends boolean = true> {
   content?: T;
   descshort?: T;
   photo?: T;
-  photos?:
-    | T
-    | {
-        photo?: T;
-        id?: T;
-      };
+  photos?: T;
   tags?: T;
   updatedAt?: T;
   createdAt?: T;

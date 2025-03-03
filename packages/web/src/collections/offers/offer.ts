@@ -50,19 +50,14 @@ export const Offer: CollectionConfig = {
             name: 'photo',
             type: 'upload',
             relationTo: OFFER_MEDIA_SLUG,
-            required: true,
+            required: true
         },
         {
             name: 'photos',
-            type: 'array',
-            fields: [
-                {
-                    name: 'photo',
-                    type: 'upload',
-                    relationTo: OFFER_MEDIA_SLUG,
-                    required: true,
-                }
-            ]
+            type: 'upload',
+            relationTo: OFFER_MEDIA_SLUG,
+            required: true,
+            hasMany: true,
         },
         {
             name: 'tags',
