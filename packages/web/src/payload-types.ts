@@ -336,9 +336,29 @@ export interface Offer {
   id: number;
   title: string;
   alias: string;
-  desc: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   descshort: string;
   photo: number | OfferMedia;
+  photos?:
+    | {
+        photo: number | OfferMedia;
+        id?: string | null;
+      }[]
+    | null;
   tags: string;
   updatedAt: string;
   createdAt: string;
@@ -646,9 +666,15 @@ export interface SiteVisitsSelect<T extends boolean = true> {
 export interface OffersSelect<T extends boolean = true> {
   title?: T;
   alias?: T;
-  desc?: T;
+  content?: T;
   descshort?: T;
   photo?: T;
+  photos?:
+    | T
+    | {
+        photo?: T;
+        id?: T;
+      };
   tags?: T;
   updatedAt?: T;
   createdAt?: T;

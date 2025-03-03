@@ -1,8 +1,19 @@
-import { type CollectionConfig } from "payload"
+import {
+    FixedToolbarFeature,
+    HeadingFeature,
+    HorizontalRuleFeature,
+    InlineToolbarFeature,
+    lexicalEditor
+} from "@payloadcms/richtext-lexical";
+import { type CollectionConfig } from "payload";
 import { OFFER_MEDIA_SLUG, OFFERS_SLUG } from "../collectionSlugs";
 
 export const Offer: CollectionConfig = {
     slug: OFFERS_SLUG,
+    admin: {
+        useAsTitle: 'title',
+        group: 'Offers',
+    },
     fields: [
         {
             name: 'title',
@@ -15,9 +26,20 @@ export const Offer: CollectionConfig = {
             required: true,
         },
         {
-            name: 'desc',
-            type: 'textarea',
-            required: true,
+            name: 'content',
+            type: 'richText',
+            editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                    return [
+                        ...rootFeatures,
+                        HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                        FixedToolbarFeature(),
+                        InlineToolbarFeature(),
+                        HorizontalRuleFeature(),
+                    ]
+                },
+
+            })
         },
         {
             name: 'descshort',
@@ -29,6 +51,18 @@ export const Offer: CollectionConfig = {
             type: 'upload',
             relationTo: OFFER_MEDIA_SLUG,
             required: true,
+        },
+        {
+            name: 'photos',
+            type: 'array',
+            fields: [
+                {
+                    name: 'photo',
+                    type: 'upload',
+                    relationTo: OFFER_MEDIA_SLUG,
+                    required: true,
+                }
+            ]
         },
         {
             name: 'tags',

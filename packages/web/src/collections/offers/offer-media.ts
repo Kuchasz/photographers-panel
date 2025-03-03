@@ -1,5 +1,10 @@
 import type { CollectionConfig } from 'payload'
 import { OFFER_MEDIA_SLUG } from '../collectionSlugs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 export const OfferMedia: CollectionConfig = {
   slug: OFFER_MEDIA_SLUG,
@@ -11,7 +16,7 @@ export const OfferMedia: CollectionConfig = {
     group: 'Offers',
   },
   upload: {
-    staticDir: 'offer-media',
+    staticDir: path.resolve(dirname, '../../public/offer-media'),
     imageSizes: [
       {
         name: 'thumbnail',

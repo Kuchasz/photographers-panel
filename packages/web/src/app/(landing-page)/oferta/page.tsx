@@ -1,13 +1,13 @@
-'use client';
-
+import { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 import { routes } from "@pp/api/dist/site/routes";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { tsr } from "~/api";
-import { strings } from "~/resources";
 import { getPayload } from "payload";
+import React from "react";
+import RichText from "~/components/rich-text";
+import { type OfferMedia } from "~/payload-types";
 import payloadConfig from "~/payload.config";
+import { strings } from "~/resources";
 
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);
 
@@ -26,18 +26,22 @@ export default async function OffersPage() {
     // Fetch offers from PayloadCMS
     const { docs: offers } = await payload.find({
         collection: 'offers',
-        sort: ['order'],
+        depth: 2, // Ensure related images are populated
+        sort: '-createdAt', // Sort by creation date since 'order' field doesn't exist
     });
 
     // Find the wedding offer (assuming it has a specific ID or property)
-    const weddingOffer = offers.find(offer => offer.isWedding) || offers[0];
-    
+    const weddingOffer = offers[0];
+
     // Filter other offers
     const otherOffers = offers.filter(offer => offer !== weddingOffer);
+    const hasPhotos = weddingOffer?.photos && weddingOffer.photos.length > 0;
 
-    if (!offers.length) {
+    if (!offers.length || !weddingOffer || !hasPhotos) {
         return <div>No offers found</div>;
     }
+
+    // console.log(weddingOffer.content);
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
@@ -59,19 +63,20 @@ export default async function OffersPage() {
                                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                                     {weddingOffer.photos.map((photo) => (
                                         <div
-                                            key={photo.url}
+                                            key={(photo.photo as OfferMedia).url}
                                             className="group aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
-                                            style={getImageBackgroundStyle(photo.url)}
+                                            style={getImageBackgroundStyle((photo.photo as OfferMedia).url ?? '')}
                                         >
                                             <div className="h-full w-full bg-stone-950/10 transition duration-300 group-hover:bg-stone-950/0" />
                                         </div>
                                     ))}
                                 </div>
                             )}
-                            <div
+                            {/* <div
                                 className="prose prose-lg mx-auto max-w-none prose-headings:font-serif prose-headings:font-light prose-headings:text-stone-800 prose-p:font-light prose-p:leading-relaxed prose-p:text-stone-600"
-                                dangerouslySetInnerHTML={{ __html: weddingOffer.description }}
-                            />
+                                dangerouslySetInnerHTML={{ __html: weddingOffer.content }}
+                            /> */}
+                            <RichText className="max-w-[48rem] mx-auto" data={weddingOffer.content!} enableGutter={false} />
                         </article>
                     </article>
 
@@ -95,7 +100,7 @@ export default async function OffersPage() {
                                 >
                                     <div className="aspect-[3/2] relative">
                                         <Image
-                                            src={offer.photoUrl}
+                                            src={(offer.photo as OfferMedia).url ?? ''}
                                             alt={offer.title}
                                             fill
                                             className="object-cover"
@@ -108,7 +113,7 @@ export default async function OffersPage() {
                                             {offer.title}
                                         </h3>
                                         <p className="font-light leading-relaxed text-stone-600">
-                                            {offer.summary}
+                                            {offer.descshort}
                                         </p>
                                     </div>
                                 </Link>
