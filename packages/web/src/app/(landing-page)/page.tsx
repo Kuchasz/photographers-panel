@@ -1,60 +1,13 @@
-"use client";
-
-import { FacebookLogo, InstagramLogo, MapPin, Phone, Star } from "@phosphor-icons/react";
-
+import { FacebookLogo, InstagramLogo, MapPin, Phone } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
+import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { strings } from "../../resources";
-import { useEffect, useState } from "react";
-import { routes } from "~/routes";
+import { getOpinions } from "./actions";
+import { OpinionCarousel } from "./page.client";
 
-type Opinion = {
-  id: number;
-  author: string;
-  content: string;
-  rating: number;
-  source: "google" | "facebook";
-  date: string;
-};
-
-// Sample opinions - to be replaced with real ones
-const opinions: Opinion[] = [
-  {
-    id: 1,
-    author: "Anna Kowalska",
-    content: "Wspaniałe podejście do klienta, profesjonalna sesja i piękne zdjęcia. Polecam!",
-    rating: 5,
-    source: "google",
-    date: "2024-01"
-  },
-  {
-    id: 2,
-    author: "Piotr Nowak",
-    content: "Świetna atmosfera podczas sesji, naturalne ujęcia i profesjonalna obróbka. Bardzo polecam!",
-    rating: 5,
-    source: "facebook",
-    date: "2024-02"
-  },
-  {
-    id: 3,
-    author: "Marta Wiśniewska",
-    content: "Zdjęcia przeszły nasze najśmielsze oczekiwania. Dziękujemy za uwiecznienie tych wyjątkowych chwil!",
-    rating: 5,
-    source: "google",
-    date: "2024-03"
-  },
-];
-
-export default function Home() {
-  const [currentOpinionIndex, setCurrentOpinionIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentOpinionIndex((prev) => (prev + 1) % opinions.length);
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, []);
+export default async function Home() {
+  const opinions = await getOpinions();
 
   return (
     <>
@@ -80,44 +33,7 @@ export default function Home() {
             <h2 className="mb-4 font-serif text-4xl font-light tracking-wide text-stone-800">{strings.opinions.title}</h2>
             <p className="font-light italic tracking-wide text-stone-600">{strings.opinions.subtitle}</p>
           </div>
-          <div className="mx-auto max-w-3xl">
-            <div className="relative min-h-[200px] overflow-hidden rounded-lg bg-white p-8 shadow-lg">
-              {opinions.map((opinion, index) => (
-                <div
-                  key={opinion.id}
-                  className={`absolute inset-0 flex transform flex-col justify-between p-8 transition-all duration-500 ${index === currentOpinionIndex ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-                    }`}
-                >
-                  <div>
-                    <div className="mb-6 flex items-center justify-between">
-                      <div>
-                        <p className="font-serif text-xl font-light text-stone-800">{opinion.author}</p>
-                        <p className="text-sm font-light text-stone-500">{strings.opinions.sources[opinion.source]}</p>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: opinion.rating }).map((_, i) => (
-                          <Star key={i} size={16} weight="fill" className="text-yellow-400" />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="font-light leading-relaxed text-stone-600">{opinion.content}</p>
-                  </div>
-                  <p className="text-right text-sm font-light text-stone-400">{opinion.date}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 flex justify-center gap-2">
-              {opinions.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentOpinionIndex(index)}
-                  className={`h-2 w-2 rounded-full transition-all ${index === currentOpinionIndex ? "bg-stone-400" : "bg-stone-200"
-                    }`}
-                  aria-label={`Go to opinion ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
+          <OpinionCarousel opinions={opinions} />
         </section>
       </div>
 

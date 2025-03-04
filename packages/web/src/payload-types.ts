@@ -75,6 +75,7 @@ export interface Config {
     'site-visits': SiteVisit;
     offers: Offer;
     'offer-media': OfferMedia;
+    opinions: Opinion;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -90,6 +91,7 @@ export interface Config {
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
     offers: OffersSelect<false> | OffersSelect<true>;
     'offer-media': OfferMediaSelect<false> | OfferMediaSelect<true>;
+    opinions: OpinionsSelect<false> | OpinionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -405,6 +407,21 @@ export interface OfferMedia {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "opinions".
+ */
+export interface Opinion {
+  id: number;
+  author: string;
+  content: string;
+  rating: number;
+  source: 'google' | 'facebook';
+  date: string;
+  isPublished?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -445,6 +462,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'offer-media';
         value: number | OfferMedia;
+      } | null)
+    | ({
+        relationTo: 'opinions';
+        value: number | Opinion;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -720,6 +741,20 @@ export interface OfferMediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "opinions_select".
+ */
+export interface OpinionsSelect<T extends boolean = true> {
+  author?: T;
+  content?: T;
+  rating?: T;
+  source?: T;
+  date?: T;
+  isPublished?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

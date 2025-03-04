@@ -14,6 +14,7 @@ import { OfferMedia } from './collections/offers/offer-media'
 import { PrivateGallery } from './collections/private-gallery/PrivateGallery'
 import { Event } from './collections/site/Event'
 import { SiteVisit } from './collections/site/SiteVisit'
+import { Opinion } from './collections/site/Opinion'
 import { Users } from './collections/Users'
 import { Video } from './collections/videos/Video'
 import { defaultLexical } from './fields/defaultLexical'
@@ -28,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PrivateGallery, Blog, Video, Event, SiteVisit, Offer, OfferMedia],
+  collections: [Users, Media, PrivateGallery, Blog, Video, Event, SiteVisit, Offer, OfferMedia, Opinion],
   i18n: {
     fallbackLanguage: 'en',
     supportedLanguages: { en, pl },
