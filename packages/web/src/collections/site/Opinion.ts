@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { OPINIONS_SLUG } from '../collectionSlugs'
 
 export const Opinion: CollectionConfig = {

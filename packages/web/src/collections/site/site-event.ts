@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { EVENTS_SLUG } from '../collectionSlugs'
 
-export const Event: CollectionConfig = {
+export const SiteEvent: CollectionConfig = {
   slug: EVENTS_SLUG,
   admin: {
     useAsTitle: 'type',

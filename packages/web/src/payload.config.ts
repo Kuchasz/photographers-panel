@@ -8,14 +8,14 @@ import { fileURLToPath } from 'url'
 import { en } from '@payloadcms/translations/languages/en'
 import { pl } from '@payloadcms/translations/languages/pl'
 import { Blog } from './collections/blog/Blog'
-import { Media } from './collections/Media'
+import { Media } from './collections/media'
 import { Offer } from './collections/offers/offer'
 import { OfferMedia } from './collections/offers/offer-media'
-import { PrivateGallery } from './collections/private-gallery/PrivateGallery'
-import { Event } from './collections/site/Event'
-import { SiteVisit } from './collections/site/SiteVisit'
-import { Opinion } from './collections/site/Opinion'
-import { Users } from './collections/Users'
+import { PrivateGallery } from './collections/private-gallery/private-gallery'
+import { SiteEvent } from './collections/site/site-event'
+import { SiteVisit } from './collections/site/site-visit'
+import { Opinion } from './collections/site/opinion'
+import { Users } from './collections/users'
 import { Video } from './collections/videos/Video'
 import { defaultLexical } from './fields/defaultLexical'
 
@@ -29,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PrivateGallery, Blog, Video, Event, SiteVisit, Offer, OfferMedia, Opinion],
+  collections: [Users, Media, PrivateGallery, Blog, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion],
   i18n: {
     fallbackLanguage: 'en',
     supportedLanguages: { en, pl },

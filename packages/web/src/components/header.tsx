@@ -58,9 +58,120 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
     );
 };
 
+// Navigation component that can be used in both header variants
+const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
+    const pathname = usePathname();
+    const textColorClass = isHomePage ? "text-white/90 hover:text-white" : "text-stone-800/90 hover:text-stone-800";
+    const borderColorClass = isHomePage ? "border-white/80 hover:border-white" : "border-stone-800/80 hover:border-stone-800";
+    const logoTextClass = isHomePage ? "text-white" : "text-stone-800";
+    const logoSubtextClass = isHomePage ? "text-white/75" : "text-stone-800/75";
+
+    return (
+        <>
+            <div className="hidden items-center gap-6 font-light tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
+                <Link
+                    href={routes.offers.route}
+                    id={selectedItem(pathname, routes.offers.route)}
+                    className={textColorClass}
+                >
+                    {strings.menu.offer}
+                </Link>
+                <Link
+                    href={routes.photos.route}
+                    id={selectedItem(pathname, routes.photos.route)}
+                    className={textColorClass}
+                >
+                    {strings.menu.photos}
+                </Link>
+                <Link
+                    href={routes.videos.route}
+                    id={selectedItem(pathname, routes.videos.route)}
+                    className={textColorClass}
+                >
+                    {strings.menu.videos}
+                </Link>
+            </div>
+
+            <div className="flex flex-col items-center gap-1">
+                <Link
+                    href="/"
+                    className="flex flex-col items-center gap-1 transition duration-300 hover:opacity-90"
+                >
+                    <div className={`text-2xl font-light leading-none md:text-3xl ${logoTextClass}`}>
+                        <span className="tracking-wider">PYSZ</span>
+                        <span className="font-medium tracking-wide">STUDIO</span>
+                    </div>
+                    <div className={`text-[10px] font-light leading-none tracking-[0.2em] md:text-xs ${logoSubtextClass}`}>
+                        FOTOGRAFIA I FILM
+                    </div>
+                </Link>
+            </div>
+
+            <div className="hidden items-center gap-6 font-light tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
+                <Link
+                    href={routes.contact.route}
+                    id={selectedItem(pathname, routes.contact.route)}
+                    className={textColorClass}
+                >
+                    {strings.menu.contact}
+                </Link>
+                <Link
+                    href={routes.private.route}
+                    className={`border-b px-2 py-1 uppercase transition-colors ${borderColorClass} ${textColorClass}`}
+                >
+                    {strings.menu.private}
+                </Link>
+            </div>
+
+            {/* Mobile menu items - shown on small screens */}
+            <div className="flex w-full flex-col items-center gap-4 md:hidden">
+                <div className="flex justify-center gap-6">
+                    <Link 
+                        href={routes.offers.route} 
+                        id={selectedItem(pathname, routes.offers.route)}
+                        className={textColorClass}
+                    >
+                        {strings.menu.offer}
+                    </Link>
+                    <Link 
+                        href={routes.photos.route} 
+                        id={selectedItem(pathname, routes.photos.route)}
+                        className={textColorClass}
+                    >
+                        {strings.menu.photos}
+                    </Link>
+                    <Link 
+                        href={routes.videos.route} 
+                        id={selectedItem(pathname, routes.videos.route)}
+                        className={textColorClass}
+                    >
+                        {strings.menu.videos}
+                    </Link>
+                </div>
+                <div className="flex justify-center gap-6">
+                    <Link 
+                        href={routes.contact.route} 
+                        id={selectedItem(pathname, routes.contact.route)}
+                        className={textColorClass}
+                    >
+                        {strings.menu.contact}
+                    </Link>
+                    <Link
+                        href={routes.private.route}
+                        className={`border-b px-2 py-1 uppercase ${borderColorClass} ${textColorClass}`}
+                    >
+                        {strings.menu.private}
+                    </Link>
+                </div>
+            </div>
+        </>
+    );
+};
+
 export const Header = () => {
     const pathname = usePathname();
     const [currentAdvantage, setCurrentAdvantage] = React.useState(strings.offer.slogan.advantages[0]);
+    const isHomePage = pathname === '/';
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -71,101 +182,35 @@ export const Header = () => {
 
     const firstItem = first(menuItems, (mi) => firstSegment(pathname) === mi.route) as MenuItem;
 
+    // Home page header with hero image
+    if (isHomePage) {
+        return (
+            <div>
+                <Headers title={firstItem?.title}></Headers>
+
+                <div className="relative flex flex-col items-center overflow-hidden h-screen">
+                    <div className="-z-10 absolute h-full w-full">
+                        <ImageCarousel photos={strings.main.topPhotos} />
+                    </div>
+                    <nav className="relative w-full border-b border-white/10 backdrop-blur-sm">
+                        <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-8 lg:px-12">
+                            <Navigation isHomePage={true} />
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        );
+    }
+
+    // Other pages header with white background
     return (
         <div>
             <Headers title={firstItem?.title}></Headers>
-
-            <div className="relative flex flex-col items-center overflow-hidden h-screen">
-                <div className="-z-10 absolute h-full w-full">
-                    <ImageCarousel photos={strings.main.topPhotos} />
+            <nav className="relative w-full border-b border-stone-100 bg-white">
+                <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-8 lg:px-12">
+                    <Navigation isHomePage={false} />
                 </div>
-                <nav className="relative w-full border-b border-white/10 backdrop-blur-sm">
-                    <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-8 lg:px-12">
-                        {/* Mobile menu button can be added here if needed */}
-
-                        <div className="hidden items-center gap-6 font-light tracking-wider text-white/90 transition-colors md:flex md:gap-8 lg:gap-12">
-                            <Link
-                                href={routes.offers.route}
-                                id={selectedItem(pathname, routes.offers.route)}
-                                className="hover:text-white"
-                            >
-                                {strings.menu.offer}
-                            </Link>
-                            <Link
-                                href={routes.photos.route}
-                                id={selectedItem(pathname, routes.photos.route)}
-                                className="hover:text-white"
-                            >
-                                {strings.menu.photos}
-                            </Link>
-                            <Link
-                                href={routes.videos.route}
-                                id={selectedItem(pathname, routes.videos.route)}
-                                className="hover:text-white"
-                            >
-                                {strings.menu.videos}
-                            </Link>
-                        </div>
-
-                        <div className="flex flex-col items-center gap-1">
-                            <Link
-                                href="/"
-                                className="flex flex-col items-center gap-1 transition duration-300 hover:opacity-90"
-                            >
-                                <div className="text-2xl font-light leading-none text-white md:text-3xl">
-                                    <span className="tracking-wider">PYSZ</span>
-                                    <span className="font-medium tracking-wide">STUDIO</span>
-                                </div>
-                                <div className="text-[10px] font-light leading-none tracking-[0.2em] text-white/75 md:text-xs">
-                                    FOTOGRAFIA I FILM
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className="hidden items-center gap-6 font-light tracking-wider text-white/90 transition-colors md:flex md:gap-8 lg:gap-12">
-                            <Link
-                                href={routes.contact.route}
-                                id={selectedItem(pathname, routes.contact.route)}
-                                className="hover:text-white"
-                            >
-                                {strings.menu.contact}
-                            </Link>
-                            <Link
-                                href={routes.private.route}
-                                className="border-b border-white/80 px-2 py-1 uppercase transition-colors hover:border-white hover:text-white"
-                            >
-                                {strings.menu.private}
-                            </Link>
-                        </div>
-
-                        {/* Mobile menu items - shown on small screens */}
-                        <div className="flex w-full flex-col items-center gap-4 md:hidden">
-                            <div className="flex justify-center gap-6">
-                                <Link href={routes.offers.route} id={selectedItem(pathname, routes.offers.route)}>
-                                    {strings.menu.offer}
-                                </Link>
-                                <Link href={routes.photos.route} id={selectedItem(pathname, routes.photos.route)}>
-                                    {strings.menu.photos}
-                                </Link>
-                                <Link href={routes.videos.route} id={selectedItem(pathname, routes.videos.route)}>
-                                    {strings.menu.videos}
-                                </Link>
-                            </div>
-                            <div className="flex justify-center gap-6">
-                                <Link href={routes.contact.route} id={selectedItem(pathname, routes.contact.route)}>
-                                    {strings.menu.contact}
-                                </Link>
-                                <Link
-                                    href={routes.private.route}
-                                    className="border-b border-white/80 px-2 py-1 uppercase"
-                                >
-                                    {strings.menu.private}
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+            </nav>
         </div>
     );
 };
