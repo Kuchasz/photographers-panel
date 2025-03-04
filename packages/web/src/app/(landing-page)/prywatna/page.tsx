@@ -1,10 +1,6 @@
 'use client';
 
-import * as commonPrivateGallery from "@pp/api/dist/private-gallery";
-import * as privateGallery from "@pp/api/dist/site/private-gallery";
-import { type PrivateGalleryUrlCheckResult } from "@pp/api/dist/site/private-gallery";
 import Image from "next/image";
-import Link from "next/link";
 import { useRef, useState } from "react";
 import { strings } from "~/resources";
 import { checkGalleryPassword } from "./actions";
@@ -13,12 +9,12 @@ type GalleryState = {
     password: string;
     email: string;
     isLoading: boolean;
-    result?: PrivateGalleryUrlCheckResult;
+    result?: Awaited<ReturnType<typeof checkGalleryPassword>>;
 };
 
 const getContent = (
     isLoading: boolean,
-    result?: PrivateGalleryUrlCheckResult
+    result?: Awaited<ReturnType<typeof checkGalleryPassword>>
 ): { title: string; description: string } => {
     if (isLoading || !result) {
         return {
@@ -34,21 +30,21 @@ const getContent = (
         };
     }
 
-    if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available) {
+    if (result.gallery.state === 'published') {
         return {
             title: strings.privateGallery.available.title.replace(':title', result.gallery.title),
             description: strings.privateGallery.available.description,
         };
     }
 
-    if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.TurnedOff) {
+    if (result.gallery.state === 'archived') {
         return {
             title: strings.privateGallery.turnedOff.title.replace(':title', result.gallery.title),
             description: strings.privateGallery.turnedOff.description,
         };
     }
 
-    if (result.gallery.state === commonPrivateGallery.PrivateGalleryState.NotReady) {
+    if (result.gallery.state === 'draft') {
         return {
             title: strings.privateGallery.notReady.title.replace(':title', result.gallery.title),
             description: strings.privateGallery.notReady.description,
@@ -126,12 +122,12 @@ export default function PrivateGallery() {
 
                         {state.result?.gallery && (
                             <div className="space-y-6">
-                                {state.result.gallery.state === commonPrivateGallery.PrivateGalleryState.Available ? (
+                                {state.result.gallery.state === 'published' ? (
                                     <>
                                         <form
                                             ref={viewGalleryRef}
                                             method="POST"
-                                            action={privateGallery.viewGallery.route}
+                                            action={'/gallery'}
                                             className="hidden"
                                         >
                                             <input type="hidden" name="galleryId" value={state.result.gallery.id} />
@@ -144,18 +140,6 @@ export default function PrivateGallery() {
                                             {strings.privateGallery.enterGallery}
                                         </button>
                                     </>
-                                ) : state.result.blog?.title ? (
-                                    <div className="space-y-4">
-                                        <p className="text-stone-600">
-                                            {strings.privateGallery.blogAvailable.replace(':title', state.result.blog.title)}
-                                        </p>
-                                        <Link
-                                            href={`/blog/${state.result.blog.alias}`}
-                                            className="inline-block rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700"
-                                        >
-                                            {strings.privateGallery.enterBlog}
-                                        </Link>
-                                    </div>
                                 ) : null}
                             </div>
                         )}

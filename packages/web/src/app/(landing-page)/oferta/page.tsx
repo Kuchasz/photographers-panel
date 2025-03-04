@@ -1,4 +1,3 @@
-import { routes } from "@pp/api/dist/site/routes";
 import Image from "next/image";
 import Link from "next/link";
 import { getPayload } from "payload";
@@ -7,6 +6,7 @@ import RichText from "~/components/rich-text";
 import { type OfferMedia } from "~/payload-types";
 import payloadConfig from "~/payload.config";
 import { strings } from "~/resources";
+import { routes } from "~/routes";
 
 const getOfferUrl = (alias: string) => routes.offer.route.replace(':alias', alias);
 

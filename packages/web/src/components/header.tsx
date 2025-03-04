@@ -1,5 +1,4 @@
 'use client';
-import { routes } from "@pp/api/dist/site/routes";
 import { first, last, nextElement } from "@pp/utils/dist/array";
 import { firstSegment } from "@pp/utils/dist/url";
 import Link from "next/link";
@@ -8,6 +7,7 @@ import React from "react";
 import { type MenuItem, menuItems } from "~/menu-items";
 import { Headers } from "./headers";
 import { strings } from "../resources";
+import { routes } from "~/routes";
 
 const getSrc = (photo: string, ext: string) => `/images/top-new/${photo}${ext}`;
 
@@ -64,7 +64,7 @@ export const Header = () => {
 
     React.useEffect(() => {
         setTimeout(() => {
-            const nextAdvantage = nextElement(strings.offer.slogan.advantages, currentAdvantage) as string;
+            const nextAdvantage = nextElement(strings.offer.slogan.advantages, currentAdvantage)! as string;
             setCurrentAdvantage(nextAdvantage);
         }, 5000);
     }, [currentAdvantage]);
@@ -108,7 +108,7 @@ export const Header = () => {
                         </div>
 
                         <div className="flex flex-col items-center gap-1">
-                            <Link 
+                            <Link
                                 href="/"
                                 className="flex flex-col items-center gap-1 transition duration-300 hover:opacity-90"
                             >

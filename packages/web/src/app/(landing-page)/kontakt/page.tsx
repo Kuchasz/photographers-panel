@@ -2,10 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
-import { ResultType } from "@pp/api/dist/common";
-import { type SendResult } from "@pp/api/dist/site/message";
 import { strings } from "~/resources";
 import { sendMessage } from "./actions";
+import { type SendResult } from "~/areas/message";
 
 type ContactFormData = {
     name: string;
@@ -32,7 +31,7 @@ export default function ContactPage() {
         try {
             const response = await sendMessage(formData);
             setResult(response);
-            if (response.type === ResultType.Success) {
+            if (response.type === 'success') {
                 setFormData(prev => ({ ...prev, content: '' }));
             }
         } catch (error) {
@@ -87,12 +86,12 @@ export default function ContactPage() {
                                 )}
 
                                 {result && (
-                                    <div className={`rounded-lg border p-4 ${result.type === ResultType.Success
-                                            ? 'border-green-100 bg-green-50 text-green-800'
-                                            : 'border-red-100 bg-red-50 text-red-800'
+                                    <div className={`rounded-lg border p-4 ${result.type === 'success'
+                                        ? 'border-green-100 bg-green-50 text-green-800'
+                                        : 'border-red-100 bg-red-50 text-red-800'
                                         }`}>
                                         <p className="text-sm">
-                                            {result.type === ResultType.Success
+                                            {result.type === 'success'
                                                 ? strings.contact.form.messageSent
                                                 : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[result.error]}`}
                                         </p>

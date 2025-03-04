@@ -1,4 +1,4 @@
-import { routes } from "@pp/api/dist/site/routes";
+import { routes } from "~/routes";
 import { strings } from "./resources";
 import { zip } from "@pp/utils/dist/array";
 
@@ -18,5 +18,4 @@ const mapToMenuItem = (v: { route: string; fullPage: boolean }, k: MenuItems): M
     };
 };
 
-// console.log(zip(Object.values(routes), Object.keys(routes) as MenuItems[], mapToMenuItem));
 export const menuItems = zip(Object.values(routes), Object.keys(routes) as MenuItems[], mapToMenuItem);

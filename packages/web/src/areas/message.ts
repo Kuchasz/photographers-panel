@@ -1,6 +1,15 @@
-import { ResultType } from "@pp/api/dist/common";
-import type { Message, MessageValidationError, SendResult } from "@pp/api/dist/site/message";
 import nodemailer from 'nodemailer';
+import { type Result } from "~/result";
+
+export interface Message {
+    name: string;
+    email: string;
+    content: string;
+}
+
+export type MessageValidationError = 'NameTooShort' | 'ContentTooShort' | 'EmailInvalid' | 'InternalError';
+
+export type SendResult = Result<MessageValidationError>;
 
 const notifications = {
     server: {
@@ -72,15 +81,15 @@ export const send = async (data: Message): Promise<SendResult> => {
     const error = validate(data);
 
     if (error) {
-        return { type: ResultType.Error, error };
+        return { type: 'error', error };
     }
 
     try {
         // await sendEmail(data.name, data.email, data.content);
         console.log('sendEmail', data);
-        return { type: ResultType.Success };
+        return { type: 'success' };
     } catch (err) {
         console.log(err);
-        return { type: ResultType.Error, error: 'InternalError' };
+        return { type: 'error', error: 'InternalError' };
     }
 };

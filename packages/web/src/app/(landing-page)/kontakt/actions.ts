@@ -1,7 +1,6 @@
 "use server";
 
-import { type Message } from "@pp/api/dist/site/message";
-import { send } from "~/areas/message";
+import { type Message, send } from "~/areas/message";
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 

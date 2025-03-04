@@ -1,10 +1,9 @@
-import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Footer } from "~/components/footer";
 import { Header } from "~/components/header";
 import { Headers } from "~/components/headers";
-import { ApiProvider } from "~/api-provider";
+import "~/styles/globals.css";
 
 
 export const metadata: Metadata = {
@@ -21,11 +20,9 @@ export default function RootLayout({
       <body>
         <Headers />
         <Header />
-        <ApiProvider>
-          <span>
-            {children}
-          </span>
-        </ApiProvider>
+        <span>
+          {children}
+        </span>
         <Footer />
       </body>
     </html>

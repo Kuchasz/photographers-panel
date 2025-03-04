@@ -1,27 +1,11 @@
 "use server";
 import config from "@payload-config";
-import { PrivateGalleryState } from "@pp/api/dist/private-gallery";
-import { type PrivateGalleryUrlCheckResult } from "@pp/api/dist/site/private-gallery";
 import { getPayload } from "payload";
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Map PayloadCMS state to PrivateGalleryState
-const mapState = (state: string): PrivateGalleryState => {
-    switch (state) {
-        case 'draft':
-            return PrivateGalleryState.NotReady;
-        case 'published':
-            return PrivateGalleryState.Available;
-        case 'archived':
-            return PrivateGalleryState.TurnedOff;
-        default:
-            return PrivateGalleryState.NotReady;
-    }
-};
-
 // Check if gallery exists with the given password
-export const checkGalleryPassword = async (password: string): Promise<PrivateGalleryUrlCheckResult> => {
+export const checkGalleryPassword = async (password: string) => {
 
     await wait(1000);
 
@@ -56,23 +40,15 @@ export const checkGalleryPassword = async (password: string): Promise<PrivateGal
         }
 
         // Format the response to match the expected structure
-        const result: PrivateGalleryUrlCheckResult = {
+        const result = {
             gallery: {
                 id: gallery.id,
-                state: mapState(gallery.state),
+                state: gallery.state,
                 title: gallery.title ?? '',
                 url: gallery.directPath ?? '',
                 date: gallery.date ?? ''
             }
         };
-
-        // Add blog details if available
-        if (gallery.relatedBlog) {
-            result.blog = {
-                alias: gallery.relatedBlog.alias ?? '',
-                title: gallery.relatedBlog.title ?? ''
-            };
-        }
 
         return result;
     } catch (error) {

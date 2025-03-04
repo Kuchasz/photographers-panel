@@ -57,7 +57,6 @@ export const pl = {
         links: 'Polecamy',
         videos: 'Film',
         photos: 'Zdjęcia',
-        portfolio: 'Portfolio',
         blogs: 'Blog',
         blog: 'Blog',
         private: 'Strefa klienta',

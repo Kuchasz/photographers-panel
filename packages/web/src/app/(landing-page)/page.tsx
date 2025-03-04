@@ -1,11 +1,12 @@
 "use client";
 
 import { FacebookLogo, InstagramLogo, MapPin, Phone, Star } from "@phosphor-icons/react";
-import { routes } from "@pp/api/dist/site/routes";
+
 import Link from "next/link";
 import { Button } from "../../components/button";
 import { strings } from "../../resources";
 import { useEffect, useState } from "react";
+import { routes } from "~/routes";
 
 type Opinion = {
   id: number;
@@ -84,9 +85,8 @@ export default function Home() {
               {opinions.map((opinion, index) => (
                 <div
                   key={opinion.id}
-                  className={`absolute inset-0 flex transform flex-col justify-between p-8 transition-all duration-500 ${
-                    index === currentOpinionIndex ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-                  }`}
+                  className={`absolute inset-0 flex transform flex-col justify-between p-8 transition-all duration-500 ${index === currentOpinionIndex ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+                    }`}
                 >
                   <div>
                     <div className="mb-6 flex items-center justify-between">
@@ -111,9 +111,8 @@ export default function Home() {
                 <button
                   key={index}
                   onClick={() => setCurrentOpinionIndex(index)}
-                  className={`h-2 w-2 rounded-full transition-all ${
-                    index === currentOpinionIndex ? "bg-stone-400" : "bg-stone-200"
-                  }`}
+                  className={`h-2 w-2 rounded-full transition-all ${index === currentOpinionIndex ? "bg-stone-400" : "bg-stone-200"
+                    }`}
                   aria-label={`Go to opinion ${index + 1}`}
                 />
               ))}
@@ -149,7 +148,7 @@ export default function Home() {
           <div className="mb-12 text-center">
             <h1 className="mb-6 font-serif text-4xl font-light tracking-wide text-stone-800">{strings.article.title}</h1>
             <h2 className="mb-8 font-light italic tracking-wide text-stone-600">{strings.article.description}</h2>
-            <Link 
+            <Link
               href="https://maps.app.goo.gl/KQ9RSySeL2xHvvvA7"
               target="_blank"
               rel="noopener noreferrer"
