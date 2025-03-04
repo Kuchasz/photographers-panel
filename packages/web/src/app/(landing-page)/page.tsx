@@ -6,6 +6,30 @@ import { strings } from "../../resources";
 import { getOpinions } from "./actions";
 import { OpinionCarousel } from "./page.client";
 
+const ContactLink = ({ 
+  href, 
+  icon: Icon, 
+  text, 
+  external = false 
+}: { 
+  href: string; 
+  icon: React.ElementType; 
+  text: string; 
+  external?: boolean;
+}) => (
+  <Link
+    href={href}
+    target={external ? "_blank" : undefined}
+    rel={external ? "noopener noreferrer" : undefined}
+    className="group inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
+  >
+    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
+      <Icon size={20} weight="light" className="transform transition-transform group-hover:scale-125" />
+    </span>
+    <span className="font-serif text-xl font-light">{text}</span>
+  </Link>
+);
+
 export default async function Home() {
   const opinions = await getOpinions();
 
@@ -64,17 +88,12 @@ export default async function Home() {
           <div className="mb-12 text-center">
             <h1 className="mb-6 font-serif text-4xl font-light tracking-wide text-stone-800">{strings.article.title}</h1>
             <h2 className="mb-8 font-light italic tracking-wide text-stone-600">{strings.article.description}</h2>
-            <Link
+            <ContactLink 
               href="https://maps.app.goo.gl/KQ9RSySeL2xHvvvA7"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
-                <MapPin size={20} weight="light" />
-              </span>
-              <span className="font-serif text-xl font-light">{strings.contact.map}</span>
-            </Link>
+              icon={MapPin}
+              text={strings.contact.map}
+              external={true}
+            />
           </div>
         </section>
       </div>
@@ -93,37 +112,23 @@ export default async function Home() {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-12">
-              <Link
+              <ContactLink 
                 href={`tel:${strings.contact.phone}`}
-                className="inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
-                  <Phone size={20} weight="light" />
-                </span>
-                <span className="font-serif text-xl font-light">{strings.contact.phone}</span>
-              </Link>
-              <Link
+                icon={Phone}
+                text={strings.contact.phone}
+              />
+              <ContactLink 
                 href="https://instagram.com/pyszstudio"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
-                  <InstagramLogo size={20} weight="light" />
-                </span>
-                <span className="font-serif text-xl font-light">pyszstudio</span>
-              </Link>
-              <Link
+                icon={InstagramLogo}
+                text="pyszstudio"
+                external={true}
+              />
+              <ContactLink 
                 href="https://facebook.com/pyszstudio"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100">
-                  <FacebookLogo size={20} weight="light" />
-                </span>
-                <span className="font-serif text-xl font-light">pyszstudio</span>
-              </Link>
+                icon={FacebookLogo}
+                text="pyszstudio"
+                external={true}
+              />
             </div>
           </div>
         </section>
