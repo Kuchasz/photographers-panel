@@ -22,3 +22,4 @@ stats.json
 .pnpm-debug.log
 pnpm-lock.yaml
 offer-media/
+photos/

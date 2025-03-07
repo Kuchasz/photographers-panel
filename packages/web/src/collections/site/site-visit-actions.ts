@@ -3,6 +3,9 @@ import config from '~/payload.config'
 import { SITE_VISITS_SLUG } from '../collectionSlugs';
 
 const getPathFromReferer = (referrer: string) => {
+    if (!referrer) {
+        return '/'
+    }
     const url = new URL(referrer);
     return url.pathname;
 }

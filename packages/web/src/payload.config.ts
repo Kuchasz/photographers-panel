@@ -10,6 +10,7 @@ import { pl } from '@payloadcms/translations/languages/pl'
 import { Media } from './collections/media'
 import { Offer } from './collections/offers/offer'
 import { OfferMedia } from './collections/offers/offer-media'
+import { Photo } from './collections/photos/photo'
 import { PrivateGallery } from './collections/private-gallery/private-gallery'
 import { SiteEvent } from './collections/site/site-event'
 import { SiteVisit } from './collections/site/site-visit'
@@ -28,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PrivateGallery, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion],
+  collections: [Users, Media, PrivateGallery, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion, Photo],
   i18n: {
     fallbackLanguage: 'en',
     supportedLanguages: { en, pl },

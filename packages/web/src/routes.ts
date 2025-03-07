@@ -8,7 +8,7 @@ export const routes = {
     links: { fullPage: false, route: '/linki' },
     photos: {
         fullPage: false,
-        route: '/blog/andrychow-zdjecia-film-fotografia-slubna-plener-reportaz-slubny',
+        route: '/zdjecia',
     },
     private: { fullPage: false, route: '/prywatna' },
 };
