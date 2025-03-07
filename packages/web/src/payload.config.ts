@@ -7,7 +7,6 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { en } from '@payloadcms/translations/languages/en'
 import { pl } from '@payloadcms/translations/languages/pl'
-import { Blog } from './collections/blog/Blog'
 import { Media } from './collections/media'
 import { Offer } from './collections/offers/offer'
 import { OfferMedia } from './collections/offers/offer-media'
@@ -29,7 +28,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PrivateGallery, Blog, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion],
+  collections: [Users, Media, PrivateGallery, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion],
   i18n: {
     fallbackLanguage: 'en',
     supportedLanguages: { en, pl },

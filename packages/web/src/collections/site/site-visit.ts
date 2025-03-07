@@ -1,4 +1,4 @@
-import type { CollectionConfig, TextFieldSingleValidation } from 'payload'
+import { type CollectionConfig, type TextFieldSingleValidation } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { SITE_VISITS_SLUG } from '../collectionSlugs'
 

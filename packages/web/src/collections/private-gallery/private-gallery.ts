@@ -162,6 +162,9 @@ export const PrivateGallery: CollectionConfig = {
       name: 'visits',
       type: 'array',
       label: 'Gallery Visits',
+      admin: {
+        description: 'Record of visits to this gallery',
+      },
       fields: [
         {
           name: 'ip',
@@ -181,6 +184,16 @@ export const PrivateGallery: CollectionConfig = {
           },
           defaultValue: () => new Date(),
         },
+        {
+          name: 'userAgent',
+          type: 'text',
+          label: 'User Agent',
+        },
+        {
+          name: 'referrer',
+          type: 'text',
+          label: 'Referrer',
+        },
       ],
     },
   ],
@@ -195,4 +208,68 @@ export const PrivateGallery: CollectionConfig = {
       },
     ],
   },
+  // endpoints: [
+  //   {
+  //     path: '/record-visit',
+  //     method: 'post',
+  //     handler: async (req, res, { payload }) => {
+  //       try {
+  //         const body = req.body || {};
+  //         const galleryId = body.galleryId;
+  //         const ip = body.ip;
+  //         const userAgent = body.userAgent ?? '';
+  //         const referrer = body.referrer ?? '';
+
+  //         if (!galleryId || !ip) {
+  //           return res.status(400).json({ 
+  //             message: 'Gallery ID and IP address are required' 
+  //           });
+  //         }
+
+  //         // Find the gallery
+  //         const gallery = await payload.findByID({
+  //           collection: PRIVATE_GALLERIES_SLUG,
+  //           id: galleryId,
+  //         });
+
+  //         if (!gallery) {
+  //           return res.status(404).json({ 
+  //             message: 'Gallery not found' 
+  //           });
+  //         }
+
+  //         // Add the visit to the gallery's visits array
+  //         const visits = gallery.visits ?? [];
+  //         const updatedGallery = await payload.update({
+  //           collection: PRIVATE_GALLERIES_SLUG,
+  //           id: galleryId,
+  //           data: {
+  //             visits: [
+  //               ...visits,
+  //               {
+  //                 ip,
+  //                 date: new Date().toISOString(),
+  //                 userAgent,
+  //                 referrer,
+  //               },
+  //             ],
+  //           },
+  //         });
+
+  //         return res.status(200).json({ 
+  //           message: 'Visit recorded successfully',
+  //           gallery: {
+  //             id: updatedGallery.id,
+  //             title: updatedGallery.title,
+  //           },
+  //         });
+  //       } catch (error) {
+  //         console.error('Error recording visit:', error);
+  //         return res.status(500).json({ 
+  //           message: 'Error recording visit' 
+  //         });
+  //       }
+  //     },
+  //   },
+  // ],
 }

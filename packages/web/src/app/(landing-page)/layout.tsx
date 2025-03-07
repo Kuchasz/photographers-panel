@@ -1,5 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { headers } from "next/headers";
+import { registerVisit } from "~/collections/site/site-visit-actions";
 import { Footer } from "~/components/footer";
 import { Header } from "~/components/header";
 import { Headers } from "~/components/headers";
@@ -12,9 +14,18 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const headersList = await headers();
+
+  const ip = headersList.get('x-forwarded-for') ?? '';
+  const userAgent = headersList.get('user-agent') ?? '';
+  const referer = headersList.get('referer') ?? '';
+  const url = headersList.get('x-url') ?? headersList.get('x-invoke-path') ?? '';
+
+  await registerVisit(ip, userAgent, referer, url);
+
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>

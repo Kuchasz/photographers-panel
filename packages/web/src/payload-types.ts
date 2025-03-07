@@ -69,7 +69,6 @@ export interface Config {
     users: User;
     media: Media;
     'private-galleries': PrivateGallery;
-    blogs: Blog;
     videos: Video;
     events: Event;
     'site-visits': SiteVisit;
@@ -85,7 +84,6 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'private-galleries': PrivateGalleriesSelect<false> | PrivateGalleriesSelect<true>;
-    blogs: BlogsSelect<false> | BlogsSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
@@ -199,79 +197,18 @@ export interface PrivateGallery {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Record of visits to this gallery
+   */
   visits?:
     | {
         ip: string;
         date: string;
+        userAgent?: string | null;
+        referrer?: string | null;
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blogs".
- */
-export interface Blog {
-  id: number;
-  title: string;
-  alias: string;
-  date: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  tags?: string | null;
-  isHidden?: boolean | null;
-  mainBlogAsset: {
-    alt: string;
-    /**
-     * URL to the main image for this blog post
-     */
-    imageUrl: string;
-  };
-  assets?:
-    | {
-        alt: string;
-        /**
-         * URL to an image for this blog post
-         */
-        imageUrl: string;
-        id?: string | null;
-      }[]
-    | null;
-  comments?:
-    | {
-        userName: string;
-        content: string;
-        date: string;
-        state: 'pending' | 'approved' | 'rejected';
-        id?: string | null;
-      }[]
-    | null;
-  visits?:
-    | {
-        ip: string;
-        date: string;
-        id?: string | null;
-      }[]
-    | null;
-  mainBlogStatus?: {
-    kind?: ('featured' | 'pinned' | 'highlighted') | null;
-    isMainBlog?: boolean | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -440,10 +377,6 @@ export interface PayloadLockedDocument {
         value: number | PrivateGallery;
       } | null)
     | ({
-        relationTo: 'blogs';
-        value: number | Blog;
-      } | null)
-    | ({
         relationTo: 'videos';
         value: number | Video;
       } | null)
@@ -580,56 +513,9 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
     | {
         ip?: T;
         date?: T;
+        userAgent?: T;
+        referrer?: T;
         id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blogs_select".
- */
-export interface BlogsSelect<T extends boolean = true> {
-  title?: T;
-  alias?: T;
-  date?: T;
-  content?: T;
-  tags?: T;
-  isHidden?: T;
-  mainBlogAsset?:
-    | T
-    | {
-        alt?: T;
-        imageUrl?: T;
-      };
-  assets?:
-    | T
-    | {
-        alt?: T;
-        imageUrl?: T;
-        id?: T;
-      };
-  comments?:
-    | T
-    | {
-        userName?: T;
-        content?: T;
-        date?: T;
-        state?: T;
-        id?: T;
-      };
-  visits?:
-    | T
-    | {
-        ip?: T;
-        date?: T;
-        id?: T;
-      };
-  mainBlogStatus?:
-    | T
-    | {
-        kind?: T;
-        isMainBlog?: T;
       };
   updatedAt?: T;
   createdAt?: T;
