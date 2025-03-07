@@ -22,9 +22,8 @@ export default async function RootLayout({
   const ip = headersList.get('x-forwarded-for') ?? '';
   const userAgent = headersList.get('user-agent') ?? '';
   const referer = headersList.get('referer') ?? '';
-  const url = headersList.get('x-url') ?? headersList.get('x-invoke-path') ?? '';
 
-  await registerVisit(ip, userAgent, referer, url);
+  await registerVisit(ip, userAgent, referer);
 
   return (
     <html lang="en" className={`${GeistSans.variable}`}>

@@ -31,21 +31,10 @@ export const SiteVisit: CollectionConfig = {
       required: true,
       label: 'IP Address',
       validate: ((value) => {
-        console.log('value', value)
 
         if (!value) {
           return 'Please enter an IP address'
         }
-
-        // IPv4 and IPv6 regex pattern
-        const ipv4Regex =
-          /^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$/
-
-        if (!ipv4Regex.test(value)) {
-          return 'Please enter a valid IP address'
-        }
-
-        console.log('seems fine.')
 
         return true
       }) as TextFieldSingleValidation,

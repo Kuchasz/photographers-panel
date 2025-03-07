@@ -2,6 +2,7 @@ import { FacebookLogo, InstagramLogo, MapPin, Phone } from "@phosphor-icons/reac
 import Link from "next/link";
 import { routes } from "~/routes";
 import { Button } from "../../components/button";
+import { PageContainer } from "../../components/page-container";
 import { strings } from "../../resources";
 import { getOpinions } from "./actions";
 import { OpinionCarousel } from "./page.client";
@@ -34,22 +35,20 @@ export default async function Home() {
   const opinions = await getOpinions();
 
   return (
-    <>
-      <div className="bg-gradient-to-b from-stone-50 to-white">
-        <section className="container mx-auto px-4 py-24">
-          <h1 className="mb-6 font-serif text-5xl font-light tracking-wide text-stone-800 md:text-6xl lg:text-7xl" dangerouslySetInnerHTML={{ __html: strings.offer.slogan.title }}></h1>
-          <h2 className="mb-16 font-light italic tracking-wide text-stone-600 md:text-xl lg:text-2xl">{strings.offer.slogan.description}</h2>
+    <PageContainer>
+      <section>
+        <h1 className="mb-6 font-serif text-5xl font-light tracking-wide text-stone-800 md:text-6xl lg:text-7xl" dangerouslySetInnerHTML={{ __html: strings.offer.slogan.title }}></h1>
+        <h2 className="mb-16 font-light italic tracking-wide text-stone-600 md:text-xl lg:text-2xl">{strings.offer.slogan.description}</h2>
 
-          <article className="mb-20 rounded-lg bg-white/80 p-12 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm">
-            <h1 className="mb-4 font-serif text-3xl font-light text-stone-800">{strings.offer.slogan.middle.title}</h1>
-            <h2 className="mb-8 text-lg font-light leading-relaxed text-stone-600">{strings.offer.slogan.middle.description}</h2>
+        <article className="mb-20 rounded-lg bg-white/80 p-12 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm">
+          <h1 className="mb-4 font-serif text-3xl font-light text-stone-800">{strings.offer.slogan.middle.title}</h1>
+          <h2 className="mb-8 text-lg font-light leading-relaxed text-stone-600">{strings.offer.slogan.middle.description}</h2>
 
-            <Button href={routes.offers.route}>
-              {strings.offer.slogan.middle.more}
-            </Button>
-          </article>
-        </section>
-      </div>
+          <Button href={routes.offers.route}>
+            {strings.offer.slogan.middle.more}
+          </Button>
+        </article>
+      </section>
 
       <div className="bg-stone-50">
         <section className="container mx-auto px-4 py-24">
@@ -146,6 +145,6 @@ export default async function Home() {
           </address>
         </section>
       </div>
-    </>
+    </PageContainer>
   );
 }
