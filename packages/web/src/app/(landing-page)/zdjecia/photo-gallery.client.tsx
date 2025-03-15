@@ -18,6 +18,8 @@ type Column = {
     }
 };
 
+// Gap size in pixels - matches the gap-4 class (1rem = 16px)
+const GAP_SIZE = 16;
 
 export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
@@ -25,6 +27,8 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const [columns, setColumns] = useState<Column[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
     const [columnCount, setColumnCount] = useState(4);
+    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [lightboxLoading, setLightboxLoading] = useState(true);
 
     // Determine column count based on screen width
     useEffect(() => {
@@ -73,11 +77,10 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                 return;
             }
 
-            // const aspectRatio = width / height;
-
-            // Assuming the column width is 1 unit, calculate the height contribution
-            // const heightContribution = 1 / aspectRatio;
-            const heightContribution = height;
+            // Calculate the height contribution including the gap
+            // Only add gap if this isn't the first photo in the column
+            const gapContribution = newColumns[minHeightColumn]!.photos.length > 0 ? GAP_SIZE : 0;
+            const heightContribution = height + gapContribution;
 
             newColumns[minHeightColumn]!.photos.push(photo);
             newColumns[minHeightColumn]!.height += heightContribution;
@@ -101,31 +104,32 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
             if (column.photos.length === 0) return;
 
             const heightDifference = maxHeight - column.height;
-            console.log('heightDifference', heightDifference);
             if (heightDifference <= 0) return; // No adjustment needed
 
+            // Calculate total height without gaps to determine proportional adjustments
+            const totalPhotoHeight = column.photos.reduce((sum, photo) => {
+                return sum + (photo.sizes?.thumbnail?.height || 0);
+            }, 0);
+            
+            // Total gaps in this column (number of photos - 1) * gap size
+            const totalGapHeight = (column.photos.length - 1) * GAP_SIZE;
+            
             // Calculate how much to adjust each photo
-            const totalAdjustment = heightDifference;
-            const adjustedPhotos = column.photos.map(photo => {
-                const width = photo.sizes?.thumbnail?.width;
+            const adjustedPhotos = column.photos.map((photo, index) => {
                 const height = photo.sizes?.thumbnail?.height;
-
-                const originalAspectRatio = width / height;
-                const originalHeightContribution = 1 / originalAspectRatio;
-
-                // Distribute adjustment proportionally to photo's height
-                const heightProportion = originalHeightContribution / column.height;
-                const heightAdjustment = totalAdjustment * heightProportion;
-
-                // console.log(heightAdjustment);
-
+                if (!height) return photo;
+                
+                // Distribute adjustment proportionally to photo's height relative to total photo height
+                const heightProportion = height / totalPhotoHeight;
+                const heightAdjustment = heightDifference * heightProportion;
+                
                 return {
                     ...photo,
                     sizes: {
                         ...photo.sizes,
                         thumbnail: {
                             ...photo.sizes.thumbnail,
-                            height: photo.sizes.thumbnail.height * (1 + heightAdjustment),
+                            height: height + heightAdjustment,
                         },
                     },
                     heightAdjustment,
@@ -139,6 +143,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const openLightbox = (photo: Photo) => {
         setSelectedPhoto(photo);
         setLightboxOpen(true);
+        setLightboxLoading(true);
         document.body.style.overflow = 'hidden';
     };
 
@@ -233,12 +238,24 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                     </button>
 
                     <div className="relative w-full h-full max-w-5xl max-h-[90vh] flex items-center justify-center">
+                        {/* Enhanced lightbox skeleton with shimmer effect */}
+                        <div 
+                            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${lightboxLoading ? 'opacity-100' : 'opacity-0'}`}
+                        >
+                            <div className="w-full h-full max-w-[80%] max-h-[80%] rounded-lg overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-r from-stone-300 via-stone-200 to-stone-300 animate-pulse" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-stone-50/30 to-transparent animate-shimmer" />
+                            </div>
+                        </div>
+                        
                         <Image
                             src={selectedPhoto.url ?? selectedPhoto.url}
                             alt={selectedPhoto.alt}
                             fill
                             sizes="90vw"
-                            className="object-contain"
+                            className={`object-contain transition-all duration-500 ${lightboxLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+                            onLoad={() => setLightboxLoading(false)}
+                            priority
                         />
 
                         <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">

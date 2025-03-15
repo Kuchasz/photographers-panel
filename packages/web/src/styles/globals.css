@@ -9,6 +9,7 @@
 
   --animate-fade-and-zoom: fadeOutAndZoom 6s ease-out forwards;
   --animate-zoom-in: zoomIn 6s ease-out forwards;
+  --animate-shimmer: shimmer 1.5s infinite;
 
   /* --font-body: 'Hanken Grotesk', sans-serif; */
   --default-font-family: 'Hanken Grotesk', sans-serif;
@@ -35,6 +36,11 @@
     100% {
       transform: scale(1.025);
     }
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
   }
 }
 
