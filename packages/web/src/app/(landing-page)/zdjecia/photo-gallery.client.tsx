@@ -26,6 +26,7 @@ const LOADING_DELAY = 300;
 export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [lightboxVisible, setLightboxVisible] = useState(false);
     const [columns, setColumns] = useState<Column[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
     const [columnCount, setColumnCount] = useState(4);
@@ -37,6 +38,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const imageRef = useRef<HTMLImageElement>(null);
     const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
     const loadingStartTimeRef = useRef<number>(0);
+    const lightboxRef = useRef<HTMLDivElement>(null);
 
     // Determine column count based on screen width
     useEffect(() => {
@@ -203,13 +205,26 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const openLightbox = (photo: Photo) => {
         setSelectedPhoto(photo);
         setLightboxOpen(true);
-        startLoadingTimer();
         document.body.style.overflow = 'hidden';
+        
+        // Trigger the entrance animation
+        requestAnimationFrame(() => {
+            setLightboxVisible(true);
+        });
+        
+        startLoadingTimer();
     };
 
     const closeLightbox = () => {
-        setLightboxOpen(false);
-        document.body.style.overflow = 'auto';
+        // Start exit animation
+        setLightboxVisible(false);
+        setShowImage(false);
+        
+        // Wait for animation to complete before removing from DOM
+        setTimeout(() => {
+            setLightboxOpen(false);
+            document.body.style.overflow = 'auto';
+        }, 300);
         
         // Clear any pending timers when closing
         if (loadingTimerRef.current) {
@@ -306,10 +321,13 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                 ))}
             </div>
 
-            {/* Lightbox */}
+            {/* Lightbox with animations */}
             {lightboxOpen && selectedPhoto && (
-                <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
-                    <div className="absolute top-4 right-4 flex items-center space-x-2 z-10">
+                <div 
+                    ref={lightboxRef}
+                    className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out ${lightboxVisible ? 'bg-black/95' : 'bg-black/0'}`}
+                >
+                    <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
                         <a
                             href={selectedPhoto.url}
                             download
@@ -332,7 +350,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
                     <button
                         onClick={() => navigatePhoto('prev')}
-                        className="absolute cursor-pointer left-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
+                        className={`absolute cursor-pointer left-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-all duration-300 z-10 ${lightboxVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
                         aria-label="Previous photo"
                     >
                         <ArrowLeft size={24} weight="bold" />
@@ -340,13 +358,13 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
                     <button
                         onClick={() => navigatePhoto('next')}
-                        className="absolute cursor-pointer right-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
+                        className={`absolute cursor-pointer right-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-all duration-300 z-10 ${lightboxVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}
                         aria-label="Next photo"
                     >
                         <ArrowRight size={24} weight="bold" />
                     </button>
 
-                    <div className="relative w-full h-full flex items-center justify-center">
+                    <div className={`relative w-full h-full flex items-center justify-center transition-transform duration-300 ${lightboxVisible ? 'scale-100' : 'scale-95'}`}>
                         {/* Subtle spinner - only shown if loading takes more than LOADING_DELAY */}
                         {showLoadingIndicator && (
                             <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 z-10">
@@ -367,7 +385,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                             />
                         </div>
 
-                        <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                        <div className={`absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent transition-all duration-300 ${lightboxVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                             <h2 className="text-white font-serif text-xl font-light">{selectedPhoto.alt}</h2>
                         </div>
                     </div>
