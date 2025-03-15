@@ -30,6 +30,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const [lightboxLoading, setLightboxLoading] = useState(false);
     const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
+    const [skipAnimation, setSkipAnimation] = useState(false);
     const imageRef = useRef<HTMLImageElement>(null);
     const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
     const loadingStartTimeRef = useRef<number>(0);
@@ -154,6 +155,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         // Set loading state
         setLightboxLoading(true);
         setShowLoadingIndicator(false);
+        setSkipAnimation(false);
         
         // Record start time
         loadingStartTimeRef.current = Date.now();
@@ -174,8 +176,9 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
             loadingTimerRef.current = null;
         }
         
-        // If the image loaded quickly (< 300ms), don't show the loading indicator at all
+        // If the image loaded quickly (< 300ms), skip all animations
         if (loadTime < 300) {
+            setSkipAnimation(true);
             setShowLoadingIndicator(false);
             setLightboxLoading(false);
         } else {
@@ -295,7 +298,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
             {/* Lightbox */}
             {lightboxOpen && selectedPhoto && (
-                <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
+                <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
                     <div className="absolute top-4 right-4 flex items-center space-x-2 z-10">
                         <a
                             href={selectedPhoto.url}
@@ -333,7 +336,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                         <ArrowRight size={24} weight="bold" />
                     </button>
 
-                    <div className="relative w-full h-full max-w-5xl max-h-[90vh] flex items-center justify-center">
+                    <div className="relative w-full h-full flex items-center justify-center">
                         {/* Subtle spinner - only shown if loading takes more than 300ms */}
                         {showLoadingIndicator && (
                             <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 z-10">
@@ -347,7 +350,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                             alt={selectedPhoto.alt}
                             fill
                             sizes="90vw"
-                            className={`object-contain transition-all duration-300 ${lightboxLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+                            className={`object-contain ${skipAnimation ? '' : 'transition-all duration-300'} ${lightboxLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
                             onLoad={handleImageLoaded}
                             priority
                         />
