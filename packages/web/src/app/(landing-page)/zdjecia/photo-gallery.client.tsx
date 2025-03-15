@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, X } from '@phosphor-icons/react';
+import { ArrowLeft, ArrowRight, X, Download } from '@phosphor-icons/react';
 import { type Photo, PhotoTile } from './photo-tile';
 
 type PhotoGalleryProps = {
@@ -28,7 +28,11 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [columnCount, setColumnCount] = useState(4);
     const [imagesLoaded, setImagesLoaded] = useState(false);
-    const [lightboxLoading, setLightboxLoading] = useState(true);
+    const [lightboxLoading, setLightboxLoading] = useState(false);
+    const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
+    const imageRef = useRef<HTMLImageElement>(null);
+    const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const loadingStartTimeRef = useRef<number>(0);
 
     // Determine column count based on screen width
     useEffect(() => {
@@ -140,16 +144,65 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         });
     };
 
+    const startLoadingTimer = () => {
+        // Clear any existing timer
+        if (loadingTimerRef.current) {
+            clearTimeout(loadingTimerRef.current);
+            loadingTimerRef.current = null;
+        }
+        
+        // Set loading state
+        setLightboxLoading(true);
+        setShowLoadingIndicator(false);
+        
+        // Record start time
+        loadingStartTimeRef.current = Date.now();
+        
+        // Only show loading indicator if loading takes more than 300ms
+        loadingTimerRef.current = setTimeout(() => {
+            setShowLoadingIndicator(true);
+        }, 300);
+    };
+
+    const handleImageLoaded = () => {
+        // Calculate how long the image took to load
+        const loadTime = Date.now() - loadingStartTimeRef.current;
+        
+        // Clear the timer if it exists
+        if (loadingTimerRef.current) {
+            clearTimeout(loadingTimerRef.current);
+            loadingTimerRef.current = null;
+        }
+        
+        // If the image loaded quickly (< 300ms), don't show the loading indicator at all
+        if (loadTime < 300) {
+            setShowLoadingIndicator(false);
+            setLightboxLoading(false);
+        } else {
+            // If loading took longer, keep the indicator visible briefly before fading out
+            setLightboxLoading(false);
+            setTimeout(() => {
+                setShowLoadingIndicator(false);
+            }, 100); // Short delay to allow for a smooth transition
+        }
+    };
+
     const openLightbox = (photo: Photo) => {
         setSelectedPhoto(photo);
         setLightboxOpen(true);
-        setLightboxLoading(true);
+        startLoadingTimer();
         document.body.style.overflow = 'hidden';
     };
 
     const closeLightbox = () => {
         setLightboxOpen(false);
         document.body.style.overflow = 'auto';
+        
+        // Clear any pending timers when closing
+        if (loadingTimerRef.current) {
+            clearTimeout(loadingTimerRef.current);
+            loadingTimerRef.current = null;
+        }
     };
 
     const navigatePhoto = (direction: 'next' | 'prev') => {
@@ -166,6 +219,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
         const nextPhoto = photos[newIndex];
         if (nextPhoto) {
+            startLoadingTimer();
             setSelectedPhoto(nextPhoto);
         }
     };
@@ -188,6 +242,35 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                 break;
         }
     };
+
+    // Preload adjacent images to leverage browser cache
+    useEffect(() => {
+        if (!selectedPhoto || !lightboxOpen) return;
+        
+        const currentIndex = photos.findIndex(photo => photo.id === selectedPhoto.id);
+        const nextIndex = (currentIndex + 1) % photos.length;
+        const prevIndex = (currentIndex - 1 + photos.length) % photos.length;
+        
+        // Preload next and previous images
+        if (photos[nextIndex]) {
+            const nextImg = new window.Image();
+            nextImg.src = photos[nextIndex].sizes?.big?.url || photos[nextIndex].url;
+        }
+        
+        if (photos[prevIndex]) {
+            const prevImg = new window.Image();
+            prevImg.src = photos[prevIndex].sizes?.big?.url || photos[prevIndex].url;
+        }
+    }, [selectedPhoto, lightboxOpen, photos]);
+
+    // Clean up any timers when component unmounts
+    useEffect(() => {
+        return () => {
+            if (loadingTimerRef.current) {
+                clearTimeout(loadingTimerRef.current);
+            }
+        };
+    }, []);
 
     return (
         <div className="space-y-8" onKeyDown={handleKeyDown} tabIndex={0}>
@@ -213,13 +296,26 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
             {/* Lightbox */}
             {lightboxOpen && selectedPhoto && (
                 <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
-                    <button
-                        onClick={closeLightbox}
-                        className="absolute cursor-pointer top-4 right-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
-                        aria-label="Close lightbox"
-                    >
-                        <X size={24} weight="bold" />
-                    </button>
+                    <div className="absolute top-4 right-4 flex items-center space-x-2 z-10">
+                        <a
+                            href={selectedPhoto.url}
+                            download
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cursor-pointer text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
+                            aria-label="Download original photo"
+                        >
+                            <Download size={24} weight="bold" />
+                        </a>
+                        
+                        <button
+                            onClick={closeLightbox}
+                            className="cursor-pointer text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
+                            aria-label="Close lightbox"
+                        >
+                            <X size={24} weight="bold" />
+                        </button>
+                    </div>
 
                     <button
                         onClick={() => navigatePhoto('prev')}
@@ -238,23 +334,24 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                     </button>
 
                     <div className="relative w-full h-full max-w-5xl max-h-[90vh] flex items-center justify-center">
-                        {/* Enhanced lightbox skeleton with shimmer effect */}
-                        <div 
-                            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${lightboxLoading ? 'opacity-100' : 'opacity-0'}`}
-                        >
-                            <div className="w-full h-full max-w-[80%] max-h-[80%] rounded-lg overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-r from-stone-300 via-stone-200 to-stone-300 animate-pulse" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-stone-50/30 to-transparent animate-shimmer" />
+                        {/* More subtle lightbox skeleton - only shown if loading takes more than 300ms */}
+                        {showLoadingIndicator && (
+                            <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300">
+                                <div className="w-full h-full max-w-[80%] max-h-[80%] rounded-lg overflow-hidden">
+                                    <div className="absolute inset-0 bg-stone-300/30 animate-pulse" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                                </div>
                             </div>
-                        </div>
+                        )}
                         
                         <Image
-                            src={selectedPhoto.url ?? selectedPhoto.url}
+                            ref={imageRef}
+                            src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                             alt={selectedPhoto.alt}
                             fill
                             sizes="90vw"
-                            className={`object-contain transition-all duration-500 ${lightboxLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
-                            onLoad={() => setLightboxLoading(false)}
+                            className={`object-contain transition-all duration-300 ${lightboxLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+                            onLoad={handleImageLoaded}
                             priority
                         />
 
