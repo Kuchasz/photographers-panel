@@ -334,13 +334,10 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                     </button>
 
                     <div className="relative w-full h-full max-w-5xl max-h-[90vh] flex items-center justify-center">
-                        {/* More subtle lightbox skeleton - only shown if loading takes more than 300ms */}
+                        {/* Subtle spinner - only shown if loading takes more than 300ms */}
                         {showLoadingIndicator && (
-                            <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300">
-                                <div className="w-full h-full max-w-[80%] max-h-[80%] rounded-lg overflow-hidden">
-                                    <div className="absolute inset-0 bg-stone-300/30 animate-pulse" />
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
-                                </div>
+                            <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 z-10">
+                                <div className="spinner"></div>
                             </div>
                         )}
                         
