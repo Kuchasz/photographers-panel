@@ -21,7 +21,8 @@ type Column = {
 
 export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
-    const [lightboxOpen, setLightboxOpen] = useState(false); const [columns, setColumns] = useState<Column[]>([]);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [columns, setColumns] = useState<Column[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
     const [columnCount, setColumnCount] = useState(4);
 
@@ -72,12 +73,11 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                 return;
             }
 
-            const aspectRatio = width / height;
+            // const aspectRatio = width / height;
 
             // Assuming the column width is 1 unit, calculate the height contribution
-            const heightContribution = 1 / aspectRatio;
-
-            console.log(heightContribution);
+            // const heightContribution = 1 / aspectRatio;
+            const heightContribution = height;
 
             newColumns[minHeightColumn]!.photos.push(photo);
             newColumns[minHeightColumn]!.height += heightContribution;
@@ -85,8 +85,6 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
         // Balance column heights by adjusting photo sizes
         balanceColumnHeights(newColumns);
-
-        console.log(newColumns);
 
         setColumns(newColumns);
     }, [photos, columnCount]);
@@ -103,6 +101,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
             if (column.photos.length === 0) return;
 
             const heightDifference = maxHeight - column.height;
+            console.log('heightDifference', heightDifference);
             if (heightDifference <= 0) return; // No adjustment needed
 
             // Calculate how much to adjust each photo
@@ -118,8 +117,17 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                 const heightProportion = originalHeightContribution / column.height;
                 const heightAdjustment = totalAdjustment * heightProportion;
 
+                // console.log(heightAdjustment);
+
                 return {
                     ...photo,
+                    sizes: {
+                        ...photo.sizes,
+                        thumbnail: {
+                            ...photo.sizes.thumbnail,
+                            height: photo.sizes.thumbnail.height * (1 + heightAdjustment),
+                        },
+                    },
                     heightAdjustment,
                 };
             });
@@ -178,15 +186,22 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
     return (
         <div className="space-y-8" onKeyDown={handleKeyDown} tabIndex={0}>
-            {/* Photo Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {photos.map((photo) => (
-                    <PhotoTile
-                        key={photo.id}
-                        photo={photo}
-                        onClick={openLightbox}
-                        linkToPage={false}
-                    />
+            {/* Photo Gallery with Flex Columns */}
+            <div className="flex flex-wrap gap-4" ref={containerRef}>
+                {columns.map((column, columnIndex) => (
+                    <div
+                        key={`column-${columnIndex}`}
+                        className="flex-1 flex flex-col gap-4 min-w-0"
+                    >
+                        {column.photos.map((photo) => (
+                            <PhotoTile
+                                key={photo.id}
+                                photo={photo}
+                                onClick={openLightbox}
+                                linkToPage={false}
+                            />
+                        ))}
+                    </div>
                 ))}
             </div>
 

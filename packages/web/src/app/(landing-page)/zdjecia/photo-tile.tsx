@@ -69,8 +69,6 @@ export function PhotoTile({
 
   const className = `group relative w-full ${aspectRatio} overflow-hidden rounded-lg bg-stone-100 ${onClick && !linkToPage ? 'cursor-pointer' : ''}`;
 
-  console.log(aspectRatioStyles);
-
   if (linkToPage) {
     return (
       <Link href={`/zdjecia/${photo.id}`} className={className} style={aspectRatioStyles}>
