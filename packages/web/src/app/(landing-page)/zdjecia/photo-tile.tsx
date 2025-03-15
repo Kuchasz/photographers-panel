@@ -7,18 +7,15 @@ export type Photo = {
   id: string;
   url: string;
   alt: string;
+  width: number;
+  height: number;
   sizes: {
     thumbnail: {
       url: string;
       width: number;
       height: number;
     };
-    card: {
-      url: string;
-      width: number;
-      height: number;
-    };
-    tablet: {
+    big: {
       url: string;
       width: number;
       height: number;
@@ -37,7 +34,7 @@ type PhotoTileProps = {
 export function PhotoTile({
   photo,
   onClick,
-  aspectRatio = 'aspect-[3/4]',
+  aspectRatio = '',//'aspect-[3/4]',
   showCaption = true,
   linkToPage = false,
 }: PhotoTileProps) {
@@ -47,14 +44,18 @@ export function PhotoTile({
     }
   };
 
+  const aspectRatioStyles = { aspectRatio: `${photo.width}/${photo.height}` };
+
   const content = (
     <>
       <Image
         src={photo.url}
         alt={photo.alt}
-        fill
+        height={photo.sizes.thumbnail.height}
+        width={photo.sizes.thumbnail.width}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
         className="object-cover transition-transform duration-300 group-hover:scale-105"
+        style={aspectRatioStyles}
       />
       {showCaption && (
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -66,11 +67,13 @@ export function PhotoTile({
     </>
   );
 
-  const className = `group relative ${aspectRatio} overflow-hidden rounded-lg bg-stone-100 ${onClick && !linkToPage ? 'cursor-pointer' : ''}`;
+  const className = `group relative w-full ${aspectRatio} overflow-hidden rounded-lg bg-stone-100 ${onClick && !linkToPage ? 'cursor-pointer' : ''}`;
+
+  console.log(aspectRatioStyles);
 
   if (linkToPage) {
     return (
-      <Link href={`/zdjecia/${photo.id}`} className={className}>
+      <Link href={`/zdjecia/${photo.id}`} className={className} style={aspectRatioStyles}>
         {content}
       </Link>
     );

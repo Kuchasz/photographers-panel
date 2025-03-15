@@ -21,21 +21,18 @@ export default async function PhotosPage() {
             id: String(photo.id),
             alt: photo.alt ?? '',
             url: defaultUrl,
+            width: photo.width ?? 0,
+            height: photo.height ?? 0,
             sizes: {
                 thumbnail: {
                     url: photo.sizes?.thumbnail?.url ?? defaultUrl,
                     width: photo.sizes?.thumbnail?.width ?? 400,
                     height: photo.sizes?.thumbnail?.height ?? 300,
                 },
-                card: {
-                    url: photo.sizes?.card?.url ?? defaultUrl,
-                    width: photo.sizes?.card?.width ?? 768,
-                    height: photo.sizes?.card?.height ?? 1024,
-                },
-                tablet: {
-                    url: photo.sizes?.tablet?.url ?? defaultUrl,
-                    width: photo.sizes?.tablet?.width ?? 1024,
-                    height: photo.sizes?.tablet?.height ?? 768,
+                big: {
+                    url: photo.sizes?.big?.url ?? defaultUrl,
+                    width: photo.sizes?.big?.width ?? 768,
+                    height: photo.sizes?.big?.height ?? 1024,
                 },
             }
         };

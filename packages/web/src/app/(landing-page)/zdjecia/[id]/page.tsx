@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: PhotoPageProps): Promise<Meta
   }
 
   return {
-    title: `${photo.alt || 'Photo'} | Fotografia`,
-    description: `Zdjęcie: ${photo.alt || 'Fotografia'}`,
+    title: `${photo.alt ?? 'Photo'} | Fotografia`,
+    description: `Zdjęcie: ${photo.alt ?? 'Fotografia'}`,
   };
 }
 
@@ -42,21 +42,18 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
     id: String(photo.id),
     alt: photo.alt ?? '',
     url: defaultUrl,
+    width: photo.width ?? 0,
+    height: photo.height ?? 0,
     sizes: {
       thumbnail: {
         url: photo.sizes?.thumbnail?.url ?? defaultUrl,
         width: photo.sizes?.thumbnail?.width ?? 400,
         height: photo.sizes?.thumbnail?.height ?? 300,
       },
-      card: {
-        url: photo.sizes?.card?.url ?? defaultUrl,
-        width: photo.sizes?.card?.width ?? 768,
-        height: photo.sizes?.card?.height ?? 1024,
-      },
-      tablet: {
-        url: photo.sizes?.tablet?.url ?? defaultUrl,
-        width: photo.sizes?.tablet?.width ?? 1024,
-        height: photo.sizes?.tablet?.height ?? 768,
+      big: {
+        url: photo.sizes?.big?.url ?? defaultUrl,
+        width: photo.sizes?.big?.width ?? 768,
+        height: photo.sizes?.big?.height ?? 1024,
       },
     }
   };
@@ -64,8 +61,8 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
   return (
     <PageContainer>
       <div className="space-y-8">
-        <Link 
-          href="/zdjecia" 
+        <Link
+          href="/zdjecia"
           className="inline-flex items-center gap-2 text-stone-600 hover:text-stone-800 transition-colors"
         >
           <ArrowLeft size={20} />
@@ -74,7 +71,7 @@ export default async function PhotoPage({ params }: PhotoPageProps) {
 
         <div className="relative aspect-[4/3] md:aspect-[16/9] lg:aspect-auto lg:h-[70vh] w-full overflow-hidden rounded-lg">
           <Image
-            src={transformedPhoto.url ?? transformedPhoto.sizes.tablet.url}
+            src={transformedPhoto.url ?? transformedPhoto.sizes.big.url}
             alt={transformedPhoto.alt}
             fill
             sizes="(max-width: 768px) 100vw, 90vw"

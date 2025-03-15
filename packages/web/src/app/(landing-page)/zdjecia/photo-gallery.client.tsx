@@ -195,7 +195,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                 <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center">
                     <button
                         onClick={closeLightbox}
-                        className="absolute top-4 right-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
+                        className="absolute cursor-pointer top-4 right-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
                         aria-label="Close lightbox"
                     >
                         <X size={24} weight="bold" />
@@ -203,7 +203,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
                     <button
                         onClick={() => navigatePhoto('prev')}
-                        className="absolute left-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
+                        className="absolute cursor-pointer left-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
                         aria-label="Previous photo"
                     >
                         <ArrowLeft size={24} weight="bold" />
@@ -211,7 +211,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
                     <button
                         onClick={() => navigatePhoto('next')}
-                        className="absolute right-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
+                        className="absolute cursor-pointer right-4 text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors z-10"
                         aria-label="Next photo"
                     >
                         <ArrowRight size={24} weight="bold" />
