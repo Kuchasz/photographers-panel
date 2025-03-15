@@ -20,6 +20,8 @@ type Column = {
 
 // Gap size in pixels - matches the gap-4 class (1rem = 16px)
 const GAP_SIZE = 16;
+// Delay before showing loading indicator or starting animations (ms)
+const LOADING_DELAY = 300;
 
 export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
@@ -31,6 +33,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const [lightboxLoading, setLightboxLoading] = useState(false);
     const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
     const [skipAnimation, setSkipAnimation] = useState(false);
+    const [showImage, setShowImage] = useState(false);
     const imageRef = useRef<HTMLImageElement>(null);
     const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
     const loadingStartTimeRef = useRef<number>(0);
@@ -156,14 +159,15 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         setLightboxLoading(true);
         setShowLoadingIndicator(false);
         setSkipAnimation(false);
+        setShowImage(false);
         
         // Record start time
         loadingStartTimeRef.current = Date.now();
         
-        // Only show loading indicator if loading takes more than 300ms
+        // Only show loading indicator if loading takes more than LOADING_DELAY
         loadingTimerRef.current = setTimeout(() => {
             setShowLoadingIndicator(true);
-        }, 300);
+        }, LOADING_DELAY);
     };
 
     const handleImageLoaded = () => {
@@ -176,14 +180,20 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
             loadingTimerRef.current = null;
         }
         
-        // If the image loaded quickly (< 300ms), skip all animations
-        if (loadTime < 300) {
+        // If the image loaded quickly (< LOADING_DELAY), skip all animations
+        if (loadTime < LOADING_DELAY) {
             setSkipAnimation(true);
             setShowLoadingIndicator(false);
             setLightboxLoading(false);
+            setShowImage(true);
         } else {
             // If loading took longer, keep the indicator visible briefly before fading out
             setLightboxLoading(false);
+            
+            // Start the transition animation
+            setShowImage(true);
+            
+            // Hide the loading indicator after a short delay
             setTimeout(() => {
                 setShowLoadingIndicator(false);
             }, 100); // Short delay to allow for a smooth transition
@@ -337,23 +347,25 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                     </button>
 
                     <div className="relative w-full h-full flex items-center justify-center">
-                        {/* Subtle spinner - only shown if loading takes more than 300ms */}
+                        {/* Subtle spinner - only shown if loading takes more than LOADING_DELAY */}
                         {showLoadingIndicator && (
                             <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 z-10">
                                 <div className="spinner"></div>
                             </div>
                         )}
                         
-                        <Image
-                            ref={imageRef}
-                            src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
-                            alt={selectedPhoto.alt}
-                            fill
-                            sizes="90vw"
-                            className={`object-contain ${skipAnimation ? '' : 'transition-all duration-300'} ${lightboxLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
-                            onLoad={handleImageLoaded}
-                            priority
-                        />
+                        <div className={`relative w-full h-full ${skipAnimation ? '' : 'transition-opacity duration-500'} ${showImage ? 'opacity-100' : 'opacity-0'}`}>
+                            <Image
+                                ref={imageRef}
+                                src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
+                                alt={selectedPhoto.alt}
+                                fill
+                                sizes="90vw"
+                                className={`object-contain ${skipAnimation ? '' : 'transition-transform duration-500'} ${showImage ? 'scale-100' : 'scale-[0.98]'}`}
+                                onLoad={handleImageLoaded}
+                                priority
+                            />
+                        </div>
 
                         <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                             <h2 className="text-white font-serif text-xl font-light">{selectedPhoto.alt}</h2>
