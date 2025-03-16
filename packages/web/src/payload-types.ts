@@ -175,20 +175,7 @@ export interface PrivateGallery {
   state: 'draft' | 'published' | 'archived';
   password: string;
   directPath?: string | null;
-  relatedBlog?: {
-    title?: string | null;
-    alias?: string | null;
-  };
-  subscribersNotified?: boolean | null;
   notes?: string | null;
-  emails?:
-    | {
-        address: string;
-        notified?: boolean | null;
-        notifiedDate?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   media: {
     /**
      * URL to the media file
@@ -538,22 +525,7 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   state?: T;
   password?: T;
   directPath?: T;
-  relatedBlog?:
-    | T
-    | {
-        title?: T;
-        alias?: T;
-      };
-  subscribersNotified?: T;
   notes?: T;
-  emails?:
-    | T
-    | {
-        address?: T;
-        notified?: T;
-        notifiedDate?: T;
-        id?: T;
-      };
   media?:
     | T
     | {

@@ -21,5 +21,8 @@ stats.json
 .pnpm-store/
 .pnpm-debug.log
 pnpm-lock.yaml
-offer-media/
-photos/
+/public/offer-media/
+/public/photos/
+packages/web/src/public/offer-media/*
+packages/web/src/public/photos/*
+.DS_Store

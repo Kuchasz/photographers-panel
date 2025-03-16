@@ -77,65 +77,9 @@ export const PrivateGallery: CollectionConfig = {
       },
     },
     {
-      name: 'relatedBlog',
-      type: 'group',
-      label: 'Related Blog',
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-          label: 'Blog Title',
-        },
-        {
-          name: 'alias',
-          type: 'text',
-          label: 'Blog Alias',
-        },
-      ],
-    },
-    {
-      name: 'subscribersNotified',
-      type: 'checkbox',
-      label: 'Subscribers Notified',
-      defaultValue: false,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
       name: 'notes',
       type: 'textarea',
       label: 'Notes',
-    },
-    {
-      name: 'emails',
-      type: 'array',
-      label: 'Email Subscribers',
-      fields: [
-        {
-          name: 'address',
-          type: 'email',
-          required: true,
-          label: 'Email Address',
-        },
-        {
-          name: 'notified',
-          type: 'checkbox',
-          label: 'Notified',
-          defaultValue: false,
-        },
-        {
-          name: 'notifiedDate',
-          type: 'date',
-          label: 'Notified Date',
-          admin: {
-            condition: (data) => Boolean(data?.notified),
-            date: {
-              pickerAppearance: 'dayAndTime',
-            },
-          },
-        },
-      ],
     },
     {
       name: 'media',
