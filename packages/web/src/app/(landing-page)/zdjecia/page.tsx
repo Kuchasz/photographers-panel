@@ -1,8 +1,7 @@
 import { type Metadata } from 'next';
 import { PageContainer } from '~/components/page-container';
 import { getPhotos } from './actions';
-import { PhotoGallery } from './photo-gallery.client';
-import { type Photo } from './photo-tile';
+import { PhotoGallery } from '~/components/gallery';
 
 export const metadata: Metadata = {
     title: 'Zdjęcia | Fotografia',

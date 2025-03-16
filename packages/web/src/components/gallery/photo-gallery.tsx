@@ -5,8 +5,11 @@ import Image from 'next/image';
 import { ArrowLeft, ArrowRight, X, Download } from '@phosphor-icons/react';
 import { type Photo, PhotoTile } from './photo-tile';
 
+
 type PhotoGalleryProps = {
     photos: Photo[];
+    allowDownload?: boolean;
+    onPhotoDownload?: (photo: Photo) => void;
 };
 
 type Column = {
@@ -23,7 +26,11 @@ const GAP_SIZE = 16;
 // Delay before showing loading indicator or starting animations (ms)
 const LOADING_DELAY = 300;
 
-export function PhotoGallery({ photos }: PhotoGalleryProps) {
+export function PhotoGallery({
+    photos,
+    allowDownload = true,
+    onPhotoDownload
+}: PhotoGalleryProps) {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxVisible, setLightboxVisible] = useState(false);
@@ -298,6 +305,17 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         };
     }, []);
 
+    const handleDownload = (e: React.MouseEvent, photo: Photo) => {
+        // Call the callback if provided
+        if (onPhotoDownload) {
+            // If the callback is provided, we might want to let the parent component
+            // handle the download logic, so prevent the default anchor behavior
+            e.preventDefault();
+            onPhotoDownload(photo);
+        }
+        // If no callback is provided, the default anchor behavior will proceed
+    };
+
     return (
         <div className="space-y-8" onKeyDown={handleKeyDown} tabIndex={0}>
             {/* Photo Gallery with Flex Columns */}
@@ -326,16 +344,19 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                     className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out ${lightboxVisible ? 'bg-black/95' : 'bg-black/0'}`}
                 >
                     <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
-                        <a
-                            href={selectedPhoto.url}
-                            download
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="cursor-pointer text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
-                            aria-label="Download original photo"
-                        >
-                            <Download size={24} weight="bold" />
-                        </a>
+                        {allowDownload && (
+                            <a
+                                href={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cursor-pointer text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
+                                aria-label="Download original photo"
+                                onClick={(e) => handleDownload(e, selectedPhoto)}
+                            >
+                                <Download size={24} weight="bold" />
+                            </a>
+                        )}
 
                         <button
                             onClick={closeLightbox}
