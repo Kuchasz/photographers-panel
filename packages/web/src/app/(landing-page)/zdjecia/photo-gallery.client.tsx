@@ -48,10 +48,8 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                 setColumnCount(1);
             } else if (width < 1024) {
                 setColumnCount(2);
-            } else if (width < 1280) {
-                setColumnCount(3);
             } else {
-                setColumnCount(4);
+                setColumnCount(3);
             }
         };
 
@@ -120,19 +118,19 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
             const totalPhotoHeight = column.photos.reduce((sum, photo) => {
                 return sum + (photo.sizes?.thumbnail?.height || 0);
             }, 0);
-            
+
             // Total gaps in this column (number of photos - 1) * gap size
             const totalGapHeight = (column.photos.length - 1) * GAP_SIZE;
-            
+
             // Calculate how much to adjust each photo
             const adjustedPhotos = column.photos.map((photo, index) => {
                 const height = photo.sizes?.thumbnail?.height;
                 if (!height) return photo;
-                
+
                 // Distribute adjustment proportionally to photo's height relative to total photo height
                 const heightProportion = height / totalPhotoHeight;
                 const heightAdjustment = heightDifference * heightProportion;
-                
+
                 return {
                     ...photo,
                     sizes: {
@@ -156,16 +154,16 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
             clearTimeout(loadingTimerRef.current);
             loadingTimerRef.current = null;
         }
-        
+
         // Set loading state
         setLightboxLoading(true);
         setShowLoadingIndicator(false);
         setSkipAnimation(false);
         setShowImage(false);
-        
+
         // Record start time
         loadingStartTimeRef.current = Date.now();
-        
+
         // Only show loading indicator if loading takes more than LOADING_DELAY
         loadingTimerRef.current = setTimeout(() => {
             setShowLoadingIndicator(true);
@@ -175,13 +173,13 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     const handleImageLoaded = () => {
         // Calculate how long the image took to load
         const loadTime = Date.now() - loadingStartTimeRef.current;
-        
+
         // Clear the timer if it exists
         if (loadingTimerRef.current) {
             clearTimeout(loadingTimerRef.current);
             loadingTimerRef.current = null;
         }
-        
+
         // If the image loaded quickly (< LOADING_DELAY), skip all animations
         if (loadTime < LOADING_DELAY) {
             setSkipAnimation(true);
@@ -191,10 +189,10 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         } else {
             // If loading took longer, keep the indicator visible briefly before fading out
             setLightboxLoading(false);
-            
+
             // Start the transition animation
             setShowImage(true);
-            
+
             // Hide the loading indicator after a short delay
             setTimeout(() => {
                 setShowLoadingIndicator(false);
@@ -206,12 +204,12 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         setSelectedPhoto(photo);
         setLightboxOpen(true);
         document.body.style.overflow = 'hidden';
-        
+
         // Trigger the entrance animation
         requestAnimationFrame(() => {
             setLightboxVisible(true);
         });
-        
+
         startLoadingTimer();
     };
 
@@ -219,13 +217,13 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         // Start exit animation
         setLightboxVisible(false);
         setShowImage(false);
-        
+
         // Wait for animation to complete before removing from DOM
         setTimeout(() => {
             setLightboxOpen(false);
             document.body.style.overflow = 'auto';
         }, 300);
-        
+
         // Clear any pending timers when closing
         if (loadingTimerRef.current) {
             clearTimeout(loadingTimerRef.current);
@@ -274,17 +272,17 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
     // Preload adjacent images to leverage browser cache
     useEffect(() => {
         if (!selectedPhoto || !lightboxOpen) return;
-        
+
         const currentIndex = photos.findIndex(photo => photo.id === selectedPhoto.id);
         const nextIndex = (currentIndex + 1) % photos.length;
         const prevIndex = (currentIndex - 1 + photos.length) % photos.length;
-        
+
         // Preload next and previous images
         if (photos[nextIndex]) {
             const nextImg = new window.Image();
             nextImg.src = photos[nextIndex].sizes?.big?.url || photos[nextIndex].url;
         }
-        
+
         if (photos[prevIndex]) {
             const prevImg = new window.Image();
             prevImg.src = photos[prevIndex].sizes?.big?.url || photos[prevIndex].url;
@@ -323,7 +321,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
 
             {/* Lightbox with animations */}
             {lightboxOpen && selectedPhoto && (
-                <div 
+                <div
                     ref={lightboxRef}
                     className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out ${lightboxVisible ? 'bg-black/95' : 'bg-black/0'}`}
                 >
@@ -338,7 +336,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                         >
                             <Download size={24} weight="bold" />
                         </a>
-                        
+
                         <button
                             onClick={closeLightbox}
                             className="cursor-pointer text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
@@ -371,7 +369,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
                                 <div className="spinner"></div>
                             </div>
                         )}
-                        
+
                         <div className={`relative w-full h-full ${skipAnimation ? '' : 'transition-opacity duration-500'} ${showImage ? 'opacity-100' : 'opacity-0'}`}>
                             <Image
                                 ref={imageRef}

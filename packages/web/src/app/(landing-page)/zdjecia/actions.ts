@@ -18,7 +18,31 @@ export async function getPhotos() {
     ...query,
   });
 
-  return photos;
+
+  return photos.map(photo => {
+    const defaultUrl = photo.url ?? '';
+
+    return {
+      id: String(photo.id),
+      alt: photo.alt ?? '',
+      url: defaultUrl,
+      width: photo.width ?? 0,
+      height: photo.height ?? 0,
+      sizes: {
+        thumbnail: {
+          url: photo.sizes?.thumbnail?.url ?? defaultUrl,
+          width: photo.sizes?.thumbnail?.width ?? 400,
+          height: photo.sizes?.thumbnail?.height ?? 300,
+        },
+        big: {
+          url: photo.sizes?.big?.url ?? defaultUrl,
+          width: photo.sizes?.big?.width ?? 768,
+          height: photo.sizes?.big?.height ?? 1024,
+        },
+      }
+    };
+  });
+
 }
 
 export async function getPhoto(id: string) {
@@ -31,7 +55,7 @@ export async function getPhoto(id: string) {
       collection: 'photos',
       id,
     });
-    
+
     return photo;
   } catch (error) {
     return null;

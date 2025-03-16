@@ -10,33 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PhotosPage() {
-    const rawPhotos = await getPhotos();
-
-    // Transform the data to match the expected format
-    const photos: Photo[] = rawPhotos.map(photo => {
-        // Ensure we have valid URLs for all sizes
-        const defaultUrl = photo.url ?? '';
-
-        return {
-            id: String(photo.id),
-            alt: photo.alt ?? '',
-            url: defaultUrl,
-            width: photo.width ?? 0,
-            height: photo.height ?? 0,
-            sizes: {
-                thumbnail: {
-                    url: photo.sizes?.thumbnail?.url ?? defaultUrl,
-                    width: photo.sizes?.thumbnail?.width ?? 400,
-                    height: photo.sizes?.thumbnail?.height ?? 300,
-                },
-                big: {
-                    url: photo.sizes?.big?.url ?? defaultUrl,
-                    width: photo.sizes?.big?.width ?? 768,
-                    height: photo.sizes?.big?.height ?? 1024,
-                },
-            }
-        };
-    });
+    const photos = await getPhotos();
 
     return (
         <PageContainer>
