@@ -12,9 +12,7 @@ const getPathFromReferer = (referrer: string) => {
 
 export const registerVisit = async (ip: string, userAgent: string, referrer: string) => {
 
-    const payload = await getPayload({
-        config: config,
-    });
+    const payload = await getPayload({ config });
 
     const visit = await payload.create({
         collection: SITE_VISITS_SLUG,

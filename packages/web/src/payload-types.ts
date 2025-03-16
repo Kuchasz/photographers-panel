@@ -189,16 +189,23 @@ export interface PrivateGallery {
         id?: string | null;
       }[]
     | null;
-  media?:
-    | {
-        /**
-         * URL to the media file
-         */
-        imageUrl: string;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  media: {
+    /**
+     * URL to the media file
+     */
+    imageUrl: string;
+    /**
+     * Record of downloads for this media
+     */
+    downloads?:
+      | {
+          ip: string;
+          date: string;
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
   /**
    * Record of visits to this gallery
    */
@@ -207,7 +214,6 @@ export interface PrivateGallery {
         ip: string;
         date: string;
         userAgent?: string | null;
-        referrer?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -552,7 +558,13 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
     | T
     | {
         imageUrl?: T;
-        caption?: T;
+        downloads?:
+          | T
+          | {
+              ip?: T;
+              date?: T;
+              id?: T;
+            };
         id?: T;
       };
   visits?:
@@ -561,7 +573,6 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
         ip?: T;
         date?: T;
         userAgent?: T;
-        referrer?: T;
         id?: T;
       };
   updatedAt?: T;
