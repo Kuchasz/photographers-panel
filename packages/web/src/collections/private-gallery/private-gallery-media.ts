@@ -45,6 +45,34 @@ export const PrivateGalleryMedia: CollectionConfig = {
         description: 'The gallery this media belongs to',
         position: 'sidebar',
       }
-    }
+    },
+    {
+      name: 'downloads',
+      type: 'array',
+      label: 'Downloads',
+      admin: {
+        description: 'Record of downloads for this media',
+      },
+      fields: [
+        {
+          name: 'ip',
+          type: 'text',
+          required: true,
+          label: 'IP Address',
+        },
+        {
+          name: 'date',
+          type: 'date',
+          required: true,
+          label: 'Download Date',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+          },
+          defaultValue: () => new Date(),
+        },
+      ],
+    },
   ],
 } 

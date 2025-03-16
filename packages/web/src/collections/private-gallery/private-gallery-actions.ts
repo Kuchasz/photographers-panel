@@ -39,14 +39,14 @@ export const recordImageDownload = async (galleryId: string, mediaIndex: number,
     });
 
     // Get the current media item
-    const media = gallery.media;
-    const mediaItem = media?.[mediaIndex];
+    const galleryMedia = gallery.galleryMedia;
+    const mediaItem = galleryMedia?.[mediaIndex];
 
     if (!mediaItem) return;
 
     // Add the download to the media's downloads array
     const downloads = mediaItem.downloads ?? [];
-    media[mediaIndex] = {
+    galleryMedia[mediaIndex] = {
         ...mediaItem,
         downloads: [
             ...downloads,
@@ -62,7 +62,7 @@ export const recordImageDownload = async (galleryId: string, mediaIndex: number,
         collection: PRIVATE_GALLERIES_SLUG,
         id: galleryId,
         data: {
-            media,
+            galleryMedia,
         },
     });
 }

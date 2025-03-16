@@ -44,15 +44,15 @@ export const PrivateGallery: CollectionConfig = {
       defaultValue: 'draft',
       options: [
         {
-          label: 'Draft',
+          label: 'Robocza',
           value: 'draft',
         },
         {
-          label: 'Published',
+          label: 'Opublikowana',
           value: 'published',
         },
         {
-          label: 'Archived',
+          label: 'Archiwalna',
           value: 'archived',
         },
       ],
@@ -83,49 +83,11 @@ export const PrivateGallery: CollectionConfig = {
       label: 'Notes',
     },
     {
-      name: 'media',
-      type: 'array',
+      name: 'galleryMedia',
+      type: 'upload',
       label: 'Gallery Media',
-      fields: [
-        {
-          name: 'media',
-          type: 'relationship',
-          relationTo: PRIVATE_GALLERY_MEDIA_SLUG,
-          required: true,
-          label: 'Media',
-          admin: {
-            description: 'Select media from the private gallery media collection',
-          },
-        },
-        {
-          name: 'downloads',
-          type: 'array',
-          label: 'Downloads',
-          admin: {
-            description: 'Record of downloads for this media',
-          },
-          fields: [
-            {
-              name: 'ip',
-              type: 'text',
-              required: true,
-              label: 'IP Address',
-            },
-            {
-              name: 'date',
-              type: 'date',
-              required: true,
-              label: 'Download Date',
-              admin: {
-                date: {
-                  pickerAppearance: 'dayAndTime',
-                },
-              },
-              defaultValue: () => new Date(),
-            },
-          ],
-        },
-      ],
+      relationTo: PRIVATE_GALLERY_MEDIA_SLUG,
+      hasMany: true,
     },
     {
       name: 'visits',

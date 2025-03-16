@@ -178,25 +178,7 @@ export interface PrivateGallery {
   password: string;
   directPath?: string | null;
   notes?: string | null;
-  media?:
-    | {
-        /**
-         * Select media from the private gallery media collection
-         */
-        media: number | PrivateGalleryMedia;
-        /**
-         * Record of downloads for this media
-         */
-        downloads?:
-          | {
-              ip: string;
-              date: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
+  galleryMedia?: (number | PrivateGalleryMedia)[] | null;
   /**
    * Record of visits to this gallery
    */
@@ -221,6 +203,16 @@ export interface PrivateGalleryMedia {
    * The gallery this media belongs to
    */
   gallery: number | PrivateGallery;
+  /**
+   * Record of downloads for this media
+   */
+  downloads?:
+    | {
+        ip: string;
+        date: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -574,19 +566,7 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   password?: T;
   directPath?: T;
   notes?: T;
-  media?:
-    | T
-    | {
-        media?: T;
-        downloads?:
-          | T
-          | {
-              ip?: T;
-              date?: T;
-              id?: T;
-            };
-        id?: T;
-      };
+  galleryMedia?: T;
   visits?:
     | T
     | {
@@ -604,6 +584,13 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
  */
 export interface PrivateGalleryMediaSelect<T extends boolean = true> {
   gallery?: T;
+  downloads?:
+    | T
+    | {
+        ip?: T;
+        date?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   url?: T;
