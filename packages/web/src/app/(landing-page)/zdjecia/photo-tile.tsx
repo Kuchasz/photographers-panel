@@ -70,7 +70,7 @@ export function PhotoTile({
         height={photo.sizes.thumbnail.height}
         width={photo.sizes.thumbnail.width}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-        className={`object-cover transition-all duration-500 group-hover:scale-105 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+        className={`object-cover w-full transition-all duration-500 group-hover:scale-105 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
         style={aspectRatioStyles}
         onLoad={handleImageLoad}
       />
