@@ -69,6 +69,7 @@ export interface Config {
     users: User;
     media: Media;
     'private-galleries': PrivateGallery;
+    'private-gallery-media': PrivateGalleryMedia;
     videos: Video;
     events: Event;
     'site-visits': SiteVisit;
@@ -85,6 +86,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'private-galleries': PrivateGalleriesSelect<false> | PrivateGalleriesSelect<true>;
+    'private-gallery-media': PrivateGalleryMediaSelect<false> | PrivateGalleryMediaSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
@@ -178,9 +180,9 @@ export interface PrivateGallery {
   notes?: string | null;
   media: {
     /**
-     * URL to the media file
+     * Select media from the media collection
      */
-    imageUrl: string;
+    media: number | Media;
     /**
      * Record of downloads for this media
      */
@@ -206,6 +208,42 @@ export interface PrivateGallery {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-media".
+ */
+export interface PrivateGalleryMedia {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    big?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -413,6 +451,10 @@ export interface PayloadLockedDocument {
         value: number | PrivateGallery;
       } | null)
     | ({
+        relationTo: 'private-gallery-media';
+        value: number | PrivateGalleryMedia;
+      } | null)
+    | ({
         relationTo: 'videos';
         value: number | Video;
       } | null)
@@ -529,7 +571,7 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   media?:
     | T
     | {
-        imageUrl?: T;
+        media?: T;
         downloads?:
           | T
           | {
@@ -549,6 +591,47 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-media_select".
+ */
+export interface PrivateGalleryMediaSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        big?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

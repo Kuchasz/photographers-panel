@@ -1,7 +1,7 @@
-import type { CollectionConfig } from 'payload'
-import { PRIVATE_GALLERY_MEDIA_SLUG } from '../collectionSlugs'
 import path from 'path'
+import type { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { PRIVATE_GALLERY_MEDIA_SLUG } from '../collectionSlugs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

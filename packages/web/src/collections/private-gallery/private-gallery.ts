@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { PRIVATE_GALLERIES_SLUG } from '../collectionSlugs'
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_MEDIA_SLUG } from '../collectionSlugs'
 import { authenticatedOrPublished } from '~/access/authenticatedOrPublished'
 
 export const PrivateGallery: CollectionConfig = {
@@ -88,12 +88,13 @@ export const PrivateGallery: CollectionConfig = {
       required: true,
       fields: [
         {
-          name: 'imageUrl',
-          type: 'text',
+          name: 'media',
+          type: 'relationship',
+          relationTo: PRIVATE_GALLERY_MEDIA_SLUG,
           required: true,
-          label: 'Media URL',
+          label: 'Media',
           admin: {
-            description: 'URL to the media file',
+            description: 'Select media from the media collection',
           },
         },
         {

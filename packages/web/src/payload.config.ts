@@ -18,6 +18,7 @@ import { Opinion } from './collections/site/opinion'
 import { Users } from './collections/users'
 import { Video } from './collections/videos/Video'
 import { defaultLexical } from './fields/defaultLexical'
+import { PrivateGalleryMedia } from './collections/private-gallery/private-gallery-media'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -29,7 +30,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PrivateGallery, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion, Photo],
+  collections: [Users, Media, PrivateGallery, PrivateGalleryMedia, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion, Photo],
   i18n: {
     fallbackLanguage: 'en',
     supportedLanguages: { en, pl },
