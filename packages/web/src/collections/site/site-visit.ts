@@ -7,6 +7,9 @@ export const SiteVisit: CollectionConfig = {
   admin: {
     useAsTitle: 'ip',
     defaultColumns: ['ip', 'date'],
+    components: {
+      beforeListTable: ['@/components/site-visits'],
+    },
   },
   labels: {
     singular: {

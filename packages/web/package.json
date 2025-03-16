@@ -13,6 +13,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "generate:types": "payload generate:types",
+    "generate:importmap": "payload generate:importmap",
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
@@ -38,6 +39,7 @@
     "@tanstack/react-query": "5.66.9",
     "@ts-rest/react-query": "3.52.0",
     "@types/eslint": "^8.56.10",
+    "@types/recharts": "1.8.29",
     "@types/node": "^20.14.10",
     "@types/nodemailer": "6.4.1",
     "@types/react": "^18.3.3",
@@ -51,6 +53,7 @@
     "postcss": "^8.4.39",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "recharts": "2.15.1",
     "sharp": "0.32.6",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.8",
