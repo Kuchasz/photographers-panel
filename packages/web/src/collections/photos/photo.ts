@@ -32,7 +32,6 @@ export const Photo: CollectionConfig = {
 
             },
         ],
-        disableLocalStorage: true,
         adminThumbnail: 'thumbnail',
         mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
     },
