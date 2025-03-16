@@ -178,23 +178,25 @@ export interface PrivateGallery {
   password: string;
   directPath?: string | null;
   notes?: string | null;
-  media: {
-    /**
-     * Select media from the media collection
-     */
-    media: number | Media;
-    /**
-     * Record of downloads for this media
-     */
-    downloads?:
-      | {
-          ip: string;
-          date: string;
-          id?: string | null;
-        }[]
-      | null;
-    id?: string | null;
-  }[];
+  media?:
+    | {
+        /**
+         * Select media from the private gallery media collection
+         */
+        media: number | PrivateGalleryMedia;
+        /**
+         * Record of downloads for this media
+         */
+        downloads?:
+          | {
+              ip: string;
+              date: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Record of visits to this gallery
    */
@@ -215,6 +217,10 @@ export interface PrivateGallery {
  */
 export interface PrivateGalleryMedia {
   id: number;
+  /**
+   * The gallery this media belongs to
+   */
+  gallery: number | PrivateGallery;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -597,6 +603,7 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
  * via the `definition` "private-gallery-media_select".
  */
 export interface PrivateGalleryMediaSelect<T extends boolean = true> {
+  gallery?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

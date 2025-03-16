@@ -32,14 +32,13 @@ export const recordVisit = async (galleryId: string, ip: string, userAgent: stri
 export const recordImageDownload = async (galleryId: string, mediaIndex: number, ip: string) => {
     const payload = await getPayload({ config });
 
-    // Find the gallery with populated media
+    // Find the gallery
     const gallery = await payload.findByID({
         collection: PRIVATE_GALLERIES_SLUG,
         id: galleryId,
-        depth: 0, // Don't populate the relationship to avoid unnecessary data
     });
 
-    // Get the current media array
+    // Get the current media item
     const media = gallery.media;
     const mediaItem = media?.[mediaIndex];
 

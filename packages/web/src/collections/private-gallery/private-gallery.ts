@@ -8,6 +8,7 @@ export const PrivateGallery: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'state'],
+    group: 'Private Gallery',
   },
   access: {
     create: authenticated,
@@ -85,7 +86,6 @@ export const PrivateGallery: CollectionConfig = {
       name: 'media',
       type: 'array',
       label: 'Gallery Media',
-      required: true,
       fields: [
         {
           name: 'media',
@@ -94,7 +94,7 @@ export const PrivateGallery: CollectionConfig = {
           required: true,
           label: 'Media',
           admin: {
-            description: 'Select media from the media collection',
+            description: 'Select media from the private gallery media collection',
           },
         },
         {

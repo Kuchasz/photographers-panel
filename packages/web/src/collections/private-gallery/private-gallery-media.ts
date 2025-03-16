@@ -1,7 +1,7 @@
 import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
-import { PRIVATE_GALLERY_MEDIA_SLUG } from '../collectionSlugs'
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_MEDIA_SLUG } from '../collectionSlugs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -13,7 +13,7 @@ export const PrivateGalleryMedia: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'filename',
-    group: 'Offers',
+    group: 'Private Gallery',
   },
   upload: {
     staticDir: path.resolve(dirname, '../../public/private-gallery'),
@@ -30,10 +30,21 @@ export const PrivateGalleryMedia: CollectionConfig = {
         height: 1920,
         position: 'centre',
         fit: 'inside'
-
       },
     ],
     mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
   },
-  fields: [],
+  fields: [
+    {
+      name: 'gallery',
+      type: 'relationship',
+      relationTo: PRIVATE_GALLERIES_SLUG,
+      required: true,
+      label: 'Private Gallery',
+      admin: {
+        description: 'The gallery this media belongs to',
+        position: 'sidebar',
+      }
+    }
+  ],
 } 
