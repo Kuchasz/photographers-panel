@@ -65,21 +65,6 @@ export default async function VideosPage() {
                                     {video.descshort && (
                                         <p className="text-white/90 text-sm mb-2 line-clamp-2 drop-shadow-sm">{video.descshort}</p>
                                     )}
-                                    {video.tags && (
-                                        <div className="flex flex-wrap gap-1 mt-1">
-                                            {video.tags.split(',').slice(0, 2).map((tag, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="px-2 py-0.5 bg-white/20 text-white text-xs rounded-full backdrop-blur-sm"
-                                                >
-                                                    {tag.trim()}
-                                                </span>
-                                            ))}
-                                            {video.tags.split(',').length > 2 && (
-                                                <span className="text-xs text-white/80">+{video.tags.split(',').length - 2} more</span>
-                                            )}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </Link>

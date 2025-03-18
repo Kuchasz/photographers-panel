@@ -8,7 +8,17 @@ export const PrivateGallery: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'state'],
-    group: 'Private Gallery',
+    group: 'Galeria prywatna',
+  },
+  labels: {
+    singular: {
+      en: 'Private Gallery',
+      pl: 'Galeria prywatna',
+    },
+    plural: {
+      en: 'Private Galleries',
+      pl: 'Galerie prywatne',
+    },
   },
   access: {
     create: authenticated,

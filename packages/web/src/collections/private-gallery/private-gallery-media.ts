@@ -13,7 +13,17 @@ export const PrivateGalleryMedia: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'filename',
-    group: 'Private Gallery',
+    group: 'Galeria prywatna',
+  },
+  labels: {
+    singular: {
+      en: 'Private Gallery Media',
+      pl: 'Media galerii prywatnej',
+    },
+    plural: {
+      en: 'Private Gallery Media',
+      pl: 'Media galerii prywatnej',
+    },
   },
   upload: {
     staticDir: path.resolve(dirname, '../../public/private-gallery'),

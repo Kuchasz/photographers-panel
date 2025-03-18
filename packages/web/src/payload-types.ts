@@ -67,7 +67,6 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
-    media: Media;
     'private-galleries': PrivateGallery;
     'private-gallery-media': PrivateGalleryMedia;
     videos: Video;
@@ -84,7 +83,6 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     'private-galleries': PrivateGalleriesSelect<false> | PrivateGalleriesSelect<true>;
     'private-gallery-media': PrivateGalleryMediaSelect<false> | PrivateGalleryMediaSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
@@ -146,25 +144,6 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -258,8 +237,6 @@ export interface Video {
   desc: string;
   descshort: string;
   videoUrl: string;
-  photo?: (number | null) | Media;
-  tags?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -382,7 +359,7 @@ export interface Opinion {
   author: string;
   content: string;
   rating: number;
-  source: 'google' | 'facebook';
+  source: 'google' | 'facebook' | 'pm';
   date: string;
   isPublished?: boolean | null;
   updatedAt: string;
@@ -439,10 +416,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
-      } | null)
-    | ({
-        relationTo: 'media';
-        value: number | Media;
       } | null)
     | ({
         relationTo: 'private-galleries';
@@ -539,24 +512,6 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "private-galleries_select".
  */
 export interface PrivateGalleriesSelect<T extends boolean = true> {
@@ -638,8 +593,6 @@ export interface VideosSelect<T extends boolean = true> {
   desc?: T;
   descshort?: T;
   videoUrl?: T;
-  photo?: T;
-  tags?: T;
   updatedAt?: T;
   createdAt?: T;
 }

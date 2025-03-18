@@ -8,6 +8,16 @@ export const SiteEvent: CollectionConfig = {
     useAsTitle: 'type',
     defaultColumns: ['type', 'user', 'occuredOn'],
   },
+  labels: {
+    singular: {
+      en: 'Site Event',
+      pl: 'Wydarzenie strony',
+    },
+    plural: {
+      en: 'Site Events',
+      pl: 'Wydarzenia strony',
+    },
+  },  
   access: {
     create: () => true, // Allow event tracking without authentication
     read: authenticated,

@@ -7,7 +7,6 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { en } from '@payloadcms/translations/languages/en'
 import { pl } from '@payloadcms/translations/languages/pl'
-import { Media } from './collections/media'
 import { Offer } from './collections/offers/offer'
 import { OfferMedia } from './collections/offers/offer-media'
 import { Photo } from './collections/photos/photo'
@@ -16,7 +15,7 @@ import { SiteEvent } from './collections/site/site-event'
 import { SiteVisit } from './collections/site/site-visit'
 import { Opinion } from './collections/site/opinion'
 import { Users } from './collections/users'
-import { Video } from './collections/videos/Video'
+import { Video } from './collections/videos/video'
 import { defaultLexical } from './fields/defaultLexical'
 import { PrivateGalleryMedia } from './collections/private-gallery/private-gallery-media'
 
@@ -30,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, PrivateGallery, PrivateGalleryMedia, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion, Photo],
+  collections: [Users, PrivateGallery, PrivateGalleryMedia, Video, SiteEvent, SiteVisit, Offer, OfferMedia, Opinion, Photo],
   i18n: {
     fallbackLanguage: 'en',
     supportedLanguages: { en, pl },

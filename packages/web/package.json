@@ -18,16 +18,17 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^3.25.0",
-    "@payloadcms/next": "^3.25.0",
-    "@payloadcms/payload-cloud": "^3.25.0",
-    "@payloadcms/richtext-lexical": "^3.25.0",
-    "@payloadcms/translations": "^3.25.0",
+    "@payloadcms/db-postgres": "3.28.1",
+    "@payloadcms/next": "3.28.1",
+    "@payloadcms/payload-cloud": "3.28.1",
+    "@payloadcms/richtext-lexical": "3.28.1",
+    "@payloadcms/translations": "3.28.1",
+    "@payloadcms/ui": "3.28.1",
     "@t3-oss/env-nextjs": "^0.10.1",
     "geist": "^1.3.0",
     "graphql": "^16.8.1",
     "next": "^15.0.1",
-    "payload": "^3.25.0",
+    "payload": "3.28.1",
     "react-dom": "18.3.1",
     "zod": "^3.23.3"
   },

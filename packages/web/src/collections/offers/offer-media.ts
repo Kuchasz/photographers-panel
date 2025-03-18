@@ -13,7 +13,18 @@ export const OfferMedia: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'filename',
-    group: 'Offers',
+    group: 'Treść strony',
+    hidden: true,
+  },
+  labels: {
+    singular: {
+      en: 'Offer Media',
+      pl: 'Media oferty',
+    },
+    plural: {
+      en: 'Offer Media',
+      pl: 'Media oferty',
+    },
   },
   upload: {
     staticDir: path.resolve(dirname, '../../public/offer-media'),

@@ -15,6 +15,17 @@ export const Video: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'alias', 'updatedAt'],
+    group: 'Treść strony',
+  },
+  labels: {
+    singular: {
+      en: 'Video',
+      pl: 'Wideo',
+    },
+    plural: {
+      en: 'Videos',
+      pl: 'Wideo',
+    },
   },
   defaultSort: 'order',
   fields: [
@@ -65,17 +76,6 @@ export const Video: CollectionConfig = {
         }
         return true
       }) as TextFieldSingleValidation,
-    },
-    {
-      name: 'photo',
-      label: 'Thumbnail Photo',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'tags',
-      type: 'text',
-      label: 'Tags (comma separated)',
-    },
+    }
   ],
 }

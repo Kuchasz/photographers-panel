@@ -12,7 +12,17 @@ export const Offer: CollectionConfig = {
     slug: OFFERS_SLUG,
     admin: {
         useAsTitle: 'title',
-        group: 'Offers',
+        group: 'Treść strony',
+    },
+    labels: {
+        singular: {
+            en: 'Offer',
+            pl: 'Oferta',
+        },
+        plural: {
+            en: 'Offers',
+            pl: 'Oferty',
+        },
     },
     fields: [
         {

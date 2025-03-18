@@ -6,7 +6,7 @@ export const SiteVisit: CollectionConfig = {
   slug: SITE_VISITS_SLUG,
   admin: {
     useAsTitle: 'ip',
-    defaultColumns: ['ip', 'date'],
+    defaultColumns: ['ip', 'date', 'userAgent', 'path'],
     components: {
       beforeListTable: ['@/components/site-visits'],
     },
@@ -22,7 +22,7 @@ export const SiteVisit: CollectionConfig = {
     },
   },
   access: {
-    create: () => true, // Allow tracking visits without authentication
+    create: () => false, // Allow tracking visits without authentication
     read: authenticated,
     update: authenticated,
     delete: authenticated,

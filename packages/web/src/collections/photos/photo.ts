@@ -7,12 +7,22 @@ const dirname = path.dirname(filename)
 
 export const Photo: CollectionConfig = {
     slug: 'photos',
+    labels: {
+        singular: {
+            en: 'Photo',
+            pl: 'Zdjęcie',
+        },
+        plural: {
+            en: 'Photos',
+            pl: 'Zdjęcia',
+        },
+    },
     access: {
         read: () => true,
     },
     admin: {
         useAsTitle: 'alt',
-        group: 'Content',
+        group: 'Treść strony',
     },
     upload: {
         staticDir: path.resolve(dirname, '../../public/photos'),

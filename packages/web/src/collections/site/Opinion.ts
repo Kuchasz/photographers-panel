@@ -7,6 +7,7 @@ export const Opinion: CollectionConfig = {
   admin: {
     useAsTitle: 'author',
     defaultColumns: ['author', 'rating', 'source', 'date'],
+    group: 'Treść strony',
   },
   labels: {
     singular: {
@@ -62,6 +63,10 @@ export const Opinion: CollectionConfig = {
         {
           label: 'Facebook',
           value: 'facebook',
+        },
+        {
+          label: 'PM',
+          value: 'pm',
         },
       ],
     },
