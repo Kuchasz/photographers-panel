@@ -8,9 +8,11 @@ interface VisitsChartProps {
         visits: number;
         uniqueVisitors: number;
     }[];
+    title?: string;
+    subtitle?: string;
 }
 
-export default function VisitsChart({ data }: VisitsChartProps) {
+export default function VisitsChart({ data, title = 'Page Visits Analytics', subtitle }: VisitsChartProps) {
     // Get Payload config to access theme information
     const { theme } = useTheme();
     const isDarkMode = theme === 'dark';
@@ -41,13 +43,23 @@ export default function VisitsChart({ data }: VisitsChartProps) {
         }}>
             <h2 style={{
                 textAlign: 'center',
-                marginBottom: '20px',
+                marginBottom: subtitle ? '5px' : '20px',
                 fontSize: '1.5rem',
                 fontWeight: 'bold',
                 color: colors.text
             }}>
-                Page Visits Analytics
+                {title}
             </h2>
+            {subtitle && (
+                <p style={{
+                    textAlign: 'center',
+                    marginBottom: '20px',
+                    fontSize: '1rem',
+                    color: isDarkMode ? '#aaa' : '#666'
+                }}>
+                    {subtitle}
+                </p>
+            )}
             <div style={{ width: '100%', height: '350px' }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
