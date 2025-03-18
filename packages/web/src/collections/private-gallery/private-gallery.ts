@@ -7,7 +7,7 @@ export const PrivateGallery: CollectionConfig = {
   slug: PRIVATE_GALLERIES_SLUG,
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'date', 'state'],
+    defaultColumns: ['title', 'notes', 'date', 'state'],
     group: 'Galeria prywatna',
   },
   labels: {
@@ -27,6 +27,16 @@ export const PrivateGallery: CollectionConfig = {
     delete: authenticated,
   },
   fields: [
+    {
+      name: 'statistics',
+      type: 'ui',
+      label: 'Statistics',
+      admin: {
+        components: {
+          Field: '@/components/private-gallery-visits',
+        },
+      },
+    },
     {
       name: 'title',
       type: 'text',
