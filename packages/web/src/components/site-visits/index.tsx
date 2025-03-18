@@ -2,6 +2,7 @@ import { getPayload } from 'payload';
 import config from '../../payload.config';
 import { SITE_VISITS_SLUG } from '../../collections/collectionSlugs';
 import VisitsChart from '../visits-chart';
+import styles from './styles.module.css';
 
 // Define proper types for the site visit records from Payload
 interface SiteVisitDoc {
@@ -122,15 +123,15 @@ export default async function SiteVisits() {
     }
     
     return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">Today&apos;s Visits</h3>
-            <p className="text-3xl font-bold">{todayVisits}</p>
+      <div className={styles.container}>
+        <div className={styles.statsGrid}>
+          <div className={styles.statsCard}>
+            <h3 className={styles.statsTitle}>Today&apos;s Visits</h3>
+            <p className={styles.statsValue}>{todayVisits}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">Total Visits</h3>
-            <p className="text-3xl font-bold">{totalVisits}</p>
+          <div className={styles.statsCard}>
+            <h3 className={styles.statsTitle}>Total Visits</h3>
+            <p className={styles.statsValue}>{totalVisits}</p>
           </div>
         </div>
         
@@ -144,7 +145,7 @@ export default async function SiteVisits() {
   } catch (error) {
     console.error('Error fetching site visit data:', error);
     return (
-      <div className="p-4 border border-red-300 bg-red-50 text-red-700 rounded">
+      <div className={styles.errorMessage}>
         <p>Failed to load site visits data. Please try again later.</p>
       </div>
     );

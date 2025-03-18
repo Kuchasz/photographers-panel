@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: #f9fafb;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Dark mode styles */
+.statsCard {
+  background-color: var(--theme-elevation-50);
+  padding: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.statsTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  transition: color 0.3s ease;
+}
+
+.statsValue {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #f9fafb;
+  transition: color 0.3s ease;
+}
+
+.errorMessage {
+  padding: 1rem;
+  border: 1px solid #ef4444;
+  background-color: rgba(185, 28, 28, 0.2);
+  color: #fca5a5;
+  border-radius: 0.25rem;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Add a subtle hover effect */
+.statsCard:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  background-color: var(--theme-elevation-100);
+}
