@@ -7,31 +7,13 @@ import { type PrivateGalleryMedia, type PrivateGalleryVisit } from "~/payload-ty
 export const recordVisit = async (galleryId: number, ip: string, userAgent: string) => {
     const payload = await getPayload({ config });
 
-    // Find the gallery
-    const gallery = await payload.findByID({
-        collection: PRIVATE_GALLERIES_SLUG,
-        id: galleryId,
-    });
-
     // Create a new visit record
-    const newVisit = await payload.create({
+    await payload.create({
         collection: PRIVATE_GALLERY_VISITS_SLUG,
         data: {
             ip,
             date: new Date().toISOString(),
             gallery: galleryId,
-        },
-    }) as PrivateGalleryVisit;
-
-    // Get current gallery visits or initialize empty array
-    const galleryVisits = gallery.galleryVisits ?? [];
-
-    // Update the gallery with the new visit in its galleryVisits array
-    await payload.update({
-        collection: PRIVATE_GALLERIES_SLUG,
-        id: galleryId,
-        data: {
-            galleryVisits: [...galleryVisits, newVisit.id],
         },
     });
 };

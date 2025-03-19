@@ -36,12 +36,6 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
         }
     })).docs;
 
-    // console.log('siblingData', siblingData);
-    // const gallery = undefined as unknown;
-
-    // Get all visits from the gallery
-    // const visits = gallery?.visits ?? [];
-
     // Calculate date range for the last 30 days
     const endDate = new Date();
     const startDate = subtractDays(endDate, 30);
