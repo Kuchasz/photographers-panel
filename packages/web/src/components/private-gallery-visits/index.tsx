@@ -27,6 +27,10 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
 
     const { id } = siblingData;
 
+    if (!id) {
+        return null;
+    }
+
     const visits = (await payload.find({
         collection: PRIVATE_GALLERY_VISITS_SLUG,
         where: {

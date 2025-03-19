@@ -17,12 +17,12 @@ export const PrivateGalleryMedia: CollectionConfig = {
   },
   labels: {
     singular: {
-      en: 'Private Gallery Media',
-      pl: 'Media galerii prywatnej',
+      en: 'Photo',
+      pl: 'Zdjęcie',
     },
     plural: {
-      en: 'Private Gallery Media',
-      pl: 'Media galerii prywatnej',
+      en: 'Photos',
+      pl: 'Zdjęcia',
     },
   },
   upload: {

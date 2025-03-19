@@ -44,20 +44,3 @@ export async function getPhotos() {
   });
 
 }
-
-export async function getPhoto(id: string) {
-  const payload = await getPayload({
-    config: payloadConfig,
-  });
-
-  try {
-    const photo = await payload.findByID({
-      collection: 'photos',
-      id,
-    });
-
-    return photo;
-  } catch (error) {
-    return null;
-  }
-} 
