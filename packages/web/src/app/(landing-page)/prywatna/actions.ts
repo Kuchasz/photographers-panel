@@ -2,7 +2,7 @@
 import config from "@payload-config";
 import { headers } from "next/headers";
 import { getPayload } from "payload";
-import { recordVisit } from "~/collections/private-gallery/private-gallery-actions";
+import { authenticateGallery, recordVisit } from "~/collections/private-gallery/private-gallery-actions";
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -48,6 +48,8 @@ export const authenticate = async (password: string) => {
 
         await recordVisit(gallery.id, ip, userAgent);
 
+        const token = await authenticateGallery(gallery.id, ip);
+
         // Format the response to match the expected structure
         const result = {
             gallery: {
@@ -55,7 +57,8 @@ export const authenticate = async (password: string) => {
                 state: gallery.state,
                 title: gallery.title ?? '',
                 url: gallery.directPath ?? '',
-                date: gallery.date ?? ''
+                date: gallery.date ?? '',
+                token: token.token
             }
         };
 

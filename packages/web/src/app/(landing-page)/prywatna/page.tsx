@@ -122,8 +122,8 @@ export default function PrivateGallery() {
                     {state.result?.gallery && (
                         <div className="space-y-6">
                             {state.result.gallery.state === 'published' ? (
-                                <Link 
-                                    href={`/prywatna/${state.result.gallery.id}`}
+                                <Link
+                                    href={`/prywatna/${state.result.gallery.token}`}
                                     className="inline-block rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700"
                                 >
                                     {strings.privateGallery.enterGallery}

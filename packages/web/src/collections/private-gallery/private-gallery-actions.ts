@@ -1,7 +1,7 @@
 "use server"
 import { getPayload } from "payload";
 import config from '~/payload.config';
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_MEDIA_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_AUTH_TOKENS_SLUG, PRIVATE_GALLERY_MEDIA_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
 
 export const recordVisit = async (galleryId: number, ip: string, userAgent: string) => {
     const payload = await getPayload({ config });
@@ -52,4 +52,54 @@ export const getGalleryVisits = async (galleryId: string) => {
     });
 
     return gallery.galleryVisits;
+}
+
+export const authenticateGallery = async (galleryId: number, ip: string) => {
+    const payload = await getPayload({ config });
+    const gallery = await payload.findByID({
+        collection: PRIVATE_GALLERIES_SLUG,
+        id: galleryId,
+    });
+
+    const token = `${Math.random().toString(36).substring(2, 24)}${Math.random().toString(36).substring(2, 24)}`;
+
+    return await payload.create({
+        collection: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
+        data: {
+            token,
+            gallery,
+            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString(), // 30 days from now
+            ipAddress: ip,
+        },
+    });
+}
+
+export const validateToken = async (token: string, ip: string) => {
+    const payload = await getPayload({ config });
+
+    const authtokens = await payload.find({
+        collection: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
+        where: {
+            token: {
+                equals: token,
+            },
+            ipAddress: {
+                equals: ip,
+            },
+        },
+    });
+
+    const authtoken = authtokens.docs[0];
+
+    //token not found
+    if (!authtoken) {
+        return false;
+    }
+
+    //token expired
+    if (authtoken.expiresAt < new Date().toISOString()) {
+        return false;
+    }
+
+    return true;
 }
