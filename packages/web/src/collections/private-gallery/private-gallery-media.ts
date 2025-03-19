@@ -50,6 +50,7 @@ export const PrivateGalleryMedia: CollectionConfig = {
       type: 'relationship',
       relationTo: PRIVATE_GALLERIES_SLUG,
       required: true,
+      hasMany: false,
       label: 'Private Gallery',
       admin: {
         description: 'The gallery this media belongs to',

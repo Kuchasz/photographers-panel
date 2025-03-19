@@ -81,7 +81,12 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    'private-galleries': {
+      galleryMedia: 'private-gallery-media';
+      galleryVisits: 'private-gallery-visits';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     'private-galleries': PrivateGalleriesSelect<false> | PrivateGalleriesSelect<true>;
@@ -159,11 +164,22 @@ export interface PrivateGallery {
   password: string;
   directPath?: string | null;
   notes?: string | null;
-  galleryMedia?: (number | PrivateGalleryMedia)[] | null;
+  /**
+   * Related media items to this gallery
+   */
+  galleryMedia?: {
+    docs?: (number | PrivateGalleryMedia)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   /**
    * Related visits to this gallery
    */
-  galleryVisits?: (number | PrivateGalleryVisit)[] | null;
+  galleryVisits?: {
+    docs?: (number | PrivateGalleryVisit)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }

@@ -8,7 +8,7 @@ export const PrivateGallery: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'notes', 'date', 'state'],
-    group: 'Galeria prywatna',
+    group: 'Galeria prywatna'
   },
   labels: {
     singular: {
@@ -104,20 +104,22 @@ export const PrivateGallery: CollectionConfig = {
     },
     {
       name: 'galleryMedia',
-      type: 'upload',
+      type: 'join',
       label: 'Gallery Media',
-      relationTo: PRIVATE_GALLERY_MEDIA_SLUG,
-      hasMany: true,
+      collection: PRIVATE_GALLERY_MEDIA_SLUG,
+      on: 'gallery',
+      admin: {
+        description: 'Related media items to this gallery',
+      },
     },
     {
       name: 'galleryVisits',
-      type: 'relationship',
+      type: 'join',
       label: 'Gallery Visits',
-      relationTo: PRIVATE_GALLERY_VISITS_SLUG,
-      hasMany: true,
+      collection: PRIVATE_GALLERY_VISITS_SLUG,
+      on: 'gallery',
       admin: {
         description: 'Related visits to this gallery',
-        readOnly: true,
       },
     },
   ],

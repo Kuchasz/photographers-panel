@@ -1,22 +1,7 @@
-'use client'
-
-import { useDocumentInfo } from '@payloadcms/ui';
-import { type UIFieldClientProps } from 'payload';
-import React from 'react';
+import { type UIFieldServerProps } from 'payload';
+import { PRIVATE_GALLERY_VISITS_SLUG } from '~/collections/collectionSlugs';
 import VisitsChart from '../visits-chart';
 import styles from './styles.module.css';
-
-// Define proper types for the private gallery visit records
-interface GalleryVisitRecord {
-    id?: string;
-    ip: string;
-    date: string;
-    userAgent?: string;
-}
-
-type PrivateGalleryVisitsProps = {
-    path: string;
-} & UIFieldClientProps;
 
 // Helper function to format dates
 function formatDate(date: Date): string {
@@ -38,11 +23,24 @@ function subtractDays(date: Date, days: number): Date {
     return result;
 }
 
-const PrivateGalleryVisits: React.FC<PrivateGalleryVisitsProps> = () => {
-    const { initialData: gallery } = useDocumentInfo();
+const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps) => {
+
+    const { id } = siblingData;
+
+    const visits = (await payload.find({
+        collection: PRIVATE_GALLERY_VISITS_SLUG,
+        where: {
+            gallery: {
+                equals: id
+            }
+        }
+    })).docs;
+
+    // console.log('siblingData', siblingData);
+    // const gallery = undefined as unknown;
 
     // Get all visits from the gallery
-    const visits = gallery?.visits ?? [];
+    // const visits = gallery?.visits ?? [];
 
     // Calculate date range for the last 30 days
     const endDate = new Date();
@@ -58,13 +56,13 @@ const PrivateGalleryVisits: React.FC<PrivateGalleryVisitsProps> = () => {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
-    const todayVisits = visits.filter((visit: GalleryVisitRecord) =>
-        new Date(visit.date) >= todayStart
+    const todayVisits = visits.filter((visit) =>
+        new Date(visit.date!) >= todayStart
     ).length;
 
     // Get visits within date range (last 30 days)
-    const rangeVisits = visits.filter((visit: GalleryVisitRecord) =>
-        new Date(visit.date) >= new Date(formattedStartDate)
+    const rangeVisits = visits.filter((visit) =>
+        new Date(visit.date!) >= new Date(formattedStartDate)
     );
 
     // Organize data by day
@@ -80,7 +78,7 @@ const PrivateGalleryVisits: React.FC<PrivateGalleryVisitsProps> = () => {
     }
 
     // Count visits per day
-    rangeVisits.forEach((visit: GalleryVisitRecord) => {
+    rangeVisits.forEach((visit) => {
         if (visit.date) {
             const visitDate = new Date(visit.date);
             const dayKey = formatDateYYYYMMDD(visitDate);

@@ -16,6 +16,7 @@ export const PrivateGalleryVisits: CollectionConfig = {
             name: 'gallery',
             type: 'relationship',
             relationTo: PRIVATE_GALLERIES_SLUG,
+            hasMany: false,
         },
     ],
 }

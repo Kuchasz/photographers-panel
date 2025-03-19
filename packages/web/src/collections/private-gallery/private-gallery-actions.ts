@@ -2,7 +2,7 @@
 import { getPayload } from "payload";
 import config from '~/payload.config'
 import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
-import { type PrivateGalleryMedia } from "~/payload-types";
+import { type PrivateGalleryMedia, type PrivateGalleryVisit } from "~/payload-types";
 
 export const recordVisit = async (galleryId: number, ip: string, userAgent: string) => {
     const payload = await getPayload({ config });
@@ -13,15 +13,25 @@ export const recordVisit = async (galleryId: number, ip: string, userAgent: stri
         id: galleryId,
     });
 
-    // Add the visit to the gallery's visits array
-    // const visits = gallery.galleryVisits ?? [];
-
-    await payload.create({
+    // Create a new visit record
+    const newVisit = await payload.create({
         collection: PRIVATE_GALLERY_VISITS_SLUG,
         data: {
             ip,
             date: new Date().toISOString(),
-            gallery: gallery,
+            gallery: galleryId,
+        },
+    }) as PrivateGalleryVisit;
+
+    // Get current gallery visits or initialize empty array
+    const galleryVisits = gallery.galleryVisits ?? [];
+
+    // Update the gallery with the new visit in its galleryVisits array
+    await payload.update({
+        collection: PRIVATE_GALLERIES_SLUG,
+        id: galleryId,
+        data: {
+            galleryVisits: [...galleryVisits, newVisit.id],
         },
     });
 };
