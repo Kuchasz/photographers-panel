@@ -1,8 +1,10 @@
+"use server"
 import { getPayload } from "payload";
 import config from '~/payload.config'
-import { PRIVATE_GALLERIES_SLUG } from "../collectionSlugs";
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
+import { type PrivateGalleryMedia } from "~/payload-types";
 
-export const recordVisit = async (galleryId: string, ip: string, userAgent: string) => {
+export const recordVisit = async (galleryId: number, ip: string, userAgent: string) => {
     const payload = await getPayload({ config });
 
     // Find the gallery
@@ -12,19 +14,14 @@ export const recordVisit = async (galleryId: string, ip: string, userAgent: stri
     });
 
     // Add the visit to the gallery's visits array
-    const visits = gallery.visits ?? [];
-    await payload.update({
-        collection: PRIVATE_GALLERIES_SLUG,
-        id: galleryId,
+    // const visits = gallery.galleryVisits ?? [];
+
+    await payload.create({
+        collection: PRIVATE_GALLERY_VISITS_SLUG,
         data: {
-            visits: [
-                ...visits,
-                {
-                    ip,
-                    date: new Date().toISOString(),
-                    userAgent
-                },
-            ],
+            ip,
+            date: new Date().toISOString(),
+            gallery: gallery,
         },
     });
 };
@@ -39,7 +36,7 @@ export const recordImageDownload = async (galleryId: string, mediaIndex: number,
     });
 
     // Get the current media item
-    const galleryMedia = gallery.galleryMedia;
+    const galleryMedia = gallery.galleryMedia as PrivateGalleryMedia[];
     const mediaItem = galleryMedia?.[mediaIndex];
 
     if (!mediaItem) return;
@@ -65,4 +62,14 @@ export const recordImageDownload = async (galleryId: string, mediaIndex: number,
             galleryMedia,
         },
     });
+}
+
+export const getGalleryVisits = async (galleryId: string) => {
+    const payload = await getPayload({ config });
+    const gallery = await payload.findByID({
+        collection: PRIVATE_GALLERIES_SLUG,
+        id: galleryId,
+    });
+
+    return gallery.galleryVisits;
 }

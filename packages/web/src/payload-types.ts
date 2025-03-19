@@ -69,6 +69,7 @@ export interface Config {
     users: User;
     'private-galleries': PrivateGallery;
     'private-gallery-media': PrivateGalleryMedia;
+    'private-gallery-visits': PrivateGalleryVisit;
     videos: Video;
     events: Event;
     'site-visits': SiteVisit;
@@ -85,6 +86,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     'private-galleries': PrivateGalleriesSelect<false> | PrivateGalleriesSelect<true>;
     'private-gallery-media': PrivateGalleryMediaSelect<false> | PrivateGalleryMediaSelect<true>;
+    'private-gallery-visits': PrivateGalleryVisitsSelect<false> | PrivateGalleryVisitsSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
@@ -159,16 +161,9 @@ export interface PrivateGallery {
   notes?: string | null;
   galleryMedia?: (number | PrivateGalleryMedia)[] | null;
   /**
-   * Record of visits to this gallery
+   * Related visits to this gallery
    */
-  visits?:
-    | {
-        ip: string;
-        date: string;
-        userAgent?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  galleryVisits?: (number | PrivateGalleryVisit)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -221,6 +216,18 @@ export interface PrivateGalleryMedia {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-visits".
+ */
+export interface PrivateGalleryVisit {
+  id: number;
+  ip?: string | null;
+  date?: string | null;
+  gallery?: (number | null) | PrivateGallery;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -426,6 +433,10 @@ export interface PayloadLockedDocument {
         value: number | PrivateGalleryMedia;
       } | null)
     | ({
+        relationTo: 'private-gallery-visits';
+        value: number | PrivateGalleryVisit;
+      } | null)
+    | ({
         relationTo: 'videos';
         value: number | Video;
       } | null)
@@ -522,14 +533,7 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   directPath?: T;
   notes?: T;
   galleryMedia?: T;
-  visits?:
-    | T
-    | {
-        ip?: T;
-        date?: T;
-        userAgent?: T;
-        id?: T;
-      };
+  galleryVisits?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -581,6 +585,17 @@ export interface PrivateGalleryMediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-visits_select".
+ */
+export interface PrivateGalleryVisitsSelect<T extends boolean = true> {
+  ip?: T;
+  date?: T;
+  gallery?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

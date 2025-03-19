@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_MEDIA_SLUG } from '../collectionSlugs'
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_MEDIA_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from '../collectionSlugs'
 import { authenticatedOrPublished } from '~/access/authenticatedOrPublished'
 
 export const PrivateGallery: CollectionConfig = {
@@ -110,37 +110,15 @@ export const PrivateGallery: CollectionConfig = {
       hasMany: true,
     },
     {
-      name: 'visits',
-      type: 'array',
+      name: 'galleryVisits',
+      type: 'relationship',
       label: 'Gallery Visits',
+      relationTo: PRIVATE_GALLERY_VISITS_SLUG,
+      hasMany: true,
       admin: {
-        description: 'Record of visits to this gallery',
+        description: 'Related visits to this gallery',
+        readOnly: true,
       },
-      fields: [
-        {
-          name: 'ip',
-          type: 'text',
-          required: true,
-          label: 'IP Address',
-        },
-        {
-          name: 'date',
-          type: 'date',
-          required: true,
-          label: 'Visit Date',
-          admin: {
-            date: {
-              pickerAppearance: 'dayAndTime',
-            },
-          },
-          defaultValue: () => new Date(),
-        },
-        {
-          name: 'userAgent',
-          type: 'text',
-          label: 'User Agent',
-        },
-      ],
     },
   ],
   hooks: {

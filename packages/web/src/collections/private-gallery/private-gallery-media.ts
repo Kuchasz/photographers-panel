@@ -55,48 +55,6 @@ export const PrivateGalleryMedia: CollectionConfig = {
         description: 'The gallery this media belongs to',
         position: 'sidebar'
       },
-      defaultValue: ({ req }) => {
-        // Extract gallery ID from referer URL if uploading from gallery edit page
-        let referer: string | undefined;
-
-        // console.log('req', req.url);
-
-        // return 1;
-
-        // Safely access the referer header regardless of the headers object structure
-        if (req?.headers) {
-          const headers = req.headers as unknown as { referer?: string; referrer?: string };
-          referer = headers.referer ?? headers.referrer;
-        }
-
-        // console.log('referer', referer);
-        // console.log('req', req.pathname);
-
-        if (referer) {
-          try {
-            const refererUrl = new URL(referer);
-            const pathParts = refererUrl.pathname.split('/');
-
-            // Check if we're in the admin panel editing a private gallery
-            // Path format: /admin/collections/private-galleries/{galleryId}
-            const adminIndex = pathParts.indexOf('admin');
-            const collectionsIndex = pathParts.indexOf('collections');
-
-            if (adminIndex !== -1 && collectionsIndex !== -1 &&
-              pathParts[collectionsIndex + 1] === PRIVATE_GALLERIES_SLUG &&
-              pathParts[collectionsIndex + 2]) {
-
-              // Extract the gallery ID from the URL
-              return pathParts[collectionsIndex + 2];
-            }
-          } catch (error) {
-            // If URL parsing fails, return undefined
-            console.error('Error parsing referer URL:', error);
-          }
-        }
-
-        return undefined;
-      }
     },
     {
       name: 'downloads',
