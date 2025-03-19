@@ -241,6 +241,7 @@ export interface PrivateGalleryVisit {
   id: number;
   ip?: string | null;
   date?: string | null;
+  userAgent?: string | null;
   gallery?: (number | null) | PrivateGallery;
   updatedAt: string;
   createdAt: string;
@@ -609,6 +610,7 @@ export interface PrivateGalleryMediaSelect<T extends boolean = true> {
 export interface PrivateGalleryVisitsSelect<T extends boolean = true> {
   ip?: T;
   date?: T;
+  userAgent?: T;
   gallery?: T;
   updatedAt?: T;
   createdAt?: T;

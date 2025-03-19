@@ -1,8 +1,7 @@
 "use server"
 import { getPayload } from "payload";
-import config from '~/payload.config'
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
-import { type PrivateGalleryMedia, type PrivateGalleryVisit } from "~/payload-types";
+import config from '~/payload.config';
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_MEDIA_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
 
 export const recordVisit = async (galleryId: number, ip: string, userAgent: string) => {
     const payload = await getPayload({ config });
@@ -14,44 +13,33 @@ export const recordVisit = async (galleryId: number, ip: string, userAgent: stri
             ip,
             date: new Date().toISOString(),
             gallery: galleryId,
+            userAgent,
         },
     });
 };
 
-export const recordImageDownload = async (galleryId: string, mediaIndex: number, ip: string) => {
+export const recordImageDownload = async (galleryId: string, mediaId: string, ip: string) => {
     const payload = await getPayload({ config });
 
-    // Find the gallery
-    const gallery = await payload.findByID({
-        collection: PRIVATE_GALLERIES_SLUG,
-        id: galleryId,
+    const media = await payload.findByID({
+        collection: PRIVATE_GALLERY_MEDIA_SLUG,
+        id: mediaId,
     });
 
-    // Get the current media item
-    const galleryMedia = gallery.galleryMedia as PrivateGalleryMedia[];
-    const mediaItem = galleryMedia?.[mediaIndex];
+    const downloads = media.downloads ?? [];
+    media.downloads = [
+        ...downloads,
+        {
+            ip,
+            date: new Date().toISOString(),
+        },
+    ];
 
-    if (!mediaItem) return;
-
-    // Add the download to the media's downloads array
-    const downloads = mediaItem.downloads ?? [];
-    galleryMedia[mediaIndex] = {
-        ...mediaItem,
-        downloads: [
-            ...downloads,
-            {
-                ip,
-                date: new Date().toISOString(),
-            },
-        ],
-    };
-
-    // Update the gallery with the new media array
     await payload.update({
-        collection: PRIVATE_GALLERIES_SLUG,
-        id: galleryId,
+        collection: PRIVATE_GALLERY_MEDIA_SLUG,
+        id: mediaId,
         data: {
-            galleryMedia,
+            downloads: media.downloads,
         },
     });
 }

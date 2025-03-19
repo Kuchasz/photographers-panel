@@ -13,6 +13,10 @@ export const PrivateGalleryVisits: CollectionConfig = {
             type: 'date',
         },
         {
+            name: 'userAgent',
+            type: 'text',
+        },
+        {
             name: 'gallery',
             type: 'relationship',
             relationTo: PRIVATE_GALLERIES_SLUG,
