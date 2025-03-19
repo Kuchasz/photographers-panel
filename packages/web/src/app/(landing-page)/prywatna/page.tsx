@@ -1,21 +1,22 @@
 'use client';
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import Link from "next/link";
+import { useState } from "react";
 import { PageContainer } from "~/components/page-container";
 import { strings } from "~/resources";
-import { checkGalleryPassword } from "./actions";
+import { authenticate } from "./actions";
 
 type GalleryState = {
     password: string;
     email: string;
     isLoading: boolean;
-    result?: Awaited<ReturnType<typeof checkGalleryPassword>>;
+    result?: Awaited<ReturnType<typeof authenticate>>;
 };
 
 const getContent = (
     isLoading: boolean,
-    result?: Awaited<ReturnType<typeof checkGalleryPassword>>
+    result?: Awaited<ReturnType<typeof authenticate>>
 ): { title: string; description: string } => {
     if (isLoading || !result) {
         return {
@@ -62,8 +63,6 @@ export default function PrivateGallery() {
         isLoading: false,
     });
 
-    const viewGalleryRef = useRef<HTMLFormElement>(null);
-
     const handlePasswordChange = (password: string) => {
         setState(prev => ({ ...prev, password }));
     };
@@ -73,7 +72,7 @@ export default function PrivateGallery() {
 
         setState(prev => ({ ...prev, isLoading: true }));
         try {
-            const result = await checkGalleryPassword(state.password);
+            const result = await authenticate(state.password);
 
             const passwordReset = !result.gallery;
             setState(prev => ({
@@ -123,23 +122,12 @@ export default function PrivateGallery() {
                     {state.result?.gallery && (
                         <div className="space-y-6">
                             {state.result.gallery.state === 'published' ? (
-                                <>
-                                    <form
-                                        ref={viewGalleryRef}
-                                        method="POST"
-                                        action={'/gallery'}
-                                        className="hidden"
-                                    >
-                                        <input type="hidden" name="galleryId" value={state.result.gallery.id} />
-                                        <input type="hidden" name="galleryUrl" value={state.result.gallery.url} />
-                                    </form>
-                                    <button
-                                        onClick={() => viewGalleryRef.current?.submit()}
-                                        className="inline-block rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700"
-                                    >
-                                        {strings.privateGallery.enterGallery}
-                                    </button>
-                                </>
+                                <Link 
+                                    href={`/prywatna/${state.result.gallery.id}`}
+                                    className="inline-block rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700"
+                                >
+                                    {strings.privateGallery.enterGallery}
+                                </Link>
                             ) : null}
                         </div>
                     )}

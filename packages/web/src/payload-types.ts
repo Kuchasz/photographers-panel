@@ -70,6 +70,7 @@ export interface Config {
     'private-galleries': PrivateGallery;
     'private-gallery-media': PrivateGalleryMedia;
     'private-gallery-visits': PrivateGalleryVisit;
+    'private-gallery-auth-tokens': PrivateGalleryAuthToken;
     videos: Video;
     events: Event;
     'site-visits': SiteVisit;
@@ -92,6 +93,7 @@ export interface Config {
     'private-galleries': PrivateGalleriesSelect<false> | PrivateGalleriesSelect<true>;
     'private-gallery-media': PrivateGalleryMediaSelect<false> | PrivateGalleryMediaSelect<true>;
     'private-gallery-visits': PrivateGalleryVisitsSelect<false> | PrivateGalleryVisitsSelect<true>;
+    'private-gallery-auth-tokens': PrivateGalleryAuthTokensSelect<false> | PrivateGalleryAuthTokensSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
@@ -245,6 +247,19 @@ export interface PrivateGalleryVisit {
   gallery?: (number | null) | PrivateGallery;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-auth-tokens".
+ */
+export interface PrivateGalleryAuthToken {
+  id: number;
+  token: string;
+  gallery: number | PrivateGallery;
+  ipAddress: string;
+  expiresAt: string;
+  createdAt: string;
+  updatedAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -454,6 +469,10 @@ export interface PayloadLockedDocument {
         value: number | PrivateGalleryVisit;
       } | null)
     | ({
+        relationTo: 'private-gallery-auth-tokens';
+        value: number | PrivateGalleryAuthToken;
+      } | null)
+    | ({
         relationTo: 'videos';
         value: number | Video;
       } | null)
@@ -614,6 +633,18 @@ export interface PrivateGalleryVisitsSelect<T extends boolean = true> {
   gallery?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-auth-tokens_select".
+ */
+export interface PrivateGalleryAuthTokensSelect<T extends boolean = true> {
+  token?: T;
+  gallery?: T;
+  ipAddress?: T;
+  expiresAt?: T;
+  createdAt?: T;
+  updatedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

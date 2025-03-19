@@ -19,6 +19,7 @@ import { Video } from './collections/videos/video'
 import { defaultLexical } from './fields/defaultLexical'
 import { PrivateGalleryMedia } from './collections/private-gallery/private-gallery-media'
 import { PrivateGalleryVisits } from './collections/private-gallery/private-gallery-visits'
+import { PrivateGalleryAuthTokens } from './collections/private-gallery/private-gallery-auth-tokens'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -35,6 +36,7 @@ export default buildConfig({
     PrivateGallery, 
     PrivateGalleryMedia, 
     PrivateGalleryVisits, 
+    PrivateGalleryAuthTokens,
     Video, 
     SiteEvent, 
     SiteVisit, 

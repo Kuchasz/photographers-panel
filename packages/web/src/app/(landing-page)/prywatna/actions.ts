@@ -7,7 +7,7 @@ import { recordVisit } from "~/collections/private-gallery/private-gallery-actio
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Check if gallery exists with the given password
-export const checkGalleryPassword = async (password: string) => {
+export const authenticate = async (password: string) => {
 
     await wait(1000);
 
