@@ -85,6 +85,7 @@ export const PrivateGallery: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Password',
+      unique: true,
       admin: {
         position: 'sidebar',
       },

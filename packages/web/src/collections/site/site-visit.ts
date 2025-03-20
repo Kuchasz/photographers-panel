@@ -7,6 +7,7 @@ export const SiteVisit: CollectionConfig = {
   admin: {
     useAsTitle: 'ip',
     defaultColumns: ['ip', 'date', 'userAgent', 'path'],
+    group: 'Monitoring',
     components: {
       beforeListTable: ['@/components/site-visits'],
     },

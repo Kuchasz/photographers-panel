@@ -7,6 +7,7 @@ export const SiteEvent: CollectionConfig = {
   admin: {
     useAsTitle: 'type',
     defaultColumns: ['type', 'user', 'occuredOn'],
+    group: 'Monitoring',
   },
   labels: {
     singular: {

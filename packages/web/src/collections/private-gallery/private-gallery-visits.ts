@@ -3,6 +3,19 @@ import { PRIVATE_GALLERIES_SLUG } from "../collectionSlugs";
 
 export const PrivateGalleryVisits: CollectionConfig = {
     slug: 'private-gallery-visits',
+    admin: {
+        group: 'Galeria prywatna',
+    },
+    labels: {
+        singular: {
+            en: 'Visit',
+            pl: 'Wizyta',
+        },
+        plural: {
+            en: 'Visits',
+            pl: 'Wizyty',
+        },
+    },
     fields: [
         {
             name: 'ip',
