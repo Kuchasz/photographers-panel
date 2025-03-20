@@ -74,7 +74,6 @@ export interface Config {
     videos: Video;
     events: Event;
     'site-visits': SiteVisit;
-    offers: Offer;
     'offer-media': OfferMedia;
     opinions: Opinion;
     photos: Photo;
@@ -97,7 +96,6 @@ export interface Config {
     videos: VideosSelect<false> | VideosSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
-    offers: OffersSelect<false> | OffersSelect<true>;
     'offer-media': OfferMediaSelect<false> | OfferMediaSelect<true>;
     opinions: OpinionsSelect<false> | OpinionsSelect<true>;
     photos: PhotosSelect<false> | PhotosSelect<true>;
@@ -108,8 +106,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    offer: Offer;
+  };
+  globalsSelect: {
+    offer: OfferSelect<false> | OfferSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -316,36 +318,6 @@ export interface SiteVisit {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "offers".
- */
-export interface Offer {
-  id: number;
-  title: string;
-  alias: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  descshort: string;
-  photo: number | OfferMedia;
-  photos: (number | OfferMedia)[];
-  tags: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "offer-media".
  */
 export interface OfferMedia {
@@ -483,10 +455,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'site-visits';
         value: number | SiteVisit;
-      } | null)
-    | ({
-        relationTo: 'offers';
-        value: number | Offer;
       } | null)
     | ({
         relationTo: 'offer-media';
@@ -687,21 +655,6 @@ export interface SiteVisitsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "offers_select".
- */
-export interface OffersSelect<T extends boolean = true> {
-  title?: T;
-  alias?: T;
-  content?: T;
-  descshort?: T;
-  photo?: T;
-  photos?: T;
-  tags?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "offer-media_select".
  */
 export interface OfferMediaSelect<T extends boolean = true> {
@@ -840,6 +793,80 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer".
+ */
+export interface Offer {
+  id: number;
+  title: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  descShort: string;
+  photo: (number | OfferMedia)[];
+  services?:
+    | {
+        title: string;
+        description: string;
+        photo: number | OfferMedia;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  tags?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer_select".
+ */
+export interface OfferSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  descShort?: T;
+  photo?: T;
+  services?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        photo?: T;
+        content?: T;
+        id?: T;
+      };
+  tags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

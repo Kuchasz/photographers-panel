@@ -7,7 +7,6 @@ import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { en } from '@payloadcms/translations/languages/en'
 import { pl } from '@payloadcms/translations/languages/pl'
-import { Offer } from './collections/offers/offer'
 import { OfferMedia } from './collections/offers/offer-media'
 import { Photo } from './collections/photos/photo'
 import { PrivateGallery } from './collections/private-gallery/private-gallery'
@@ -20,6 +19,7 @@ import { defaultLexical } from './fields/defaultLexical'
 import { PrivateGalleryMedia } from './collections/private-gallery/private-gallery-media'
 import { PrivateGalleryVisits } from './collections/private-gallery/private-gallery-visits'
 import { PrivateGalleryAuthTokens } from './collections/private-gallery/private-gallery-auth-tokens'
+import { Offer } from './globals/offer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,10 +40,12 @@ export default buildConfig({
     Video, 
     SiteEvent, 
     SiteVisit, 
-    Offer, 
     OfferMedia, 
     Opinion, 
     Photo
+  ],
+  globals: [
+    Offer
   ],
   i18n: {
     fallbackLanguage: 'en',
