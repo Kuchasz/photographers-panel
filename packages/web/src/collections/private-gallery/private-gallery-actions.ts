@@ -68,7 +68,7 @@ export const authenticateGallery = async (galleryId: number, ip: string) => {
         data: {
             token,
             gallery,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString(), // 30 days from now
+            expiresAt: new Date(Date.now() + 1000 * 60 * 30).toISOString(),
             ipAddress: ip,
         },
     });

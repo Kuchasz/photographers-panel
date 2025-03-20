@@ -13,7 +13,7 @@ export const PrivateGalleryMedia: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'filename',
-    group: 'Galeria prywatna',
+    group: 'Galeria prywatna'
   },
   labels: {
     singular: {
