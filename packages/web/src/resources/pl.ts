@@ -32,6 +32,7 @@ export const pl = {
             content: 'Wpisz treść wiadomości',
             submit: 'WYŚLIJ WIADOMOŚĆ',
             requiredField: 'Pole wymagane',
+            pastDateError: 'Data ślubu nie może być z przeszłości',
             sendingMessage: 'Wysyłam wiadomość...',
             messageSent: 'Wysłano',
             messsageNotSent: 'Nie wysłano',

@@ -15,7 +15,6 @@ type ContactFormData = {
     weddingVenue: string;
     howDidYouHear: string;
     additionalDetails: string;
-    content: string;
 };
 
 // First, create a required field label component
@@ -32,23 +31,47 @@ export default function ContactPage() {
         weddingVenue: '',
         howDidYouHear: '',
         additionalDetails: '',
-        content: ''
     });
     const [isLoading, setIsLoading] = React.useState(false);
     const [result, setResult] = React.useState<SendResult>();
+    
+    // Get today's date in YYYY-MM-DD format for the min attribute of the date input
+    const today = new Date().toISOString().split('T')[0];
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
+    const validateForm = () => {
+        // Check if wedding date is not in the past
+        if (formData.weddingDate) {
+            const selectedDate = new Date(formData.weddingDate);
+            const currentDate = new Date();
+            
+            // Reset time to compare only dates
+            currentDate.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < currentDate) {
+                return false;
+            }
+        }
+        
+        return true;
+    };
+
     const handleSubmit = async () => {
+        if (!validateForm()) {
+            alert(strings.contact.form.pastDateError);
+            return;
+        }
+        
         setIsLoading(true);
         try {
             const response = await sendMessage(formData);
             setResult(response);
             if (response.type === 'success') {
-                setFormData(prev => ({ ...prev, content: '' }));
+                setFormData(prev => ({ ...prev, additionalDetails: '' }));
             }
         } catch (error) {
             console.error('Failed to send message:', error);
@@ -156,6 +179,7 @@ export default function ContactPage() {
                                     type="date"
                                     name="weddingDate"
                                     value={formData.weddingDate}
+                                    min={today}
                                     disabled={isLoading}
                                     onChange={handleInputChange}
                                     className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
@@ -214,20 +238,6 @@ export default function ContactPage() {
                                     disabled={isLoading}
                                     onChange={handleInputChange}
                                     className="h-32 w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
-                                />
-                            </div>
-                            <div className="space-y-1">
-                                <label className="block text-sm font-light text-stone-600">
-                                    {strings.contact.form.content}
-                                    <RequiredFieldIndicator />
-                                </label>
-                                <textarea
-                                    name="content"
-                                    value={formData.content}
-                                    disabled={isLoading}
-                                    onChange={handleInputChange}
-                                    className="h-32 w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
-                                    required
                                 />
                             </div>
                         </div>
