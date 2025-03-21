@@ -62,15 +62,113 @@ const sendEmail = async (message: Message) =>
             from: notifications.message.from,
             to: notifications.message.target,
             subject: `Nowa wiadomość od ${message.name}`,
-            html: `<html>
-                <p><strong>Imie:</strong> ${message.name}</p>
-                <p><strong>E-mail:</strong> ${message.email}</p>
-                ${message.weddingDate ? `<p><strong>Data ślubu:</strong> ${message.weddingDate}</p>` : ''}
-                ${message.weddingPlace ? `<p><strong>Miejscowość planowanej uroczystości:</strong> ${message.weddingPlace}</p>` : ''}
-                ${message.weddingVenue ? `<p><strong>Dom weselny lub restauracja:</strong> ${message.weddingVenue}</p>` : ''}
-                ${message.howDidYouHear ? `<p><strong>Skąd się o nas dowiedzieliście:</strong> ${message.howDidYouHear}</p>` : ''}
-                ${message.additionalDetails ? `<p><strong>Dodatkowe informacje:</strong> <br /><br />${message.additionalDetails}</p>` : ''}
-            </html>`,
+            html: `<!DOCTYPE html>
+                    <html lang="pl">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Nowa wiadomość kontaktowa</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                line-height: 1.6;
+                                color: #333;
+                                max-width: 600px;
+                                margin: 0 auto;
+                                padding: 20px;
+                            }
+                            .message-header {
+                                border-bottom: 2px solid #f0f0f0;
+                                padding-bottom: 15px;
+                                margin-bottom: 20px;
+                            }
+                            .message-header h1 {
+                                color: #444;
+                                font-size: 24px;
+                                margin: 0;
+                            }
+                            .message-body {
+                                background-color: #fafafa;
+                                border-radius: 5px;
+                                padding: 20px;
+                            }
+                            .field {
+                                margin-bottom: 15px;
+                            }
+                            .field-label {
+                                font-weight: bold;
+                                color: #666;
+                                display: block;
+                                margin-bottom: 5px;
+                            }
+                            .field-value {
+                                padding-left: 10px;
+                            }
+                            .additional-details {
+                                margin-top: 20px;
+                                padding-top: 15px;
+                                border-top: 1px solid #eee;
+                            }
+                            .footer {
+                                margin-top: 20px;
+                                font-size: 12px;
+                                color: #999;
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="message-header">
+                            <h1>Nowa wiadomość kontaktowa</h1>
+                        </div>
+                        
+                        <div class="message-body">
+                            <div class="field">
+                                <span class="field-label">Imię i nazwisko:</span>
+                                <div class="field-value">${message.name}</div>
+                            </div>
+                            
+                            <div class="field">
+                                <span class="field-label">E-mail:</span>
+                                <div class="field-value"><a href="mailto:${message.email}">${message.email}</a></div>
+                            </div>
+                            
+                            ${message.weddingDate ? `
+                            <div class="field">
+                                <span class="field-label">Data ślubu:</span>
+                                <div class="field-value">${message.weddingDate}</div>
+                            </div>` : ''}
+                            
+                            ${message.weddingPlace ? `
+                            <div class="field">
+                                <span class="field-label">Miejscowość planowanej uroczystości:</span>
+                                <div class="field-value">${message.weddingPlace}</div>
+                            </div>` : ''}
+                            
+                            ${message.weddingVenue ? `
+                            <div class="field">
+                                <span class="field-label">Dom weselny lub restauracja:</span>
+                                <div class="field-value">${message.weddingVenue}</div>
+                            </div>` : ''}
+                            
+                            ${message.howDidYouHear ? `
+                            <div class="field">
+                                <span class="field-label">Skąd się o nas dowiedzieliście:</span>
+                                <div class="field-value">${message.howDidYouHear}</div>
+                            </div>` : ''}
+                            
+                            ${message.additionalDetails ? `
+                            <div class="additional-details">
+                                <span class="field-label">Dodatkowe informacje:</span>
+                                <div class="field-value">${message.additionalDetails.replace(/\n/g, '<br>')}</div>
+                            </div>` : ''}
+                        </div>
+                        
+                        <div class="footer">
+                            Ta wiadomość została wysłana z formularza kontaktowego.
+                        </div>
+                    </body>
+                    </html>`,
             replyTo: `${message.name} <${message.email}>`,
         };
 
