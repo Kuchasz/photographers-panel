@@ -10,13 +10,28 @@ import { PageContainer } from "~/components/page-container";
 type ContactFormData = {
     name: string;
     email: string;
+    weddingDate: string;
+    weddingPlace: string;
+    weddingVenue: string;
+    howDidYouHear: string;
+    additionalDetails: string;
     content: string;
 };
+
+// First, create a required field label component
+const RequiredFieldIndicator = () => (
+    <span className="ml-1 text-red-500" title={strings.contact.form.requiredField}>*</span>
+);
 
 export default function ContactPage() {
     const [formData, setFormData] = React.useState<ContactFormData>({
         name: '',
         email: '',
+        weddingDate: '',
+        weddingPlace: '',
+        weddingVenue: '',
+        howDidYouHear: '',
+        additionalDetails: '',
         content: ''
     });
     const [isLoading, setIsLoading] = React.useState(false);
@@ -97,35 +112,130 @@ export default function ContactPage() {
                             </div>
                         )}
 
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            disabled={isLoading}
-                            onChange={handleInputChange}
-                            placeholder={strings.contact.form.name}
-                            className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
-                            required
-                        />
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            disabled={isLoading}
-                            onChange={handleInputChange}
-                            placeholder={strings.contact.form.email}
-                            className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
-                            required
-                        />
-                        <textarea
-                            name="content"
-                            value={formData.content}
-                            disabled={isLoading}
-                            onChange={handleInputChange}
-                            placeholder={strings.contact.form.content}
-                            className="h-32 w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
-                            required
-                        />
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-medium text-stone-800">Informacje kontaktowe</h3>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.name}
+                                    <RequiredFieldIndicator />
+                                </label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.email}
+                                    <RequiredFieldIndicator />
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-medium text-stone-800">Informacje o weselu</h3>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.weddingDate}
+                                </label>
+                                <input
+                                    type="date"
+                                    name="weddingDate"
+                                    value={formData.weddingDate}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.weddingPlace}
+                                </label>
+                                <input
+                                    type="text"
+                                    name="weddingPlace"
+                                    value={formData.weddingPlace}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.weddingVenue}
+                                </label>
+                                <input
+                                    type="text"
+                                    name="weddingVenue"
+                                    value={formData.weddingVenue}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-medium text-stone-800">Dodatkowe informacje</h3>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.howDidYouHear}
+                                </label>
+                                <input
+                                    type="text"
+                                    name="howDidYouHear"
+                                    value={formData.howDidYouHear}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.additionalDetails}
+                                </label>
+                                <textarea
+                                    name="additionalDetails"
+                                    value={formData.additionalDetails}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="h-32 w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-light text-stone-600">
+                                    {strings.contact.form.content}
+                                    <RequiredFieldIndicator />
+                                </label>
+                                <textarea
+                                    name="content"
+                                    value={formData.content}
+                                    disabled={isLoading}
+                                    onChange={handleInputChange}
+                                    className="h-32 w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="text-sm font-light text-stone-600">
+                            <RequiredFieldIndicator /> {strings.contact.form.requiredField}
+                        </div>
+
                         <button
                             onClick={handleSubmit}
                             disabled={isLoading}

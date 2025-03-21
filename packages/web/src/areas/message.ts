@@ -4,6 +4,11 @@ import { type Result } from "~/result";
 export interface Message {
     name: string;
     email: string;
+    weddingDate?: string;
+    weddingPlace?: string;
+    weddingVenue?: string;
+    howDidYouHear?: string;
+    additionalDetails?: string;
     content: string;
 }
 
@@ -54,21 +59,26 @@ const validate = (message: Message) => {
     return results.find((r) => r);
 };
 
-const sendEmail = async (from: string, email: string, content: string) =>
+const sendEmail = async (message: Message) =>
     new Promise<void>((res, rej) => {
-        const message = {
+        const emailContent = {
             from: notifications.message.from,
             to: notifications.message.target,
-            subject: `Nowa wiadomość od ${from}`,
+            subject: `Nowa wiadomość od ${message.name}`,
             html: `<html>
-                <p><strong>Imie:</strong> ${from}</p>
-                <p><strong>E-mail:</strong> ${email}</p>
-                <p><strong>Treść wiadomości:</strong> <br /><br />${content}</p>
+                <p><strong>Imie:</strong> ${message.name}</p>
+                <p><strong>E-mail:</strong> ${message.email}</p>
+                ${message.weddingDate ? `<p><strong>Data ślubu:</strong> ${message.weddingDate}</p>` : ''}
+                ${message.weddingPlace ? `<p><strong>Miejscowość planowanej uroczystości:</strong> ${message.weddingPlace}</p>` : ''}
+                ${message.weddingVenue ? `<p><strong>Dom weselny lub restauracja:</strong> ${message.weddingVenue}</p>` : ''}
+                ${message.howDidYouHear ? `<p><strong>Skąd się o nas dowiedzieliście:</strong> ${message.howDidYouHear}</p>` : ''}
+                ${message.additionalDetails ? `<p><strong>Dodatkowe informacje:</strong> <br /><br />${message.additionalDetails}</p>` : ''}
+                <p><strong>Treść wiadomości:</strong> <br /><br />${message.content}</p>
             </html>`,
-            replyTo: `${from} <${email}>`,
+            replyTo: `${message.name} <${message.email}>`,
         };
 
-        transporter.sendMail(message, (err) => {
+        transporter.sendMail(emailContent, (err) => {
             if (err) {
                 rej(err as Error);
             } else {
@@ -85,7 +95,7 @@ export const send = async (data: Message): Promise<SendResult> => {
     }
 
     try {
-        // await sendEmail(data.name, data.email, data.content);
+        // await sendEmail(data);
         console.log('sendEmail', data);
         return { type: 'success' };
     } catch (err) {

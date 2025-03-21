@@ -44,7 +44,7 @@ export default async function OffersPage() {
 
                     <article className="space-y-16">
                         {weddingOffer.photo && (
-                            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                            <div className="mx-auto max-w-6xl grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                 {weddingOffer.photo.map((photo, index) => {
                                     // Handle both populated and non-populated photo references
                                     const photoData = typeof photo === 'number' ? null : photo as OfferMedia;
@@ -53,7 +53,7 @@ export default async function OffersPage() {
                                     return (
                                         <div
                                             key={photoData.url || index}
-                                            className="group aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
+                                            className="group aspect-square max-h-64 overflow-hidden rounded-lg bg-stone-100 shadow-lg transition duration-300 hover:shadow-xl"
                                             style={getImageBackgroundStyle(photoData.url)}
                                         >
                                             <div className="h-full w-full bg-stone-950/10 transition duration-300 group-hover:bg-stone-950/0" />
