@@ -84,10 +84,10 @@ export const pl = {
     privateGallery: {
         title: 'Galeria zdjęć',
         description:
-            'Jeśli byłeś uczestnikiem wesela i chciałbyś zobaczyć zdjęcia wpisz poniżej otrzymane na uroczystości hasło.',
+            'Jeśli posiadasz hasło do galerii prywatnej, wpisz je poniżej aby obejrzeć zdjęcia. Hasło jest przekazywane Parze Młodej, która udostępnia je swoim bliskim i przyjaciołom.',
         notExists: {
             title: 'Galeria nie istnieje',
-            description: 'Nie istnieje galeria pod takim hasłem, spróbuj wpisać je ponownie.',
+            description: 'Nie istnieje galeria pod takim hasłem, spróbuj wpisać je ponownie lub skontaktuj się z Parą Młodą.',
         },
         available: {
             title: 'Galeria :title',
@@ -102,7 +102,7 @@ export const pl = {
             description:
                 'Galeria nie jest jeszcze dostępna. Zostaw nam swój adres email lub polub nas na facebooku a poinformujemy Cię kiedy galeria będzie gotowa.',
         },
-        password: 'podaj hasło',
+        password: 'Hasło do galerii',
         check: 'SPRAWDŹ',
         enterGallery: 'WEJDŹ DO GALERII',
         enterBlog: 'WEJDŹ NA BLOG',

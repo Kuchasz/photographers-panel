@@ -6,6 +6,7 @@ import { strings } from "~/resources";
 import { sendMessage } from "./actions";
 import { type SendResult } from "~/areas/message";
 import { PageContainer } from "~/components/page-container";
+import { Label } from "~/components/form";
 
 type ContactFormData = {
     name: string;
@@ -44,11 +45,11 @@ const FormInput = ({
     
     return (
         <div className="space-y-1.5">
-            <label className="block text-sm font-light text-stone-600">
+            <Label htmlFor={name} required={required}>
                 {label}
-                {required && <RequiredFieldIndicator />}
-            </label>
+            </Label>
             <InputComponent
+                id={name}
                 type={isTextarea ? undefined : type}
                 name={name}
                 value={value}
@@ -63,11 +64,6 @@ const FormInput = ({
         </div>
     );
 };
-
-// Required field indicator component
-const RequiredFieldIndicator = () => (
-    <span className="ml-1 text-red-500" title={strings.contact.form.requiredField}>*</span>
-);
 
 // Section heading component
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
@@ -303,7 +299,7 @@ export default function ContactPage() {
 
                                 <div className="flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
                                     <div className="text-sm font-light text-stone-600">
-                                        <RequiredFieldIndicator /> {strings.contact.form.requiredField}
+                                        <span className="text-red-500">*</span> {strings.contact.form.requiredField}
                                     </div>
 
                                     <button

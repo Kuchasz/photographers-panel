@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { PageContainer } from "~/components/page-container";
+import { Label } from "~/components/form";
 import { strings } from "~/resources";
 import { authenticate } from "./actions";
 
@@ -109,9 +110,9 @@ export default function PrivateGallery() {
                             <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
                                 <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <label htmlFor="password" className="block text-sm font-medium text-stone-700">
+                                        <Label htmlFor="password" required>
                                             {strings.privateGallery.password}
-                                        </label>
+                                        </Label>
                                         <input
                                             id="password"
                                             type="password"
@@ -157,7 +158,7 @@ export default function PrivateGallery() {
                                         <>
                                             <div className="rounded-lg border border-green-100 bg-green-50 p-4 text-green-800">
                                                 <p className="text-sm">
-                                                    Galeria została odnaleziona!
+                                                    Znaleziono galerię! Dziękujemy za wprowadzenie prawidłowego hasła.
                                                 </p>
                                             </div>
                                             <Link
