@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { PageContainer } from "~/components/page-container";
-import { Label } from "~/components/form";
+import { FormLabel } from "~/components/form";
 import { strings } from "~/resources";
 import { authenticate } from "./actions";
 
@@ -110,9 +110,9 @@ export default function PrivateGallery() {
                             <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
                                 <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <Label htmlFor="password" required>
+                                        <FormLabel htmlFor="password" required>
                                             {strings.privateGallery.password}
-                                        </Label>
+                                        </FormLabel>
                                         <input
                                             id="password"
                                             type="password"

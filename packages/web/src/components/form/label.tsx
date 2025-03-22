@@ -12,7 +12,7 @@ const RequiredFieldIndicator = () => (
     <span className="ml-1 text-red-500" title="Pole wymagane">*</span>
 );
 
-export function Label({ 
+export function FormLabel({ 
     htmlFor, 
     required = false, 
     children, 

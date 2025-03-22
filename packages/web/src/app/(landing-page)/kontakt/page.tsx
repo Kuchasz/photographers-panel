@@ -6,7 +6,7 @@ import { strings } from "~/resources";
 import { sendMessage } from "./actions";
 import { type SendResult } from "~/areas/message";
 import { PageContainer } from "~/components/page-container";
-import { Label } from "~/components/form";
+import { FormInput } from "~/components/form";
 
 type ContactFormData = {
     name: string;
@@ -19,51 +19,7 @@ type ContactFormData = {
 };
 
 // Form input component for consistent styling
-const FormInput = ({ 
-    label, 
-    name, 
-    type = "text", 
-    value, 
-    onChange, 
-    disabled, 
-    required = false,
-    minDate,
-    className = "",
-}: {
-    label: string;
-    name: string;
-    type?: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    disabled: boolean;
-    required?: boolean;
-    minDate?: string;
-    className?: string;
-}) => {
-    const isTextarea = type === "textarea";
-    const InputComponent = isTextarea ? "textarea" : "input";
-    
-    return (
-        <div className="space-y-1.5">
-            <Label htmlFor={name} required={required}>
-                {label}
-            </Label>
-            <InputComponent
-                id={name}
-                type={isTextarea ? undefined : type}
-                name={name}
-                value={value}
-                disabled={disabled}
-                onChange={onChange}
-                min={type === "date" ? minDate : undefined}
-                className={`w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition 
-                    placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-300
-                    ${isTextarea ? "h-32 resize-none" : ""} ${className}`}
-                required={required}
-            />
-        </div>
-    );
-};
+
 
 // Section heading component
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
@@ -84,7 +40,7 @@ export default function ContactPage() {
     });
     const [isLoading, setIsLoading] = React.useState(false);
     const [result, setResult] = React.useState<SendResult>();
-    
+
     // Get today's date in YYYY-MM-DD format for the min attribute of the date input
     const today = new Date().toISOString().split('T')[0];
 
@@ -98,15 +54,15 @@ export default function ContactPage() {
         if (formData.weddingDate) {
             const selectedDate = new Date(formData.weddingDate);
             const currentDate = new Date();
-            
+
             // Reset time to compare only dates
             currentDate.setHours(0, 0, 0, 0);
-            
+
             if (selectedDate < currentDate) {
                 return false;
             }
         }
-        
+
         return true;
     };
 
@@ -115,7 +71,7 @@ export default function ContactPage() {
             alert(strings.contact.form.pastDateError);
             return;
         }
-        
+
         setIsLoading(true);
         try {
             const response = await sendMessage(formData);
@@ -195,7 +151,7 @@ export default function ContactPage() {
                             <h2 className="text-2xl font-serif font-light text-stone-800 mb-8 text-center">
                                 Napisz do nas
                             </h2>
-                            
+
                             <form className="relative space-y-8" onSubmit={e => e.preventDefault()}>
                                 {isLoading && (
                                     <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm z-10">
