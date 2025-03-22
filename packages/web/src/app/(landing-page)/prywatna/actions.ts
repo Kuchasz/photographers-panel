@@ -6,13 +6,26 @@ import { authenticateGallery, recordVisit } from "~/collections/private-gallery/
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+type AuthentitaceFormState = {
+    password: string;
+    gallery: {
+        id: number;
+        state: string;
+        title: string;
+        url: string;
+        date: string;
+        token: string;
+    } | undefined;
+};
+
 // Check if gallery exists with the given password
-export const authenticate = async (password: string) => {
+export async function authenticate(previosState: AuthentitaceFormState, formData: FormData): Promise<AuthentitaceFormState> {
+    const password = formData.get('password') as string;
 
     await wait(1000);
 
     if (!password) {
-        return { gallery: undefined, blog: undefined };
+        return { password: '', gallery: undefined };
     }
 
     try {
@@ -32,13 +45,13 @@ export const authenticate = async (password: string) => {
         });
 
         if (!docs || docs.length === 0) {
-            return { gallery: undefined, blog: undefined };
+            return { password: '', gallery: undefined };
         }
 
         const gallery = docs[0];
 
         if (!gallery) {
-            return { gallery: undefined, blog: undefined };
+            return { password: '', gallery: undefined };
         }
 
         const headersList = await headers();
@@ -52,6 +65,7 @@ export const authenticate = async (password: string) => {
 
         // Format the response to match the expected structure
         const result = {
+            password: password,
             gallery: {
                 id: gallery.id,
                 state: gallery.state,
@@ -65,6 +79,6 @@ export const authenticate = async (password: string) => {
         return result;
     } catch (error) {
         console.error('Error checking gallery password:', error);
-        return { gallery: undefined, blog: undefined };
+        return { password: '', gallery: undefined };
     }
-};
+}

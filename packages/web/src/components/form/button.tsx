@@ -1,32 +1,33 @@
 import React from "react";
+import { useFormStatus } from "react-dom";
 
 interface FormButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  isLoading?: boolean;
   loadingText?: string;
   fullWidth?: boolean;
 }
 
-export const FormButton: React.FC<FormButtonProps> = ({ 
-  children, 
-  isLoading = false, 
-  loadingText = "Sprawdzanie...", 
+export const FormButton = ({
+  children,
+  loadingText = "Sprawdzanie...",
   fullWidth = true,
   disabled,
   className,
-  ...props 
-}) => {
+  ...props
+}: FormButtonProps) => {
+  const { pending } = useFormStatus();
+
   const baseStyles = "rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-stone-500";
   const widthStyles = fullWidth ? "w-full" : "";
   const combinedStyles = `${baseStyles} ${widthStyles} ${className ?? ""}`;
 
   return (
     <button
-      disabled={isLoading || disabled}
+      type="submit"
+      disabled={pending || disabled}
       className={combinedStyles}
       {...props}
     >
-      {isLoading ? (
+      {pending ? (
         <span className="flex items-center justify-center">
           <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

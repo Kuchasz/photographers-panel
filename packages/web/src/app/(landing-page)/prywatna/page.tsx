@@ -1,26 +1,18 @@
 'use client';
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { PageContainer } from "~/components/page-container";
 import { FormLabel } from "~/components/form";
 import { FormButton } from "~/components/form/button";
 import { strings } from "~/resources";
 import { authenticate } from "./actions";
-
-type GalleryState = {
-    password: string;
-    email: string;
-    isLoading: boolean;
-    result?: Awaited<ReturnType<typeof authenticate>>;
-};
+import { useFormState } from "react-dom";
 
 const getContent = (
-    isLoading: boolean,
-    result?: Awaited<ReturnType<typeof authenticate>>
+    result: Awaited<ReturnType<typeof authenticate>>,
+    isPending: boolean
 ): { title: string; description: string } => {
-    if (isLoading || !result) {
+    if (isPending || !result) {
         return {
             title: strings.privateGallery.title,
             description: strings.privateGallery.description,
@@ -59,37 +51,9 @@ const getContent = (
 };
 
 export default function PrivateGallery() {
-    const [state, setState] = useState<GalleryState>({
-        password: '',
-        email: '',
-        isLoading: false,
-    });
+    const [state, formAction, isPending] = useFormState(authenticate, { password: '', gallery: undefined });
 
-    const handlePasswordChange = (password: string) => {
-        setState(prev => ({ ...prev, password }));
-    };
-
-    const getPrivateGalleryUrl = async () => {
-        if (!state.password) return;
-
-        setState(prev => ({ ...prev, isLoading: true }));
-        try {
-            const result = await authenticate(state.password);
-
-            const passwordReset = !result.gallery;
-            setState(prev => ({
-                ...prev,
-                result: result,
-                isLoading: false,
-                password: passwordReset ? '' : prev.password,
-            }));
-        } catch (error) {
-            setState(prev => ({ ...prev, isLoading: false }));
-            console.error('Failed to get gallery URL:', error);
-        }
-    };
-
-    const content = getContent(state.isLoading, state.result);
+    const content = getContent(state, isPending);
 
     return (
         <PageContainer>
@@ -107,9 +71,9 @@ export default function PrivateGallery() {
                         </div>
 
                         {/* Authentication Card */}
-                        {(!state.result?.gallery) && (
+                        {(!state?.gallery) && (
                             <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
-                                <div className="space-y-6">
+                                <form action={formAction} className="space-y-6">
                                     <div className="space-y-2">
                                         <FormLabel htmlFor="password" required>
                                             {strings.privateGallery.password}
@@ -118,8 +82,6 @@ export default function PrivateGallery() {
                                             id="password"
                                             type="password"
                                             name="password"
-                                            onChange={(e) => handlePasswordChange(e.target.value)}
-                                            value={state.password}
                                             className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 text-stone-800 
                                                 outline-none transition duration-200 placeholder:text-stone-400 
                                                 hover:border-stone-300 focus:border-stone-400 focus:ring-1 focus:ring-stone-300"
@@ -127,22 +89,18 @@ export default function PrivateGallery() {
                                         />
                                     </div>
 
-                                    <FormButton
-                                        onClick={getPrivateGalleryUrl}
-                                        disabled={!state.password}
-                                        isLoading={state.isLoading}
-                                    >
+                                    <FormButton>
                                         {strings.privateGallery.check}
                                     </FormButton>
-                                </div>
+                                </form>
                             </div>
                         )}
 
                         {/* Success Card */}
-                        {state.result?.gallery && (
+                        {state?.gallery && (
                             <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
                                 <div className="space-y-6">
-                                    {state.result.gallery.state === 'published' ? (
+                                    {state.gallery.state === 'published' ? (
                                         <>
                                             <div className="rounded-lg border border-green-100 bg-green-50 p-4 text-green-800">
                                                 <p className="text-sm">
@@ -150,7 +108,7 @@ export default function PrivateGallery() {
                                                 </p>
                                             </div>
                                             <Link
-                                                href={`/prywatna/${state.result.gallery.token}`}
+                                                href={`/prywatna/${state.gallery.token}`}
                                                 className="inline-block w-full rounded-lg bg-stone-800 px-8 py-3 text-center text-sm font-medium text-white 
                                                     transition duration-200 hover:bg-stone-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-stone-500"
                                             >
