@@ -185,7 +185,8 @@ export const pl = {
         subtitle: "Co mówią o nas nasi klienci",
         sources: {
             google: "google",
-            facebook: "facebook"
+            facebook: "facebook",
+            pm: "pm"
         }
     },
     instagram: {

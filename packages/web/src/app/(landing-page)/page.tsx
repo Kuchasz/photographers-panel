@@ -5,8 +5,7 @@ import { Button } from "../../components/button";
 import { PageContainer } from "../../components/page-container";
 import { strings } from "../../resources";
 import { getInstagramPosts, getOpinions } from "./actions";
-import { InstagramGrid } from "./instagram-grid.client";
-import { OpinionCarousel } from "./page.client";
+import { InstagramGrid, OpinionCarousel } from "./components.client";
 
 const ContactLink = ({ 
   href, 
