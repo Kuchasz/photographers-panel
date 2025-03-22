@@ -18,9 +18,6 @@ type ContactFormData = {
     additionalDetails: string;
 };
 
-// Form input component for consistent styling
-
-
 // Section heading component
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
     <h3 className="text-lg font-medium text-stone-800 border-b border-stone-100 pb-2 mb-4">

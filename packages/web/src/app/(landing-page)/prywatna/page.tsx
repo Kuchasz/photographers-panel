@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { PageContainer } from "~/components/page-container";
 import { FormLabel } from "~/components/form";
+import { FormButton } from "~/components/form/button";
 import { strings } from "~/resources";
 import { authenticate } from "./actions";
 
@@ -125,26 +126,14 @@ export default function PrivateGallery() {
                                             required
                                         />
                                     </div>
-                                    
-                                    <button
+
+                                    <FormButton
                                         onClick={getPrivateGalleryUrl}
-                                        disabled={state.isLoading || !state.password}
-                                        className="w-full rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white 
-                                            transition duration-200 hover:bg-stone-700 
-                                            disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-stone-500"
+                                        disabled={!state.password}
+                                        isLoading={state.isLoading}
                                     >
-                                        {state.isLoading ? (
-                                            <span className="flex items-center justify-center">
-                                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                </svg>
-                                                Sprawdzanie...
-                                            </span>
-                                        ) : (
-                                            strings.privateGallery.check
-                                        )}
-                                    </button>
+                                        {strings.privateGallery.check}
+                                    </FormButton>
                                 </div>
                             </div>
                         )}
