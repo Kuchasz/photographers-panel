@@ -187,5 +187,16 @@ export const pl = {
             google: "google",
             facebook: "facebook"
         }
+    },
+    instagram: {
+        title: "Instagram",
+        subtitle: "Obserwuj nas na Instagramie",
+        followUs: "Obserwuj @pyszstudio",
+        seeMore: "Zobacz więcej na Instagramie",
+        mediaTypes: {
+            image: "Zdjęcie",
+            video: "Film",
+            carousel: "Album"
+        }
     }
 };

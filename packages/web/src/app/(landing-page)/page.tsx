@@ -4,7 +4,8 @@ import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { PageContainer } from "../../components/page-container";
 import { strings } from "../../resources";
-import { getOpinions } from "./actions";
+import { getInstagramPosts, getOpinions } from "./actions";
+import { InstagramGrid } from "./instagram-grid.client";
 import { OpinionCarousel } from "./page.client";
 
 const ContactLink = ({ 
@@ -33,6 +34,7 @@ const ContactLink = ({
 
 export default async function Home() {
   const opinions = await getOpinions();
+  const instagramPosts = await getInstagramPosts();
 
   return (
     <PageContainer>
@@ -129,6 +131,20 @@ export default async function Home() {
                 external={true}
               />
             </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Instagram Section */}
+      <div className="bg-stone-50">
+        <section className="container mx-auto px-4 py-24">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 font-serif text-4xl font-light tracking-wide text-stone-800">{strings.instagram.title}</h2>
+            <p className="mb-8 font-light italic tracking-wide text-stone-600">{strings.instagram.subtitle}</p>
+          </div>
+          
+          <div className="mx-auto max-w-4xl">
+            <InstagramGrid posts={instagramPosts} />
           </div>
         </section>
       </div>
