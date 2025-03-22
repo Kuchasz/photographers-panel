@@ -117,7 +117,6 @@ export default function PrivateGallery() {
                                             id="password"
                                             type="password"
                                             name="password"
-                                            placeholder={strings.privateGallery.password}
                                             onChange={(e) => handlePasswordChange(e.target.value)}
                                             value={state.password}
                                             className="w-full rounded-lg border border-stone-200 bg-white px-4 py-3 text-stone-800 
