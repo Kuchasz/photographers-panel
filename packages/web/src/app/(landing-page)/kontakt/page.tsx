@@ -1,22 +1,12 @@
 'use client';
 
-import React from "react";
 import Image from "next/image";
-import { strings } from "~/resources";
-import { sendMessage } from "./actions";
-import { type SendResult } from "~/areas/message";
+import React, { useActionState } from "react";
+import { FormButton } from "~/components/form/button";
+import { FormInput } from "~/components/form/input";
 import { PageContainer } from "~/components/page-container";
-import { FormInput } from "~/components/form";
-
-type ContactFormData = {
-    name: string;
-    email: string;
-    weddingDate: string;
-    weddingPlace: string;
-    weddingVenue: string;
-    howDidYouHear: string;
-    additionalDetails: string;
-};
+import { strings } from "~/resources";
+import { sendMessage, type ContactState } from "./actions";
 
 // Section heading component
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
@@ -26,70 +16,23 @@ const SectionHeading = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function ContactPage() {
-    const [formData, setFormData] = React.useState<ContactFormData>({
-        name: '',
-        email: '',
-        weddingDate: '',
-        weddingPlace: '',
-        weddingVenue: '',
-        howDidYouHear: '',
-        additionalDetails: '',
-    });
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [result, setResult] = React.useState<SendResult>();
-
     // Get today's date in YYYY-MM-DD format for the min attribute of the date input
     const today = new Date().toISOString().split('T')[0];
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+    const initialState: ContactState = {
+        formData: {
+            name: '',
+            email: '',
+            weddingDate: '',
+            weddingPlace: '',
+            weddingVenue: '',
+            howDidYouHear: '',
+            additionalDetails: '',
+        },
+        isSubmitting: false
     };
 
-    const validateForm = () => {
-        // Check if wedding date is not in the past
-        if (formData.weddingDate) {
-            const selectedDate = new Date(formData.weddingDate);
-            const currentDate = new Date();
-
-            // Reset time to compare only dates
-            currentDate.setHours(0, 0, 0, 0);
-
-            if (selectedDate < currentDate) {
-                return false;
-            }
-        }
-
-        return true;
-    };
-
-    const handleSubmit = async () => {
-        if (!validateForm()) {
-            alert(strings.contact.form.pastDateError);
-            return;
-        }
-
-        setIsLoading(true);
-        try {
-            const response = await sendMessage(formData);
-            setResult(response);
-            if (response.type === 'success') {
-                setFormData({
-                    name: '',
-                    email: '',
-                    weddingDate: '',
-                    weddingPlace: '',
-                    weddingVenue: '',
-                    howDidYouHear: '',
-                    additionalDetails: '',
-                });
-            }
-        } catch (error) {
-            console.error('Failed to send message:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const [state, formAction] = useActionState(sendMessage, initialState);
 
     return (
         <PageContainer>
@@ -130,9 +73,10 @@ export default function ContactPage() {
 
                     {/* Contact photo */}
                     <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-100 shadow-lg md:aspect-auto md:h-[400px]">
+                        {/* @ts-expect-error - Next.js Image component type issue in Next.js App Router */}
                         <Image
                             src="/images/page_contact_photo.png"
-                            alt="Contact"
+                            alt={strings.contact.slogan.title}
                             fill
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, 50vw"
@@ -146,30 +90,19 @@ export default function ContactPage() {
                     <div className="max-w-3xl mx-auto">
                         <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
                             <h2 className="text-2xl font-serif font-light text-stone-800 mb-8 text-center">
-                                Napisz do nas
+                                {strings.contact.form.title}
                             </h2>
 
-                            <form className="relative space-y-8" onSubmit={e => e.preventDefault()}>
-                                {isLoading && (
-                                    <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-white/90 backdrop-blur-sm z-10">
-                                        <div className="flex flex-col items-center space-y-3">
-                                            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-stone-800"></div>
-                                            <p className="text-lg font-light text-stone-800">
-                                                {strings.contact.form.sendingMessage}
-                                            </p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {result && (
-                                    <div className={`rounded-lg border p-4 ${result.type === 'success'
+                            <form action={formAction} className="relative space-y-8">
+                                {state.result && (
+                                    <div className={`rounded-lg border p-4 ${state.result.type === 'success'
                                         ? 'border-green-100 bg-green-50 text-green-800'
                                         : 'border-red-100 bg-red-50 text-red-800'
                                         }`}>
                                         <p className="text-sm">
-                                            {result.type === 'success'
+                                            {state.result.type === 'success'
                                                 ? strings.contact.form.messageSent
-                                                : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[result.error]}`}
+                                                : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[state.result.error]}`}
                                         </p>
                                     </div>
                                 )}
@@ -180,9 +113,7 @@ export default function ContactPage() {
                                         <FormInput
                                             label={strings.contact.form.name}
                                             name="name"
-                                            value={formData.name}
-                                            onChange={handleInputChange}
-                                            disabled={isLoading}
+                                            value={state.formData.name}
                                             required
                                             className="md:col-span-2"
                                         />
@@ -190,9 +121,7 @@ export default function ContactPage() {
                                             label={strings.contact.form.email}
                                             name="email"
                                             type="email"
-                                            value={formData.email}
-                                            onChange={handleInputChange}
-                                            disabled={isLoading}
+                                            value={state.formData.email}
                                             required
                                             className="md:col-span-2"
                                         />
@@ -206,24 +135,21 @@ export default function ContactPage() {
                                             label={strings.contact.form.weddingDate}
                                             name="weddingDate"
                                             type="date"
-                                            value={formData.weddingDate}
-                                            onChange={handleInputChange}
-                                            disabled={isLoading}
+                                            value={state.formData.weddingDate ?? ''}
+
                                             minDate={today}
                                         />
                                         <FormInput
                                             label={strings.contact.form.weddingPlace}
                                             name="weddingPlace"
-                                            value={formData.weddingPlace}
-                                            onChange={handleInputChange}
-                                            disabled={isLoading}
+                                            value={state.formData.weddingPlace ?? ''}
+
                                         />
                                         <FormInput
                                             label={strings.contact.form.weddingVenue}
                                             name="weddingVenue"
-                                            value={formData.weddingVenue}
-                                            onChange={handleInputChange}
-                                            disabled={isLoading}
+                                            value={state.formData.weddingVenue ?? ''}
+
                                             className="md:col-span-2"
                                         />
                                     </div>
@@ -235,17 +161,15 @@ export default function ContactPage() {
                                         <FormInput
                                             label={strings.contact.form.howDidYouHear}
                                             name="howDidYouHear"
-                                            value={formData.howDidYouHear}
-                                            onChange={handleInputChange}
-                                            disabled={isLoading}
+                                            value={state.formData.howDidYouHear ?? ''}
+
                                         />
                                         <FormInput
                                             label={strings.contact.form.additionalDetails}
                                             name="additionalDetails"
                                             type="textarea"
-                                            value={formData.additionalDetails}
-                                            onChange={handleInputChange}
-                                            disabled={isLoading}
+                                            value={state.formData.additionalDetails ?? ''}
+
                                         />
                                     </div>
                                 </div>
@@ -255,14 +179,12 @@ export default function ContactPage() {
                                         <span className="text-red-500">*</span> {strings.contact.form.requiredField}
                                     </div>
 
-                                    <button
-                                        onClick={handleSubmit}
-                                        disabled={isLoading}
-                                        className="self-start rounded-lg border-2 border-stone-200 bg-white px-8 py-3 font-light text-stone-800 transition 
-                                        hover:border-stone-300 hover:bg-stone-50 hover:shadow-lg disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-stone-300"
+                                    <FormButton
+                                        loadingText={strings.contact.form.sendingMessage}
+                                        fullWidth={false}
                                     >
                                         {strings.contact.form.submit}
-                                    </button>
+                                    </FormButton>
                                 </div>
                             </form>
                         </div>

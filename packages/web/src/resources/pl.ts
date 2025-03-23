@@ -22,6 +22,7 @@ export const pl = {
             description: 'Zapytaj o wszelkie wątpliwości drogą elektroniczną lub telefonicznie',
         },
         form: {
+            title: 'Napisz do nas',
             name: 'Wasze imiona i nazwiska',
             email: 'Podaj swój adres e-mail',
             weddingDate: 'Data ślubu',

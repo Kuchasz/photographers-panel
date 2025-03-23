@@ -16,7 +16,7 @@ export const FormButton = ({
 }: FormButtonProps) => {
   const { pending } = useFormStatus();
 
-  const baseStyles = "rounded-lg bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-stone-500";
+  const baseStyles = "rounded-lg cursor-pointer bg-stone-800 px-8 py-3 text-sm font-medium text-white transition duration-200 hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-stone-500";
   const widthStyles = fullWidth ? "w-full" : "";
   const combinedStyles = `${baseStyles} ${widthStyles} ${className ?? ""}`;
 

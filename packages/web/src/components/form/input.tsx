@@ -5,8 +5,6 @@ export const FormInput = ({
     name,
     type = "text",
     value,
-    onChange,
-    disabled,
     required = false,
     minDate,
     className = "",
@@ -15,8 +13,6 @@ export const FormInput = ({
     name: string;
     type?: string;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    disabled: boolean;
     required?: boolean;
     minDate?: string;
     className?: string;
@@ -33,9 +29,7 @@ export const FormInput = ({
                 id={name}
                 type={isTextarea ? undefined : type}
                 name={name}
-                value={value}
-                disabled={disabled}
-                onChange={onChange}
+                defaultValue={value}
                 min={type === "date" ? minDate : undefined}
                 className={`w-full rounded-lg border border-stone-200 bg-white px-4 py-3 font-light text-stone-800 transition 
                     placeholder:text-stone-400 hover:border-stone-300 focus:border-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-300
