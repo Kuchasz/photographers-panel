@@ -6,43 +6,46 @@ import { FormLabel } from "~/components/form";
 import { FormButton } from "~/components/form/button";
 import { strings } from "~/resources";
 import { authenticate } from "./actions";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 const getContent = (
     result: Awaited<ReturnType<typeof authenticate>>,
     isPending: boolean
 ): { title: string; description: string } => {
-    if (isPending || !result) {
+    // If we're in the initial state (not dirty) or loading, show the default content
+    if (!result.isDirty || isPending) {
         return {
             title: strings.privateGallery.title,
             description: strings.privateGallery.description,
         };
     }
 
-    if (!result.gallery) {
+    // If authentication failed, show the "not exists" content
+    if (!result.authenticated || !result.galleryData) {
         return {
             title: strings.privateGallery.notExists.title,
             description: strings.privateGallery.notExists.description,
         };
     }
 
-    if (result.gallery.state === 'published') {
+    // Handle different gallery states
+    if (result.galleryData.state === 'published') {
         return {
-            title: strings.privateGallery.available.title.replace(':title', result.gallery.title),
+            title: strings.privateGallery.available.title.replace(':title', result.galleryData.title),
             description: strings.privateGallery.available.description,
         };
     }
 
-    if (result.gallery.state === 'archived') {
+    if (result.galleryData.state === 'archived') {
         return {
-            title: strings.privateGallery.turnedOff.title.replace(':title', result.gallery.title),
+            title: strings.privateGallery.turnedOff.title.replace(':title', result.galleryData.title),
             description: strings.privateGallery.turnedOff.description,
         };
     }
 
-    if (result.gallery.state === 'draft') {
+    if (result.galleryData.state === 'draft') {
         return {
-            title: strings.privateGallery.notReady.title.replace(':title', result.gallery.title),
+            title: strings.privateGallery.notReady.title.replace(':title', result.galleryData.title),
             description: strings.privateGallery.notReady.description,
         };
     }
@@ -51,7 +54,11 @@ const getContent = (
 };
 
 export default function PrivateGallery() {
-    const [state, formAction, isPending] = useFormState(authenticate, { password: '', gallery: undefined });
+    const [state, formAction, isPending] = useActionState(authenticate, {
+        password: '',
+        authenticated: false,
+        isDirty: false
+    });
 
     const content = getContent(state, isPending);
 
@@ -71,7 +78,7 @@ export default function PrivateGallery() {
                         </div>
 
                         {/* Authentication Card */}
-                        {(!state?.gallery) && (
+                        {(!state?.authenticated) && (
                             <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
                                 <form action={formAction} className="space-y-6">
                                     <div className="space-y-2">
@@ -97,10 +104,10 @@ export default function PrivateGallery() {
                         )}
 
                         {/* Success Card */}
-                        {state?.gallery && (
+                        {state?.authenticated && state.galleryData && (
                             <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
                                 <div className="space-y-6">
-                                    {state.gallery.state === 'published' ? (
+                                    {state.galleryData.state === 'published' ? (
                                         <>
                                             <div className="rounded-lg border border-green-100 bg-green-50 p-4 text-green-800">
                                                 <p className="text-sm">
@@ -108,7 +115,7 @@ export default function PrivateGallery() {
                                                 </p>
                                             </div>
                                             <Link
-                                                href={`/prywatna/${state.gallery.token}`}
+                                                href={`/prywatna/${state.token}`}
                                                 className="inline-block w-full rounded-lg bg-stone-800 px-8 py-3 text-center text-sm font-medium text-white 
                                                     transition duration-200 hover:bg-stone-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-stone-500"
                                             >

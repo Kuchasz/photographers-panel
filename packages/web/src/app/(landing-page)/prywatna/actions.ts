@@ -6,26 +6,31 @@ import { authenticateGallery, recordVisit } from "~/collections/private-gallery/
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-type AuthentitaceFormState = {
+type AuthenticationResult = {
     password: string;
-    gallery: {
+    authenticated: boolean;
+    isDirty: boolean;
+    token?: string;
+    galleryData?: {
         id: number;
         state: string;
         title: string;
         url: string;
         date: string;
-        token: string;
-    } | undefined;
+    };
 };
 
 // Check if gallery exists with the given password
-export async function authenticate(previosState: AuthentitaceFormState, formData: FormData): Promise<AuthentitaceFormState> {
+export async function authenticate(
+    previousState: AuthenticationResult,
+    formData: FormData
+): Promise<AuthenticationResult> {
     const password = formData.get('password') as string;
 
     await wait(1000);
 
     if (!password) {
-        return { password: '', gallery: undefined };
+        return { password: '', authenticated: false, isDirty: false };
     }
 
     try {
@@ -45,13 +50,13 @@ export async function authenticate(previosState: AuthentitaceFormState, formData
         });
 
         if (!docs || docs.length === 0) {
-            return { password: '', gallery: undefined };
+            return { password: '', authenticated: false, isDirty: true };
         }
 
         const gallery = docs[0];
 
         if (!gallery) {
-            return { password: '', gallery: undefined };
+            return { password: '', authenticated: false, isDirty: true };
         }
 
         const headersList = await headers();
@@ -63,22 +68,22 @@ export async function authenticate(previosState: AuthentitaceFormState, formData
 
         const token = await authenticateGallery(gallery.id, ip);
 
-        // Format the response to match the expected structure
-        const result = {
-            password: password,
-            gallery: {
+        // Format the response with improved structure
+        return {
+            password,
+            authenticated: true,
+            token: token.token,
+            galleryData: {
                 id: gallery.id,
                 state: gallery.state,
                 title: gallery.title ?? '',
                 url: gallery.directPath ?? '',
                 date: gallery.date ?? '',
-                token: token.token
-            }
+            },
+            isDirty: true
         };
-
-        return result;
     } catch (error) {
         console.error('Error checking gallery password:', error);
-        return { password: '', gallery: undefined };
+        return { password: '', authenticated: false, isDirty: true };
     }
 }
