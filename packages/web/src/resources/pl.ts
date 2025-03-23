@@ -107,6 +107,9 @@ export const pl = {
         enterGallery: 'WEJDŹ DO GALERII',
         enterBlog: 'WEJDŹ NA BLOG',
         blogAvailable: 'Dostępny jest wpis na blogu  ":title" dotyczący tego wesela, zapraszamy do oglądania.',
+        galleryFound: 'Znaleziono galerię <strong>{title}</strong>! Możesz teraz uzyskać dostęp do galerii za pomocą przycisku poniżej.',
+        unavailable: 'Galeria nie jest obecnie dostępna.',
+        imageAlt: 'Galeria prywatna',
         notification: {
             subscribe: 'ZAPISZ POWIADOMIENIE',
             email: 'podaj adres email',

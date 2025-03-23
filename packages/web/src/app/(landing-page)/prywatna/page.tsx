@@ -8,59 +8,12 @@ import { strings } from "~/resources";
 import { authenticate } from "./actions";
 import { useActionState } from "react";
 
-const getContent = (
-    result: Awaited<ReturnType<typeof authenticate>>,
-    isPending: boolean
-): { title: string; description: string } => {
-    // If we're in the initial state (not dirty) or loading, show the default content
-    if (!result.isDirty || isPending) {
-        return {
-            title: strings.privateGallery.title,
-            description: strings.privateGallery.description,
-        };
-    }
-
-    // If authentication failed, show the "not exists" content
-    if (!result.authenticated || !result.galleryData) {
-        return {
-            title: strings.privateGallery.notExists.title,
-            description: strings.privateGallery.notExists.description,
-        };
-    }
-
-    // Handle different gallery states
-    if (result.galleryData.state === 'published') {
-        return {
-            title: strings.privateGallery.available.title.replace(':title', result.galleryData.title),
-            description: strings.privateGallery.available.description,
-        };
-    }
-
-    if (result.galleryData.state === 'archived') {
-        return {
-            title: strings.privateGallery.turnedOff.title.replace(':title', result.galleryData.title),
-            description: strings.privateGallery.turnedOff.description,
-        };
-    }
-
-    if (result.galleryData.state === 'draft') {
-        return {
-            title: strings.privateGallery.notReady.title.replace(':title', result.galleryData.title),
-            description: strings.privateGallery.notReady.description,
-        };
-    }
-
-    throw new Error('Not handled content!');
-};
-
 export default function PrivateGallery() {
-    const [state, formAction, isPending] = useActionState(authenticate, {
+    const [state, formAction] = useActionState(authenticate, {
         password: '',
         authenticated: false,
         isDirty: false
     });
-
-    const content = getContent(state, isPending);
 
     return (
         <PageContainer>
@@ -70,10 +23,10 @@ export default function PrivateGallery() {
                     <div className="space-y-8">
                         <div className="space-y-5">
                             <h1 className="font-serif text-4xl font-light tracking-wide text-stone-800 md:text-5xl lg:text-6xl">
-                                {content.title}
+                                {strings.privateGallery.title}
                             </h1>
                             <h2 className="text-xl font-light text-stone-600 leading-relaxed">
-                                {content.description}
+                                {strings.privateGallery.description}
                             </h2>
                         </div>
 
@@ -100,6 +53,15 @@ export default function PrivateGallery() {
                                         {strings.privateGallery.check}
                                     </FormButton>
                                 </form>
+                                
+                                {/* Error message for failed authentication attempts */}
+                                {state.isDirty && !state.authenticated && (
+                                    <div className="mt-4 rounded-lg border border-red-100 bg-red-50 p-4 text-red-800">
+                                        <p className="text-sm">
+                                            {strings.privateGallery.notExists.description}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         )}
 
@@ -110,9 +72,9 @@ export default function PrivateGallery() {
                                     {state.galleryData.state === 'published' ? (
                                         <>
                                             <div className="rounded-lg border border-green-100 bg-green-50 p-4 text-green-800">
-                                                <p className="text-sm">
-                                                    Znaleziono galerię! Dziękujemy za wprowadzenie prawidłowego hasła.
-                                                </p>
+                                                <p className="text-sm" dangerouslySetInnerHTML={{
+                                                    __html: strings.privateGallery.galleryFound.replace('{title}', state.galleryData.title)
+                                                }} />
                                             </div>
                                             <Link
                                                 href={`/prywatna/${state.token}`}
@@ -122,10 +84,22 @@ export default function PrivateGallery() {
                                                 {strings.privateGallery.enterGallery}
                                             </Link>
                                         </>
+                                    ) : state.galleryData.state === 'archived' ? (
+                                        <div className="rounded-lg border border-yellow-100 bg-yellow-50 p-4 text-yellow-800">
+                                            <p className="text-sm">
+                                                {strings.privateGallery.turnedOff.description}
+                                            </p>
+                                        </div>
+                                    ) : state.galleryData.state === 'draft' ? (
+                                        <div className="rounded-lg border border-yellow-100 bg-yellow-50 p-4 text-yellow-800">
+                                            <p className="text-sm">
+                                                {strings.privateGallery.notReady.description}
+                                            </p>
+                                        </div>
                                     ) : (
                                         <div className="rounded-lg border border-yellow-100 bg-yellow-50 p-4 text-yellow-800">
                                             <p className="text-sm">
-                                                Galeria nie jest obecnie dostępna.
+                                                {strings.privateGallery.unavailable}
                                             </p>
                                         </div>
                                     )}
@@ -138,7 +112,7 @@ export default function PrivateGallery() {
                     <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-100 shadow-lg md:aspect-auto md:h-[480px]">
                         <Image
                             src='/images/page_private_photo.png'
-                            alt="Private Gallery"
+                            alt={strings.privateGallery.imageAlt}
                             fill
                             className="object-cover hover:scale-105 transition-transform duration-700"
                             sizes="(max-width: 768px) 100vw, 50vw"
