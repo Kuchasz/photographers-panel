@@ -134,7 +134,7 @@ export const OpinionCarousel = ({ opinions }: { opinions: Opinion[] }) => {
                         style={{
                             transform: `translateX(${index * 100}%)`,
                         }}
-                        className={`inset-0 absolute w-full flex transform flex-col justify-between p-8 transition-all duration-500 ${index === currentOpinionIndex ? "opacity-100" : "opacity-0"}`}
+                        className={`absolute w-full flex transform flex-col justify-between p-8 transition-all duration-500 ${index === currentOpinionIndex ? "opacity-100" : "opacity-0"}`}
                     >
                         <div>
                             <div className="mb-6 flex items-center justify-between">
