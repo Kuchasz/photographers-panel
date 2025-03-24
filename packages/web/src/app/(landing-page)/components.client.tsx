@@ -124,35 +124,41 @@ export const OpinionCarousel = ({ opinions }: { opinions: Opinion[] }) => {
     }
 
     return <div className="mx-auto max-w-3xl">
-        <div className="relative min-h-[200px] overflow-hidden rounded-lg bg-white p-8 shadow-lg">
-            {opinions.map((opinion, index) => (
-                <div
-                    key={opinion.id}
-                    className={`absolute inset-0 flex transform flex-col justify-between p-8 transition-all duration-500 ${index === currentOpinionIndex ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-                        }`}
-                >
-                    <div>
-                        <div className="mb-6 flex items-center justify-between">
-                            <div>
-                                <p className="font-serif text-xl font-light text-stone-800">{opinion.author}</p>
-                                <p className="text-sm font-light text-stone-500">
-                                    {/* Fix for the linter error - check if opinion.source exists in strings.opinions.sources */}
-                                    {opinion.source in strings.opinions.sources
-                                        ? strings.opinions.sources[opinion.source as keyof typeof strings.opinions.sources]
-                                        : opinion.source}
-                                </p>
+        <div className="relative min-h-[200px] flex overflow-hidden rounded-lg p-8 shadow-lg">
+            <div style={{
+                transform: `translateX(${currentOpinionIndex * -100}%)`,
+            }} className="absolute inset-0 flex w-full transition-transform duration-500">
+                {opinions.map((opinion, index) => (
+                    <div
+                        key={opinion.id}
+                        style={{
+                            transform: `translateX(${index * 100}%)`,
+                        }}
+                        className={`inset-0 absolute w-full flex transform flex-col justify-between p-8 transition-all duration-500 ${index === currentOpinionIndex ? "opacity-100" : "opacity-0"}`}
+                    >
+                        <div>
+                            <div className="mb-6 flex items-center justify-between">
+                                <div>
+                                    <p className="font-serif text-xl font-light text-stone-800">{opinion.author}</p>
+                                    <p className="text-sm font-light text-stone-500">
+                                        {/* Fix for the linter error - check if opinion.source exists in strings.opinions.sources */}
+                                        {opinion.source in strings.opinions.sources
+                                            ? strings.opinions.sources[opinion.source as keyof typeof strings.opinions.sources]
+                                            : opinion.source}
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    {Array.from({ length: opinion.rating }).map((_, i) => (
+                                        <Star key={i} size={16} weight="fill" className="text-yellow-400" />
+                                    ))}
+                                </div>
                             </div>
-                            <div className="flex items-center gap-1">
-                                {Array.from({ length: opinion.rating }).map((_, i) => (
-                                    <Star key={i} size={16} weight="fill" className="text-yellow-400" />
-                                ))}
-                            </div>
+                            <p className="font-light leading-relaxed text-stone-600">{opinion.content}</p>
                         </div>
-                        <p className="font-light leading-relaxed text-stone-600">{opinion.content}</p>
+                        <p className="text-right text-sm font-light text-stone-400">{opinion.date}</p>
                     </div>
-                    <p className="text-right text-sm font-light text-stone-400">{opinion.date}</p>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
         <div className="mt-6 flex justify-center gap-2">
             {opinions.map((_, index) => (
