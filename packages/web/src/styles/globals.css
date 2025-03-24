@@ -12,6 +12,16 @@
   --animate-shimmer: shimmer 1.5s infinite;
   --animate-spinner: spinner 1.2s linear infinite;
 
+  --color-gold-100: #f5e9da;
+  --color-gold-200: #e9d7be;
+  --color-gold-300: #ddc4a1;
+  --color-gold-400: #d2b184;
+  --color-gold-500: #cbaf7f;
+  --color-gold-600: #b2956b;
+  --color-gold-700: #997c57;
+  --color-gold-800: #806243;
+  --color-gold-900: #66492f;
+
   /* --font-body: 'Hanken Grotesk', sans-serif; */
   --default-font-family: "Hanken Grotesk", sans-serif;
 

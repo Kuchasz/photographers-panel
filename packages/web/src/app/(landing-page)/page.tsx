@@ -24,8 +24,8 @@ const ContactLink = ({
     rel={external ? "noopener noreferrer" : undefined}
     className="group inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
   >
-    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100/80 backdrop-blur-sm transition-all group-hover:bg-stone-200">
-      <Icon size={20} weight="light" className="transform transition-transform group-hover:scale-125" />
+    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50/80 backdrop-blur-sm transition-all group-hover:bg-gold-100">
+      <Icon size={20} weight="light" className="transform text-gold-600 transition-transform group-hover:scale-125" />
     </span>
     <span className="font-serif text-xl font-light">{text}</span>
   </Link>
@@ -57,7 +57,7 @@ export default async function Home() {
           </h2>
 
           <article className="relative rounded-lg bg-white/80 p-8 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm md:p-12 lg:max-w-3xl">
-            <div className="absolute -right-2 -top-2 h-12 w-12 rounded-full bg-stone-50 md:-right-6 md:-top-6 md:h-24 md:w-24" />
+            <div className="absolute -right-2 -top-2 h-12 w-12 rounded-full bg-gold-100 md:-right-6 md:-top-6 md:h-24 md:w-24" />
             <h3 className="mb-4 font-serif text-2xl font-light text-stone-800 md:text-3xl">
               {strings.offer.slogan.middle.title}
             </h3>
@@ -73,7 +73,7 @@ export default async function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="bg-stone-50 py-16 md:py-24">
+      <section className="bg-gray-50 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle 
             title={strings.opinions.title} 
@@ -97,7 +97,7 @@ export default async function Home() {
               <ul className="space-y-6">
                 {strings.offer.slogan.advantages.slice(0, 4).map((adv) => (
                   <li key={adv} className="flex items-start text-stone-700">
-                    <span className="mr-3 mt-1 text-xl text-rose-300">♥</span>
+                    <span className="mr-3 mt-1 text-xl text-gold-300">♥</span>
                     <span className="font-light tracking-wide">{adv}</span>
                   </li>
                 ))}
@@ -105,7 +105,7 @@ export default async function Home() {
               <ul className="space-y-6">
                 {strings.offer.slogan.advantages.slice(4).map((adv) => (
                   <li key={adv} className="flex items-start text-stone-700">
-                    <span className="mr-3 mt-1 text-xl text-rose-300">♥</span>
+                    <span className="mr-3 mt-1 text-xl text-gold-300">♥</span>
                     <span className="font-light tracking-wide">{adv}</span>
                   </li>
                 ))}
@@ -116,7 +116,7 @@ export default async function Home() {
       </section>
 
       {/* Map/Location Section */}
-      <section className="bg-stone-50 py-16 md:py-24">
+      <section className="bg-gray-50 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle 
             title={strings.article.title} 
@@ -172,7 +172,7 @@ export default async function Home() {
       </section>
 
       {/* Instagram Section */}
-      <section className="bg-stone-50 py-16 md:py-24">
+      <section className="bg-gray-50 py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle 
             title={strings.instagram.title} 
@@ -186,9 +186,9 @@ export default async function Home() {
       </section>
 
       {/* Footer Section */}
-      <footer className="relative bg-stone-50 py-12">
+      <footer className="relative bg-gray-50 py-12">
         <div className="container mx-auto px-4">
-          <div className="mb-10 h-px bg-stone-200"></div>
+          <div className="mb-10 h-px bg-gold-200"></div>
           <address className="text-center font-light tracking-wide text-stone-600">
             {strings.contact.address.map((addr) => (
               <div key={addr} className="mb-2">
@@ -201,10 +201,10 @@ export default async function Home() {
           <div className="absolute -top-6 right-6 lg:right-12">
             <Link 
               href="#top" 
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-transform hover:-translate-y-1 hover:shadow-lg"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-transform hover:-translate-y-1 hover:border hover:border-gold-300 hover:shadow-lg"
               aria-label="Back to top"
             >
-              <ArrowUp size={20} weight="bold" />
+              <ArrowUp size={20} weight="bold" className="text-gold-600" />
             </Link>
           </div>
         </div>
