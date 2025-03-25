@@ -140,15 +140,6 @@ export const pl = {
                 'Cena umówiona z klientem jest wiążąca, nie ulegnie zmianie wraz ze zmianą cennika. O cenę pozostałych usług proszę pytać przez facebooka, mailowo lub telefonicznie. Duże rabaty dla usług zamawianych w pakiecie.',
         },
         slogan: {
-            title: 'Co <span>nas wyróżnia</span>?',
-            description:
-                'Nie mamimy cudzymi zdjęciami czy pozornie atrakcyjną ceną. Większość klientów trafia do nas z polecenia przez ich znajomych. To o czymś świadczy.',
-            middle: {
-                title: 'Odkrywamy karty',
-                description:
-                    'Zapraszamy do zapoznania się z ofertą, cennikiem oraz naszymi realizacjami a następnie do kontaktu przez email, telefon lub facebooka.',
-                more: 'ZOBACZ PEŁNĄ OFERTĘ',
-            },
             advantages: [
                 'Aparat i kamera w pakiecie',
                 'Bogaty pakiet podstawowy',

@@ -38,35 +38,9 @@ export default async function Home() {
 
   return (
     <PageContainer>
-      {/* Hero Section */}
-      <section className="relative py-16 md:py-24 lg:py-32">
-        <div className="mx-auto max-w-5xl px-4">
-          <h1 
-            className="mb-6 font-serif text-4xl font-light tracking-wide text-stone-800 md:text-5xl lg:text-6xl" 
-            dangerouslySetInnerHTML={{ __html: strings.offer.slogan.title }}
-          />
-          <h2 className="mb-16 max-w-3xl font-light italic tracking-wide text-stone-600 md:text-lg lg:text-xl">
-            {strings.offer.slogan.description}
-          </h2>
-
-          <article className="relative rounded-lg bg-white/80 p-8 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] backdrop-blur-sm md:p-12 lg:max-w-3xl">
-            <div className="absolute -right-2 -top-2 h-12 w-12 rounded-full bg-gold-100 md:-right-6 md:-top-6 md:h-24 md:w-24" />
-            <h3 className="mb-4 font-serif text-2xl font-light text-stone-800 md:text-3xl">
-              {strings.offer.slogan.middle.title}
-            </h3>
-            <p className="mb-8 font-light leading-relaxed text-stone-600 md:text-lg">
-              {strings.offer.slogan.middle.description}
-            </p>
-
-            <Button href={routes.offers.route}>
-              {strings.offer.slogan.middle.more}
-            </Button>
-          </article>
-        </div>
-      </section>
 
       {/* Testimonials Section */}
-      <section className="bg-gray-50 py-16 md:py-24">
+      <section className="bg-gray-50 pb-16 md:pb-24">
         <div className="container mx-auto px-4">
           <SectionTitle 
             title={strings.opinions.title} 
