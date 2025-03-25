@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { type InstagramPost, type Opinion } from "./actions";
 import { strings } from "../../resources";
+import { Button } from "~/components/button";
 
 // Instagram Grid Component
 type InstagramGridProps = {
@@ -84,15 +85,14 @@ export const InstagramGrid = ({ posts }: InstagramGridProps) => {
             </div>
 
             <div className="flex justify-center">
-                <Link
+                <Button
                     href="https://www.instagram.com/pyszstudio/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 text-stone-600 transition-colors hover:text-stone-800"
+                    variant="hero"
                 >
-                    <InstagramLogo size={20} weight="fill" className="transform transition-transform group-hover:scale-125" />
-                    <span className="font-serif text-lg font-light">{strings.instagram.followUs}</span>
-                </Link>
+                    <div className="flex items-center gap-2">
+                        <span>{strings.instagram.followUs}</span>
+                    </div>
+                </Button>
             </div>
         </div>
     );

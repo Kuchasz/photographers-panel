@@ -194,7 +194,7 @@ export const pl = {
     instagram: {
         title: "Instagram",
         subtitle: "Obserwuj nas na Instagramie",
-        followUs: "Obserwuj @pyszstudio",
+        followUs: "Odwiedź nas na IG",
         seeMore: "Zobacz więcej na Instagramie",
         mediaTypes: {
             image: "Zdjęcie",

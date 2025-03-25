@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oranienbaum&display=swap");
+
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -6,6 +8,8 @@
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --font-serif: "Oranienbaum", serif;
 
   --animate-fade-and-zoom: fadeOutAndZoom 6s ease-out forwards;
   --animate-zoom-in: zoomIn 6s ease-out forwards;
@@ -21,6 +25,8 @@
   --color-gold-700: #997c57;
   --color-gold-800: #806243;
   --color-gold-900: #66492f;
+
+  --color-section-background: #F2F2F2;
 
   /* --font-body: 'Hanken Grotesk', sans-serif; */
   --default-font-family: "Hanken Grotesk", sans-serif;

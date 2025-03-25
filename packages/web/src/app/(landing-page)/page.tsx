@@ -2,21 +2,20 @@ import { FacebookLogo, InstagramLogo, MapPin, Phone, ArrowUp } from "@phosphor-i
 import Link from "next/link";
 import { routes } from "~/routes";
 import { Button } from "../../components/button";
-import { PageContainer } from "../../components/page-container";
 import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
 import { getInstagramPosts, getOpinions } from "./actions";
 import { InstagramGrid, OpinionCarousel } from "./components.client";
 
-const ContactLink = ({ 
-  href, 
-  icon: Icon, 
-  text, 
-  external = false 
-}: { 
-  href: string; 
-  icon: React.ElementType; 
-  text: string; 
+const ContactLink = ({
+  href,
+  icon: Icon,
+  text,
+  external = false
+}: {
+  href: string;
+  icon: React.ElementType;
+  text: string;
   external?: boolean;
 }) => (
   <Link
@@ -25,7 +24,7 @@ const ContactLink = ({
     rel={external ? "noopener noreferrer" : undefined}
     className="group inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
   >
-    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50/80 backdrop-blur-sm transition-all group-hover:bg-gold-100">
+    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-section-background/80 backdrop-blur-sm transition-all group-hover:bg-gold-100">
       <Icon size={20} weight="light" className="transform text-gold-600 transition-transform group-hover:scale-125" />
     </span>
     <span className="font-serif text-xl font-light">{text}</span>
@@ -37,14 +36,13 @@ export default async function Home() {
   const instagramPosts = await getInstagramPosts();
 
   return (
-    <PageContainer>
-
+    <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
       {/* Testimonials Section */}
-      <section className="bg-gray-50 pb-16 md:pb-24">
+      <section className="w-full bg-section-background py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <SectionTitle 
-            title={strings.opinions.title} 
-            subtitle={strings.opinions.subtitle} 
+          <SectionTitle
+            title={strings.opinions.title}
+            subtitle={strings.opinions.subtitle}
           />
           <div className="mx-auto max-w-5xl">
             <OpinionCarousel opinions={opinions} />
@@ -53,11 +51,11 @@ export default async function Home() {
       </section>
 
       {/* Advantages Section */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="w-full bg-white py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <SectionTitle 
-            title="Our Advantages" 
-            subtitle="What makes us special" 
+          <SectionTitle
+            title="Our Advantages"
+            subtitle="What makes us special"
           />
           <div className="mx-auto max-w-5xl">
             <div className="grid gap-8 md:grid-cols-2 md:gap-12">
@@ -83,14 +81,14 @@ export default async function Home() {
       </section>
 
       {/* Map/Location Section */}
-      <section className="bg-gray-50 py-16 md:py-24">
+      <section className="w-full bg-section-background py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <SectionTitle 
-            title={strings.article.title} 
-            subtitle={strings.article.description} 
+          <SectionTitle
+            title={strings.article.title}
+            subtitle={strings.article.description}
           />
           <div className="flex justify-center">
-            <ContactLink 
+            <ContactLink
               href="https://maps.app.goo.gl/KQ9RSySeL2xHvvvA7"
               icon={MapPin}
               text={strings.contact.map}
@@ -101,11 +99,11 @@ export default async function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="pricing" className="bg-white py-16 md:py-24">
+      <section id="pricing" className="w-full bg-white py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <SectionTitle 
-            title={strings.contact.slogan.title} 
-            subtitle={strings.contact.slogan.description} 
+          <SectionTitle
+            title={strings.contact.slogan.title}
+            subtitle={strings.contact.slogan.description}
           />
 
           <div className="mx-auto max-w-3xl">
@@ -116,18 +114,18 @@ export default async function Home() {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-8 md:flex-row md:gap-12 lg:gap-16">
-              <ContactLink 
+              <ContactLink
                 href={`tel:${strings.contact.phone}`}
                 icon={Phone}
                 text={strings.contact.phone}
               />
-              <ContactLink 
+              <ContactLink
                 href="https://instagram.com/pyszstudio"
                 icon={InstagramLogo}
                 text="pyszstudio"
                 external={true}
               />
-              <ContactLink 
+              <ContactLink
                 href="https://facebook.com/pyszstudio"
                 icon={FacebookLogo}
                 text="pyszstudio"
@@ -139,13 +137,13 @@ export default async function Home() {
       </section>
 
       {/* Instagram Section */}
-      <section className="bg-gray-50 py-16 md:py-24">
+      <section className="w-full bg-section-background py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <SectionTitle 
-            title={strings.instagram.title} 
-            subtitle={strings.instagram.subtitle} 
+          <SectionTitle
+            title={strings.instagram.title}
+            subtitle={strings.instagram.subtitle}
           />
-          
+
           <div className="mx-auto max-w-5xl">
             <InstagramGrid posts={instagramPosts} />
           </div>
@@ -153,29 +151,10 @@ export default async function Home() {
       </section>
 
       {/* Footer Section */}
-      <footer className="relative bg-gray-50 py-12">
+      <footer className="relative w-full bg-zinc-200 py-12">
         <div className="container mx-auto px-4">
-          <div className="mb-10 h-px bg-gold-200"></div>
-          <address className="text-center font-light tracking-wide text-stone-600">
-            {strings.contact.address.map((addr) => (
-              <div key={addr} className="mb-2">
-                {addr}
-              </div>
-            ))}
-          </address>
-          
-          {/* Back to top button */}
-          <div className="absolute -top-6 right-6 lg:right-12">
-            <Link 
-              href="#top" 
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-transform hover:-translate-y-1 hover:border hover:border-gold-300 hover:shadow-lg"
-              aria-label="Back to top"
-            >
-              <ArrowUp size={20} weight="bold" className="text-gold-600" />
-            </Link>
-          </div>
         </div>
       </footer>
-    </PageContainer>
+    </div>
   );
 }
