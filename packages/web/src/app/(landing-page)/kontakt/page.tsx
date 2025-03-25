@@ -5,6 +5,7 @@ import React, { useActionState } from "react";
 import { FormButton } from "~/components/form/button";
 import { FormInput } from "~/components/form/input";
 import { PageContainer } from "~/components/page-container";
+import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
 import { sendMessage, type ContactState } from "./actions";
 
@@ -89,9 +90,11 @@ export default function ContactPage() {
                 <div>
                     <div className="max-w-3xl mx-auto">
                         <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
-                            <h2 className="text-2xl font-serif font-light text-stone-800 mb-8 text-center">
-                                {strings.contact.form.title}
-                            </h2>
+                            <SectionTitle 
+                                title={strings.contact.form.title}
+                                subtitle=""
+                                className="mb-8"
+                            />
 
                             <form action={formAction} className="relative space-y-8">
                                 {state.result && (

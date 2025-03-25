@@ -1,5 +1,6 @@
 import { type Metadata } from 'next';
 import { PageContainer } from '~/components/page-container';
+import { SectionTitle } from '~/components/section-title';
 import { getPhotos } from './actions';
 import { PhotoGallery } from '~/components/gallery';
 
@@ -13,13 +14,11 @@ export default async function PhotosPage() {
 
     return (
         <PageContainer>
-            <header className="mb-12 text-center">
-                <h1 className="mb-4 font-serif text-4xl font-light tracking-wide text-stone-800 md:text-5xl lg:text-6xl">
-                    Galeria Zdjęć
-                </h1>
-                <p className="mx-auto max-w-2xl text-xl font-light italic tracking-wide text-stone-600">
-                    Wybrane fotografie z różnych sesji i wydarzeń
-                </p>
+            <header>
+                <SectionTitle
+                    title="Galeria Zdjęć"
+                    subtitle="Wybrane fotografie z różnych sesji i wydarzeń"
+                />
             </header>
 
             {photos.length === 0 ? (

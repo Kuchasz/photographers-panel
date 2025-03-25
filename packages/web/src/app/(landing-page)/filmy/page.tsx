@@ -3,6 +3,7 @@ import { strings } from "~/resources";
 import payloadConfig from "~/payload.config";
 import Link from "next/link";
 import { PageContainer } from "~/components/page-container";
+import { SectionTitle } from "~/components/section-title";
 
 export default async function VideosPage() {
     const payload = await getPayload({
@@ -16,13 +17,11 @@ export default async function VideosPage() {
 
     return (
         <PageContainer>
-            <header className="mb-16 text-center">
-                <h1 className="mb-6 font-serif text-4xl font-light tracking-wide text-stone-800 md:text-5xl lg:text-6xl">
-                    {strings.menu.videos}
-                </h1>
-                <p className="mx-auto max-w-2xl text-xl font-light italic tracking-wide text-stone-600">
-                    {strings.pageTitles.videos}
-                </p>
+            <header>
+                <SectionTitle
+                    title={strings.menu.videos}
+                    subtitle={strings.pageTitles.videos}
+                />
             </header>
 
             <section className="mx-auto max-w-7xl">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { PageContainer } from "../../components/page-container";
+import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
 import { getInstagramPosts, getOpinions } from "./actions";
 import { InstagramGrid, OpinionCarousel } from "./components.client";
@@ -29,14 +30,6 @@ const ContactLink = ({
     </span>
     <span className="font-serif text-xl font-light">{text}</span>
   </Link>
-);
-
-// Section title component for consistency
-const SectionTitle = ({ title, subtitle }: { title: string; subtitle: string }) => (
-  <div className="mx-auto mb-12 max-w-3xl text-center">
-    <h2 className="mb-4 font-serif text-3xl font-light tracking-wide text-stone-800 md:text-4xl">{title}</h2>
-    <p className="font-light italic tracking-wide text-stone-600 md:text-lg">{subtitle}</p>
-  </div>
 );
 
 export default async function Home() {

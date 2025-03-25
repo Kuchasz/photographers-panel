@@ -3,6 +3,7 @@ import React from "react";
 import { OFFER_SLUG } from "~/collections/collectionSlugs";
 import { PageContainer } from "~/components/page-container";
 import RichText from "~/components/rich-text";
+import { SectionTitle } from "~/components/section-title";
 import { type OfferMedia } from "~/payload-types";
 import payloadConfig from "~/payload.config";
 
@@ -33,13 +34,11 @@ export default async function OffersPage() {
             <section className="space-y-24">
                 {/* Wedding Section */}
                 <article className="space-y-12">
-                    <header className="space-y-4">
-                        <h1 className="font-serif text-4xl font-light tracking-wide text-stone-800 md:text-5xl lg:text-6xl">
-                            {weddingOffer.title}
-                        </h1>
-                        <h2 className="text-xl font-light italic tracking-wide text-stone-600 md:text-2xl">
-                            {weddingOffer.descShort}
-                        </h2>
+                    <header>
+                        <SectionTitle
+                            title={weddingOffer.title}
+                            subtitle={weddingOffer.descShort}
+                        />
                     </header>
 
                     <article className="space-y-16">
