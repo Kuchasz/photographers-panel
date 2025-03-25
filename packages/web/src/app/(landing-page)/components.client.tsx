@@ -29,10 +29,7 @@ export const InstagramGrid = ({ posts }: InstagramGridProps) => {
     useEffect(() => {
         // Adjust number of visible posts based on screen size
         const handleResize = () => {
-            if (window.innerWidth < 640) {
-                // Mobile: show 3 posts
-                setVisiblePosts(posts.slice(0, 3));
-            } else if (window.innerWidth < 1024) {
+            if (window.innerWidth < 1024) {
                 // Tablet: show 4 posts
                 setVisiblePosts(posts.slice(0, 4));
             } else {
