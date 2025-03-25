@@ -184,7 +184,7 @@ export const pl = {
     },
     opinions: {
         title: "Opinie",
-        subtitle: "Co mówią o nas nasi klienci",
+        subtitle: "Wasze słowa, nasze największe wyróżnienie",
         sources: {
             google: "google",
             facebook: "facebook",
