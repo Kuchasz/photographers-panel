@@ -8,6 +8,7 @@ import { type MenuItem, menuItems } from "~/menu-items";
 import { Headers } from "./headers";
 import { strings } from "../resources";
 import { routes } from "~/routes";
+import { Button } from "./button";
 
 const getSrc = (photo: string, ext: string) => `/images/top-new/${photo}${ext}`;
 
@@ -126,22 +127,22 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
             {/* Mobile menu items - shown on small screens */}
             <div className="flex w-full flex-col items-center gap-4 md:hidden">
                 <div className="flex justify-center gap-6">
-                    <Link 
-                        href={routes.offers.route} 
+                    <Link
+                        href={routes.offers.route}
                         id={selectedItem(pathname, routes.offers.route)}
                         className={textColorClass}
                     >
                         {strings.menu.offer}
                     </Link>
-                    <Link 
-                        href={routes.photos.route} 
+                    <Link
+                        href={routes.photos.route}
                         id={selectedItem(pathname, routes.photos.route)}
                         className={textColorClass}
                     >
                         {strings.menu.photos}
                     </Link>
-                    <Link 
-                        href={routes.videos.route} 
+                    <Link
+                        href={routes.videos.route}
                         id={selectedItem(pathname, routes.videos.route)}
                         className={textColorClass}
                     >
@@ -149,8 +150,8 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
                     </Link>
                 </div>
                 <div className="flex justify-center gap-6">
-                    <Link 
-                        href={routes.contact.route} 
+                    <Link
+                        href={routes.contact.route}
                         id={selectedItem(pathname, routes.contact.route)}
                         className={textColorClass}
                     >
@@ -197,6 +198,30 @@ export const Header = () => {
                             <Navigation isHomePage={true} />
                         </div>
                     </nav>
+
+                    {/* Hero text overlay */}
+                    <div className="absolute bottom-24 left-0 right-0 text-center px-4">
+                        <div className="mx-auto max-w-6xl">
+                            <h1 className="font-serif space-y-4 text-white leading-tight">
+                                <div className="space-x-4 -ml-24">
+                                    <span className="text-3xl md:text-4xl lg:text-5xl italic font-light mb-2">{strings.main.hero.embrace}</span>
+                                    <span className="text-4xl md:text-5xl lg:text-6xl font-normal mb-2">{strings.main.hero.timeless}</span>
+                                </div>
+                                <div className="space-x-4 ml-24">
+                                    <span className="text-3xl md:text-4xl lg:text-5xl font-normal mt-4 mb-1">{strings.main.hero.celebrating}</span>
+                                    <span className="text-2xl md:text-3xl lg:text-4xl italic font-light">{strings.main.hero.through}</span>
+                                </div>
+                            </h1>
+                            <div className="mt-8">
+                                <Button
+                                    href="#pricing"
+                                    variant="hero"
+                                >
+                                    {strings.main.hero.pricing}
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

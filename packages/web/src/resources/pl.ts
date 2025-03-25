@@ -14,6 +14,13 @@ export const pl = {
             'andrychow-fotografia-slubna-239',
             'andrychow-fotografia-slubna-243'
         ],
+        hero: {
+            embrace: 'Odkryj',
+            timeless: 'PONADCZASOWE PIĘKNO',
+            celebrating: 'CELEBRUJEMY MIŁOŚĆ',
+            through: 'Poprzez Fotografię',
+            pricing: 'CENNIK I DOSTĘPNOŚĆ'
+        }
     },
     contact: {
         map: 'Znajdź nas na mapie',

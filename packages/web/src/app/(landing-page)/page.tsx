@@ -101,7 +101,7 @@ export default async function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="bg-white py-16 md:py-24">
+      <section id="pricing" className="bg-white py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle 
             title={strings.contact.slogan.title} 
@@ -110,7 +110,7 @@ export default async function Home() {
 
           <div className="mx-auto max-w-3xl">
             <div className="mb-12 flex justify-center">
-              <Button href={routes.contact.route}>
+              <Button href={routes.contact.route} variant="hero">
                 {strings.contact.form.submit}
               </Button>
             </div>

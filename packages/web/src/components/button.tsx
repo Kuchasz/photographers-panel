@@ -1,28 +1,29 @@
-import Link from "next/link";
-import { type ReactNode } from "react";
+import React from "react";
 
 interface ButtonProps {
     href: string;
-    children: ReactNode;
+    children: React.ReactNode;
     className?: string;
-    isExternal?: boolean;
+    variant?: 'default' | 'hero';
 }
 
-export const Button = ({ href, children, className = "", isExternal = false }: ButtonProps) => {
-    const baseClasses = "inline-block rounded-md bg-gold-500 px-8 py-3 font-medium text-white uppercase tracking-wide transition duration-300 hover:bg-gold-600 hover:shadow-md";
-    
-    const linkProps = isExternal ? {
-        target: "_blank",
-        rel: "noopener noreferrer"
-    } : {};
+export const Button = ({
+    href,
+    children,
+    className = "",
+    variant = 'default'
+}: ButtonProps) => {
+    const baseClasses = variant === 'hero'
+        ? "inline-block px-8 py-3 bg-gold-500/90 text-white font-light tracking-wide uppercase hover:bg-gold-600 transition-colors duration-300"
+        : "inline-block rounded-md bg-gold-500 px-8 py-3 font-medium text-white uppercase tracking-wide transition duration-300 hover:bg-gold-600 hover:shadow-md";
+
 
     return (
-        <Link
+        <a
             href={href}
             className={`${baseClasses} ${className}`.trim()}
-            {...linkProps}
         >
             {children}
-        </Link>
+        </a>
     );
 }; 
