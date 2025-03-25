@@ -62,14 +62,14 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
 // Navigation component that can be used in both header variants
 const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
     const pathname = usePathname();
-    const textColorClass = isHomePage ? "text-white/90 hover:text-white" : "text-stone-800/90 hover:text-stone-800";
-    const borderColorClass = isHomePage ? "border-white/80 hover:border-white" : "border-stone-800/80 hover:border-stone-800";
+    const textColorClass = isHomePage ? "transition-colors text-white/90 hover:text-gold-500" : "transition-colors text-stone-800/90 hover:text-gold-700";
+    const borderColorClass = isHomePage ? "border-white/80 hover:border-gold-500" : "border-stone-800/80 hover:border-gold-700";
     const logoTextClass = isHomePage ? "text-white" : "text-stone-800";
     const logoSubtextClass = isHomePage ? "text-white/75" : "text-stone-800/75";
 
     return (
         <>
-            <div className="hidden items-center gap-6 font-light tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
+            <div className="hidden items-center gap-6 font-normal tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
                 <Link
                     href={routes.offers.route}
                     id={selectedItem(pathname, routes.offers.route)}
@@ -108,7 +108,7 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
                 </Link>
             </div>
 
-            <div className="hidden items-center gap-6 font-light tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
+            <div className="hidden items-center gap-6 font-normal tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
                 <Link
                     href={routes.contact.route}
                     id={selectedItem(pathname, routes.contact.route)}
@@ -214,7 +214,7 @@ export const Header = () => {
                             </h1>
                             <div className="mt-8">
                                 <Button
-                                    href="#pricing"
+                                    href="kontakt"
                                     variant="hero"
                                 >
                                     {strings.main.hero.pricing}
