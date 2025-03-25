@@ -13,6 +13,7 @@ import { PrivateGallery } from './collections/private-gallery/private-gallery'
 import { SiteEvent } from './collections/site/site-event'
 import { SiteVisit } from './collections/site/site-visit'
 import { Opinion } from './collections/site/opinion'
+import { OpinionMedia } from './collections/site/opinion-media'
 import { Users } from './collections/users'
 import { Video } from './collections/videos/video'
 import { defaultLexical } from './fields/defaultLexical'
@@ -42,6 +43,7 @@ export default buildConfig({
     SiteVisit, 
     OfferMedia, 
     Opinion, 
+    OpinionMedia,
     Photo
   ],
   globals: [

@@ -76,6 +76,7 @@ export interface Config {
     'site-visits': SiteVisit;
     'offer-media': OfferMedia;
     opinions: Opinion;
+    'opinion-media': OpinionMedia;
     photos: Photo;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -98,6 +99,7 @@ export interface Config {
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
     'offer-media': OfferMediaSelect<false> | OfferMediaSelect<true>;
     opinions: OpinionsSelect<false> | OpinionsSelect<true>;
+    'opinion-media': OpinionMediaSelect<false> | OpinionMediaSelect<true>;
     photos: PhotosSelect<false> | PhotosSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -367,14 +369,64 @@ export interface OfferMedia {
  */
 export interface Opinion {
   id: number;
+  title: string;
   author: string;
   content: string;
+  /**
+   * Select an image for this testimonial
+   */
+  media?: (number | null) | OpinionMedia;
   rating: number;
   source: 'google' | 'facebook' | 'pm';
   date: string;
   isPublished?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "opinion-media".
+ */
+export interface OpinionMedia {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    full?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -463,6 +515,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'opinions';
         value: number | Opinion;
+      } | null)
+    | ({
+        relationTo: 'opinion-media';
+        value: number | OpinionMedia;
       } | null)
     | ({
         relationTo: 'photos';
@@ -710,14 +766,68 @@ export interface OfferMediaSelect<T extends boolean = true> {
  * via the `definition` "opinions_select".
  */
 export interface OpinionsSelect<T extends boolean = true> {
+  title?: T;
   author?: T;
   content?: T;
+  media?: T;
   rating?: T;
   source?: T;
   date?: T;
   isPublished?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "opinion-media_select".
+ */
+export interface OpinionMediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        full?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

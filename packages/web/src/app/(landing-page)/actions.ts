@@ -3,14 +3,21 @@
 import { getPayload } from 'payload'
 import { OPINIONS_SLUG } from '../../collections/collectionSlugs'
 import payloadConfig from '~/payload.config'
+import { type OpinionMedia } from '~/payload-types'
 
 export type Opinion = {
   id: number;
+  title: string;
   author: string;
   content: string;
   rating: number;
   source: "google" | "facebook" | "pm";
   date: string;
+  media?: {
+    id: number;
+    url: string;
+    alt: string;
+  };
 }
 
 export async function getOpinions(): Promise<Opinion[]> {
@@ -28,15 +35,22 @@ export async function getOpinions(): Promise<Opinion[]> {
       },
       sort: '-date', // Sort by date descending (newest first)
       limit: 10, // Limit to 10 opinions
+      depth: 1, // Populate the media relationship
     })
 
     return response.docs.map(doc => ({
       id: doc.id,
+      title: doc.title,
       author: doc.author,
       content: doc.content,
       rating: doc.rating,
       source: doc.source,
       date: new Date(doc.date as string).toLocaleDateString(),
+      media: doc.media ? {
+        id: (doc.media as OpinionMedia).id,
+        url: (doc.media as OpinionMedia).url!,
+        alt: (doc.media as OpinionMedia).alt,
+      } : undefined,
     }))
   } catch (error) {
     console.error('Error fetching opinions:', error)
@@ -61,10 +75,10 @@ const INSTAGRAM_API_VERSION = 'v22.0'; // Update this to the latest version when
 export async function getInstagramPosts(): Promise<InstagramPost[]> {
   try {
     // Check if we're using real credentials
-    const usingMockData = 
-      INSTAGRAM_ACCESS_TOKEN === 'YOUR_INSTAGRAM_ACCESS_TOKEN' || 
+    const usingMockData =
+      INSTAGRAM_ACCESS_TOKEN === 'YOUR_INSTAGRAM_ACCESS_TOKEN' ||
       INSTAGRAM_USER_ID === 'YOUR_INSTAGRAM_USER_ID';
-    
+
     if (usingMockData) {
       console.warn('Using mock Instagram data. Set up INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_USER_ID env variables for real data.');
       return getMockInstagramPosts();
@@ -73,9 +87,9 @@ export async function getInstagramPosts(): Promise<InstagramPost[]> {
     // Fetch real Instagram posts using the Graph API
     // Documentation: https://developers.facebook.com/docs/instagram-api/reference/ig-user/media
     const apiUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${INSTAGRAM_USER_ID}/media`;
-    
+
     const response = await fetch(`${apiUrl}?fields=id,caption,media_type,media_url,thumbnail_url,permalink&limit=6&access_token=${INSTAGRAM_ACCESS_TOKEN}`);
-    
+
     if (!response.ok) {
       const error = await response.json();
       console.error('Instagram API Error:', error);
@@ -83,7 +97,7 @@ export async function getInstagramPosts(): Promise<InstagramPost[]> {
     }
 
     const data = await response.json();
-    
+
     if (!data.data || !Array.isArray(data.data)) {
       console.error('Invalid response format from Instagram API:', data);
       throw new Error('Invalid response format from Instagram API');

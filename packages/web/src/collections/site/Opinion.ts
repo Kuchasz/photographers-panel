@@ -1,12 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { OPINIONS_SLUG } from '../collectionSlugs'
+import { OPINIONS_SLUG, OPINION_MEDIA_SLUG } from '../collectionSlugs'
 
 export const Opinion: CollectionConfig = {
   slug: OPINIONS_SLUG,
   admin: {
-    useAsTitle: 'author',
-    defaultColumns: ['author', 'rating', 'source', 'date'],
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'author', 'rating', 'source', 'date'],
     group: 'Treść strony',
   },
   labels: {
@@ -27,6 +27,15 @@ export const Opinion: CollectionConfig = {
   },
   fields: [
     {
+      name: 'title',
+      type: 'text',
+      required: true,
+      label: {
+        en: 'Title',
+        pl: 'Tytuł',
+      },
+    },
+    {
       name: 'author',
       type: 'text',
       required: true,
@@ -37,6 +46,19 @@ export const Opinion: CollectionConfig = {
       type: 'textarea',
       required: true,
       label: 'Content',
+    },
+    {
+      name: 'media',
+      type: 'relationship',
+      relationTo: OPINION_MEDIA_SLUG,
+      label: {
+        en: 'Image',
+        pl: 'Zdjęcie',
+      },
+      hasMany: false,
+      admin: {
+        description: 'Select an image for this testimonial',
+      },
     },
     {
       name: 'rating',

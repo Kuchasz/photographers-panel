@@ -26,4 +26,5 @@ pnpm-lock.yaml
 packages/web/src/public/offer-media/*
 packages/web/src/public/photos/*
 packages/web/src/public/private-gallery/*
+packages/web/src/public/opinion-media/*
 .DS_Store

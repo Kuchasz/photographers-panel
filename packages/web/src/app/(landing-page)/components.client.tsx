@@ -115,7 +115,7 @@ export const OpinionCarousel = ({ opinions }: { opinions: Opinion[] }) => {
     // Display a fallback message when no opinions are available
     if (opinions.length === 0) {
         return (
-            <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-5xl">
                 <div className="min-h-[200px] rounded-lg bg-white p-8 shadow-lg flex items-center justify-center">
                     <p className="text-center font-light text-stone-500">No opinions available at the moment.</p>
                 </div>
@@ -123,53 +123,87 @@ export const OpinionCarousel = ({ opinions }: { opinions: Opinion[] }) => {
         );
     }
 
-    return <div className="mx-auto max-w-3xl">
-        <div className="relative min-h-[200px] flex overflow-hidden rounded-lg p-8 shadow-lg">
-            <div style={{
-                transform: `translateX(${currentOpinionIndex * -100}%)`,
-            }} className="absolute inset-0 flex w-full transition-transform duration-500">
-                {opinions.map((opinion, index) => (
-                    <div
-                        key={opinion.id}
-                        style={{
-                            transform: `translateX(${index * 100}%)`,
-                        }}
-                        className={`absolute w-full flex transform flex-col justify-between p-8 transition-all duration-500 ${index === currentOpinionIndex ? "opacity-100" : "opacity-0"}`}
-                    >
-                        <div>
-                            <div className="mb-6 flex items-center justify-between">
-                                <div>
-                                    <p className="font-serif text-xl font-light text-stone-800">{opinion.author}</p>
-                                    <p className="text-sm font-light text-stone-500">
-                                        {/* Fix for the linter error - check if opinion.source exists in strings.opinions.sources */}
-                                        {opinion.source in strings.opinions.sources
-                                            ? strings.opinions.sources[opinion.source as keyof typeof strings.opinions.sources]
-                                            : opinion.source}
+    return (
+        <div className="mx-auto max-w-5xl">
+            <div className="relative min-h-[450px] overflow-hidden">
+                <div
+                    style={{
+                        transform: `translateX(${currentOpinionIndex * -100}%)`,
+                    }}
+                    className="absolute inset-0 flex w-full transition-transform duration-500"
+                >
+                    {opinions.map((opinion, index) => (
+                        <div
+                            key={opinion.id}
+                            style={{
+                                transform: `translateX(${index * 100}%)`,
+                            }}
+                            className={`absolute w-full grid grid-cols-1 md:grid-cols-2 transition-opacity duration-500 ${index === currentOpinionIndex ? "opacity-100" : "opacity-0"}`}
+                        >
+                            {/* Left side - Photo */}
+                            <div className="h-[300px] md:h-full bg-stone-100 grayscale overflow-hidden">
+                                <img
+                                    src={opinion.media?.url ?? "https://mangostudios.com/wp-content/uploads/2024/10/alessia-and-lucas.webp"}
+                                    alt={opinion.media?.alt ?? `${opinion.author} testimonial`}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+
+                            {/* Right side - Testimonial content */}
+                            <div className="bg-stone-50 p-8 md:p-12 flex flex-col justify-between">
+                                <div className="space-y-6">
+                                    {/* What They Say About Us */}
+                                    <p className="uppercase tracking-wide text-sm text-stone-500 font-light">
+                                        {strings.opinions.subtitle}
                                     </p>
+
+                                    {/* Customer Name */}
+                                    <h3 className="font-serif text-4xl">{opinion.author}</h3>
+
+                                    {/* Quote */}
+                                    <p className="text-xl italic font-serif">&ldquo;{opinion.title}...&rdquo;</p>
+
+                                    {/* Full testimonial */}
+                                    <p className="font-light leading-relaxed text-stone-600">{opinion.content}</p>
                                 </div>
-                                <div className="flex items-center gap-1">
-                                    {Array.from({ length: opinion.rating }).map((_, i) => (
-                                        <Star key={i} size={16} weight="fill" className="text-yellow-400" />
-                                    ))}
+
+                                <div className="mt-6 flex items-center justify-between">
+                                    {/* Rating Stars */}
+                                    <div className="flex items-center gap-1">
+                                        {Array.from({ length: opinion.rating }).map((_, i) => (
+                                            <Star key={i} size={16} weight="fill" className="text-yellow-400" />
+                                        ))}
+                                    </div>
+
+                                    {/* Source and Date */}
+                                    <div className="text-right">
+                                        <p className="text-sm font-light text-stone-400">
+                                            {opinion.source in strings.opinions.sources
+                                                ? strings.opinions.sources[opinion.source as keyof typeof strings.opinions.sources]
+                                                : opinion.source}
+                                            {" · "}
+                                            {opinion.date}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                            <p className="font-light leading-relaxed text-stone-600">{opinion.content}</p>
                         </div>
-                        <p className="text-right text-sm font-light text-stone-400">{opinion.date}</p>
-                    </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Navigation dots */}
+            <div className="mt-6 flex justify-center gap-2">
+                {opinions.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setCurrentOpinionIndex(index)}
+                        className={`h-2 w-2 rounded-full transition-all ${index === currentOpinionIndex ? "bg-stone-400" : "bg-stone-200"
+                            }`}
+                        aria-label={`Go to opinion ${index + 1}`}
+                    />
                 ))}
             </div>
         </div>
-        <div className="mt-6 flex justify-center gap-2">
-            {opinions.map((_, index) => (
-                <button
-                    key={index}
-                    onClick={() => setCurrentOpinionIndex(index)}
-                    className={`h-2 w-2 rounded-full transition-all ${index === currentOpinionIndex ? "bg-stone-400" : "bg-stone-200"
-                        }`}
-                    aria-label={`Go to opinion ${index + 1}`}
-                />
-            ))}
-        </div>
-    </div>
+    );
 }; 
