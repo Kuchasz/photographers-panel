@@ -193,7 +193,7 @@ export const pl = {
     },
     instagram: {
         title: "Instagram",
-        subtitle: "Obserwuj nas na Instagramie",
+        subtitle: "Social media",
         followUs: "Odwiedź nas na IG",
         seeMore: "Zobacz więcej na Instagramie",
         mediaTypes: {
