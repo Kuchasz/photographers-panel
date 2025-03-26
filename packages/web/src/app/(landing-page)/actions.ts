@@ -160,21 +160,6 @@ function getMockInstagramPosts(): InstagramPost[] {
       media_url: 'https://source.unsplash.com/random/600x600?wedding,4',
       media_type: 'IMAGE',
       caption: 'Detale weselne #ślub #wesele'
-    },
-    {
-      id: '5',
-      permalink: 'https://www.instagram.com/p/sample5/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,5',
-      media_type: 'IMAGE',
-      caption: 'Niepowtarzalne momenty #fotografia #emocje'
-    },
-    {
-      id: '6',
-      permalink: 'https://www.instagram.com/p/sample6/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,6',
-      thumbnail_url: 'https://source.unsplash.com/random/600x600?wedding,6',
-      media_type: 'VIDEO',
-      caption: 'Pierwszy taniec #wesele #miłość'
     }
   ];
 } 

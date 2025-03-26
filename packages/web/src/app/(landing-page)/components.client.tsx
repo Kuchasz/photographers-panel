@@ -27,27 +27,15 @@ export const InstagramGrid = ({ posts }: InstagramGridProps) => {
     const [visiblePosts, setVisiblePosts] = useState<InstagramPost[]>([]);
 
     useEffect(() => {
-        // Adjust number of visible posts based on screen size
-        const handleResize = () => {
-            if (window.innerWidth < 1024) {
-                // Tablet: show 4 posts
-                setVisiblePosts(posts.slice(0, 4));
-            } else {
-                // Desktop: show all 6 posts
-                setVisiblePosts(posts);
-            }
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        // Always show exactly 4 posts
+        setVisiblePosts(posts.slice(0, 4));
     }, [posts]);
 
     if (!posts.length) return null;
 
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+            <div className="grid grid-cols-4 gap-2">
                 {visiblePosts.map((post) => (
                     <Link
                         key={post.id}
@@ -67,13 +55,13 @@ export const InstagramGrid = ({ posts }: InstagramGridProps) => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                         {/* Media type indicator in top right corner */}
-                        <div className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/60">
+                        <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/60">
                             {getMediaTypeIcon(post.media_type)}
                         </div>
 
                         {/* Caption on hover */}
-                        <div className="absolute bottom-0 left-0 right-0 p-3 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <p className="line-clamp-2 text-sm font-light">
+                        <div className="absolute bottom-0 left-0 right-0 p-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <p className="line-clamp-1 text-xs font-light">
                                 {post.caption ?? ""}
                             </p>
                         </div>

@@ -203,11 +203,11 @@ export const Header = () => {
                     <div className="absolute bottom-24 left-0 right-0 text-center px-4">
                         <div className="mx-auto max-w-6xl">
                             <h1 className="font-serif space-y-4 text-white leading-tight">
-                                <div className="space-x-4 -ml-24">
+                                <div className="space-x-4 -ml-48">
                                     <span className="text-3xl md:text-4xl lg:text-5xl italic font-light mb-2">{strings.main.hero.embrace}</span>
                                     <span className="text-4xl md:text-5xl lg:text-6xl font-normal mb-2">{strings.main.hero.timeless}</span>
                                 </div>
-                                <div className="space-x-4 ml-24">
+                                <div className="space-x-4 ml-48">
                                     <span className="text-3xl md:text-4xl lg:text-5xl font-normal mt-4 mb-1">{strings.main.hero.celebrating}</span>
                                     <span className="text-2xl md:text-3xl lg:text-4xl italic font-light">{strings.main.hero.through}</span>
                                 </div>

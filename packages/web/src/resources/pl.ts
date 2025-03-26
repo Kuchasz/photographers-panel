@@ -15,10 +15,10 @@ export const pl = {
             'andrychow-fotografia-slubna-243'
         ],
         hero: {
-            embrace: 'Odkryj',
-            timeless: 'PONADCZASOWE PIĘKNO',
-            celebrating: 'CELEBRUJEMY MIŁOŚĆ',
-            through: 'Poprzez Fotografię',
+            embrace: 'Witamy',
+            timeless: 'w kolejnym rozdziale',
+            celebrating: 'Waszej',
+            through: 'miłosnej historii',
             pricing: 'CENNIK I DOSTĘPNOŚĆ'
         }
     },
