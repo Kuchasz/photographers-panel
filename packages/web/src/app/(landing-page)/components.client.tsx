@@ -46,25 +46,25 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                     {strings.featuredPhotos.description}
                 </p>
             </div>
-            
+
             {/* Full width container with horizontal layout and navigation */}
             <div className="relative w-full">
                 {/* Photo strip */}
                 <div className="relative w-full overflow-hidden">
-                    <div 
-                        className="flex transition-transform duration-300 ease-in-out" 
+                    <div
+                        className="flex h-96 transition-transform duration-300 ease-in-out"
                         style={{ transform: `translateX(-${startIndex * (100 / photosToShow)}%)` }}
                     >
                         {visiblePhotos.map((photo) => (
-                            <div 
-                                key={photo.id} 
-                                className="group relative flex-none w-1/5 px-0.5"
+                            <div
+                                key={photo.id}
+                                className="group relative flex-none h-full px-0.5"
                             >
-                                <div className="relative overflow-hidden bg-stone-100 aspect-[3/4]">
+                                <div className="relative h-full overflow-hidden bg-stone-100">
                                     <img
                                         src={photo.url}
                                         alt={photo.alt}
-                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        className="h-full object-contain transition-transform duration-300 group-hover:scale-105"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                 </div>
@@ -76,7 +76,7 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                 {/* Navigation buttons centered below */}
                 <div className="flex justify-center gap-4 mt-4">
                     {/* Left navigation button */}
-                    <button 
+                    <button
                         onClick={handlePrevious}
                         disabled={!canScrollLeft}
                         className={`flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-opacity ${!canScrollLeft ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-50'}`}
@@ -86,7 +86,7 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                     </button>
 
                     {/* Right navigation button */}
-                    <button 
+                    <button
                         onClick={handleNext}
                         disabled={!canScrollRight}
                         className={`flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-opacity ${!canScrollRight ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-50'}`}
