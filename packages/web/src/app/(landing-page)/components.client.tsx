@@ -1,6 +1,6 @@
 'use client';
 
-import { CaretRight, Image, InstagramLogo, Play, Star } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowRight, Image, InstagramLogo, Play, Star } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { type InstagramPost, type Opinion, type Photo } from "./actions";
@@ -171,25 +171,25 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                 </div>
 
                 {/* Navigation buttons centered below */}
-                <div className="flex justify-center gap-4 mt-4">
+                <div className="flex justify-center gap-6 mt-4">
                     {/* Left navigation button */}
                     <button
                         onClick={handlePrevious}
                         disabled={!canScrollLeft}
-                        className={`flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-opacity ${!canScrollLeft ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-50'}`}
+                        className={`flex h-10 w-10 items-center justify-center rounded-full bg-stone-50 border border-stone-200 shadow-sm transition-all hover:scale-110 hover:shadow-md hover:cursor-pointer ${!canScrollLeft ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white'}`}
                         aria-label="Previous photos"
                     >
-                        <CaretRight size={24} className="rotate-180" weight="bold" />
+                        <ArrowLeft size={20} weight="regular" className="text-stone-600" />
                     </button>
 
                     {/* Right navigation button */}
                     <button
                         onClick={handleNext}
                         disabled={!canScrollRight}
-                        className={`flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-opacity ${!canScrollRight ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-50'}`}
+                        className={`flex h-10 w-10 items-center justify-center rounded-full bg-stone-50 border border-stone-200 shadow-sm transition-all hover:scale-110 hover:shadow-md hover:cursor-pointer ${!canScrollRight ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white'}`}
                         aria-label="Next photos"
                     >
-                        <CaretRight size={24} weight="bold" />
+                        <ArrowRight size={20} weight="regular" className="text-stone-600" />
                     </button>
                 </div>
             </div>
@@ -219,7 +219,7 @@ const getMediaTypeIcon = (mediaType: InstagramPost['media_type']) => {
         case 'VIDEO':
             return <Play weight="fill" className="text-white" />;
         case 'CAROUSEL_ALBUM':
-            return <CaretRight weight="fill" className="text-white" />;
+            return <ArrowRight weight="fill" className="text-white" />;
         default:
             return <Image weight="fill" className="text-white" />;
     }
@@ -393,4 +393,4 @@ export const OpinionCarousel = ({ opinions }: { opinions: Opinion[] }) => {
             </div>
         </div>
     );
-}; 
+};
