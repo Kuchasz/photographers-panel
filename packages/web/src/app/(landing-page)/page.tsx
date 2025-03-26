@@ -40,14 +40,14 @@ export default async function Home() {
     <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
       {/* Photos Portfolio Section */}
       <section className="w-full bg-white py-16 md:py-24">
-        <div className="container mx-auto px-4">
+        <div className="mb-8">
           <SectionTitle
             title={strings.featuredPhotos.title}
             subtitle={strings.featuredPhotos.subtitle}
           />
-          <div className="mx-auto max-w-7xl">
-            <PhotoGrid photos={featuredPhotos} />
-          </div>
+        </div>
+        <div className="w-full">
+          <PhotoGrid photos={featuredPhotos} />
         </div>
       </section>
 

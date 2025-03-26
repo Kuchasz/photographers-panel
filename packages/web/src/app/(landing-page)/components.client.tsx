@@ -15,6 +15,8 @@ type PhotoGridProps = {
 
 export const PhotoGrid = ({ photos }: PhotoGridProps) => {
     const [visiblePhotos, setVisiblePhotos] = useState<Photo[]>([]);
+    const [startIndex, setStartIndex] = useState(0);
+    const photosToShow = 5; // Number of photos visible at once
 
     useEffect(() => {
         // Display all photos we received
@@ -22,6 +24,19 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
     }, [photos]);
 
     if (!photos.length) return null;
+
+    const handlePrevious = () => {
+        setStartIndex((prevIndex) => Math.max(0, prevIndex - 1));
+    };
+
+    const handleNext = () => {
+        setStartIndex((prevIndex) => Math.min(photos.length - photosToShow, prevIndex + 1));
+    };
+
+    // Calculate visible photos based on current index
+    const currentPhotos = visiblePhotos.slice(startIndex, startIndex + photosToShow);
+    const canScrollLeft = startIndex > 0;
+    const canScrollRight = startIndex < photos.length - photosToShow;
 
     return (
         <div className="space-y-6">
@@ -32,28 +47,58 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                 </p>
             </div>
             
-            {/* Full width container with horizontal layout */}
-            <div className="w-full overflow-hidden px-4">
-                {/* Photo strip using flex for a more natural flow */}
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                    {visiblePhotos.map((photo) => (
-                        <div 
-                            key={photo.id} 
-                            className="group relative overflow-hidden rounded-sm bg-stone-100 aspect-square"
-                        >
-                            <img
-                                src={photo.url}
-                                alt={photo.alt}
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                        </div>
-                    ))}
+            {/* Full width container with horizontal layout and navigation */}
+            <div className="relative w-full">
+                {/* Photo strip */}
+                <div className="relative w-full overflow-hidden">
+                    <div 
+                        className="flex transition-transform duration-300 ease-in-out" 
+                        style={{ transform: `translateX(-${startIndex * (100 / photosToShow)}%)` }}
+                    >
+                        {visiblePhotos.map((photo) => (
+                            <div 
+                                key={photo.id} 
+                                className="group relative flex-none w-1/5 px-0.5"
+                            >
+                                <div className="relative overflow-hidden bg-stone-100 aspect-[3/4]">
+                                    <img
+                                        src={photo.url}
+                                        alt={photo.alt}
+                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Navigation buttons centered below */}
+                <div className="flex justify-center gap-4 mt-4">
+                    {/* Left navigation button */}
+                    <button 
+                        onClick={handlePrevious}
+                        disabled={!canScrollLeft}
+                        className={`flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-opacity ${!canScrollLeft ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-50'}`}
+                        aria-label="Previous photos"
+                    >
+                        <CaretRight size={24} className="rotate-180" weight="bold" />
+                    </button>
+
+                    {/* Right navigation button */}
+                    <button 
+                        onClick={handleNext}
+                        disabled={!canScrollRight}
+                        className={`flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-opacity ${!canScrollRight ? 'opacity-30 cursor-not-allowed' : 'hover:bg-stone-50'}`}
+                        aria-label="Next photos"
+                    >
+                        <CaretRight size={24} weight="bold" />
+                    </button>
                 </div>
             </div>
 
             {/* CTA Button */}
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-6">
                 <Button
                     href={routes.photos.route}
                     variant="hero"
