@@ -1,12 +1,12 @@
 import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
-
+import { PHOTOS_SLUG } from '../collectionSlugs'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export const Photo: CollectionConfig = {
-    slug: 'photos',
+    slug: PHOTOS_SLUG,
     labels: {
         singular: {
             en: 'Photo',

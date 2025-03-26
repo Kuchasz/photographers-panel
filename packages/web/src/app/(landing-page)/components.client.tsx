@@ -3,9 +3,69 @@
 import { CaretRight, Image, InstagramLogo, Play, Star } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { type InstagramPost, type Opinion } from "./actions";
+import { type InstagramPost, type Opinion, type Photo } from "./actions";
 import { strings } from "../../resources";
 import { Button } from "~/components/button";
+import { routes } from "~/routes";
+
+// Photo Grid Component
+type PhotoGridProps = {
+    photos: Photo[];
+};
+
+export const PhotoGrid = ({ photos }: PhotoGridProps) => {
+    const [visiblePhotos, setVisiblePhotos] = useState<Photo[]>([]);
+
+    useEffect(() => {
+        // Display all photos we received
+        setVisiblePhotos(photos);
+    }, [photos]);
+
+    if (!photos.length) return null;
+
+    return (
+        <div className="space-y-6">
+            {/* Text description */}
+            <div className="mx-auto max-w-2xl text-center">
+                <p className="font-light leading-relaxed text-stone-600 mb-4">
+                    {strings.featuredPhotos.description}
+                </p>
+            </div>
+            
+            {/* Full width container with horizontal layout */}
+            <div className="w-full overflow-hidden px-4">
+                {/* Photo strip using flex for a more natural flow */}
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {visiblePhotos.map((photo) => (
+                        <div 
+                            key={photo.id} 
+                            className="group relative overflow-hidden rounded-sm bg-stone-100 aspect-square"
+                        >
+                            <img
+                                src={photo.url}
+                                alt={photo.alt}
+                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="flex justify-center mt-4">
+                <Button
+                    href={routes.photos.route}
+                    variant="hero"
+                >
+                    <div className="flex items-center gap-2">
+                        <span>{strings.featuredPhotos.cta}</span>
+                    </div>
+                </Button>
+            </div>
+        </div>
+    );
+};
 
 // Instagram Grid Component
 type InstagramGridProps = {

@@ -4,8 +4,8 @@ import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
-import { getInstagramPosts, getOpinions } from "./actions";
-import { InstagramGrid, OpinionCarousel } from "./components.client";
+import { getInstagramPosts, getOpinions, getFeaturedPhotos } from "./actions";
+import { InstagramGrid, OpinionCarousel, PhotoGrid } from "./components.client";
 
 const ContactLink = ({
   href,
@@ -34,9 +34,23 @@ const ContactLink = ({
 export default async function Home() {
   const opinions = await getOpinions();
   const instagramPosts = await getInstagramPosts();
+  const featuredPhotos = await getFeaturedPhotos();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
+      {/* Photos Portfolio Section */}
+      <section className="w-full bg-white py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <SectionTitle
+            title={strings.featuredPhotos.title}
+            subtitle={strings.featuredPhotos.subtitle}
+          />
+          <div className="mx-auto max-w-7xl">
+            <PhotoGrid photos={featuredPhotos} />
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section className="w-full bg-section-background py-16 md:py-24">
         <div className="container mx-auto px-4">

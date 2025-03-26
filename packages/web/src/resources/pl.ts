@@ -173,9 +173,11 @@ export const pl = {
             header: 'ZNAJDZIESZ NAS RÓWNIEŻ',
             facebook: 'FACEBOOK',
             youtube: 'YOUTUBE',
+            instagram: 'INSTAGRAM',
             url: {
                 facebook: 'https://pl-pl.facebook.com/pyszstudio',
                 youtube: 'https://www.youtube.com/channel/UCANjnytGkPi04eBXuInRtBQ',
+                instagram: 'https://www.instagram.com/pyszstudio',
             },
         },
     },
@@ -201,5 +203,11 @@ export const pl = {
             video: "Film",
             carousel: "Album"
         }
+    },
+    featuredPhotos: {
+        title: "Nasze portfolio",
+        subtitle: "Kilka wyjątkowych kadrów",
+        description: "Przeglądając nasze portfolio, możesz zobaczyć, jak uwieczniamy najważniejsze momenty w życiu par młodych. Każde zdjęcie opowiada wyjątkową historię miłości.",
+        cta: "ZOBACZ WIĘCEJ ZDJĘĆ"
     }
 };

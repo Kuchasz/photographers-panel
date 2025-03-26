@@ -47,6 +47,17 @@ export const Footer = () => (
                             >
                                 {strings.footer.socialMedia.youtube}
                             </a>
+                        </li> 
+                        <li className="text-stone-400">/</li>
+                        <li>
+                            <a
+                                href={strings.footer.socialMedia.url.instagram}
+                                rel="noopener"
+                                target="_blank"
+                                className="text-stone-600 transition duration-200 hover:text-stone-400"
+                            >
+                                {strings.footer.socialMedia.instagram}
+                            </a>
                         </li>
                     </ul>
                 </div>
