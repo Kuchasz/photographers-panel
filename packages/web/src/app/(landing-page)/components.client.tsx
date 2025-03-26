@@ -2,11 +2,12 @@
 
 import { CaretRight, Image, InstagramLogo, Play, Star } from "@phosphor-icons/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { type InstagramPost, type Opinion, type Photo } from "./actions";
 import { strings } from "../../resources";
 import { Button } from "~/components/button";
 import { routes } from "~/routes";
+import { useRouter } from "next/navigation";
 
 // Photo Grid Component
 type PhotoGridProps = {
@@ -14,29 +15,124 @@ type PhotoGridProps = {
 };
 
 export const PhotoGrid = ({ photos }: PhotoGridProps) => {
+    const router = useRouter();
     const [visiblePhotos, setVisiblePhotos] = useState<Photo[]>([]);
-    const [startIndex, setStartIndex] = useState(0);
-    const photosToShow = 5; // Number of photos visible at once
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [containerWidth, setContainerWidth] = useState(0);
+    const gapSize = 4; // 0.25rem = 4px gap between photos (reduced from 16px)
+
+    // Reference to the container element
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // Display all photos we received
         setVisiblePhotos(photos);
+        
+        // Set initial index to the middle of the array
+        if (photos.length > 0) {
+            const middleIndex = Math.floor(photos.length / 2);
+            setCurrentIndex(middleIndex);
+        }
     }, [photos]);
+
+    useEffect(() => {
+        // Function to update container width
+        const updateContainerWidth = () => {
+            if (containerRef.current) {
+                setContainerWidth(containerRef.current.offsetWidth);
+            }
+        };
+
+        // Initial measurement
+        updateContainerWidth();
+
+        // Add resize event listener
+        window.addEventListener('resize', updateContainerWidth);
+        
+        // Clean up
+        return () => {
+            window.removeEventListener('resize', updateContainerWidth);
+        };
+    }, []);
 
     if (!photos.length) return null;
 
     const handlePrevious = () => {
-        setStartIndex((prevIndex) => Math.max(0, prevIndex - 1));
+        setCurrentIndex((prevIndex) => Math.max(0, prevIndex - 1));
     };
 
     const handleNext = () => {
-        setStartIndex((prevIndex) => Math.min(photos.length - photosToShow, prevIndex + 1));
+        setCurrentIndex((prevIndex) => {
+            return Math.min(visiblePhotos.length - 1, prevIndex + 1);
+        });
     };
 
-    // Calculate visible photos based on current index
-    const currentPhotos = visiblePhotos.slice(startIndex, startIndex + photosToShow);
-    const canScrollLeft = startIndex > 0;
-    const canScrollRight = startIndex < photos.length - photosToShow;
+    // Calculate if navigation buttons should be enabled
+    const canScrollLeft = currentIndex > 0;
+    const canScrollRight = currentIndex < (visiblePhotos.length - 1);
+
+    // Calculate photo widths based on container width, aspect ratios, and gaps
+    const getPhotoStyles = () => {
+        if (!containerWidth || visiblePhotos.length === 0 || currentIndex >= visiblePhotos.length) {
+            return { transform: 'translateX(0)' }; // Default fallback
+        }
+        
+        const height = 484; // Increased from 384px to 484px (added 100px)
+        
+        // Calculate widths for all visible photos
+        const photoWidths = visiblePhotos.map(photo => {
+            const aspectRatio = photo.width / photo.height;
+            return height * aspectRatio;
+        });
+        
+        // Calculate center position
+        const centerPosition = containerWidth / 2;
+        
+        // Calculate how much to translate to center the current photo
+        let translateX = 0;
+        let currentPhotoLeftEdge = 0;
+        
+        // Calculate position of current photo
+        for (let i = 0; i < currentIndex; i++) {
+            const photoWidth = photoWidths[i];
+            if (photoWidth !== undefined) {
+                currentPhotoLeftEdge += photoWidth + gapSize;
+            }
+        }
+        
+        // Width of current photo
+        const currentPhotoWidth = photoWidths[currentIndex] ?? 0;
+        
+        // Calculate translation to center the current photo
+        translateX = centerPosition - currentPhotoLeftEdge - (currentPhotoWidth / 2);
+        
+        return {
+            transform: `translateX(${translateX}px)`,
+            transition: 'transform 300ms ease-in-out'
+        };
+    };
+    
+    // Get width style for individual photo
+    const getPhotoWidth = (photo: Photo) => {
+        const height = 484; // Increased from 384px to 484px (added 100px)
+        const aspectRatio = photo.width / photo.height;
+        const photoWidth = height * aspectRatio;
+        
+        return {
+            width: `${photoWidth}px`,
+            minWidth: `${photoWidth}px`,
+        };
+    };
+
+    const handlePhotoClick = (index: number) => {
+        if (index === currentIndex) {
+            // Navigate to photos page when clicking the current photo
+            router.push(routes.photos.route);
+        } else {
+            // Otherwise just center the clicked photo
+            setCurrentIndex(index);
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -48,25 +144,26 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
             </div>
 
             {/* Full width container with horizontal layout and navigation */}
-            <div className="relative w-full">
+            <div className="relative w-full" ref={containerRef}>
                 {/* Photo strip */}
                 <div className="relative w-full overflow-hidden">
-                    <div
-                        className="flex h-96 transition-transform duration-300 ease-in-out"
-                        style={{ transform: `translateX(-${startIndex * (100 / photosToShow)}%)` }}
+                    <div 
+                        className="flex h-[484px] gap-1 transition-all duration-300 ease-in-out"
+                        style={getPhotoStyles()}
                     >
-                        {visiblePhotos.map((photo) => (
+                        {visiblePhotos.map((photo, index) => (
                             <div
                                 key={photo.id}
-                                className="group relative flex-none h-full px-0.5"
+                                className="relative flex-none h-full transition-all duration-300 cursor-pointer"
+                                style={getPhotoWidth(photo)}
+                                onClick={() => handlePhotoClick(index)}
                             >
-                                <div className="relative h-full overflow-hidden bg-stone-100">
+                                <div className="relative h-full overflow-hidden">
                                     <img
                                         src={photo.url}
                                         alt={photo.alt}
-                                        className="h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                                        className="h-full w-full object-contain"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                 </div>
                             </div>
                         ))}

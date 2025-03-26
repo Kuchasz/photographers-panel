@@ -172,9 +172,11 @@ export type Photo = {
   url: string;
   alt: string;
   order: number;
+  width: number;
+  height: number;
 }
 
-export async function getFeaturedPhotos(limit = 8): Promise<Photo[]> {
+export async function getFeaturedPhotos(limit = 64): Promise<Photo[]> {
   try {
     const payload = await getPayload({
       config: payloadConfig,
@@ -192,6 +194,8 @@ export async function getFeaturedPhotos(limit = 8): Promise<Photo[]> {
       url: doc.url ?? '',
       alt: doc.alt ?? 'Wedding photo',
       order: doc.order ?? 0,
+      width: doc.width ?? 800,
+      height: doc.height ?? 600,
     }))
   } catch (error) {
     console.error('Error fetching photos:', error)
@@ -207,48 +211,64 @@ function getMockPhotos(): Photo[] {
       url: 'https://source.unsplash.com/random/800x600?wedding,1',
       alt: 'Piękne zdjęcie ślubne 1',
       order: 1,
+      width: 800,
+      height: 600,
     },
     {
       id: 2,
       url: 'https://source.unsplash.com/random/800x600?wedding,2',
       alt: 'Piękne zdjęcie ślubne 2',
       order: 2,
+      width: 800,
+      height: 600,
     },
     {
       id: 3,
       url: 'https://source.unsplash.com/random/800x600?wedding,3',
       alt: 'Piękne zdjęcie ślubne 3',
       order: 3,
+      width: 800, 
+      height: 600,
     },
     {
       id: 4,
       url: 'https://source.unsplash.com/random/800x600?wedding,4',
       alt: 'Piękne zdjęcie ślubne 4',
       order: 4,
+      width: 800,
+      height: 600,
     },
     {
       id: 5,
       url: 'https://source.unsplash.com/random/800x600?wedding,5',
       alt: 'Piękne zdjęcie ślubne 5',
       order: 5,
+      width: 800,
+      height: 600,
     },
     {
       id: 6,
       url: 'https://source.unsplash.com/random/800x600?wedding,6',
       alt: 'Piękne zdjęcie ślubne 6',
       order: 6,
+      width: 800,
+      height: 600,
     },
     {
       id: 7,
       url: 'https://source.unsplash.com/random/800x600?wedding,7',
       alt: 'Piękne zdjęcie ślubne 7',
       order: 7,
+      width: 800,
+      height: 600,
     },
     {
       id: 8,
       url: 'https://source.unsplash.com/random/800x600?wedding,8',
       alt: 'Piękne zdjęcie ślubne 8',
       order: 8,
-    },
+      width: 800,
+      height: 600,
+    }
   ];
 } 
