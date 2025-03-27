@@ -4,6 +4,24 @@ export const pl = {
         description:
             'Wykonujemy zdjęcia i filmy nie tylko na terenie Andrychowa. Mamy za sobą wiele realizacji w Katowicach, Kętach, Wadowicach, Bielsku-Białej czy Krakowie. Pojedziemy wszędzie gdzie nas zaprosicie. Nie doliczamy dodatkowych kosztów za dojazd do 100km od Andrychowa.',
     },
+    location: {
+        title: 'Jesteśmy tam, gdzie Wy',
+        subtitle: 'Docieramy tam, gdzie dzieje się Wasza historia',
+        description: 'Jesteśmy mobilnym zespołem fotografów i filmowców gotowym uwiecznić Waszą uroczystość niezależnie od miejsca. Nasza baza znajduje się w Andrychowie, ale regularnie pracujemy w całej południowej Polsce.',
+        noExtraCharge: 'Bez dodatkowych opłat za dojazd do 100 km od Andrychowa',
+        mainAreas: 'Najczęściej pracujemy w:',
+        areas: [
+            'Andrychów i okolice',
+            'Kęty, Wadowice, Oświęcim',
+            'Bielsko-Biała, Żywiec',
+            'Kraków i okolice',
+            'Katowice i aglomeracja śląska',
+            'Zakopane i Podhale'
+        ],
+        cta: 'SPRAWDŹ DOSTĘPNOŚĆ',
+        locationInfo: 'Znajdujemy się w centrum Andrychowa, skąd łatwo dojedziemy na Waszą uroczystość w południowej Polsce.',
+        mapCta: 'ZNAJDŹ NAS NA MAPIE'
+    },
     main: {
         topPhotos: [
             'andrychow-fotografia-slubna-32',
@@ -166,6 +184,48 @@ export const pl = {
             Afters: 'Obsługa imprezy poprawinowej',
         },
         readMore: 'czytaj więcej',
+    },
+    advantages: {
+        title: 'Nasze atuty',
+        subtitle: 'Co wyróżnia naszą ofertę',
+        description: 'Wybierając nasze usługi, otrzymujecie nie tylko piękne zdjęcia i filmy, ale także wyjątkowe podejście do Waszej uroczystości. Stawiamy na naturalne, niewymuszone kadry, które najlepiej oddadzą magię tego dnia.',
+        leftColumnTitle: 'Kompleksowa obsługa',
+        rightColumnTitle: 'Szybka realizacja',
+        advantages: [
+            {
+                title: 'Duet foto-video',
+                description: 'Obsługujemy zarówno fotografię jak i film, zapewniając spójny styl całej dokumentacji'
+            },
+            {
+                title: 'Bogate doświadczenie',
+                description: 'Mamy na koncie setki zadowolonych par młodych i tysiące godzin reportaży'
+            },
+            {
+                title: 'Nowoczesny sprzęt',
+                description: 'Korzystamy z profesjonalnego sprzętu najwyższej jakości'
+            },
+            {
+                title: 'Szybki podgląd',
+                description: 'Pierwsze zdjęcia otrzymacie już następnego dnia po uroczystości'
+            },
+            {
+                title: 'Plener w cenie',
+                description: 'Sesja plenerowa w dniu ślubu zawsze wliczona w cenę pakietu'
+            },
+            {
+                title: 'Brak limitów czasowych',
+                description: 'Nie ograniczamy czasu pracy - zostajemy do ostatniego tańca'
+            },
+            {
+                title: 'Prywatna galeria',
+                description: 'Zabezpieczona hasłem galeria online do wygodnego udostępniania zdjęć'
+            },
+            {
+                title: 'Krótki czas oczekiwania',
+                description: 'Gotowe materiały dostarczamy szybciej niż konkurencja'
+            }
+        ],
+        cta: 'SPRAWDŹ PEŁNĄ OFERTĘ'
     },
     footer: {
         copyrights: 'PyszStudio. All rights reserved.',

@@ -126,27 +126,63 @@ export default async function Home() {
       <section className="w-full bg-white py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle
-            title="Our Advantages"
-            subtitle="What makes us special"
+            title={strings.advantages.title}
+            subtitle={strings.advantages.subtitle}
           />
-          <div className="mx-auto max-w-5xl">
-            <div className="grid gap-8 md:grid-cols-2 md:gap-12">
-              <ul className="space-y-6">
-                {strings.offer.slogan.advantages.slice(0, 4).map((adv) => (
-                  <li key={adv} className="flex items-start text-stone-700">
-                    <span className="mr-3 mt-1 text-xl text-gold-300">♥</span>
-                    <span className="font-light tracking-wide">{adv}</span>
-                  </li>
-                ))}
-              </ul>
-              <ul className="space-y-6">
-                {strings.offer.slogan.advantages.slice(4).map((adv) => (
-                  <li key={adv} className="flex items-start text-stone-700">
-                    <span className="mr-3 mt-1 text-xl text-gold-300">♥</span>
-                    <span className="font-light tracking-wide">{adv}</span>
-                  </li>
-                ))}
-              </ul>
+          
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-8 text-center">
+              <p className="mx-auto max-w-3xl text-lg text-stone-700">
+                {strings.advantages.description}
+              </p>
+            </div>
+            
+            <div className="grid gap-6 md:grid-cols-2 md:gap-10">
+              {/* Left Column */}
+              <div>
+                <h3 className="mb-6 text-center font-serif text-xl font-medium text-stone-800 md:text-left">
+                  {strings.advantages.leftColumnTitle}
+                </h3>
+                <ul className="space-y-6">
+                  {strings.advantages.advantages.slice(0, 4).map((adv) => (
+                    <li key={adv.title} className="flex">
+                      <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                        ❤
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-stone-900">{adv.title}</h4>
+                        <p className="font-light text-stone-700">{adv.description}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              {/* Right Column */}
+              <div>
+                <h3 className="mb-6 text-center font-serif text-xl font-medium text-stone-800 md:text-left">
+                  {strings.advantages.rightColumnTitle}
+                </h3>
+                <ul className="space-y-6">
+                  {strings.advantages.advantages.slice(4).map((adv) => (
+                    <li key={adv.title} className="flex">
+                      <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                        ❤
+                      </span>
+                      <div>
+                        <h4 className="font-medium text-stone-900">{adv.title}</h4>
+                        <p className="font-light text-stone-700">{adv.description}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            
+            <div className="mt-12 flex justify-center">
+              <Button href={routes.offers.route} variant="default">
+                {strings.advantages.cta}
+              </Button>
             </div>
           </div>
         </div>
@@ -156,16 +192,60 @@ export default async function Home() {
       <section className="w-full bg-section-background py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle
-            title={strings.article.title}
-            subtitle={strings.article.description}
+            title={strings.location.title}
+            subtitle={strings.location.subtitle}
           />
-          <div className="flex justify-center">
-            <ContactLink
-              href="https://maps.app.goo.gl/KQ9RSySeL2xHvvvA7"
-              icon={MapPin}
-              text={strings.contact.map}
-              external={true}
-            />
+          
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-12 text-center">
+              <p className="mx-auto max-w-3xl text-lg text-stone-700">
+                {strings.location.description}
+              </p>
+            </div>
+            
+            <div className="mb-10 flex flex-col gap-8 md:flex-row md:items-stretch">
+              {/* Areas we cover */}
+              <div className="w-full rounded-lg bg-white p-6 shadow-md md:w-1/2">
+                <h3 className="mb-4 font-serif text-xl font-medium text-stone-800">
+                  {strings.location.mainAreas}
+                </h3>
+                <ul className="space-y-4">
+                  {strings.location.areas.map((area) => (
+                    <li key={area} className="flex items-center text-stone-700">
+                      <span className="mr-3 text-gold-500">▹</span>
+                      <span className="font-light">{area}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              {/* Location info */}
+              <div className="flex w-full flex-col justify-between rounded-lg bg-white p-6 shadow-md md:w-1/2">
+                <div>
+                  <h3 className="mb-4 font-serif text-xl font-medium text-stone-800">
+                    Informacje
+                  </h3>
+                  <p className="mb-4 text-stone-700">
+                    {strings.location.locationInfo}
+                  </p>
+                  <p className="mb-6 font-medium text-gold-600">
+                    {strings.location.noExtraCharge}
+                  </p>
+                </div>
+                
+                <div className="flex flex-col gap-4 pt-4 sm:flex-row">
+                  <Button href={routes.contact.route} variant="default">
+                    {strings.location.cta}
+                  </Button>
+                  <Button 
+                    href="https://maps.app.goo.gl/KQ9RSySeL2xHvvvA7" 
+                    variant="outline"
+                  >
+                    {strings.location.mapCta}
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
