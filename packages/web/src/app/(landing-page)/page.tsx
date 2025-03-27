@@ -6,6 +6,7 @@ import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
 import { getInstagramPosts, getOpinions, getFeaturedPhotos } from "./actions";
 import { InstagramGrid, OpinionCarousel, PhotoGrid } from "./components.client";
+import Image from "next/image";
 
 const ContactLink = ({
   href,
@@ -38,6 +39,63 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
+      {/* Meet Your Photographer Section */}
+      <section className="w-full bg-section-background py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <SectionTitle 
+            title={strings.meetPhotographer.title}
+            subtitle={strings.meetPhotographer.subtitle}
+          />
+          
+          <div className="mx-auto max-w-4xl">
+            <div className="flex flex-col items-center gap-12 md:flex-row md:items-start">
+              {/* Image Column */}
+              <div className="w-full md:w-1/2">
+                <div className="overflow-hidden rounded-md shadow-lg">
+                  <Image 
+                    src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=687&auto=format&fit=crop"
+                    alt="Ewa i Piotr - Fotografowie i filmowcy ślubni" 
+                    width={600} 
+                    height={700}
+                    className="w-full object-cover transition-transform duration-500 hover:scale-105" 
+                  />
+                </div>
+              </div>
+              
+              {/* Text Column */}
+              <div className="w-full space-y-6 md:w-1/2">
+                <p className="font-serif text-lg italic leading-relaxed text-stone-700">
+                  {strings.meetPhotographer.intro}
+                </p>
+                
+                <p className="text-stone-600">
+                  {strings.meetPhotographer.experience}
+                </p>
+                
+                <p className="text-stone-600">
+                  {strings.meetPhotographer.promise}
+                </p>
+                
+                <div className="flex flex-col gap-4 pt-4 sm:flex-row">
+                  <Button 
+                    href={routes.contact.route} 
+                    variant="default"
+                  >
+                    {strings.meetPhotographer.sayHello}
+                  </Button>
+                  <Button 
+                    href={routes.contact.route} 
+                    variant="outline"
+                  >
+                    {strings.meetPhotographer.cta}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Photos Portfolio Section */}
       <section className="w-full bg-white py-16 md:py-24">
         <div className="mb-8">

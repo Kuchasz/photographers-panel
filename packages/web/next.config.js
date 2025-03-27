@@ -7,7 +7,15 @@ import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
-    serverExternalPackages: ["pg"]
+    serverExternalPackages: ["pg"],
+    images: {
+        remotePatterns: [
+            {
+                hostname: 'images.unsplash.com',
+                protocol: 'https',
+            },
+        ],
+    },
 };
 
 export default withPayload(config);

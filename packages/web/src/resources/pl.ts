@@ -209,5 +209,14 @@ export const pl = {
         subtitle: "Kilka wyjątkowych kadrów",
         description: "Przeglądając nasze portfolio, możesz zobaczyć, jak uwieczniamy najważniejsze momenty w życiu par młodych. Każde zdjęcie opowiada wyjątkową historię miłości.",
         cta: "ZOBACZ WIĘCEJ ZDJĘĆ"
+    },
+    meetPhotographer: {
+        title: "POZNAJ NAS",
+        subtitle: "POZNAJ SWOICH FOTOGRAFÓW I FILMOWCÓW",
+        intro: "Cześć, jesteśmy Ewa i Piotr, miło nam Cię poznać! Tworzymy harmonijny duet – jedno uchwyca kadry, drugie opowiada historię filmem. Nasze podejście jest proste: dokumentujemy Wasz dzień tak, jak naturalnie się rozwija.",
+        experience: "Wasz dzień ślubu pokazuje, co jest dla Was najważniejsze. To przyszłość, której nie możecie się doczekać, ludzie, których kochacie najbardziej, i chwile, których nie chcecie zapomnieć. Z wieloletnim doświadczeniem w fotografowaniu i filmowaniu ślubów, wiemy jak sprawić, by Wasze doświadczenie było wolne od stresu, dzięki czemu możecie w pełni skupić się na tym, co najważniejsze.",
+        promise: "Jeśli szukacie duetu, który będzie elegancko i z klasą dokumentował ponadczasowe, autentyczne momenty zarówno na zdjęciach jak i filmie, a Wy będziecie mogli cieszyć się swoim dniem ślubnym z bliskimi, to stwórzmy razem coś pięknego.",
+        cta: "POZNAJ NAS",
+        sayHello: "NAPISZ DO NAS"
     }
 };
