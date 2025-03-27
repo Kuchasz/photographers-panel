@@ -141,34 +141,86 @@ export default async function Home() {
               {/* Left Column */}
               <div>
                 <ul className="space-y-6">
-                  {strings.advantages.advantages.slice(0, 4).map((adv) => (
-                    <li key={adv.title} className="flex">
-                      <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
-                        ❤
-                      </span>
-                      <div>
-                        <h4 className="font-medium text-stone-900">{adv.title}</h4>
-                        <p className="font-light text-sm leading-relaxed text-stone-600">{adv.description}</p>
-                      </div>
-                    </li>
-                  ))}
+                  {/* First 4 advantages */}
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Duet foto-video</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Dwie osoby - fotograf i kamerzysta, tworzący spójną dokumentację Waszego dnia</p>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Ponad 20 lat doświadczenia</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Fotografowaliśmy setki uroczystości, wiemy jak uchwycić najważniejsze momenty</p>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Bogaty pakiet podstawowy</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Około 1000 zdjęć i 3-godzinny film w jakości FullHD, bez ukrytych kosztów</p>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Plener w dniu ślubu gratis</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Sesja plenerowa w dniu ślubu zawsze wliczona w cenę pakietu</p>
+                    </div>
+                  </li>
                 </ul>
               </div>
 
               {/* Right Column */}
               <div>
                 <ul className="space-y-6">
-                  {strings.advantages.advantages.slice(4).map((adv) => (
-                    <li key={adv.title} className="flex">
-                      <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
-                        ❤
-                      </span>
-                      <div>
-                        <h4 className="font-medium text-stone-900">{adv.title}</h4>
-                        <p className="font-light text-sm leading-relaxed text-stone-600">{adv.description}</p>
-                      </div>
-                    </li>
-                  ))}
+                  {/* Next 4 advantages */}
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Pierwsze zdjęcia następnego dnia</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Pierwsze zdjęcia z wesela zobaczycie już na drugi dzień po uroczystości</p>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Brak limitów czasowych</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Pracujemy od przygotowań aż do 1:30 w nocy, nie uciekamy przed końcem imprezy</p>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Internetowa galeria z hasłem</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Wygodne udostępnianie zdjęć rodzinie i znajomym przez zabezpieczoną galerię</p>
+                    </div>
+                  </li>
+                  <li className="flex">
+                    <span className="mr-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600">
+                      ❤
+                    </span>
+                    <div>
+                      <h4 className="font-medium text-stone-900">Szybka realizacja</h4>
+                      <p className="font-light text-sm leading-relaxed text-stone-600">Gotowe materiały dostarczamy do 3 miesięcy od uroczystości</p>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -334,7 +386,6 @@ export default async function Home() {
               <Button
                 href={routes.contact.route}
                 variant="hero"
-                className="px-12 py-4 text-lg"
               >
                 {strings.contact.form.submit}
               </Button>
