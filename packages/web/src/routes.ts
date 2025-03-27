@@ -11,4 +11,4 @@ export const routes = {
         route: '/zdjecia',
     },
     private: { fullPage: false, route: '/prywatna' },
-};
+} as const;

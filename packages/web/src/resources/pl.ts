@@ -52,7 +52,7 @@ export const pl = {
             description: 'Chętnie omówimy szczegóły Waszej uroczystości, odpowiemy na pytania i dopasujemy ofertę do Waszych oczekiwań. Najszybszy kontakt uzyskacie dzwoniąc lub pisząc wiadomość przez poniższy formularz.',
             checkAvailability: 'Sprawdź naszą dostępność i zarezerwuj termin zanim zrobi to ktoś inny. Odpowiadamy w ciągu 24 godzin.',
             callToAction: 'Napisz do nas już teraz',
-            phoneTitle: 'Porozmawiajmy przez telefon',
+            phoneTitle: 'Zadzwoń do nas',
             emailTitle: 'Wyślij nam wiadomość',
             socialTitle: 'Znajdź nas w social mediach'
         },

@@ -116,6 +116,11 @@ export default async function Home() {
             title={strings.opinions.title}
             subtitle={strings.opinions.subtitle}
           />
+          <div className="mx-auto max-w-3xl mb-12 text-center">
+            <p className="font-light leading-relaxed text-stone-600 mb-4">
+              Nic nie opisze naszej pracy lepiej niż słowa zadowolonych Par Młodych. Sprawdź, co mówią o nas ci, którzy już nam zaufali i pozwolili uwiecznić ich najważniejszy dzień.
+            </p>
+          </div>
           <div className="mx-auto max-w-5xl">
             <OpinionCarousel opinions={opinions} />
           </div>
@@ -329,7 +334,7 @@ export default async function Home() {
                 <p className="mb-2 font-light leading-relaxed text-stone-600">{strings.contact.phoneLabel}</p>
                 <a
                   href={`tel:${strings.contact.phone}`}
-                  className="text-xl font-medium text-gold-600 transition-colors hover:text-gold-700"
+                  className="text-gold-600 transition-colors hover:text-gold-700"
                 >
                   {strings.contact.phone}
                 </a>

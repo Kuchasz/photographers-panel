@@ -16,7 +16,7 @@ export function SectionTitle({
   className = ""
 }: SectionTitleProps) {
   return (
-    <div className={`mx-auto mb-14 max-w-xl text-center ${className}`}>
+    <div className={`mx-auto mb-14 max-w-2xl text-center ${className}`}>
       {/* Subtitle displayed above the title */}
       <p className="mb-8 text-xs font-bold uppercase tracking-[0.4em] text-stone-800">
         {subtitle}
