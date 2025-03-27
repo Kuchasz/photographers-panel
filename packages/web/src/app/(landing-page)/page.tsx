@@ -1,4 +1,4 @@
-import { FacebookLogo, InstagramLogo, MapPin, Phone, ArrowUp } from "@phosphor-icons/react/dist/ssr";
+import { FacebookLogo, InstagramLogo, MapPin, Mailbox, Phone, ArrowUp } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { routes } from "~/routes";
 import { Button } from "../../components/button";
@@ -42,49 +42,49 @@ export default async function Home() {
       {/* Meet Your Photographer Section */}
       <section className="w-full bg-section-background py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <SectionTitle 
+          <SectionTitle
             title={strings.meetPhotographer.title}
             subtitle={strings.meetPhotographer.subtitle}
           />
-          
+
           <div className="mx-auto max-w-4xl">
             <div className="flex flex-col items-center gap-12 md:flex-row md:items-start">
               {/* Image Column */}
               <div className="w-full md:w-1/2">
                 <div className="overflow-hidden rounded-md shadow-lg">
-                  <Image 
+                  <Image
                     src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=687&auto=format&fit=crop"
-                    alt="Ewa i Piotr - Fotografowie i filmowcy ślubni" 
-                    width={600} 
+                    alt="Ewa i Piotr - Fotografowie i filmowcy ślubni"
+                    width={600}
                     height={700}
-                    className="w-full object-cover transition-transform duration-500 hover:scale-105" 
+                    className="w-full object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
               </div>
-              
+
               {/* Text Column */}
               <div className="w-full space-y-6 md:w-1/2">
                 <p className="font-serif text-lg italic leading-relaxed text-stone-700">
                   {strings.meetPhotographer.intro}
                 </p>
-                
-                <p className="text-stone-600">
+
+                <p className="font-light leading-relaxed text-stone-600">
                   {strings.meetPhotographer.experience}
                 </p>
-                
-                <p className="text-stone-600">
+
+                <p className="font-light leading-relaxed text-stone-600">
                   {strings.meetPhotographer.promise}
                 </p>
-                
+
                 <div className="flex flex-col gap-4 pt-4 sm:flex-row">
-                  <Button 
-                    href={routes.contact.route} 
+                  <Button
+                    href={routes.contact.route}
                     variant="default"
                   >
                     {strings.meetPhotographer.sayHello}
                   </Button>
-                  <Button 
-                    href={routes.contact.route} 
+                  <Button
+                    href={routes.contact.route}
                     variant="outline"
                   >
                     {strings.meetPhotographer.cta}
@@ -129,14 +129,14 @@ export default async function Home() {
             title={strings.advantages.title}
             subtitle={strings.advantages.subtitle}
           />
-          
+
           <div className="mx-auto max-w-4xl">
             <div className="mb-8 text-center">
-              <p className="mx-auto max-w-3xl text-lg text-stone-700">
+              <p className="mx-auto max-w-3xl font-light leading-relaxed text-stone-600 mb-4">
                 {strings.advantages.description}
               </p>
             </div>
-            
+
             <div className="grid gap-6 md:grid-cols-2 md:gap-10">
               {/* Left Column */}
               <div>
@@ -151,13 +151,13 @@ export default async function Home() {
                       </span>
                       <div>
                         <h4 className="font-medium text-stone-900">{adv.title}</h4>
-                        <p className="font-light text-stone-700">{adv.description}</p>
+                        <p className="font-light leading-relaxed text-stone-600">{adv.description}</p>
                       </div>
                     </li>
                   ))}
                 </ul>
               </div>
-              
+
               {/* Right Column */}
               <div>
                 <h3 className="mb-6 text-center font-serif text-xl font-medium text-stone-800 md:text-left">
@@ -171,14 +171,14 @@ export default async function Home() {
                       </span>
                       <div>
                         <h4 className="font-medium text-stone-900">{adv.title}</h4>
-                        <p className="font-light text-stone-700">{adv.description}</p>
+                        <p className="font-light leading-relaxed text-stone-600">{adv.description}</p>
                       </div>
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
-            
+
             <div className="mt-12 flex justify-center">
               <Button href={routes.offers.route} variant="default">
                 {strings.advantages.cta}
@@ -195,14 +195,14 @@ export default async function Home() {
             title={strings.location.title}
             subtitle={strings.location.subtitle}
           />
-          
+
           <div className="mx-auto max-w-4xl">
             <div className="mb-12 text-center">
-              <p className="mx-auto max-w-3xl text-lg text-stone-700">
+              <p className="mx-auto max-w-3xl font-light leading-relaxed text-stone-600 mb-4">
                 {strings.location.description}
               </p>
             </div>
-            
+
             <div className="mb-10 flex flex-col gap-8 md:flex-row md:items-stretch">
               {/* Areas we cover */}
               <div className="w-full rounded-lg bg-white p-6 shadow-md md:w-1/2">
@@ -218,27 +218,27 @@ export default async function Home() {
                   ))}
                 </ul>
               </div>
-              
+
               {/* Location info */}
               <div className="flex w-full flex-col justify-between rounded-lg bg-white p-6 shadow-md md:w-1/2">
                 <div>
                   <h3 className="mb-4 font-serif text-xl font-medium text-stone-800">
                     Informacje
                   </h3>
-                  <p className="mb-4 text-stone-700">
+                  <p className="mb-4 font-light leading-relaxed text-stone-600">
                     {strings.location.locationInfo}
                   </p>
                   <p className="mb-6 font-medium text-gold-600">
                     {strings.location.noExtraCharge}
                   </p>
                 </div>
-                
+
                 <div className="flex flex-col gap-4 pt-4 sm:flex-row">
                   <Button href={routes.contact.route} variant="default">
                     {strings.location.cta}
                   </Button>
-                  <Button 
-                    href="https://maps.app.goo.gl/KQ9RSySeL2xHvvvA7" 
+                  <Button
+                    href="https://maps.app.goo.gl/KQ9RSySeL2xHvvvA7"
                     variant="outline"
                   >
                     {strings.location.mapCta}
@@ -251,38 +251,99 @@ export default async function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="pricing" className="w-full bg-white py-16 md:py-24">
+      <section id="contact" className="w-full bg-white py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle
-            title={strings.contact.slogan.title}
-            subtitle={strings.contact.slogan.description}
+            title={strings.contact.contactUs.title}
+            subtitle={strings.contact.contactUs.subtitle}
           />
 
-          <div className="mx-auto max-w-3xl">
-            <div className="mb-12 flex justify-center">
-              <Button href={routes.contact.route} variant="hero">
-                {strings.contact.form.submit}
-              </Button>
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-10 text-center">
+              <p className="mx-auto max-w-3xl font-light leading-relaxed text-stone-600 mb-4">
+                {strings.contact.contactUs.description}
+              </p>
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-8 md:flex-row md:gap-12 lg:gap-16">
-              <ContactLink
-                href={`tel:${strings.contact.phone}`}
-                icon={Phone}
-                text={strings.contact.phone}
-              />
-              <ContactLink
-                href="https://instagram.com/pyszstudio"
-                icon={InstagramLogo}
-                text="pyszstudio"
-                external={true}
-              />
-              <ContactLink
-                href="https://facebook.com/pyszstudio"
-                icon={FacebookLogo}
-                text="pyszstudio"
-                external={true}
-              />
+            <div className="mb-12 rounded-lg bg-gold-50 p-6 text-center shadow-sm">
+              <p className="font-light leading-relaxed text-gold-700">
+                {strings.contact.contactUs.checkAvailability}
+              </p>
+            </div>
+
+            <div className="mb-12 grid gap-6 md:grid-cols-3 md:gap-8">
+              {/* Phone Contact */}
+              <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+                <h3 className="mb-4 font-serif text-xl font-medium text-stone-800">
+                  {strings.contact.contactUs.phoneTitle}
+                </h3>
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gold-100">
+                  <Phone size={28} weight="light" className="text-gold-600" />
+                </div>
+                <p className="mb-2 font-light leading-relaxed text-stone-600">{strings.contact.phoneLabel}</p>
+                <a
+                  href={`tel:${strings.contact.phone}`}
+                  className="text-xl font-medium text-gold-600 transition-colors hover:text-gold-700"
+                >
+                  {strings.contact.phone}
+                </a>
+              </div>
+
+              {/* Email Contact */}
+              <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+                <h3 className="mb-4 font-serif text-xl font-medium text-stone-800">
+                  {strings.contact.contactUs.emailTitle}
+                </h3>
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gold-100">
+                  <Mailbox size={28} weight="light" className="text-gold-600" />
+                </div>
+                <p className="mb-2 font-light leading-relaxed text-stone-600">{strings.contact.emailLabel}</p>
+                <a
+                  href={`mailto:${strings.contact.email}`}
+                  className="text-gold-600 transition-colors hover:text-gold-700"
+                >
+                  {strings.contact.email}
+                </a>
+              </div>
+
+              {/* Social Media Contact */}
+              <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+                <h3 className="mb-4 font-serif text-xl font-medium text-stone-800">
+                  {strings.contact.contactUs.socialTitle}
+                </h3>
+                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gold-100">
+                  <InstagramLogo size={28} weight="light" className="text-gold-600" />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <a
+                    href="https://instagram.com/pyszstudio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 text-gold-600 transition-colors hover:text-gold-700"
+                  >
+                    <InstagramLogo size={16} />
+                    <span>Instagram</span>
+                  </a>
+                  <a
+                    href="https://facebook.com/pyszstudio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 text-gold-600 transition-colors hover:text-gold-700"
+                  >
+                    <FacebookLogo size={16} />
+                    <span>Facebook</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <Button
+                href={routes.contact.route}
+                variant="hero"
+                className="px-12 py-4 text-lg"
+              >
+                {strings.contact.form.submit}
+              </Button>
             </div>
           </div>
         </div>

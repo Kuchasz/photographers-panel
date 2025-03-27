@@ -19,7 +19,7 @@ export const pl = {
             'Zakopane i Podhale'
         ],
         cta: 'SPRAWDŹ DOSTĘPNOŚĆ',
-        locationInfo: 'Znajdujemy się w centrum Andrychowa, skąd łatwo dojedziemy na Waszą uroczystość w południowej Polsce.',
+        locationInfo: 'Jesteśmy z Andrychowa, skąd łatwo dojedziemy na Waszą uroczystość w południowej Polsce.',
         mapCta: 'ZNAJDŹ NAS NA MAPIE'
     },
     main: {
@@ -45,6 +45,16 @@ export const pl = {
         slogan: {
             title: 'Skontaktuj się z nami!',
             description: 'Zapytaj o wszelkie wątpliwości drogą elektroniczną lub telefonicznie',
+        },
+        contactUs: {
+            title: 'Porozmawiajmy o Waszym dniu',
+            subtitle: 'Jesteśmy dostępni, by odpowiedzieć na wszystkie pytania',
+            description: 'Chętnie omówimy szczegóły Waszej uroczystości, odpowiemy na pytania i dopasujemy ofertę do Waszych oczekiwań. Najszybszy kontakt uzyskacie dzwoniąc lub pisząc wiadomość przez poniższy formularz.',
+            checkAvailability: 'Sprawdź naszą dostępność i zarezerwuj termin zanim zrobi to ktoś inny. Odpowiadamy w ciągu 24 godzin.',
+            callToAction: 'Napisz do nas już teraz',
+            phoneTitle: 'Porozmawiajmy przez telefon',
+            emailTitle: 'Wyślij nam wiadomość',
+            socialTitle: 'Znajdź nas w social mediach'
         },
         form: {
             title: 'Napisz do nas',
@@ -75,6 +85,11 @@ export const pl = {
         phoneLabel: 'Telefon:',
         address: ['EWA I PIOTR PYSZ', 'UL. METALOWCÓW 5/30', '34-120 ANDRYCHÓW'],
         addressLabel: 'Adres:',
+        socialLinks: {
+            instagram: 'Obserwuj nas na Instagramie',
+            facebook: 'Polub nas na Facebooku',
+            youtube: 'Zobacz nasze filmy na YouTube'
+        }
     },
     head: {
         title: '',
