@@ -140,9 +140,6 @@ export default async function Home() {
             <div className="grid gap-6 md:grid-cols-2 md:gap-10">
               {/* Left Column */}
               <div>
-                <h3 className="mb-6 text-center font-serif text-xl font-medium text-stone-800 md:text-left">
-                  {strings.advantages.leftColumnTitle}
-                </h3>
                 <ul className="space-y-6">
                   {strings.advantages.advantages.slice(0, 4).map((adv) => (
                     <li key={adv.title} className="flex">
@@ -151,7 +148,7 @@ export default async function Home() {
                       </span>
                       <div>
                         <h4 className="font-medium text-stone-900">{adv.title}</h4>
-                        <p className="font-light leading-relaxed text-stone-600">{adv.description}</p>
+                        <p className="font-light text-sm leading-relaxed text-stone-600">{adv.description}</p>
                       </div>
                     </li>
                   ))}
@@ -160,9 +157,6 @@ export default async function Home() {
 
               {/* Right Column */}
               <div>
-                <h3 className="mb-6 text-center font-serif text-xl font-medium text-stone-800 md:text-left">
-                  {strings.advantages.rightColumnTitle}
-                </h3>
                 <ul className="space-y-6">
                   {strings.advantages.advantages.slice(4).map((adv) => (
                     <li key={adv.title} className="flex">
@@ -171,7 +165,7 @@ export default async function Home() {
                       </span>
                       <div>
                         <h4 className="font-medium text-stone-900">{adv.title}</h4>
-                        <p className="font-light leading-relaxed text-stone-600">{adv.description}</p>
+                        <p className="font-light text-sm leading-relaxed text-stone-600">{adv.description}</p>
                       </div>
                     </li>
                   ))}

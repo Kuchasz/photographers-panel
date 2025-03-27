@@ -200,25 +200,29 @@ export const Header = () => {
                     </nav>
 
                     {/* Hero text overlay */}
-                    <div className="absolute bottom-24 left-0 right-0 text-center px-4">
-                        <div className="mx-auto max-w-6xl">
-                            <h1 className="font-serif space-y-4 text-white leading-tight">
-                                <div className="space-x-4 -ml-48">
-                                    <span className="text-3xl md:text-4xl lg:text-5xl italic font-light mb-2">{strings.main.hero.embrace}</span>
-                                    <span className="text-4xl md:text-5xl lg:text-6xl font-normal mb-2">{strings.main.hero.timeless}</span>
+                    <div className="absolute inset-0 flex items-end">
+                        <div className="w-full bg-gradient-to-t from-black/60 to-transparent pb-36 pt-24">
+                            <div className="mx-auto max-w-6xl px-4 text-center">
+                                <h1 className="font-serif text-white">
+                                    <div className="mb-6 flex flex-col items-center md:mb-8">
+                                        <div className="flex flex-col md:flex-row md:items-baseline md:justify-center md:gap-3">
+                                            <span className="text-3xl italic font-light md:text-4xl lg:text-5xl">{strings.main.hero.embrace}</span>
+                                            <span className="text-4xl font-normal md:text-5xl lg:text-6xl">{strings.main.hero.timeless}</span>
+                                        </div>
+                                        <div className="mt-3 flex flex-col md:flex-row md:items-baseline md:justify-center md:gap-3">
+                                            <span className="text-4xl font-normal md:text-5xl lg:text-6xl">{strings.main.hero.celebrating}</span>
+                                            <span className="text-3xl italic font-light md:text-4xl lg:text-5xl">{strings.main.hero.through}</span>
+                                        </div>
+                                    </div>
+                                </h1>
+                                <div className="mt-8">
+                                    <Button
+                                        href="kontakt"
+                                        variant="hero"
+                                    >
+                                        {strings.main.hero.pricing}
+                                    </Button>
                                 </div>
-                                <div className="space-x-4 ml-48">
-                                    <span className="text-3xl md:text-4xl lg:text-5xl font-normal mt-4 mb-1">{strings.main.hero.celebrating}</span>
-                                    <span className="text-2xl md:text-3xl lg:text-4xl italic font-light">{strings.main.hero.through}</span>
-                                </div>
-                            </h1>
-                            <div className="mt-8">
-                                <Button
-                                    href="kontakt"
-                                    variant="hero"
-                                >
-                                    {strings.main.hero.pricing}
-                                </Button>
                             </div>
                         </div>
                     </div>
