@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart } from '@phosphor-icons/react';
@@ -45,6 +45,24 @@ export function PhotoTile({
   isLiked = false,
 }: PhotoTileProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const [showLikeAnimation, setShowLikeAnimation] = useState(false);
+  const prevIsLikedRef = useRef(isLiked);
+  
+  // Trigger animation when a photo becomes liked
+  useEffect(() => {
+    // Only show animation when isLiked transitions from false to true
+    if (isLiked && !prevIsLikedRef.current) {
+      setShowLikeAnimation(true);
+      const timer = setTimeout(() => {
+        setShowLikeAnimation(false);
+      }, 1000); // Animation duration
+      
+      return () => clearTimeout(timer);
+    }
+    
+    // Update ref with current value for next render
+    prevIsLikedRef.current = isLiked;
+  }, [isLiked]);
   
   const handleClick = () => {
     if (onClick) {
@@ -60,6 +78,13 @@ export function PhotoTile({
     // Stop propagation to prevent parent's onClick handler from being triggered
     e.stopPropagation();
     if (onLike) {
+      // If not already liked, show the animation when user clicks like button
+      if (!isLiked) {
+        setShowLikeAnimation(true);
+        setTimeout(() => {
+          setShowLikeAnimation(false);
+        }, 1000);
+      }
       onLike(photo);
     }
   };
@@ -109,6 +134,17 @@ export function PhotoTile({
             className={isLiked ? "text-rose-500" : "text-white"}
           />
         </button>
+      )}
+      
+      {/* Instagram-like heart animation */}
+      {showLikeAnimation && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <Heart 
+            weight="fill"
+            size={80}
+            className="text-rose-500 drop-shadow-lg animate-like-heart"
+          />
+        </div>
       )}
     </>
   );
