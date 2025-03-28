@@ -9,7 +9,7 @@ import { strings } from "~/resources";
 import { sendMessage, type ContactState } from "./actions";
 import { CalendarCheck, PresentationChart, CurrencyCircleDollar } from "@phosphor-icons/react";
 
-// Section heading component
+// Section heading component - this is just a UI component, not a directly translatable piece
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
     <h3 className="text-lg font-medium text-stone-800 border-b border-stone-100 pb-2 mb-4">
         {children}
@@ -38,12 +38,12 @@ export default function ContactPage() {
     return (
         <PageContainer>
             {/* Process Section */}
-            <section className="w-full bg-section-background py-16 mb-12 rounded-lg shadow-md">
+            <section className="w-full pb-16 rounded-lg">
                 <div className="max-w-5xl mx-auto px-4">
                     
                     <SectionTitle 
-                        title="Proces rezerwacji"
-                        subtitle="Jak wygląda proces współpracy z nami"
+                        title={strings.contact.reservation.title}
+                        subtitle={strings.contact.reservation.subtitle}
                     />
                     
                     <div className="grid md:grid-cols-3 gap-8 my-12">
@@ -52,8 +52,8 @@ export default function ContactPage() {
                                 {/* @ts-expect-error - Icon component type issue */}
                                 <CalendarCheck size={24} weight="light" />
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">Ustalenie terminu</h3>
-                            <p className="text-stone-600 font-light">Sprawdzamy dostępność i potwierdzamy termin Waszej uroczystości. Kontaktujemy się w ciągu 24 godzin.</p>
+                            <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[0]?.title ?? 'Ustalenie terminu'}</h3>
+                            <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[0]?.description ?? 'Sprawdzamy dostępność i potwierdzamy termin Waszej uroczystości. Kontaktujemy się w ciągu 24 godzin.'}</p>
                         </div>
 
                         <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
@@ -61,8 +61,8 @@ export default function ContactPage() {
                                 {/* @ts-expect-error - Icon component type issue */}
                                 <PresentationChart size={24} weight="light" />
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">Prezentacja oferty</h3>
-                            <p className="text-stone-600 font-light">Spotykamy się osobiście lub online, aby przedstawić naszą ofertę i dopasować pakiet do Waszych oczekiwań.</p>
+                            <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[1]?.title ?? 'Prezentacja oferty'}</h3>
+                            <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[1]?.description ?? 'Spotykamy się osobiście lub online, aby przedstawić naszą ofertę i dopasować pakiet do Waszych oczekiwań.'}</p>
                         </div>
 
                         <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
@@ -70,8 +70,8 @@ export default function ContactPage() {
                                 {/* @ts-expect-error - Icon component type issue */}
                                 <CurrencyCircleDollar size={24} weight="light" />
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">Zaliczka i rezerwacja</h3>
-                            <p className="text-stone-600 font-light">Podpisujemy umowę i przyjmujemy zaliczkę, która gwarantuje rezerwację terminu wyłącznie dla Was.</p>
+                            <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[2]?.title ?? 'Zaliczka i rezerwacja'}</h3>
+                            <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[2]?.description ?? 'Podpisujemy umowę i przyjmujemy zaliczkę, która gwarantuje rezerwację terminu wyłącznie dla Was.'}</p>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                     <div className="bg-white rounded-2xl shadow-md border border-stone-100 p-6 md:p-8">
                         <SectionTitle 
                             title={strings.contact.form.title}
-                            subtitle="Wypełnij formularz, aby skontaktować się z nami"
+                            subtitle={strings.contact.formSubtitle}
                             className="mb-8"
                         />
 
@@ -102,7 +102,7 @@ export default function ContactPage() {
                             )}
 
                             <div className="space-y-5">
-                                <SectionHeading>Informacje kontaktowe</SectionHeading>
+                                <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
                                 <div className="grid gap-4 md:grid-cols-2">
                                     <FormInput
                                         label={strings.contact.form.name}
@@ -123,7 +123,7 @@ export default function ContactPage() {
                             </div>
 
                             <div className="space-y-5">
-                                <SectionHeading>Informacje o weselu</SectionHeading>
+                                <SectionHeading>{strings.contact.formSections.weddingInfo}</SectionHeading>
                                 <div className="grid gap-4 md:grid-cols-2">
                                     <FormInput
                                         label={strings.contact.form.weddingDate}
@@ -147,7 +147,7 @@ export default function ContactPage() {
                             </div>
 
                             <div className="space-y-5">
-                                <SectionHeading>Dodatkowe informacje</SectionHeading>
+                                <SectionHeading>{strings.contact.formSections.additionalInfo}</SectionHeading>
                                 <div className="grid gap-4">
                                     <FormInput
                                         label={strings.contact.form.howDidYouHear}

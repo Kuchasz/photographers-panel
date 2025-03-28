@@ -48,8 +48,35 @@ export const pl = {
             callToAction: 'Napisz do nas już teraz',
             phoneTitle: 'Zadzwoń do nas',
             emailTitle: 'Wyślij nam wiadomość',
-            socialTitle: 'Znajdź nas w social mediach'
+            socialTitle: 'Znajdź nas w social mediach',
+            description: 'Napisz do nas, aby sprawdzić dostępność terminu i dowiedzieć się więcej o naszej ofercie. Z przyjemnością odpowiemy na wszystkie Twoje pytania.',
+            checkAvailability: 'Potwierdźmy Twój termin! Skontaktuj się z nami, aby sprawdzić dostępność na Twój wymarzony dzień.'
         },
+        reservation: {
+            title: 'Proces rezerwacji',
+            subtitle: 'Jak wygląda proces współpracy z nami',
+            steps: [
+                {
+                    title: 'Ustalenie terminu',
+                    description: 'Sprawdzamy dostępność i potwierdzamy termin Waszej uroczystości. Kontaktujemy się w ciągu 24 godzin.'
+                },
+                {
+                    title: 'Prezentacja oferty',
+                    description: 'Przedstawiamy naszą ofertę i dopasowujemy pakiet do Waszych oczekiwań.'
+                },
+                {
+                    title: 'Zaliczka i rezerwacja',
+                    description: 'Podpisujemy umowę i przyjmujemy zaliczkę, która gwarantuje rezerwację terminu wyłącznie dla Was.'
+                }
+            ],
+            imageCaption: 'Rozpocznij swoją ślubną podróż'
+        },
+        formSections: {
+            contactInfo: 'Informacje kontaktowe',
+            weddingInfo: 'Informacje o weselu',
+            additionalInfo: 'Dodatkowe informacje'
+        },
+        formSubtitle: 'Wypełnij formularz, aby skontaktować się z nami',
         form: {
             title: 'Napisz do nas',
             name: 'Wasze imiona i nazwiska',
