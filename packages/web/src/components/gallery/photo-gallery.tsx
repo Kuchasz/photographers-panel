@@ -331,6 +331,7 @@ export function PhotoGallery({
                                 photo={photo}
                                 onClick={openLightbox}
                                 linkToPage={false}
+                                showCaption={false}
                             />
                         ))}
                     </div>
