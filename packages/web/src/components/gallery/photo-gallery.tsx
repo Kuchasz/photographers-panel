@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, X, Download } from '@phosphor-icons/react';
+import { ArrowLeft, ArrowRight, X, Download, Heart } from '@phosphor-icons/react';
 import { type Photo, PhotoTile } from './photo-tile';
 
 
@@ -10,6 +10,8 @@ type PhotoGalleryProps = {
     photos: Photo[];
     allowDownload?: boolean;
     onPhotoDownload?: (photo: Photo) => void;
+    onPhotoLike?: (photo: Photo, isLiked: boolean) => void;
+    likedPhotoIds?: string[];
 };
 
 type Column = {
@@ -22,14 +24,16 @@ type Column = {
 };
 
 // Gap size in pixels - matches the gap-4 class (1rem = 16px)
-const GAP_SIZE = 16;
+const GAP_SIZE = 8;
 // Delay before showing loading indicator or starting animations (ms)
 const LOADING_DELAY = 300;
 
 export function PhotoGallery({
     photos,
     allowDownload = true,
-    onPhotoDownload
+    onPhotoDownload,
+    onPhotoLike,
+    likedPhotoIds = []
 }: PhotoGalleryProps) {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -316,14 +320,27 @@ export function PhotoGallery({
         // If no callback is provided, the default anchor behavior will proceed
     };
 
+    // Handle like functionality
+    const handleLike = (photo: Photo) => {
+        if (!onPhotoLike) return;
+        
+        const isCurrentlyLiked = likedPhotoIds.includes(photo.id);
+        onPhotoLike(photo, !isCurrentlyLiked);
+    };
+
+    // Check if a photo is liked
+    const isPhotoLiked = (photoId: string) => {
+        return likedPhotoIds.includes(photoId);
+    };
+
     return (
         <div className="space-y-8" onKeyDown={handleKeyDown} tabIndex={0}>
             {/* Photo Gallery with Flex Columns */}
-            <div className="flex flex-wrap gap-4" ref={containerRef}>
+            <div className="flex flex-wrap gap-2" ref={containerRef}>
                 {columns.map((column, columnIndex) => (
                     <div
                         key={`column-${columnIndex}`}
-                        className="flex-1 flex flex-col gap-4 min-w-0"
+                        className="flex-1 flex flex-col gap-2 min-w-0"
                     >
                         {column.photos.map((photo) => (
                             <PhotoTile
@@ -332,6 +349,8 @@ export function PhotoGallery({
                                 onClick={openLightbox}
                                 linkToPage={false}
                                 showCaption={false}
+                                onLike={onPhotoLike ? handleLike : undefined}
+                                isLiked={isPhotoLiked(photo.id)}
                             />
                         ))}
                     </div>
@@ -345,6 +364,20 @@ export function PhotoGallery({
                     className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out ${lightboxVisible ? 'bg-black/95' : 'bg-black/0'}`}
                 >
                     <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
+                        {onPhotoLike && (
+                            <button
+                                onClick={() => handleLike(selectedPhoto)}
+                                className="cursor-pointer text-white p-2 rounded-full bg-black/20 hover:bg-black/40 transition-colors"
+                                aria-label={isPhotoLiked(selectedPhoto.id) ? "Unlike photo" : "Like photo"}
+                            >
+                                <Heart 
+                                    size={24} 
+                                    weight={isPhotoLiked(selectedPhoto.id) ? "fill" : "regular"} 
+                                    className={isPhotoLiked(selectedPhoto.id) ? "text-rose-500" : "text-white"}
+                                />
+                            </button>
+                        )}
+                        
                         {allowDownload && (
                             <a
                                 href={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
