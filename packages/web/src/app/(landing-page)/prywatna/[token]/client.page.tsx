@@ -3,11 +3,7 @@
 import { type Photo, PhotoGallery } from "~/components/gallery";
 import { PageContainer } from "~/components/page-container";
 
-export default function PrivateGalleryClientPage({ photos, likedPhotoIds }: { photos: Photo[], likedPhotoIds: string[] }) {
-
-    const handlePhotoLike = (photo: Photo, isLiked: boolean) => {
-        console.log(`Photo ${photo.id} is now ${isLiked ? 'liked' : 'unliked'}`);
-    };
+export default function PrivateGalleryClientPage({ photos }: { photos: Photo[] }) {
 
     return (
         <PageContainer>
@@ -27,7 +23,7 @@ export default function PrivateGalleryClientPage({ photos, likedPhotoIds }: { ph
                     </p>
                 </div>
             ) : (
-                <PhotoGallery allowDownload={true} photos={photos} onPhotoLike={handlePhotoLike} likedPhotoIds={likedPhotoIds} />
+                <PhotoGallery allowDownload={true} photos={photos} />
             )}
         </PageContainer>)
 }

@@ -22,9 +22,7 @@ export default async function PrivateGalleryPage({ params }: { params: Promise<{
 
     const photos = await getPhotos(token);
 
-    const likedPhotoIds = photos.filter(() => Math.random() > 0.75).map((photo) => photo.id);
-
     return (
-        <PrivateGalleryClientPage photos={photos} likedPhotoIds={likedPhotoIds} />
+        <PrivateGalleryClientPage photos={photos} />
     )
 }
