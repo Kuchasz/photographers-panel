@@ -162,6 +162,31 @@ export const pl = {
                 EmailInvalid: 'Nieprawidłowy adres email',
             },
         },
+        subtitle: "Dostęp do prywatnych wspomnień ślubnych",
+        intro: "Witaj w strefie prywatnych galerii ślubnych. To bezpieczne miejsce, gdzie Para Młoda i ich bliscy mogą zobaczyć wszystkie zdjęcia z uroczystości.",
+        howItWorks: {
+            title: "Jak działa prywatna galeria?",
+            subtitle: "Trzy proste kroki do Twoich wspomnień",
+            steps: [
+                {
+                    title: "Otrzymaj hasło",
+                    description: "Para Młoda otrzymuje unikalne hasło do galerii, które może udostępnić swoim bliskim."
+                },
+                {
+                    title: "Wprowadź hasło",
+                    description: "Wpisz otrzymane hasło w formularz i uzyskaj natychmiastowy dostęp do zdjęć."
+                },
+                {
+                    title: "Przeglądaj i pobieraj",
+                    description: "Przeglądaj pełną kolekcję zdjęć i pobieraj ulubione fotografie w wysokiej rozdzielczości."
+                }
+            ]
+        },
+        help: {
+            title: "Potrzebujesz pomocy?",
+            description: "Jeśli masz problem z dostępem do galerii lub nie posiadasz hasła, skontaktuj się bezpośrednio z Parą Młodą lub z nami:",
+            contact: "Skontaktuj się z nami"
+        }
     },
     offer: {
         wedding: {
