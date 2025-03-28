@@ -8,6 +8,7 @@ import {
 } from '~/collections/collectionSlugs';
 import { headers } from 'next/headers';
 import { type PrivateGallery } from '~/payload-types';
+import { fetchJAlbumPhotos } from '~/jalbum';
 
 export async function getPhotos(token: string) {
   const payload = await getPayload({
@@ -48,6 +49,30 @@ export async function getPhotos(token: string) {
       },
     },
   };
+
+
+  const jalbumPhotos = await fetchJAlbumPhotos('https://ps-wed.azurewebsites.net/2025_02_22_Bolecina');
+
+  return jalbumPhotos.map(photo => ({
+    id: String(photo.id),
+    alt: photo.alt ?? '',
+    url: photo.src ?? '',
+    width: photo.width ?? 0,
+    height: photo.height ?? 0,
+    sizes: {
+      thumbnail: {
+        url: photo.thumbnail ?? '',
+        width: photo.thumbw ?? 400,
+        height: photo.thumbh ?? 300,
+      },
+      big: {
+        url: photo.src ?? '',
+        width: photo.width ?? 768,
+        height: photo.height ?? 1024,
+      },
+    }
+  }));
+
 
   // Fetch media from the private gallery collection
   const { docs: photos } = await payload.find({

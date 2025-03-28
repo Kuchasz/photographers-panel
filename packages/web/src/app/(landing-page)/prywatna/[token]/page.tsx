@@ -41,7 +41,7 @@ export default async function PrivateGalleryPage({ params }: { params: Promise<{
                     </p>
                 </div>
             ) : (
-                <PhotoGallery allowDownload={false} photos={photos} />
+                <PhotoGallery allowDownload={true} photos={photos} />
             )}
         </PageContainer>)
 }

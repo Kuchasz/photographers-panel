@@ -1,14 +1,14 @@
 'use client';
+import { Lock } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
-import { PageContainer } from "~/components/page-container";
+import { useActionState } from "react";
 import { FormLabel } from "~/components/form";
 import { FormButton } from "~/components/form/button";
+import { PageContainer } from "~/components/page-container";
+import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
 import { authenticate } from "./actions";
-import { useActionState } from "react";
-import { SectionTitle } from "~/components/section-title";
-import { Lock } from "@phosphor-icons/react";
 
 export default function PrivateGallery() {
     const [state, formAction] = useActionState(authenticate, {
@@ -16,7 +16,7 @@ export default function PrivateGallery() {
         authenticated: false,
         isDirty: false
     });
-
+    
     return (
         <PageContainer>
             {/* How It Works Section */}

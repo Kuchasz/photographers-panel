@@ -14,6 +14,10 @@ const config = {
                 hostname: 'images.unsplash.com',
                 protocol: 'https',
             },
+            {
+                hostname: 'ps-wed.azurewebsites.net',
+                protocol: 'https',
+            },
         ],
     },
 };

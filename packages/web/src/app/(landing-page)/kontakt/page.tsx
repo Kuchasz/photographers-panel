@@ -49,7 +49,6 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-3 gap-8 my-12">
                         <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
-                                {/* @ts-expect-error - Icon component type issue */}
                                 <CalendarCheck size={24} weight="light" />
                             </div>
                             <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[0]?.title ?? 'Ustalenie terminu'}</h3>
@@ -58,7 +57,6 @@ export default function ContactPage() {
 
                         <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
-                                {/* @ts-expect-error - Icon component type issue */}
                                 <PresentationChart size={24} weight="light" />
                             </div>
                             <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[1]?.title ?? 'Prezentacja oferty'}</h3>
@@ -67,7 +65,6 @@ export default function ContactPage() {
 
                         <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
-                                {/* @ts-expect-error - Icon component type issue */}
                                 <CurrencyCircleDollar size={24} weight="light" />
                             </div>
                             <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[2]?.title ?? 'Zaliczka i rezerwacja'}</h3>
