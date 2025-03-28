@@ -10,6 +10,41 @@ import { headers } from 'next/headers';
 import { type PrivateGallery } from '~/payload-types';
 import { fetchJAlbumPhotos } from '~/jalbum';
 
+// Function to get gallery title from token
+export async function getGalleryTitle(token: string): Promise<string> {
+  const payload = await getPayload({
+    config: payloadConfig,
+  });
+
+  const headersList = await headers();
+  const ip = headersList.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
+
+  // Get the token
+  const authTokens = await payload.find({
+    collection: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
+    where: {
+      token: {
+        equals: token,
+      },
+      ipAddress: {
+        equals: ip,
+      },
+    },
+  });
+
+  // If no valid token is found or token is expired, return default title
+  const authToken = authTokens.docs[0];
+  if (!authToken || authToken.expiresAt < new Date().toISOString()) {
+    return '';
+  }
+
+  // Get the gallery from the token
+  const galleryData = authToken.gallery as PrivateGallery;
+  
+  // Return the gallery title or empty string if not found
+  return galleryData?.title || '';
+}
+
 export async function getPhotos(token: string) {
   const payload = await getPayload({
     config: payloadConfig,

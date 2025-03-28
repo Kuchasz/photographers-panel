@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { validateToken } from "~/collections/private-gallery/private-gallery-actions";
-import { getPhotos } from "./actions";
+import { getPhotos, getGalleryTitle } from "./actions";
 import PrivateGalleryClientPage from "./client.page";
 
 export const metadata: Metadata = {
@@ -21,8 +21,12 @@ export default async function PrivateGalleryPage({ params }: { params: Promise<{
     }
 
     const photos = await getPhotos(token);
+    const galleryTitle = await getGalleryTitle(token);
 
     return (
-        <PrivateGalleryClientPage photos={photos} />
+        <PrivateGalleryClientPage 
+            photos={photos} 
+            galleryTitle={galleryTitle} 
+        />
     )
 }
