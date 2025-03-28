@@ -8,7 +8,6 @@ import { type Photo, PhotoTile } from './photo-tile';
 
 type PhotoGalleryProps = {
     photos: Photo[];
-    allowDownload?: boolean;
     onPhotoDownload?: (photo: Photo) => void;
 };
 
@@ -28,7 +27,6 @@ const LOADING_DELAY = 300;
 
 export function PhotoGallery({
     photos,
-    allowDownload = true,
     onPhotoDownload
 }: PhotoGalleryProps) {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
@@ -346,7 +344,7 @@ export function PhotoGallery({
                 >
                     <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
 
-                        {allowDownload && (
+                        {handleDownload && (
                             <a
                                 href={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                                 download

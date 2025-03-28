@@ -5,6 +5,10 @@ import { PageContainer } from "~/components/page-container";
 
 export default function PrivateGalleryClientPage({ photos }: { photos: Photo[] }) {
 
+    const handleDownload = (photo: Photo) => {
+        console.log('Downloading photo:', photo);
+    };
+
     return (
         <PageContainer>
             <header className="mb-12 text-center">
@@ -23,7 +27,7 @@ export default function PrivateGalleryClientPage({ photos }: { photos: Photo[] }
                     </p>
                 </div>
             ) : (
-                <PhotoGallery allowDownload={true} photos={photos} />
+                <PhotoGallery photos={photos} onPhotoDownload={handleDownload} />
             )}
         </PageContainer>)
 }

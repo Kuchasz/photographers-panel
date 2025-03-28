@@ -28,7 +28,7 @@ export default async function PhotosPage() {
                     </p>
                 </div>
             ) : (
-                <PhotoGallery allowDownload={false} photos={photos} />
+                <PhotoGallery photos={photos} />
             )}
         </PageContainer>
     );
