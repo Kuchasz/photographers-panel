@@ -42,15 +42,9 @@ export const pl = {
     },
     contact: {
         map: 'Znajdź nas na mapie',
-        slogan: {
-            title: 'Skontaktuj się z nami!',
-            description: 'Zapytaj o wszelkie wątpliwości drogą elektroniczną lub telefonicznie',
-        },
         contactUs: {
             title: 'Porozmawiajmy o Waszym dniu',
             subtitle: 'Jesteśmy dostępni, by odpowiedzieć na wszystkie pytania',
-            description: 'Chętnie omówimy szczegóły Waszej uroczystości, odpowiemy na pytania i dopasujemy ofertę do Waszych oczekiwań. Najszybszy kontakt uzyskacie dzwoniąc lub pisząc wiadomość przez poniższy formularz.',
-            checkAvailability: 'Sprawdź naszą dostępność i zarezerwuj termin zanim zrobi to ktoś inny. Odpowiadamy w ciągu 24 godzin.',
             callToAction: 'Napisz do nas już teraz',
             phoneTitle: 'Zadzwoń do nas',
             emailTitle: 'Wyślij nam wiadomość',

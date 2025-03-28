@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import React, { useActionState } from "react";
 import { FormButton } from "~/components/form/button";
 import { FormInput } from "~/components/form/input";
@@ -8,7 +7,7 @@ import { PageContainer } from "~/components/page-container";
 import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
 import { sendMessage, type ContactState } from "./actions";
-import { Clock, Calendar, Users } from "@phosphor-icons/react";
+import { CalendarCheck, PresentationChart, CurrencyCircleDollar } from "@phosphor-icons/react";
 
 // Section heading component
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
@@ -38,79 +37,41 @@ export default function ContactPage() {
 
     return (
         <PageContainer>
-            {/* Hero Section */}
-            <section className="w-full bg-section-background py-12 mb-12 rounded-lg shadow-sm">
+            {/* Process Section */}
+            <section className="w-full bg-section-background py-16 mb-12 rounded-lg shadow-md">
                 <div className="max-w-5xl mx-auto px-4">
-                    <div className="grid gap-12 md:grid-cols-2 md:gap-16 items-center">
-                        {/* Content Section */}
-                        <div className="space-y-6">
-                            <div className="space-y-4">
-                                <h1 className="font-serif text-4xl font-light tracking-wide text-stone-800 md:text-5xl">
-                                    {strings.contact.slogan.title}
-                                </h1>
-                                <h2 className="text-xl font-light text-stone-600 leading-relaxed">
-                                    {strings.contact.contactUs.subtitle}
-                                </h2>
-                                <p className="font-light leading-relaxed text-stone-600">
-                                    {strings.contact.contactUs.description}
-                                </p>
-                                <p className="font-light italic text-stone-600">
-                                    {strings.contact.contactUs.checkAvailability}
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Contact Image */}
-                        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-100 shadow-lg md:aspect-auto md:h-[400px]">
-                            {/* @ts-expect-error - Next.js Image component type issue in Next.js App Router */}
-                            <Image
-                                src="/images/page_contact_photo.png"
-                                alt={strings.contact.slogan.title}
-                                fill
-                                className="object-cover hover:scale-105 transition-transform duration-700"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                priority
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-50"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* What to Expect Section */}
-            <section className="w-full py-12 mb-12">
-                <div className="max-w-5xl mx-auto px-4">
+                    
                     <SectionTitle 
-                        title="Co dalej?"
-                        subtitle="Proces rezerwacji terminu"
+                        title="Proces rezerwacji"
+                        subtitle="Jak wygląda proces współpracy z nami"
                     />
                     
                     <div className="grid md:grid-cols-3 gap-8 my-12">
-                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center">
+                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
                                 {/* @ts-expect-error - Icon component type issue */}
-                                <Clock size={24} weight="light" />
+                                <CalendarCheck size={24} weight="light" />
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">Szybka odpowiedź</h3>
-                            <p className="text-stone-600 font-light">Odpowiadamy na wiadomości w ciągu 24 godzin, aby potwierdzić dostępność terminu.</p>
+                            <h3 className="text-xl font-medium text-stone-800 mb-3">Ustalenie terminu</h3>
+                            <p className="text-stone-600 font-light">Sprawdzamy dostępność i potwierdzamy termin Waszej uroczystości. Kontaktujemy się w ciągu 24 godzin.</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center">
+                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
                                 {/* @ts-expect-error - Icon component type issue */}
-                                <Users size={24} weight="light" />
+                                <PresentationChart size={24} weight="light" />
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">Spotkanie</h3>
-                            <p className="text-stone-600 font-light">Umówimy się na osobiste lub online spotkanie, aby poznać Wasze oczekiwania.</p>
+                            <h3 className="text-xl font-medium text-stone-800 mb-3">Prezentacja oferty</h3>
+                            <p className="text-stone-600 font-light">Spotykamy się osobiście lub online, aby przedstawić naszą ofertę i dopasować pakiet do Waszych oczekiwań.</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center">
+                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
                             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
                                 {/* @ts-expect-error - Icon component type issue */}
-                                <Calendar size={24} weight="light" />
+                                <CurrencyCircleDollar size={24} weight="light" />
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">Rezerwacja</h3>
-                            <p className="text-stone-600 font-light">Po ustaleniu szczegółów podpisujemy umowę i rezerwujemy Wasz termin na wyłączność.</p>
+                            <h3 className="text-xl font-medium text-stone-800 mb-3">Zaliczka i rezerwacja</h3>
+                            <p className="text-stone-600 font-light">Podpisujemy umowę i przyjmujemy zaliczkę, która gwarantuje rezerwację terminu wyłącznie dla Was.</p>
                         </div>
                     </div>
                 </div>
@@ -169,20 +130,17 @@ export default function ContactPage() {
                                         name="weddingDate"
                                         type="date"
                                         value={state.formData.weddingDate ?? ''}
-
                                         minDate={today}
                                     />
                                     <FormInput
                                         label={strings.contact.form.weddingPlace}
                                         name="weddingPlace"
                                         value={state.formData.weddingPlace ?? ''}
-
                                     />
                                     <FormInput
                                         label={strings.contact.form.weddingVenue}
                                         name="weddingVenue"
                                         value={state.formData.weddingVenue ?? ''}
-
                                         className="md:col-span-2"
                                     />
                                 </div>
@@ -195,14 +153,12 @@ export default function ContactPage() {
                                         label={strings.contact.form.howDidYouHear}
                                         name="howDidYouHear"
                                         value={state.formData.howDidYouHear ?? ''}
-
                                     />
                                     <FormInput
                                         label={strings.contact.form.additionalDetails}
                                         name="additionalDetails"
                                         type="textarea"
                                         value={state.formData.additionalDetails ?? ''}
-
                                     />
                                 </div>
                             </div>
