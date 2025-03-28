@@ -20,7 +20,7 @@ export default function PrivateGallery() {
     return (
         <PageContainer>
             {/* How It Works Section */}
-            <section className="w-full py-12 mb-12">
+            <section className="w-full pb-12 mb-12">
                 <div className="max-w-5xl mx-auto px-4">
                     <SectionTitle
                         title={strings.privateGallery.howItWorks.title}
@@ -159,11 +159,9 @@ export default function PrivateGallery() {
                 </div>
             </section>
 
-
-
             {/* Help Section */}
             <section className="w-full py-8 mb-8">
-                <div className="max-w-4xl mx-auto px-4">
+                <div className="max-w-3xl mx-auto px-4">
                     <div className="bg-white rounded-lg p-8 shadow-md border border-stone-100 text-center">
                         <h3 className="text-2xl font-medium text-stone-800 mb-4">{strings.privateGallery.help.title}</h3>
                         <p className="text-stone-600 font-light mb-6">{strings.privateGallery.help.description}</p>
