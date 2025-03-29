@@ -12,6 +12,7 @@
   --font-serif: "Oranienbaum", serif;
 
   --animate-fade-and-zoom: fadeOutAndZoom 6s ease-out forwards;
+  --animate-fade: fade 6s ease-out forwards;
   --animate-zoom-in: zoomIn 6s ease-out forwards;
   --animate-shimmer: shimmer 1.5s infinite;
   --animate-spinner: spinner 1.2s linear infinite;
@@ -31,6 +32,18 @@
 
   /* --font-body: 'Hanken Grotesk', sans-serif; */
   --default-font-family: "Hanken Grotesk", sans-serif;
+
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
   @keyframes fadeOutAndZoom {
     0% {

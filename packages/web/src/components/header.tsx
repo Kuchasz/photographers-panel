@@ -25,7 +25,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
         prevPhoto: last(photos) as string,
         currentPhoto: first(photos) as string,
     });
+    const [scrollY, setScrollY] = React.useState(0);
 
+    // Track current photo for carousel
     React.useEffect(() => {
         const timer = setTimeout(() => {
             const nextPhoto = nextElement(photos, currentPhoto) as string;
@@ -35,9 +37,33 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
         return () => clearTimeout(timer);
     }, [currentPhoto, photos, interval]);
 
+    // Track scroll position for parallax effect
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setScrollY(window.scrollY);
+        };
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Get initial scroll position
+        handleScroll();
+
+        // Clean up
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    // Calculate parallax transform (subtle movement)
+    const parallaxTransform = `translateY(${scrollY * 0.35}px)`;
+
     return (
-        <div className="relative w-full h-full">
-            <picture key={prevPhoto} className="absolute contrast-85 inset-0 transition-all duration-[6000ms] ease-out scale-100">
+        <div className="relative w-full h-full overflow-hidden">
+            <picture 
+                key={prevPhoto} 
+                className="absolute contrast-85 inset-0 transition-all duration-[6000ms] ease-out scale-100"
+                style={{ transform: parallaxTransform }}>
                 <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
                 {/* <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} /> */}
                 <img
@@ -45,7 +71,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
                     className="w-full h-full object-center object-cover"
                     src={getSrc(prevPhoto, '.jpg')} />
             </picture>
-            <picture key={currentPhoto} className="absolute contrast-85 inset-0 animate-fade-and-zoom">
+            <picture 
+                key={currentPhoto} 
+                className="absolute contrast-85 inset-0 animate-fade"
+                style={{ transform: parallaxTransform }}>
                 <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.jpg')} />
                 {/* <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, '-600w.webp')} /> */}
                 <img

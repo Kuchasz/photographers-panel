@@ -1,36 +1,11 @@
-import { FacebookLogo, InstagramLogo, MapPin, Mailbox, Phone, ArrowUp } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
+import { FacebookLogo, InstagramLogo, Mailbox, Phone } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
 import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
-import { getInstagramPosts, getOpinions, getFeaturedPhotos } from "./actions";
+import { getFeaturedPhotos, getInstagramPosts, getOpinions } from "./actions";
 import { InstagramGrid, OpinionCarousel, PhotoGrid } from "./components.client";
-import Image from "next/image";
-
-const ContactLink = ({
-  href,
-  icon: Icon,
-  text,
-  external = false
-}: {
-  href: string;
-  icon: React.ElementType;
-  text: string;
-  external?: boolean;
-}) => (
-  <Link
-    href={href}
-    target={external ? "_blank" : undefined}
-    rel={external ? "noopener noreferrer" : undefined}
-    className="group inline-flex items-center gap-4 text-stone-600 transition-colors hover:text-stone-800"
-  >
-    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-section-background/80 backdrop-blur-sm transition-all group-hover:bg-gold-100">
-      <Icon size={20} weight="light" className="transform text-gold-600 transition-transform group-hover:scale-125" />
-    </span>
-    <span className="font-serif text-xl font-light">{text}</span>
-  </Link>
-);
 
 export default async function Home() {
   const opinions = await getOpinions();

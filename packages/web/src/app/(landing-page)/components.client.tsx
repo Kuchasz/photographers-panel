@@ -24,7 +24,7 @@ const NavigationButton = ({ direction, onClick, disabled = false, ariaLabel }: N
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 bg-white shadow-sm transition-all hover:bg-gold-50 hover:border-gold-200 hover:scale-110 ${disabled ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white'
+            className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-stone-200 bg-white shadow-sm transition-all hover:bg-gold-50 hover:border-gold-200 hover:scale-110 ${disabled ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white'
                 }`}
             aria-label={ariaLabel}
         >
@@ -195,7 +195,7 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                 </div>
 
                 {/* Navigation buttons centered below */}
-                <div className="flex justify-center gap-6 mt-4">
+                <div className="flex justify-center gap-24 mt-4">
                     <NavigationButton
                         direction="left"
                         onClick={handlePrevious}

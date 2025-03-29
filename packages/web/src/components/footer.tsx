@@ -125,14 +125,14 @@ export const Footer = () => (
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <a 
-                                href={`https://maps.google.com/maps?q=${encodeURIComponent(strings.contact.address.join(', '))}`}
+                            <a
+                                href={`https://maps.app.goo.gl/h4Zzi48yAHENtW9w7`}
                                 target="_blank"
                                 rel="noopener"
                                 className="text-stone-600 hover:text-gold-500 transition duration-200"
                             >
                                 {strings.contact.address.map((line, index) => (
-                                    <div key={index} className="hover:text-gold-500 transition duration-200">{line}</div>
+                                    <div key={index} className=" transition duration-200">{line}</div>
                                 ))}
                             </a>
                         </li>
