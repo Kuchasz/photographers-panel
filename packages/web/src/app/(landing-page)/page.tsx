@@ -412,12 +412,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Footer Section */}
-      <footer className="relative w-full bg-zinc-200 py-12">
-        <div className="container mx-auto px-4">
-        </div>
-      </footer>
     </div>
   );
 }

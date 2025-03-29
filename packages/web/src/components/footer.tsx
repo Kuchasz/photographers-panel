@@ -7,9 +7,9 @@ import { routes } from "~/routes";
 const year: number = getYear(new Date());
 
 export const Footer = () => (
-    <footer className="border-t border-stone-200 bg-white py-16">
+    <footer className="bg-white pb-16">
         <section className="container mx-auto px-4">
-            <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 my-24 gap-12 md:grid-cols-2 lg:grid-cols-3">
                 {/* Company Info */}
                 <div className="flex flex-col items-start">
                     <div className="flex flex-col items-center">
