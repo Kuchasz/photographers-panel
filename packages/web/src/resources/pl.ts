@@ -104,7 +104,7 @@ export const pl = {
         emailLabel: 'Adres e-mail:',
         phone: '506 386 443',
         phoneLabel: 'Telefon:',
-        address: ['EWA I PIOTR PYSZ', 'UL. METALOWCÓW 5/30', '34-120 ANDRYCHÓW'],
+        address: ['Ewa I Piotr Pysz', 'ul. Metalowców 5/30', '34-120 Andrychów'],
         addressLabel: 'Adres:',
         socialLinks: {
             instagram: 'Obserwuj nas na Instagramie',
@@ -301,6 +301,9 @@ export const pl = {
                 instagram: 'https://www.instagram.com/pyszstudio',
             },
         },
+        bottomText: 'Tworzymy piękne wspomnienia od 2010 roku',
+        privacyPolicy: 'Polityka prywatności',
+        termsOfService: 'Regulamin',
     },
     blog: {
         shareMessage: 'Aby podzielić się zdjęciami ze znajomymi możesz udostępnić wpis na facebooku',
