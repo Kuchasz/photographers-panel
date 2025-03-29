@@ -1,7 +1,6 @@
 'use client';
 
 import { ArrowLeft, ArrowRight, Download, X } from '@phosphor-icons/react';
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { type Photo, PhotoTile } from './photo-tile';
 
@@ -62,12 +61,12 @@ function PhotoLightbox({
             setLightboxVisible(false);
             setShowImage(false);
             document.body.style.overflow = 'hidden';
-            
+
             // Trigger the entrance animation
             requestAnimationFrame(() => {
                 setLightboxVisible(true);
             });
-            
+
             startLoadingTimer();
         }
     }, [isOpen, initialPhotoIndex]);
@@ -269,7 +268,14 @@ function PhotoLightbox({
                 )}
 
                 <div className={`relative w-full h-full ${skipAnimation ? '' : 'transition-opacity duration-500'} ${showImage ? 'opacity-100' : 'opacity-0'}`}>
-                    <Image
+                    <img
+                        ref={imageRef}
+                        src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
+                        alt={selectedPhoto.alt}
+                        className={`w-full h-full object-contain ${skipAnimation ? '' : 'transition-transform duration-500'} ${showImage ? 'scale-100' : 'scale-[0.98]'}`}
+                        onLoad={handleImageLoaded}
+                    />
+                    {/* <Image
                         ref={imageRef}
                         src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                         alt={selectedPhoto.alt}
@@ -278,7 +284,7 @@ function PhotoLightbox({
                         className={`object-contain ${skipAnimation ? '' : 'transition-transform duration-500'} ${showImage ? 'scale-100' : 'scale-[0.98]'}`}
                         onLoad={handleImageLoaded}
                         priority
-                    />
+                    /> */}
                 </div>
 
                 <div className={`absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent transition-all duration-300 ${lightboxVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
