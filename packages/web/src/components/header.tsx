@@ -62,7 +62,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
         <div className="relative w-full h-full overflow-hidden">
             <picture 
                 key={prevPhoto} 
-                className="absolute contrast-85 inset-0 transition-all duration-[6000ms] ease-out scale-100"
+                className="absolute contrast-85 inset-0"
                 style={{ transform: parallaxTransform }}>
                 <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
                 {/* <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} /> */}
