@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { strings } from "~/resources";
 import payloadConfig from "~/payload.config";
+import { PageContainer } from "~/components/page-container";
+import { type Metadata } from "next";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 
 export async function generateStaticParams() {
     const payload = await getPayload({
@@ -23,6 +26,32 @@ interface VideoDetailPageProps {
     params: Promise<{
         alias: string;
     }>;
+}
+
+export async function generateMetadata({ params }: VideoDetailPageProps): Promise<Metadata> {
+    const { alias } = await params;
+
+    const payload = await getPayload({
+        config: payloadConfig,
+    });
+
+    const { docs: videos } = await payload.find({
+        collection: 'videos',
+        where: { alias: { equals: alias } },
+    });
+
+    const video = videos[0];
+
+    if (!video) {
+        return {
+            title: 'Film nie został znaleziony | Fotografia',
+        };
+    }
+
+    return {
+        title: `${video.title} | Filmy | Fotografia`,
+        description: video.descshort || 'Obejrzyj profesjonalny film z naszej kolekcji.',
+    };
 }
 
 export default async function VideoDetailPage({ params }: VideoDetailPageProps) {
@@ -49,42 +78,48 @@ export default async function VideoDetailPage({ params }: VideoDetailPageProps) 
         notFound();
     }
 
+    // Extract YouTube video ID for related content if needed
+    const youtubeId = video.videoUrl?.includes('youtube.com/embed/') 
+        ? video.videoUrl.split('/').pop() 
+        : null;
+
     return (
-        <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
-            <main className="container mx-auto px-4 py-16 md:py-24">
-                <Link
-                    href="/filmy"
-                    className="inline-flex items-center mb-8 text-stone-600 hover:text-stone-800 transition-colors"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
-                    {strings.menu.videos}
-                </Link>
+        <PageContainer className="pt-8 pb-16 md:pt-12 md:pb-24">
+            <Link
+                href="/filmy"
+                className="inline-flex items-center mb-10 text-stone-600 hover:text-stone-800 transition-colors group"
+            >
+                <span className="mr-2 bg-stone-100 rounded-full p-1.5 group-hover:bg-stone-200 transition-colors">
+                    <ArrowLeft size={16} weight="bold" />
+                </span>
+                <span className="font-light">{strings.menu.videos}</span>
+            </Link>
 
-                <header className="mb-12">
-                    <h1 className="mb-4 font-serif text-3xl font-light tracking-wide text-stone-800 md:text-4xl">
-                        {video.title}
-                    </h1>
-                    {video.desc && (
-                        <p className="max-w-3xl text-lg font-light text-stone-600">
-                            {video.desc}
-                        </p>
-                    )}
-                </header>
+            <header className="mb-12 max-w-4xl">
+                <h1 className="mb-4 font-serif text-3xl font-light tracking-wide text-stone-800 md:text-4xl">
+                    {video.title}
+                </h1>
+                {video.desc && (
+                    <p className="text-lg font-light text-stone-600 leading-relaxed">
+                        {video.desc}
+                    </p>
+                )}
+            </header>
 
-                <div className="mx-auto max-w-4xl">
-                    <div className="relative aspect-video w-full overflow-hidden rounded-lg shadow-lg">
-                        <iframe
-                            src={video.videoUrl}
-                            title={video.title}
-                            className="absolute inset-0 h-full w-full"
-                            allow="autoplay; encrypted-media; picture-in-picture"
-                            allowFullScreen
-                        />
-                    </div>
+            <div className="mx-auto max-w-4xl">
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg shadow-xl mb-10">
+                    <iframe
+                        src={video.videoUrl}
+                        title={video.title}
+                        className="absolute inset-0 h-full w-full"
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                    />
                 </div>
-            </main>
-        </div>
+
+                {/* Add video metadata section here if needed in the future */}
+                {/* Currently removed due to type constraints */}
+            </div>
+        </PageContainer>
     );
 } 
