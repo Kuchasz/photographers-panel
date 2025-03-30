@@ -132,7 +132,7 @@ export const Footer = () => (
                                 className="text-stone-600 hover:text-gold-500 transition duration-200"
                             >
                                 {strings.contact.address.map((line, index) => (
-                                    <div key={index} className=" transition duration-200">{line}</div>
+                                    <div key={index}>{line}</div>
                                 ))}
                             </a>
                         </li>
