@@ -4,12 +4,11 @@ import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
-import { getFeaturedPhotos, getFeaturedVideos, getInstagramPosts, getOpinions } from "./actions";
-import { FeaturedVideos, InstagramGrid, OpinionCarousel, PhotoGrid } from "./components.client";
+import { getFeaturedPhotos, getFeaturedVideos, getOpinions } from "./actions";
+import { FeaturedVideos, OpinionCarousel, PhotoGrid } from "./components.client";
 
 export default async function Home() {
   const opinions = await getOpinions();
-  const instagramPosts = await getInstagramPosts();
   const featuredPhotos = await getFeaturedPhotos();
   const featuredVideos = await getFeaturedVideos();
 
@@ -384,20 +383,6 @@ export default async function Home() {
                 {strings.contact.form.submit}
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Instagram Section */}
-      <section className="w-full bg-section-background py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <SectionTitle
-            title={strings.instagram.title}
-            subtitle={strings.instagram.subtitle}
-          />
-
-          <div className="mx-auto max-w-5xl">
-            <InstagramGrid posts={instagramPosts} />
           </div>
         </div>
       </section>

@@ -16,7 +16,7 @@
  * 
  * Usage example:
  * ```typescript
- * import { fetchJAlbumPhotos } from './jalbum';
+ * import { fetchJAlbumPhotos } from '~/lib/jalbum';
  * 
  * // Example 1: Basic usage
  * fetchJAlbumPhotos('some-url')
@@ -190,4 +190,4 @@ export const fetchJAlbumPhotos = async (rootUrl: string): Promise<JAlbumPhoto[]>
     console.error('Error fetching JAlbum photos:', error);
     throw error;
   }
-};
+}; 

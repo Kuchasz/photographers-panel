@@ -3,11 +3,32 @@ import { getYear } from "@pp/utils/dist/date";
 import { strings } from "~/resources";
 import Link from "next/link";
 import { routes } from "~/routes";
+import { InstagramGrid } from "./instagram-grid";
+import { getInstagramPosts } from "~/lib/instagram";
+import { SectionTitle } from "./section-title";
 
 const year: number = getYear(new Date());
 
-export const Footer = () => (
+export async function Footer() {
+    // Fetch Instagram posts for the footer
+    const instagramPosts = await getInstagramPosts();
+
+    return (
     <footer className="bg-white pb-16">
+        {/* Instagram Section */}
+        <section className="w-full bg-section-background py-16 md:py-24">
+            <div className="container mx-auto px-4">
+                <SectionTitle
+                    title={strings.instagram.title}
+                    subtitle={strings.instagram.subtitle}
+                />
+
+                <div className="mx-auto max-w-5xl">
+                    <InstagramGrid posts={instagramPosts} maxPosts={6} />
+                </div>
+            </div>
+        </section>
+
         <section className="container mx-auto px-4">
             <div className="grid grid-cols-1 my-24 gap-12 md:grid-cols-2 lg:grid-cols-3">
                 {/* Company Info */}
@@ -158,4 +179,5 @@ export const Footer = () => (
             </div>
         </section>
     </footer>
-);
+    );
+}

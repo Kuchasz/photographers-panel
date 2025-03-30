@@ -1,9 +1,9 @@
 'use client';
 
-import { ArrowLeft, ArrowRight, Image as ImageIcon, InstagramLogo, Play, Star } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowRight, Play, Star } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
-import { type InstagramPost, type Opinion, type Photo, type Video } from "./actions";
+import { type Opinion, type Photo, type Video } from "./actions";
 import { strings } from "../../resources";
 import { Button } from "~/components/button";
 import { routes } from "~/routes";
@@ -219,82 +219,6 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                 >
                     <div className="flex items-center gap-2">
                         <span>{strings.featuredPhotos.cta}</span>
-                    </div>
-                </Button>
-            </div>
-        </div>
-    );
-};
-
-// Instagram Grid Component
-type InstagramGridProps = {
-    posts: InstagramPost[];
-};
-
-const getMediaTypeIcon = (mediaType: InstagramPost['media_type']) => {
-    switch (mediaType) {
-        case 'VIDEO':
-            return <Play weight="fill" className="text-white" />;
-        case 'CAROUSEL_ALBUM':
-            return <ArrowRight weight="fill" className="text-white" />;
-        default:
-            return <ImageIcon weight="fill" className="text-white" />;
-    }
-};
-
-export const InstagramGrid = ({ posts }: InstagramGridProps) => {
-    const [visiblePosts, setVisiblePosts] = useState<InstagramPost[]>([]);
-
-    useEffect(() => {
-        // Always show exactly 4 posts
-        setVisiblePosts(posts.slice(0, 4));
-    }, [posts]);
-
-    if (!posts.length) return null;
-
-    return (
-        <div className="space-y-6">
-            <div className="grid grid-cols-4 gap-2">
-                {visiblePosts.map((post) => (
-                    <Link
-                        key={post.id}
-                        href={post.permalink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative overflow-hidden rounded-lg bg-stone-100 aspect-square"
-                    >
-                        {/* Post image */}
-                        <img
-                            src={post.thumbnail_url ?? post.media_url}
-                            alt={post.caption ?? "Instagram post"}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-
-                        {/* Overlay with fade effect on hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                        {/* Media type indicator in top right corner */}
-                        <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/60">
-                            {getMediaTypeIcon(post.media_type)}
-                        </div>
-
-                        {/* Caption on hover */}
-                        <div className="absolute bottom-0 left-0 right-0 p-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <p className="line-clamp-1 text-xs font-light">
-                                {post.caption ?? ""}
-                            </p>
-                        </div>
-                    </Link>
-                ))}
-            </div>
-
-            <div className="flex justify-center">
-                <Button
-                    href="https://www.instagram.com/pyszstudio/"
-                    variant="hero"
-                >
-                    <div className="flex items-center gap-2">
-                        <span>{strings.instagram.followUs}</span>
                     </div>
                 </Button>
             </div>

@@ -8,7 +8,7 @@ import {
 } from '~/collections/collectionSlugs';
 import { headers } from 'next/headers';
 import { type PrivateGallery } from '~/payload-types';
-import { fetchJAlbumPhotos } from '~/jalbum';
+import { fetchJAlbumPhotos } from '~/lib/jalbum';
 
 // Function to get gallery title from token
 export async function getGalleryTitle(token: string): Promise<string> {
