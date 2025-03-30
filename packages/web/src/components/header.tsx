@@ -222,14 +222,14 @@ export const Header = () => {
                     <div className="-z-10 absolute h-full w-full">
                         <ImageCarousel photos={strings.main.topPhotos} />
                     </div>
-                    <nav className="relative w-full border-b border-white/10 backdrop-blur-sm">
+                    <nav className="relative w-full border-b border-white/10 backdrop-blur-sm z-20">
                         <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-8 lg:px-12">
                             <Navigation isHomePage={true} />
                         </div>
                     </nav>
 
                     {/* Hero text overlay */}
-                    <div className="absolute inset-0 flex items-end">
+                    <div className="absolute inset-0 flex items-end z-10 pointer-events-none">
                         <div className="w-full bg-gradient-to-t from-black/60 to-transparent pb-36 pt-24">
                             <div className="mx-auto max-w-6xl px-4 text-center">
                                 <h1 className="font-serif text-white">
@@ -244,7 +244,7 @@ export const Header = () => {
                                         </div>
                                     </div>
                                 </h1>
-                                <div className="mt-8">
+                                <div className="mt-8 pointer-events-auto">
                                     <Button
                                         href="kontakt"
                                         variant="hero"
