@@ -3,6 +3,7 @@
 import { ArrowLeft, ArrowRight, Download, X } from '@phosphor-icons/react';
 import { useEffect, useRef, useState } from 'react';
 import { type Photo, PhotoTile } from './photo-tile';
+import React from 'react';
 
 
 type PhotoGalleryProps = {
@@ -292,6 +293,44 @@ function PhotoLightbox({
     );
 }
 
+// PhotoTileColumns component to handle column rendering
+const PhotoTileColumns = React.memo(({
+    columns,
+    onPhotoClick
+}: {
+    columns: Column[];
+    onPhotoClick: (photo: Photo) => void;
+}) => {
+    return (
+        <>
+            {columns.map((column, columnIndex) => (
+                <div
+                    key={`column-${columnIndex}`}
+                    className="flex-1 flex flex-col justify-between gap-2 min-w-0"
+                >
+                    {column.photos.map((photo) => (
+                        <MemoizedPhotoTile
+                            key={photo.id}
+                            photo={photo}
+                            onClick={onPhotoClick}
+                            linkToPage={false}
+                        />
+                    ))}
+                </div>
+            ))}
+        </>
+    );
+});
+PhotoTileColumns.displayName = 'PhotoTileColumns';
+
+// Memoized version of PhotoTile to prevent unnecessary re-renders
+const MemoizedPhotoTile = React.memo(PhotoTile, (prevProps, nextProps) => {
+    // Only re-render if the photo itself changes
+    return prevProps.photo.id === nextProps.photo.id &&
+        prevProps.linkToPage === nextProps.linkToPage;
+});
+MemoizedPhotoTile.displayName = 'MemoizedPhotoTile';
+
 export function PhotoGallery({
     photos,
     onPhotoDownload
@@ -353,7 +392,7 @@ export function PhotoGallery({
             const originalHeight = photo.sizes?.big?.height;
             const originalWidth = photo.sizes?.big?.width;
 
-            if (typeof originalHeight !== 'number' || originalHeight <= 0 || 
+            if (typeof originalHeight !== 'number' || originalHeight <= 0 ||
                 typeof originalWidth !== 'number' || originalWidth <= 0) {
                 // Skip photos with missing or invalid dimensions
                 return;
@@ -361,7 +400,7 @@ export function PhotoGallery({
 
             // Calculate the aspect ratio
             const aspectRatio = originalWidth / originalHeight;
-            
+
             // Calculate the new height based on the column width
             const newHeight = columnWidth / aspectRatio;
 
@@ -421,18 +460,18 @@ export function PhotoGallery({
 
             // Calculate adjustment factor
             const adjustmentFactor = heightDifference / totalPhotoHeight;
-            
+
             // Adjust each photo in the column proportionally
             const adjustedPhotos = column.photos.map((photo, index) => {
                 const height = photo.sizes?.big?.height;
                 const width = photo.sizes?.big?.width;
-                
+
                 if (!height || !width) return photo;
 
                 // Calculate new height with proportional adjustment
                 const heightAdjustment = height * adjustmentFactor;
                 const newHeight = height + heightAdjustment;
-                
+
                 return {
                     ...photo,
                     sizes: {
@@ -470,21 +509,10 @@ export function PhotoGallery({
         <div className="space-y-8">
             {/* Photo Gallery with Flex Columns */}
             <div className="flex flex-wrap gap-2" ref={containerRef}>
-                {columns.map((column, columnIndex) => (
-                    <div
-                        key={`column-${columnIndex}`}
-                        className="flex-1 flex flex-col justify-between gap-2 min-w-0"
-                    >
-                        {column.photos.map((photo) => (
-                            <PhotoTile
-                                key={photo.id}
-                                photo={photo}
-                                onClick={openLightbox}
-                                linkToPage={false}
-                            />
-                        ))}
-                    </div>
-                ))}
+                <PhotoTileColumns
+                    columns={columns}
+                    onPhotoClick={openLightbox}
+                />
             </div>
 
             {/* Lightbox Component */}
