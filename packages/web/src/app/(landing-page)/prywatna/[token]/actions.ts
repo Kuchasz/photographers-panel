@@ -90,53 +90,21 @@ export async function getPhotos(token: string) {
 
   return jalbumPhotos.map(photo => ({
     id: String(photo.id),
-    alt: photo.alt ?? '',
-    url: photo.src ?? '',
-    width: photo.width ?? 0,
-    height: photo.height ?? 0,
+    alt: photo.alt,
+    url: photo.src,
+    width: photo.width,
+    height: photo.height,
     sizes: {
       thumbnail: {
-        url: photo.thumbnail ?? '',
-        width: photo.thumbw ?? 400,
-        height: photo.thumbh ?? 300,
+        url: photo.thumbnail,
+        width: photo.thumbw,
+        height: photo.thumbh,
       },
       big: {
-        url: photo.src ?? '',
-        width: photo.width ?? 768,
-        height: photo.height ?? 1024,
+        url: photo.src,
+        width: photo.width,
+        height: photo.height,
       },
     }
   }));
-
-
-  // Fetch media from the private gallery collection
-  const { docs: photos } = await payload.find({
-    collection: PRIVATE_GALLERY_MEDIA_SLUG,
-    limit: 1000,
-    ...query,
-  });
-
-  return photos.map(photo => {
-    const defaultUrl = photo.url ?? '';
-
-    return {
-      id: String(photo.id),
-      alt: photo.filename ?? '',
-      url: defaultUrl,
-      width: photo.width ?? 0,
-      height: photo.height ?? 0,
-      sizes: {
-        thumbnail: {
-          url: photo.sizes?.thumbnail?.url ?? defaultUrl,
-          width: photo.sizes?.thumbnail?.width ?? 400,
-          height: photo.sizes?.thumbnail?.height ?? 300,
-        },
-        big: {
-          url: photo.sizes?.big?.url ?? defaultUrl,
-          width: photo.sizes?.big?.width ?? 768,
-          height: photo.sizes?.big?.height ?? 1024,
-        },
-      }
-    };
-  });
 }
