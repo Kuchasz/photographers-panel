@@ -3,7 +3,7 @@ import { first, last, nextElement } from "@pp/utils/dist/array";
 import { firstSegment } from "@pp/utils/dist/url";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { ReactNode } from "react";
 import { type MenuItem, menuItems } from "~/menu-items";
 import { Headers } from "./headers";
 import { strings } from "../resources";
@@ -88,44 +88,109 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
     );
 };
 
+// Enhanced navigation link component for consistent styling
+const NavLink = ({ 
+    href, 
+    isActive, 
+    isHomePage, 
+    isPrimary = false,
+    children 
+}: { 
+    href: string; 
+    isActive: boolean; 
+    isHomePage: boolean; 
+    isPrimary?: boolean;
+    children: string | string[]; 
+}) => {
+    const baseTextClass = isHomePage 
+        ? "text-white/90 hover:text-gold-500" 
+        : "text-stone-800/90 hover:text-gold-700";
+    
+    const activeBorderClass = isHomePage
+        ? "after:bg-gold-500"
+        : "after:bg-gold-700";
+        
+    const primaryClass = isPrimary
+        ? `border ${isHomePage ? "border-gold-500 text-gold-500 hover:bg-gold-500/10" : "border-gold-700 text-gold-700 hover:bg-gold-700/10"} px-3 py-1.5 rounded-sm`
+        : "";
+        
+    return (
+        <Link
+            href={href}
+            className={`
+                relative font-normal tracking-wider transition-all duration-300 flex items-center
+                ${baseTextClass}
+                ${primaryClass}
+                ${isActive && !isPrimary ? `font-medium ${activeBorderClass} after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-100` : "after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:ease-out"}
+            `}
+        >
+            {children}
+        </Link>
+    );
+};
+
 // Navigation component that can be used in both header variants
 const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
     const pathname = usePathname();
-    const textColorClass = isHomePage ? "transition-colors text-white/90 hover:text-gold-500" : "transition-colors text-stone-800/90 hover:text-gold-700";
-    const borderColorClass = isHomePage ? "border-white/80 hover:border-gold-500" : "border-stone-800/80 hover:border-gold-700";
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+    
     const logoTextClass = isHomePage ? "text-white" : "text-stone-800";
     const logoSubtextClass = isHomePage ? "text-white/75" : "text-stone-800/75";
+    const mobileMenuBgClass = isHomePage 
+        ? "bg-black/80 backdrop-blur-md" 
+        : "bg-white/95 backdrop-blur-md shadow-md";
+    
+    // Close mobile menu when route changes
+    React.useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [pathname]);
+    
+    // Prevent scroll when mobile menu is open
+    React.useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isMobileMenuOpen]);
 
     return (
         <>
-            <div className="hidden items-center gap-6 font-normal tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
-                <Link
-                    href={routes.offers.route}
-                    id={selectedItem(pathname, routes.offers.route)}
-                    className={textColorClass}
+            {/* Desktop navigation */}
+            <div className="hidden items-center gap-6 font-normal tracking-wider md:flex md:gap-8 lg:gap-12">
+                <NavLink 
+                    href={routes.offers.route} 
+                    isActive={firstSegment(pathname) === routes.offers.route}
+                    isHomePage={isHomePage}
                 >
                     {strings.menu.offer}
-                </Link>
-                <Link
-                    href={routes.photos.route}
-                    id={selectedItem(pathname, routes.photos.route)}
-                    className={textColorClass}
+                </NavLink>
+                <NavLink 
+                    href={routes.photos.route} 
+                    isActive={firstSegment(pathname) === routes.photos.route}
+                    isHomePage={isHomePage}
                 >
                     {strings.menu.photos}
-                </Link>
-                <Link
-                    href={routes.videos.route}
-                    id={selectedItem(pathname, routes.videos.route)}
-                    className={textColorClass}
+                </NavLink>
+                <NavLink 
+                    href={routes.videos.route} 
+                    isActive={firstSegment(pathname) === routes.videos.route}
+                    isHomePage={isHomePage}
                 >
                     {strings.menu.videos}
-                </Link>
+                </NavLink>
             </div>
 
+            {/* Logo */}
             <div className="flex flex-col items-center gap-1">
                 <Link
                     href="/"
                     className="flex flex-col items-center gap-1 transition duration-300 hover:opacity-90"
+                    aria-label="Home"
                 >
                     <div className={`text-2xl font-light leading-none md:text-3xl ${logoTextClass}`}>
                         <span className="tracking-wider">PYSZ</span>
@@ -137,61 +202,100 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
                 </Link>
             </div>
 
-            <div className="hidden items-center gap-6 font-normal tracking-wider transition-colors md:flex md:gap-8 lg:gap-12">
-                <Link
-                    href={routes.contact.route}
-                    id={selectedItem(pathname, routes.contact.route)}
-                    className={textColorClass}
+            {/* Desktop right navigation */}
+            <div className="hidden items-center gap-6 font-normal tracking-wider md:flex md:gap-8 lg:gap-12">
+                <NavLink 
+                    href={routes.contact.route} 
+                    isActive={firstSegment(pathname) === routes.contact.route}
+                    isHomePage={isHomePage}
                 >
                     {strings.menu.contact}
-                </Link>
-                <Link
-                    href={routes.private.route}
-                    className={`border-b px-2 py-1 uppercase transition-colors ${borderColorClass} ${textColorClass}`}
+                </NavLink>
+                <NavLink 
+                    href={routes.private.route} 
+                    isActive={false}
+                    isHomePage={isHomePage}
+                    isPrimary={true}
                 >
                     {strings.menu.private}
-                </Link>
+                </NavLink>
             </div>
 
-            {/* Mobile menu items - shown on small screens */}
-            <div className="flex w-full flex-col items-center gap-4 md:hidden">
-                <div className="flex justify-center gap-6">
-                    <Link
-                        href={routes.offers.route}
-                        id={selectedItem(pathname, routes.offers.route)}
-                        className={textColorClass}
+            {/* Mobile menu button */}
+            <button 
+                className="absolute right-4 top-6 z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md md:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
+            >
+                <span 
+                    className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`}
+                ></span>
+                <span 
+                    className={`h-0.5 w-6 transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}
+                ></span>
+                <span 
+                    className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`}
+                ></span>
+            </button>
+            
+            {/* Mobile menu - slide in from right */}
+            <div 
+                className={`fixed inset-0 z-40 transform transition-transform duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                aria-hidden={!isMobileMenuOpen}
+            >
+                <div className="relative flex h-full w-full flex-col">
+                    {/* Backdrop overlay */}
+                    <div 
+                        className={`absolute inset-0 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'} ${isHomePage ? 'bg-black/60' : 'bg-stone-800/20'}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    ></div>
+                    
+                    {/* Menu content */}
+                    <div 
+                        className={`absolute right-0 top-0 h-full w-4/5 max-w-xs transform overflow-y-auto py-20 px-6 transition-transform duration-300 ${mobileMenuBgClass} ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
                     >
-                        {strings.menu.offer}
-                    </Link>
-                    <Link
-                        href={routes.photos.route}
-                        id={selectedItem(pathname, routes.photos.route)}
-                        className={textColorClass}
-                    >
-                        {strings.menu.photos}
-                    </Link>
-                    <Link
-                        href={routes.videos.route}
-                        id={selectedItem(pathname, routes.videos.route)}
-                        className={textColorClass}
-                    >
-                        {strings.menu.videos}
-                    </Link>
-                </div>
-                <div className="flex justify-center gap-6">
-                    <Link
-                        href={routes.contact.route}
-                        id={selectedItem(pathname, routes.contact.route)}
-                        className={textColorClass}
-                    >
-                        {strings.menu.contact}
-                    </Link>
-                    <Link
-                        href={routes.private.route}
-                        className={`border-b px-2 py-1 uppercase ${borderColorClass} ${textColorClass}`}
-                    >
-                        {strings.menu.private}
-                    </Link>
+                        <div className="flex flex-col items-start gap-6 text-lg">
+                            <NavLink 
+                                href={routes.offers.route} 
+                                isActive={firstSegment(pathname) === routes.offers.route}
+                                isHomePage={isHomePage}
+                            >
+                                {strings.menu.offer}
+                            </NavLink>
+                            <NavLink 
+                                href={routes.photos.route} 
+                                isActive={firstSegment(pathname) === routes.photos.route}
+                                isHomePage={isHomePage}
+                            >
+                                {strings.menu.photos}
+                            </NavLink>
+                            <NavLink 
+                                href={routes.videos.route} 
+                                isActive={firstSegment(pathname) === routes.videos.route}
+                                isHomePage={isHomePage}
+                            >
+                                {strings.menu.videos}
+                            </NavLink>
+                            <NavLink 
+                                href={routes.contact.route} 
+                                isActive={firstSegment(pathname) === routes.contact.route}
+                                isHomePage={isHomePage}
+                            >
+                                {strings.menu.contact}
+                            </NavLink>
+                            <div className="mt-4 w-full">
+                                <NavLink 
+                                    href={routes.private.route} 
+                                    isActive={false}
+                                    isHomePage={isHomePage}
+                                    isPrimary={true}
+                                >
+                                    {strings.menu.private}
+                                </NavLink>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
@@ -202,6 +306,7 @@ export const Header = () => {
     const pathname = usePathname();
     const [currentAdvantage, setCurrentAdvantage] = React.useState(strings.offer.slogan.advantages[0]);
     const isHomePage = pathname === '/';
+    const [isScrolled, setIsScrolled] = React.useState(false);
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -209,6 +314,20 @@ export const Header = () => {
             setCurrentAdvantage(nextAdvantage);
         }, 5000);
     }, [currentAdvantage]);
+    
+    // Add scroll detection for dynamic header appearance
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Check initial scroll position
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     const firstItem = first(menuItems, (mi) => firstSegment(pathname) === mi.route) as MenuItem;
 
@@ -222,8 +341,8 @@ export const Header = () => {
                     <div className="-z-10 absolute h-full w-full">
                         <ImageCarousel photos={strings.main.topPhotos} />
                     </div>
-                    <nav className="relative w-full border-b border-white/10 backdrop-blur-sm z-20">
-                        <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-8 lg:px-12">
+                    <nav className={`sticky top-0 w-full z-20 transition-all duration-300 ${isScrolled ? 'bg-black/60 backdrop-blur-md shadow-md' : 'border-b border-white/10 backdrop-blur-sm'}`}>
+                        <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
                             <Navigation isHomePage={true} />
                         </div>
                     </nav>
@@ -235,16 +354,16 @@ export const Header = () => {
                                 <h1 className="font-serif text-white">
                                     <div className="mb-6 flex flex-col items-center md:mb-8">
                                         <div className="flex flex-col md:flex-row md:items-baseline md:justify-center md:gap-3">
-                                            <span className="text-3xl italic font-light md:text-4xl lg:text-5xl">{strings.main.hero.embrace}</span>
-                                            <span className="text-4xl font-normal md:text-5xl lg:text-6xl">{strings.main.hero.timeless}</span>
+                                            <span className="text-3xl italic font-light md:text-4xl lg:text-5xl animate-fadeIn">{strings.main.hero.embrace}</span>
+                                            <span className="text-4xl font-normal md:text-5xl lg:text-6xl animate-fadeIn animation-delay-200">{strings.main.hero.timeless}</span>
                                         </div>
                                         <div className="mt-3 flex flex-col md:flex-row md:items-baseline md:justify-center md:gap-3">
-                                            <span className="text-4xl font-normal md:text-5xl lg:text-6xl">{strings.main.hero.celebrating}</span>
-                                            <span className="text-3xl italic font-light md:text-4xl lg:text-5xl">{strings.main.hero.through}</span>
+                                            <span className="text-4xl font-normal md:text-5xl lg:text-6xl animate-fadeIn animation-delay-400">{strings.main.hero.celebrating}</span>
+                                            <span className="text-3xl italic font-light md:text-4xl lg:text-5xl animate-fadeIn animation-delay-600">{strings.main.hero.through}</span>
                                         </div>
                                     </div>
                                 </h1>
-                                <div className="mt-8 pointer-events-auto">
+                                <div className="mt-8 pointer-events-auto animate-fadeIn animation-delay-800">
                                     <Button
                                         href="kontakt"
                                         variant="hero"
@@ -264,8 +383,8 @@ export const Header = () => {
     return (
         <div>
             <Headers title={firstItem?.title}></Headers>
-            <nav className="relative w-full border-b border-stone-100 bg-white">
-                <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-8 lg:px-12">
+            <nav className={`sticky top-0 w-full z-20 transition-all duration-300 ${isScrolled ? 'bg-white/95 shadow-md backdrop-blur-md' : 'border-b border-stone-100 bg-white'}`}>
+                <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
                     <Navigation isHomePage={false} />
                 </div>
             </nav>
