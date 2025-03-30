@@ -198,9 +198,75 @@ export async function getFeaturedPhotos(limit = 64): Promise<Photo[]> {
       height: doc.height ?? 600,
     }))
   } catch (error) {
-    console.error('Error fetching photos:', error)
-    return getMockPhotos()
+    console.error('Error fetching featured photos:', error)
+    return getMockPhotos() // Return mock photos in case of error
   }
+}
+
+export type Video = {
+  id: string | number;
+  title: string;
+  descshort?: string;
+  alias: string;
+  videoUrl: string;
+  order: number;
+}
+
+export async function getFeaturedVideos(limit = 3): Promise<Video[]> {
+  try {
+    const payload = await getPayload({
+      config: payloadConfig,
+    })
+
+    const response = await payload.find({
+      collection: 'videos',
+      limit,
+      sort: 'order', // Sort by order field (ascending by default)
+      depth: 0, // No need for relationships
+    })
+
+    return response.docs.map(doc => ({
+      id: doc.id,
+      title: doc.title ?? '',
+      descshort: doc.descshort,
+      alias: doc.alias ?? '',
+      videoUrl: doc.videoUrl ?? '',
+      order: doc.order ?? 0,
+    }))
+  } catch (error) {
+    console.error('Error fetching featured videos:', error)
+    return getMockVideos() // Return mock videos in case of error
+  }
+}
+
+// Function to provide mock data for development or fallback
+function getMockVideos(): Video[] {
+  return [
+    {
+      id: 1,
+      title: 'Magiczna ceremonia ślubna w plenerze',
+      descshort: 'Piękna uroczystość w otoczeniu natury z wyjątkową oprawą',
+      alias: 'magiczna-ceremonia-slubna',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      order: 1,
+    },
+    {
+      id: 2,
+      title: 'Wesele w stylu boho w górach',
+      descshort: 'Niepowtarzalne przyjęcie w rustykalnym klimacie z górskim krajobrazem',
+      alias: 'wesele-boho-gory',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      order: 2,
+    },
+    {
+      id: 3,
+      title: 'Eleganckie wesele w pałacu',
+      descshort: 'Wytworna uroczystość w zabytkowych wnętrzach z klasyczną oprawą',
+      alias: 'eleganckie-wesele-palac',
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      order: 3,
+    },
+  ];
 }
 
 // Fallback mock photos if needed

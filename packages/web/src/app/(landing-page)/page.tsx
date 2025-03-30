@@ -4,18 +4,19 @@ import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
-import { getFeaturedPhotos, getInstagramPosts, getOpinions } from "./actions";
-import { InstagramGrid, OpinionCarousel, PhotoGrid } from "./components.client";
+import { getFeaturedPhotos, getFeaturedVideos, getInstagramPosts, getOpinions } from "./actions";
+import { FeaturedVideos, InstagramGrid, OpinionCarousel, PhotoGrid } from "./components.client";
 
 export default async function Home() {
   const opinions = await getOpinions();
   const instagramPosts = await getInstagramPosts();
   const featuredPhotos = await getFeaturedPhotos();
+  const featuredVideos = await getFeaturedVideos();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-50 to-white">
       {/* Meet Your Photographer Section */}
-      <section className="w-full bg-section-background py-16 md:py-24">
+      <section className="w-full bg-white py-16 md:py-24">
         <div className="container mx-auto px-4">
           <SectionTitle
             title={strings.meetPhotographer.title}
@@ -72,7 +73,7 @@ export default async function Home() {
       </section>
 
       {/* Photos Portfolio Section */}
-      <section className="w-full bg-white py-16 md:py-24">
+      <section className="w-full bg-section-background py-16 md:py-24">
         <div className="mb-8">
           <SectionTitle
             title={strings.featuredPhotos.title}
@@ -81,6 +82,19 @@ export default async function Home() {
         </div>
         <div className="w-full">
           <PhotoGrid photos={featuredPhotos} />
+        </div>
+      </section>
+
+      {/* Videos Portfolio Section */}
+      <section className="w-full bg-white py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <SectionTitle
+            title={strings.featuredVideos.title}
+            subtitle={strings.featuredVideos.subtitle}
+          />
+          <div className="mx-auto max-w-7xl">
+            <FeaturedVideos videos={featuredVideos} />
+          </div>
         </div>
       </section>
 

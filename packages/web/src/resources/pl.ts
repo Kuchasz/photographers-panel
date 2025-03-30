@@ -334,6 +334,13 @@ export const pl = {
         description: "Przeglądając nasze portfolio, możesz zobaczyć, jak uwieczniamy najważniejsze momenty w życiu par młodych. Każde zdjęcie opowiada wyjątkową historię miłości.",
         cta: "ZOBACZ WIĘCEJ ZDJĘĆ"
     },
+    featuredVideos: {
+        title: "Nasze filmy",
+        subtitle: "Najnowsze realizacje filmowe",
+        description: "Prezentujemy wybrane materiały filmowe, które pokazują nasz styl i podejście do dokumentowania uroczystości ślubnych. Każdy film to emocjonująca opowieść o miłości i radości.",
+        cta: "ZOBACZ WIĘCEJ FILMÓW",
+        watchVideo: "Obejrzyj film"
+    },
     meetPhotographer: {
         title: "POZNAJ NAS",
         subtitle: "POZNAJ SWOICH FOTOGRAFÓW I FILMOWCÓW",
