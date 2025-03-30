@@ -21,10 +21,7 @@ type LightboxProps = {
 type Column = {
     photos: Photo[];
     height: number;
-    adjustedPhotos?: {
-        photo: Photo;
-        aspectRatio: string;
-    }
+    width: number;
 };
 
 // Gap size in pixels - matches the gap-4 class (1rem = 16px)
@@ -300,7 +297,7 @@ export function PhotoGallery({
     onPhotoDownload
 }: PhotoGalleryProps) {
     const [columns, setColumns] = useState<Column[]>([]);
-    const [columnCount, setColumnCount] = useState(4);
+    const [columnCount, setColumnCount] = useState(3);
     const containerRef = useRef<HTMLDivElement>(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [initialPhotoIndex, setInitialPhotoIndex] = useState(0);
@@ -330,8 +327,20 @@ export function PhotoGallery({
         // Initialize columns
         const newColumns: Column[] = Array.from({ length: columnCount }, () => ({
             photos: [],
-            height: 0
+            height: 0,
+            width: 0
         }));
+
+        // Calculate the available width per column
+        const containerWidth = containerRef.current?.clientWidth ?? 0;
+        const gapSpace = GAP_SIZE * (columnCount - 1);
+        const availableWidth = containerWidth - gapSpace;
+        const columnWidth = availableWidth / columnCount;
+
+        // Set the column width for all columns
+        newColumns.forEach(column => {
+            column.width = columnWidth;
+        });
 
         // Distribute photos to columns by height
         photos.forEach(photo => {
@@ -341,25 +350,44 @@ export function PhotoGallery({
                 0
             );
 
-            // Add photo to column
-            const width = photo.sizes?.thumbnail?.width;
-            const height = photo.sizes?.thumbnail?.height;
+            const originalHeight = photo.sizes?.big?.height;
+            const originalWidth = photo.sizes?.big?.width;
 
-            if (typeof width !== 'number' || typeof height !== 'number' || width <= 0 || height <= 0) {
+            if (typeof originalHeight !== 'number' || originalHeight <= 0 || 
+                typeof originalWidth !== 'number' || originalWidth <= 0) {
                 // Skip photos with missing or invalid dimensions
                 return;
             }
 
+            // Calculate the aspect ratio
+            const aspectRatio = originalWidth / originalHeight;
+            
+            // Calculate the new height based on the column width
+            const newHeight = columnWidth / aspectRatio;
+
             // Calculate the height contribution including the gap
             // Only add gap if this isn't the first photo in the column
             const gapContribution = newColumns[minHeightColumn]!.photos.length > 0 ? GAP_SIZE : 0;
-            const heightContribution = height + gapContribution;
+            const heightContribution = newHeight + gapContribution;
 
-            newColumns[minHeightColumn]!.photos.push(photo);
+            // Create a new photo object with adjusted dimensions
+            const adjustedPhoto = {
+                ...photo,
+                sizes: {
+                    ...photo.sizes,
+                    big: {
+                        ...photo.sizes.big,
+                        width: columnWidth,
+                        height: newHeight,
+                    }
+                }
+            };
+
+            newColumns[minHeightColumn]!.photos.push(adjustedPhoto);
             newColumns[minHeightColumn]!.height += heightContribution;
         });
 
-        // Balance column heights by adjusting photo sizes
+        // Balance column heights after initial distribution
         balanceColumnHeights(newColumns);
 
         setColumns(newColumns);
@@ -372,6 +400,10 @@ export function PhotoGallery({
         // Find the tallest column
         const maxHeight = Math.max(...columns.map(col => col.height));
 
+        console.log("Column heights:", columns.map(c => c.height));
+        console.log("Photo counts:", columns.map(c => c.photos.length));
+        console.log("Column widths:", columns.map(c => c.width));
+
         // Adjust each column to match the max height
         columns.forEach(column => {
             if (column.photos.length === 0) return;
@@ -381,28 +413,34 @@ export function PhotoGallery({
 
             // Calculate total height without gaps to determine proportional adjustments
             const totalPhotoHeight = column.photos.reduce((sum, photo) => {
-                return sum + (photo.sizes?.thumbnail?.height || 0);
+                return sum + (photo.sizes?.big?.height || 0);
             }, 0);
 
             // Total gaps in this column (number of photos - 1) * gap size
             const totalGapHeight = (column.photos.length - 1) * GAP_SIZE;
 
-            // Calculate how much to adjust each photo
+            // Calculate adjustment factor
+            const adjustmentFactor = heightDifference / totalPhotoHeight;
+            
+            // Adjust each photo in the column proportionally
             const adjustedPhotos = column.photos.map((photo, index) => {
-                const height = photo.sizes?.thumbnail?.height;
-                if (!height) return photo;
+                const height = photo.sizes?.big?.height;
+                const width = photo.sizes?.big?.width;
+                
+                if (!height || !width) return photo;
 
-                // Distribute adjustment proportionally to photo's height relative to total photo height
-                const heightProportion = height / totalPhotoHeight;
-                const heightAdjustment = heightDifference * heightProportion;
-
+                // Calculate new height with proportional adjustment
+                const heightAdjustment = height * adjustmentFactor;
+                const newHeight = height + heightAdjustment;
+                
                 return {
                     ...photo,
                     sizes: {
                         ...photo.sizes,
-                        thumbnail: {
-                            ...photo.sizes.thumbnail,
-                            height: height + heightAdjustment,
+                        big: {
+                            ...photo.sizes.big,
+                            width: width, // Width stays the same (column width)
+                            height: newHeight,
                         },
                     },
                     heightAdjustment,
@@ -410,6 +448,8 @@ export function PhotoGallery({
             });
 
             column.photos = adjustedPhotos;
+            // Update column height
+            column.height = maxHeight;
         });
     };
 
@@ -433,7 +473,7 @@ export function PhotoGallery({
                 {columns.map((column, columnIndex) => (
                     <div
                         key={`column-${columnIndex}`}
-                        className="flex-1 flex flex-col gap-2 min-w-0"
+                        className="flex-1 flex flex-col justify-between gap-2 min-w-0"
                     >
                         {column.photos.map((photo) => (
                             <PhotoTile
@@ -441,7 +481,6 @@ export function PhotoGallery({
                                 photo={photo}
                                 onClick={openLightbox}
                                 linkToPage={false}
-                                showCaption={false}
                             />
                         ))}
                     </div>
