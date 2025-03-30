@@ -70,7 +70,7 @@ export type Photo = {
   height: number;
 }
 
-export async function getFeaturedPhotos(limit = 64): Promise<Photo[]> {
+export async function getFeaturedPhotos(limit = 24): Promise<Photo[]> {
   try {
     const payload = await getPayload({
       config: payloadConfig,
