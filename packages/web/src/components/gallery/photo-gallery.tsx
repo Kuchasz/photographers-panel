@@ -313,7 +313,6 @@ const PhotoTileColumns = React.memo(({
                             key={photo.id}
                             photo={photo}
                             onClick={onPhotoClick}
-                            linkToPage={false}
                         />
                     ))}
                 </div>
@@ -326,8 +325,7 @@ PhotoTileColumns.displayName = 'PhotoTileColumns';
 // Memoized version of PhotoTile to prevent unnecessary re-renders
 const MemoizedPhotoTile = React.memo(PhotoTile, (prevProps, nextProps) => {
     // Only re-render if the photo itself changes
-    return prevProps.photo.id === nextProps.photo.id &&
-        prevProps.linkToPage === nextProps.linkToPage;
+    return prevProps.photo.id === nextProps.photo.id;
 });
 MemoizedPhotoTile.displayName = 'MemoizedPhotoTile';
 
@@ -455,14 +453,11 @@ export function PhotoGallery({
                 return sum + (photo.sizes?.big?.height || 0);
             }, 0);
 
-            // Total gaps in this column (number of photos - 1) * gap size
-            const totalGapHeight = (column.photos.length - 1) * GAP_SIZE;
-
             // Calculate adjustment factor
             const adjustmentFactor = heightDifference / totalPhotoHeight;
 
             // Adjust each photo in the column proportionally
-            const adjustedPhotos = column.photos.map((photo, index) => {
+            const adjustedPhotos = column.photos.map(photo => {
                 const height = photo.sizes?.big?.height;
                 const width = photo.sizes?.big?.width;
 

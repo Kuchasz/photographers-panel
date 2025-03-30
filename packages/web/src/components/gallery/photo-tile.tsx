@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 
 export type Photo = {
@@ -28,14 +27,11 @@ type PhotoTileProps = {
   photo: Photo;
   onClick?: (photo: Photo) => void;
   aspectRatio?: string;
-  linkToPage?: boolean;
 };
 
 export function PhotoTile({
   photo,
   onClick,
-  aspectRatio = '',//'aspect-[3/4]',
-  linkToPage = false,
 }: PhotoTileProps) {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -76,7 +72,7 @@ export function PhotoTile({
     </>
   );
 
-  const className = `group relative w-full ${aspectRatio} overflow-hidden bg-stone-100 ${onClick && !linkToPage ? 'cursor-pointer' : ''}`;
+  const className = `group relative w-full overflow-hidden bg-stone-100 cursor-pointer`;
 
   return (
     <div
