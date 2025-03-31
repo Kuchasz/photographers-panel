@@ -65,3 +65,65 @@ export const getLastBytesPerSecond = (lastBytes: number, lastNow: number, loaded
 };
 
 export const formatTransfer = (bytesPerSecond: number) => `${formatFileSize(bytesPerSecond, 1)}/s`;
+
+export const downloadImageByUrl = (imageUrl: string, filename?: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        try {
+            fetch(imageUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const downloadFilename = filename ||
+                        imageUrl.substring(imageUrl.lastIndexOf('/') + 1).split('?')[0] ||
+                        'image';
+
+                    const finalFilename = downloadFilename.includes('.') ?
+                        downloadFilename :
+                        `${downloadFilename}.${getExtensionFromMimeType(blob.type)}`;
+
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = finalFilename;
+                    link.style.display = 'none';
+
+                    document.body.appendChild(link);
+                    link.click();
+
+                    setTimeout(() => {
+                        URL.revokeObjectURL(blobUrl);
+                        document.body.removeChild(link);
+                        resolve();
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error("Error downloading image:", error);
+                    reject(error);
+                });
+        } catch (error) {
+            console.error("Error initiating download:", error);
+            reject(error);
+        }
+    });
+};
+
+const getExtensionFromMimeType = (mimeType: string): string => {
+    const mimeToExt: Record<string, string> = {
+        'image/jpeg': 'jpg',
+        'image/jpg': 'jpg',
+        'image/png': 'png',
+        'image/gif': 'gif',
+        'image/webp': 'webp',
+        'image/svg+xml': 'svg',
+        'image/tiff': 'tiff',
+        'image/bmp': 'bmp'
+    };
+
+    return mimeToExt[mimeType] || 'jpg';
+};

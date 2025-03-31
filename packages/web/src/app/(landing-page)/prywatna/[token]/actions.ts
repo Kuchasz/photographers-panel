@@ -1,14 +1,13 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { getPayload } from 'payload';
-import payloadConfig from '~/payload.config';
 import {
-  PRIVATE_GALLERY_MEDIA_SLUG,
   PRIVATE_GALLERY_AUTH_TOKENS_SLUG
 } from '~/collections/collectionSlugs';
-import { headers } from 'next/headers';
-import { type PrivateGallery } from '~/payload-types';
 import { fetchJAlbumPhotos } from '~/lib/jalbum';
+import { type PrivateGallery } from '~/payload-types';
+import payloadConfig from '~/payload.config';
 
 // Function to get gallery title from token
 export async function getGalleryTitle(token: string): Promise<string> {
