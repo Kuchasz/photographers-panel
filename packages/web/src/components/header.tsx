@@ -45,7 +45,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
 
         // Add scroll event listener
         window.addEventListener('scroll', handleScroll, { passive: true });
-        
+
         // Get initial scroll position
         handleScroll();
 
@@ -60,8 +60,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
 
     return (
         <div className="relative w-full h-full overflow-hidden">
-            <picture 
-                key={prevPhoto} 
+            <picture
+                key={prevPhoto}
                 className="absolute contrast-85 inset-0"
                 style={{ transform: parallaxTransform }}>
                 <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
@@ -71,8 +71,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
                     className="w-full h-full object-center object-cover"
                     src={getSrc(prevPhoto, '.jpg')} />
             </picture>
-            <picture 
-                key={currentPhoto} 
+            <picture
+                key={currentPhoto}
                 className="absolute contrast-85 inset-0 animate-fade"
                 style={{ transform: parallaxTransform }}>
                 <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.jpg')} />
@@ -89,31 +89,31 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
 };
 
 // Enhanced navigation link component for consistent styling
-const NavLink = ({ 
-    href, 
-    isActive, 
-    isHomePage, 
+const NavLink = ({
+    href,
+    isActive,
+    isHomePage,
     isPrimary = false,
-    children 
-}: { 
-    href: string; 
-    isActive: boolean; 
-    isHomePage: boolean; 
+    children
+}: {
+    href: string;
+    isActive: boolean;
+    isHomePage: boolean;
     isPrimary?: boolean;
-    children: string | string[]; 
+    children: string | string[];
 }) => {
-    const baseTextClass = isHomePage 
-        ? "text-white/90 hover:text-gold-500" 
+    const baseTextClass = isHomePage
+        ? "text-white/90 hover:text-gold-500"
         : "text-stone-800/90 hover:text-gold-700";
-    
+
     const activeBorderClass = isHomePage
         ? "after:bg-gold-500"
         : "after:bg-gold-700";
-        
+
     const primaryClass = isPrimary
         ? `border ${isHomePage ? "border-gold-500 text-gold-500 hover:bg-gold-500/10" : "border-gold-700 text-gold-700 hover:bg-gold-700/10"} px-3 py-1.5 rounded-sm`
         : "";
-        
+
     return (
         <Link
             href={href}
@@ -133,18 +133,18 @@ const NavLink = ({
 const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-    
+
     const logoTextClass = isHomePage ? "text-white" : "text-stone-800";
     const logoSubtextClass = isHomePage ? "text-white/75" : "text-stone-800/75";
-    const mobileMenuBgClass = isHomePage 
-        ? "bg-black/80 backdrop-blur-md" 
+    const mobileMenuBgClass = isHomePage
+        ? "bg-black/80 backdrop-blur-md"
         : "bg-white/95 backdrop-blur-md shadow-md";
-    
+
     // Close mobile menu when route changes
     React.useEffect(() => {
         setIsMobileMenuOpen(false);
     }, [pathname]);
-    
+
     // Prevent scroll when mobile menu is open
     React.useEffect(() => {
         if (isMobileMenuOpen) {
@@ -152,7 +152,7 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
         } else {
             document.body.style.overflow = 'auto';
         }
-        
+
         return () => {
             document.body.style.overflow = 'auto';
         };
@@ -162,22 +162,22 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
         <>
             {/* Desktop navigation */}
             <div className="hidden items-center gap-6 font-normal tracking-wider md:flex md:gap-8 lg:gap-12">
-                <NavLink 
-                    href={routes.offers.route} 
+                <NavLink
+                    href={routes.offers.route}
                     isActive={firstSegment(pathname) === routes.offers.route}
                     isHomePage={isHomePage}
                 >
                     {strings.menu.offer}
                 </NavLink>
-                <NavLink 
-                    href={routes.photos.route} 
+                <NavLink
+                    href={routes.photos.route}
                     isActive={firstSegment(pathname) === routes.photos.route}
                     isHomePage={isHomePage}
                 >
                     {strings.menu.photos}
                 </NavLink>
-                <NavLink 
-                    href={routes.videos.route} 
+                <NavLink
+                    href={routes.videos.route}
                     isActive={firstSegment(pathname) === routes.videos.route}
                     isHomePage={isHomePage}
                 >
@@ -204,15 +204,15 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
 
             {/* Desktop right navigation */}
             <div className="hidden items-center gap-6 font-normal tracking-wider md:flex md:gap-8 lg:gap-12">
-                <NavLink 
-                    href={routes.contact.route} 
+                <NavLink
+                    href={routes.contact.route}
                     isActive={firstSegment(pathname) === routes.contact.route}
                     isHomePage={isHomePage}
                 >
                     {strings.menu.contact}
                 </NavLink>
-                <NavLink 
-                    href={routes.private.route} 
+                <NavLink
+                    href={routes.private.route}
                     isActive={false}
                     isHomePage={isHomePage}
                     isPrimary={true}
@@ -222,79 +222,75 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
             </div>
 
             {/* Mobile menu button */}
-            <button 
+            <button
                 className="absolute right-4 top-6 z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md md:hidden"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileMenuOpen}
             >
-                <span 
+                <span
                     className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`}
                 ></span>
-                <span 
+                <span
                     className={`h-0.5 w-6 transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}
                 ></span>
-                <span 
+                <span
                     className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`}
                 ></span>
             </button>
-            
-            {/* Mobile menu - slide in from right */}
-            <div 
-                className={`fixed inset-0 z-40 transform transition-transform duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+
+            {/* Mobile menu */}
+            <div
+                className={`fixed inset-0 z-40 transition-opacity duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
                 aria-hidden={!isMobileMenuOpen}
             >
-                <div className="relative flex h-full w-full flex-col">
-                    {/* Backdrop overlay */}
-                    <div 
-                        className={`absolute inset-0 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'} ${isHomePage ? 'bg-black/60' : 'bg-stone-800/20'}`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                    ></div>
-                    
-                    {/* Menu content */}
-                    <div 
-                        className={`absolute right-0 top-0 h-full w-4/5 max-w-xs transform overflow-y-auto py-20 px-6 transition-transform duration-300 ${mobileMenuBgClass} ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
-                    >
-                        <div className="flex flex-col items-start gap-6 text-lg">
-                            <NavLink 
-                                href={routes.offers.route} 
-                                isActive={firstSegment(pathname) === routes.offers.route}
-                                isHomePage={isHomePage}
-                            >
-                                {strings.menu.offer}
-                            </NavLink>
-                            <NavLink 
-                                href={routes.photos.route} 
-                                isActive={firstSegment(pathname) === routes.photos.route}
-                                isHomePage={isHomePage}
-                            >
-                                {strings.menu.photos}
-                            </NavLink>
-                            <NavLink 
-                                href={routes.videos.route} 
-                                isActive={firstSegment(pathname) === routes.videos.route}
-                                isHomePage={isHomePage}
-                            >
-                                {strings.menu.videos}
-                            </NavLink>
-                            <NavLink 
-                                href={routes.contact.route} 
-                                isActive={firstSegment(pathname) === routes.contact.route}
-                                isHomePage={isHomePage}
-                            >
-                                {strings.menu.contact}
-                            </NavLink>
-                            <div className="mt-4 w-full">
-                                <NavLink 
-                                    href={routes.private.route} 
-                                    isActive={false}
-                                    isHomePage={isHomePage}
-                                    isPrimary={true}
-                                >
-                                    {strings.menu.private}
-                                </NavLink>
-                            </div>
-                        </div>
+                {/* Backdrop overlay */}
+                <div
+                    className={`absolute inset-0 transition-opacity duration-300 ${isHomePage ? 'bg-black/60' : 'bg-stone-800/20'}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                ></div>
+
+                {/* Menu content - still slides */}
+                <div
+                    className={`absolute right-0 top-0 h-full w-4/5 max-w-xs transform overflow-y-auto py-20 px-6 transition-transform duration-300 ${mobileMenuBgClass} ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                >
+                    <div className="flex flex-col items-start gap-6 text-lg">
+                        <NavLink
+                            href={routes.offers.route}
+                            isActive={firstSegment(pathname) === routes.offers.route}
+                            isHomePage={isHomePage}
+                        >
+                            {strings.menu.offer}
+                        </NavLink>
+                        <NavLink
+                            href={routes.photos.route}
+                            isActive={firstSegment(pathname) === routes.photos.route}
+                            isHomePage={isHomePage}
+                        >
+                            {strings.menu.photos}
+                        </NavLink>
+                        <NavLink
+                            href={routes.videos.route}
+                            isActive={firstSegment(pathname) === routes.videos.route}
+                            isHomePage={isHomePage}
+                        >
+                            {strings.menu.videos}
+                        </NavLink>
+                        <NavLink
+                            href={routes.contact.route}
+                            isActive={firstSegment(pathname) === routes.contact.route}
+                            isHomePage={isHomePage}
+                        >
+                            {strings.menu.contact}
+                        </NavLink>
+                        <NavLink
+                            href={routes.private.route}
+                            isActive={false}
+                            isHomePage={isHomePage}
+                            isPrimary={true}
+                        >
+                            {strings.menu.private}
+                        </NavLink>
                     </div>
                 </div>
             </div>
@@ -314,16 +310,16 @@ export const Header = () => {
             setCurrentAdvantage(nextAdvantage);
         }, 5000);
     }, [currentAdvantage]);
-    
+
     // Add scroll detection for dynamic header appearance
     React.useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
         };
-        
+
         window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll(); // Check initial scroll position
-        
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
