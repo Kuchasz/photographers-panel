@@ -252,7 +252,7 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
 
                 {/* Menu content - still slides */}
                 <div
-                    className={`absolute right-0 top-0 h-full w-4/5 max-w-xs transform overflow-y-auto py-20 px-6 transition-transform duration-300 ${mobileMenuBgClass} ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                    className={`absolute right-0 top-0 h-full w-4/5 max-w-xs transform overflow-y-auto py-8 px-6 transition-transform duration-300 ${mobileMenuBgClass} ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
                 >
                     <div className="flex flex-col items-start gap-6 text-lg">
                         <NavLink
