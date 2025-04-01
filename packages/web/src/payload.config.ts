@@ -17,9 +17,9 @@ import { OpinionMedia } from './collections/site/opinion-media'
 import { Users } from './collections/users'
 import { Video } from './collections/videos/video'
 import { defaultLexical } from './fields/defaultLexical'
-import { PrivateGalleryMedia } from './collections/private-gallery/private-gallery-media'
 import { PrivateGalleryVisits } from './collections/private-gallery/private-gallery-visits'
 import { PrivateGalleryAuthTokens } from './collections/private-gallery/private-gallery-auth-tokens'
+import { PrivateGalleryMediaDownloads } from './collections/private-gallery/private-gallery-media-downloads'
 import { Offer } from './globals/offer'
 
 const filename = fileURLToPath(import.meta.url)
@@ -35,9 +35,9 @@ export default buildConfig({
   collections: [
     Users, 
     PrivateGallery, 
-    PrivateGalleryMedia, 
     PrivateGalleryVisits, 
     PrivateGalleryAuthTokens,
+    PrivateGalleryMediaDownloads,
     Video, 
     SiteEvent, 
     SiteVisit, 

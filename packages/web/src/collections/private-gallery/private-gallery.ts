@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_MEDIA_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from '../collectionSlugs'
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from '../collectionSlugs'
 import { authenticatedOrPublished } from '~/access/authenticatedOrPublished'
 
 export const PrivateGallery: CollectionConfig = {
@@ -103,16 +103,6 @@ export const PrivateGallery: CollectionConfig = {
       name: 'notes',
       type: 'textarea',
       label: 'Notes',
-    },
-    {
-      name: 'galleryMedia',
-      type: 'join',
-      label: 'Gallery Media',
-      collection: PRIVATE_GALLERY_MEDIA_SLUG,
-      on: 'gallery',
-      admin: {
-        description: 'Related media items to this gallery',
-      },
     },
     {
       name: 'galleryVisits',

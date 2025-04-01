@@ -68,9 +68,9 @@ export interface Config {
   collections: {
     users: User;
     'private-galleries': PrivateGallery;
-    'private-gallery-media': PrivateGalleryMedia;
     'private-gallery-visits': PrivateGalleryVisit;
     'private-gallery-auth-tokens': PrivateGalleryAuthToken;
+    'private-gallery-media-downloads': PrivateGalleryMediaDownload;
     videos: Video;
     events: Event;
     'site-visits': SiteVisit;
@@ -84,16 +84,15 @@ export interface Config {
   };
   collectionsJoins: {
     'private-galleries': {
-      galleryMedia: 'private-gallery-media';
       galleryVisits: 'private-gallery-visits';
     };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     'private-galleries': PrivateGalleriesSelect<false> | PrivateGalleriesSelect<true>;
-    'private-gallery-media': PrivateGalleryMediaSelect<false> | PrivateGalleryMediaSelect<true>;
     'private-gallery-visits': PrivateGalleryVisitsSelect<false> | PrivateGalleryVisitsSelect<true>;
     'private-gallery-auth-tokens': PrivateGalleryAuthTokensSelect<false> | PrivateGalleryAuthTokensSelect<true>;
+    'private-gallery-media-downloads': PrivateGalleryMediaDownloadsSelect<false> | PrivateGalleryMediaDownloadsSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'site-visits': SiteVisitsSelect<false> | SiteVisitsSelect<true>;
@@ -171,14 +170,6 @@ export interface PrivateGallery {
   directPath: string;
   notes?: string | null;
   /**
-   * Related media items to this gallery
-   */
-  galleryMedia?: {
-    docs?: (number | PrivateGalleryMedia)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
    * Related visits to this gallery
    */
   galleryVisits?: {
@@ -188,56 +179,6 @@ export interface PrivateGallery {
   };
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "private-gallery-media".
- */
-export interface PrivateGalleryMedia {
-  id: number;
-  /**
-   * The gallery this media belongs to
-   */
-  gallery: number | PrivateGallery;
-  /**
-   * Record of downloads for this media
-   */
-  downloads?:
-    | {
-        ip: string;
-        date: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    big?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -264,6 +205,30 @@ export interface PrivateGalleryAuthToken {
   expiresAt: string;
   createdAt: string;
   updatedAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-media-downloads".
+ */
+export interface PrivateGalleryMediaDownload {
+  id: number;
+  /**
+   * ID or filename of the downloaded media
+   */
+  mediaId: string;
+  /**
+   * The gallery this download belongs to
+   */
+  gallery: number | PrivateGallery;
+  /**
+   * The token used for this download
+   */
+  token: number | PrivateGalleryAuthToken;
+  ip: string;
+  date: string;
+  userAgent?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -485,16 +450,16 @@ export interface PayloadLockedDocument {
         value: number | PrivateGallery;
       } | null)
     | ({
-        relationTo: 'private-gallery-media';
-        value: number | PrivateGalleryMedia;
-      } | null)
-    | ({
         relationTo: 'private-gallery-visits';
         value: number | PrivateGalleryVisit;
       } | null)
     | ({
         relationTo: 'private-gallery-auth-tokens';
         value: number | PrivateGalleryAuthToken;
+      } | null)
+    | ({
+        relationTo: 'private-gallery-media-downloads';
+        value: number | PrivateGalleryMediaDownload;
       } | null)
     | ({
         relationTo: 'videos';
@@ -592,59 +557,9 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   password?: T;
   directPath?: T;
   notes?: T;
-  galleryMedia?: T;
   galleryVisits?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "private-gallery-media_select".
- */
-export interface PrivateGalleryMediaSelect<T extends boolean = true> {
-  gallery?: T;
-  downloads?:
-    | T
-    | {
-        ip?: T;
-        date?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-  sizes?:
-    | T
-    | {
-        thumbnail?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        big?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -669,6 +584,20 @@ export interface PrivateGalleryAuthTokensSelect<T extends boolean = true> {
   expiresAt?: T;
   createdAt?: T;
   updatedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-media-downloads_select".
+ */
+export interface PrivateGalleryMediaDownloadsSelect<T extends boolean = true> {
+  mediaId?: T;
+  gallery?: T;
+  token?: T;
+  ip?: T;
+  date?: T;
+  userAgent?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

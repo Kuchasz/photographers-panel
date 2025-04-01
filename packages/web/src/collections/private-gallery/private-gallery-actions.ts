@@ -1,7 +1,8 @@
 "use server"
 import { getPayload } from "payload";
+import { type PrivateGalleryAuthToken } from "~/payload-types";
 import config from '~/payload.config';
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_AUTH_TOKENS_SLUG, PRIVATE_GALLERY_MEDIA_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_AUTH_TOKENS_SLUG, PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
 
 export const recordVisit = async (galleryId: number, ip: string, userAgent: string) => {
     const payload = await getPayload({ config });
@@ -18,28 +19,29 @@ export const recordVisit = async (galleryId: number, ip: string, userAgent: stri
     });
 };
 
-export const recordImageDownload = async (galleryId: string, mediaId: string, ip: string) => {
+export const recordImageDownload = async (galleryId: number, mediaId: string, ip: string, tokenId?: number, userAgent?: string) => {
     const payload = await getPayload({ config });
 
-    const media = await payload.findByID({
-        collection: PRIVATE_GALLERY_MEDIA_SLUG,
-        id: mediaId,
+    const tokens = await payload.find({
+        collection: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
+        where: {
+            token: {
+                equals: tokenId,
+            },
+        },
     });
 
-    const downloads = media.downloads ?? [];
-    media.downloads = [
-        ...downloads,
-        {
+    const token = tokens.docs[0];
+
+    await payload.create({
+        collection: PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG,
+        data: {
+            mediaId,
+            gallery: galleryId,
+            token: (token as unknown as PrivateGalleryAuthToken),
             ip,
             date: new Date().toISOString(),
-        },
-    ];
-
-    await payload.update({
-        collection: PRIVATE_GALLERY_MEDIA_SLUG,
-        id: mediaId,
-        data: {
-            downloads: media.downloads,
+            userAgent: userAgent ?? '',
         },
     });
 }

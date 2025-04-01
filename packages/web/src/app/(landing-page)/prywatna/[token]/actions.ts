@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import { getPayload } from 'payload';
 import {
   PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
-  PRIVATE_GALLERY_MEDIA_SLUG
+  PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG
 } from '~/collections/collectionSlugs';
 import { fetchJAlbumPhotos } from '~/lib/jalbum';
 import { type PrivateGallery } from '~/payload-types';
@@ -17,6 +17,7 @@ async function validateGalleryToken(token: string) {
 
   const headersList = await headers();
   const ip = headersList.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
+  const userAgent = headersList.get('user-agent') ?? 'unknown';
 
   const authTokens = await payload.find({
     collection: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
@@ -38,6 +39,7 @@ async function validateGalleryToken(token: string) {
   return {
     authToken,
     ip,
+    userAgent,
     galleryId: (authToken.gallery as PrivateGallery).id,
     payload
   };
@@ -95,24 +97,15 @@ export async function registerPhotoDownload(token: string, photoId: string) {
   }
 
   try {
-    const media = await tokenData.payload.findByID({
-      collection: PRIVATE_GALLERY_MEDIA_SLUG,
-      id: photoId,
-    });
-
-    const downloads = media.downloads ?? [];
-
-    await tokenData.payload.update({
-      collection: PRIVATE_GALLERY_MEDIA_SLUG,
-      id: photoId,
+    await tokenData.payload.create({
+      collection: PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG,
       data: {
-        downloads: [
-          ...downloads,
-          {
-            ip: tokenData.ip,
-            date: new Date().toISOString(),
-          },
-        ],
+        mediaId: photoId,
+        gallery: tokenData.galleryId,
+        token: tokenData.authToken.id,
+        ip: tokenData.ip,
+        date: new Date().toISOString(),
+        userAgent: tokenData.userAgent,
       },
     });
 
