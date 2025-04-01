@@ -4,6 +4,9 @@ import { type Photo, PhotoGallery } from "~/components/gallery";
 import { PageContainer } from "~/components/page-container";
 import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
+import { downloadImageByUrl } from "@pp/utils/dist/file";
+import { useParams } from "next/navigation";
+import { registerPhotoDownload } from "./actions";
 
 type PrivateGalleryClientPageProps = {
     photos: Photo[];
@@ -11,9 +14,19 @@ type PrivateGalleryClientPageProps = {
 };
 
 export default function PrivateGalleryClientPage({ photos, galleryTitle = '' }: PrivateGalleryClientPageProps) {
+    const { token } = useParams<{ token: string }>();
 
-    const handleDownload = (photo: Photo) => {
-        console.log('Downloading photo:', photo);
+    const handleDownload = async (photo: Photo) => {
+        try {
+            // Download the photo using the utility from utils package
+            const imageUrl = photo.sizes?.big?.url || photo.url;
+            await downloadImageByUrl(imageUrl);
+            
+            // After successful download, record it using the server action
+            await registerPhotoDownload(token as string, photo.id);
+        } catch (error) {
+            console.error('Error during photo download:', error);
+        }
     };
 
     // Use the gallery title if available, otherwise use the default title

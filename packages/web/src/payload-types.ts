@@ -168,7 +168,7 @@ export interface PrivateGallery {
   date: string;
   state: 'draft' | 'published' | 'archived';
   password: string;
-  directPath?: string | null;
+  directPath: string;
   notes?: string | null;
   /**
    * Related media items to this gallery

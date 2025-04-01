@@ -93,6 +93,7 @@ export const PrivateGallery: CollectionConfig = {
     {
       name: 'directPath',
       type: 'text',
+      required: true,
       label: 'Direct Path',
       admin: {
         position: 'sidebar',
