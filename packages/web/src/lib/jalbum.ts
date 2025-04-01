@@ -167,7 +167,7 @@ export const fetchJAlbumPhotos = async (rootUrl: string): Promise<JAlbumPhoto[]>
         }
         
         const photo: JAlbumPhoto = {
-          id: `${directory.name}_${String(allPhotos.length)}`,
+          id: `${directory.name}_${filename}`,
           src: `${baseUrl}${directory.path}${typeof img.img === 'string' ? img.img : ''}`,
           thumbnail: `${baseUrl}${directory.path}${typeof img.thmb === 'string' ? img.thmb : ''}`,
           text: filename,
