@@ -1,7 +1,7 @@
-import { ArrowRight, Image as ImageIcon, Play } from "@phosphor-icons/react/dist/ssr";
+import { FilmStrip, Image as ImageIcon, Images } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
-import { type InstagramPost } from "~/lib/instagram";
 import { Button } from "~/components/button";
+import { type InstagramPost } from "~/lib/instagram";
 import { strings } from "~/resources";
 
 type InstagramGridProps = {
@@ -12,11 +12,11 @@ type InstagramGridProps = {
 const getMediaTypeIcon = (mediaType: InstagramPost['media_type']) => {
     switch (mediaType) {
         case 'VIDEO':
-            return <Play weight="fill" className="text-white" />;
+            return <FilmStrip weight="fill" className="text-white size-4" />;
         case 'CAROUSEL_ALBUM':
-            return <ArrowRight weight="fill" className="text-white" />;
+            return <Images weight="fill" className="text-white size-4" />;
         default:
-            return <ImageIcon weight="fill" className="text-white" />;
+            return <ImageIcon weight="fill" className="text-white size-4" />;
     }
 };
 
@@ -48,7 +48,7 @@ export function InstagramGrid({ posts, maxPosts = 6 }: InstagramGridProps) {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                         {/* Media type indicator in top right corner */}
-                        <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/60">
+                        <div className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 backdrop-blur-sm shadow-sm transition-transform duration-300 group-hover:scale-110">
                             {getMediaTypeIcon(post.media_type)}
                         </div>
 

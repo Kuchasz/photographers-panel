@@ -10,13 +10,45 @@ export type InstagramPost = {
   thumbnail_url?: string;
   media_type: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
   caption?: string;
+  timestamp?: string;
+  username?: string;
 }
 
-// Instagram Graph API Configuration - Replace these with your actual values
+type InstagramMediaItem = {
+  id: string;
+}
+
+// API response types
+interface InstagramMediaResponse {
+  data: {
+    id: string;
+    [key: string]: unknown;
+  }[];
+  paging?: {
+    cursors: {
+      before?: string;
+      after?: string;
+    };
+    next?: string;
+  };
+  error?: {
+    message: string;
+    type: string;
+    code: number;
+    [key: string]: unknown;
+  };
+}
+
+// Instagram Graph API Configuration
 const INSTAGRAM_ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN ?? 'YOUR_INSTAGRAM_ACCESS_TOKEN';
 const INSTAGRAM_USER_ID = process.env.INSTAGRAM_USER_ID ?? 'YOUR_INSTAGRAM_USER_ID';
 const INSTAGRAM_API_VERSION = 'v22.0'; // Update this to the latest version when needed
 
+/**
+ * Fetches Instagram posts using a two-step approach:
+ * 1. Get media IDs from the user's feed
+ * 2. Get detailed information for each media item
+ */
 export async function getInstagramPosts(limit = 6): Promise<InstagramPost[]> {
   try {
     // Check if we're using real credentials
@@ -26,99 +58,132 @@ export async function getInstagramPosts(limit = 6): Promise<InstagramPost[]> {
 
     if (usingMockData) {
       console.warn('Using mock Instagram data. Set up INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_USER_ID env variables for real data.');
-      return getMockInstagramPosts();
+      return [];
     }
 
-    // Fetch real Instagram posts using the Graph API
-    // Documentation: https://developers.facebook.com/docs/instagram-api/reference/ig-user/media
-    const apiUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${INSTAGRAM_USER_ID}/media`;
-
-    const response = await fetch(`${apiUrl}?fields=id,caption,media_type,media_url,thumbnail_url,permalink&limit=${limit}&access_token=${INSTAGRAM_ACCESS_TOKEN}`);
-
-    if (!response.ok) {
-      const error = await response.json();
-      console.error('Instagram API Error:', error);
-      throw new Error(`Instagram API error: ${error.message ?? 'Unknown error'}`);
+    // Step 1: Fetch media IDs
+    const mediaItems = await fetchMediaList(limit);
+    
+    if (!mediaItems.length) {
+      console.warn('No Instagram media items found');
+      return [];
     }
-
-    const data = await response.json();
-
-    if (!data.data || !Array.isArray(data.data)) {
-      console.error('Invalid response format from Instagram API:', data);
-      throw new Error('Invalid response format from Instagram API');
-    }
-
-    // Transform the API response to match our InstagramPost type
-    const posts: InstagramPost[] = data.data.map((post: {
-      id: string;
-      permalink: string;
-      media_url: string;
-      thumbnail_url?: string;
-      media_type: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
-      caption?: string;
-    }) => ({
-      id: post.id,
-      permalink: post.permalink,
-      media_url: post.media_url,
-      thumbnail_url: post.thumbnail_url,
-      media_type: post.media_type,
-      caption: post.caption,
-    }));
-
+    
+    // Step 2: Fetch detailed information for each media item
+    const posts = await fetchMediaDetails(mediaItems);
     return posts;
   } catch (error) {
     console.error('Error fetching Instagram posts:', error);
-    // Fallback to mock data if there's an error
-    console.warn('Falling back to mock Instagram data due to error');
-    return getMockInstagramPosts();
+    // Fallback to empty array if there's an error
+    console.warn('Returning empty array due to error');
+    return [];
   }
 }
 
-// Function to provide mock data for development or fallback
-function getMockInstagramPosts(): InstagramPost[] {
-  return [
-    {
-      id: '1',
-      permalink: 'https://www.instagram.com/p/sample1/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,1',
-      media_type: 'IMAGE',
-      caption: 'Piękny dzień z wspaniałą parą #fotografia #ślub'
-    },
-    {
-      id: '2',
-      permalink: 'https://www.instagram.com/p/sample2/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,2',
-      media_type: 'CAROUSEL_ALBUM',
-      caption: 'Urocza sesja plenerowa #sesja #fotografia'
-    },
-    {
-      id: '3',
-      permalink: 'https://www.instagram.com/p/sample3/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,3',
-      thumbnail_url: 'https://source.unsplash.com/random/600x600?wedding,3',
-      media_type: 'VIDEO',
-      caption: 'Magiczne chwile #miłość #ślub'
-    },
-    {
-      id: '4',
-      permalink: 'https://www.instagram.com/p/sample4/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,4',
-      media_type: 'IMAGE',
-      caption: 'Detale weselne #ślub #wesele'
-    },
-    {
-      id: '5',
-      permalink: 'https://www.instagram.com/p/sample5/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,5',
-      media_type: 'IMAGE',
-      caption: 'Piękne zdjęcie ślubne #ślub #wesele'
-    },
-    {
-      id: '6',
-      permalink: 'https://www.instagram.com/p/sample6/',
-      media_url: 'https://source.unsplash.com/random/600x600?wedding,6',
-      media_type: 'IMAGE',
-      caption: 'Piękne zdjęcie ślubne #ślub #wesele'
+/**
+ * Fetches a list of media IDs from the user's Instagram feed
+ */
+async function fetchMediaList(limit: number): Promise<InstagramMediaItem[]> {
+  try {
+    const mediaUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${INSTAGRAM_USER_ID}/media?limit=${limit}&access_token=${INSTAGRAM_ACCESS_TOKEN}`;
+    
+    const response = await fetch(mediaUrl);
+    
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('Instagram API Error when fetching media list:', error);
+      throw new Error(`Instagram API error: ${error.message ?? 'Unknown error'}`);
     }
-  ];
+    
+    const mediaData: InstagramMediaResponse = await response.json();
+    
+    // Check if there was an error in the response
+    if (mediaData.error) {
+      console.error("Error fetching media list:", mediaData.error.message);
+      throw new Error(`Instagram API error: ${mediaData.error.message}`);
+    }
+    
+    // Check if the response contains data
+    if (!mediaData.data || !Array.isArray(mediaData.data)) {
+      console.error('Invalid response format from Instagram API:', mediaData);
+      throw new Error('Invalid response format from Instagram API');
+    }
+    
+    // Explicitly convert to InstagramMediaItem[]
+    const mediaItems: InstagramMediaItem[] = mediaData.data.map(item => ({
+      id: item.id
+    }));
+    
+    return mediaItems;
+  } catch (error) {
+    console.error('Error fetching Instagram media list:', error);
+    throw error;
+  }
+}
+
+/**
+ * Fetches detailed information for each Instagram media item
+ */
+async function fetchMediaDetails(mediaItems: InstagramMediaItem[]): Promise<InstagramPost[]> {
+  try {
+    // Fields to fetch for each media item
+    const mediaFields = [
+      "caption",
+      "id",
+      "media_type",
+      "media_url",
+      "permalink",
+      "thumbnail_url",
+      "timestamp",
+      "username"
+    ].join(",");
+    
+    // Fetch details for each media item in parallel
+    const postsPromises = mediaItems.map(async (item) => {
+      try {
+        const mediaDetailUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${item.id}?fields=${mediaFields}&access_token=${INSTAGRAM_ACCESS_TOKEN}`;
+        const response = await fetch(mediaDetailUrl);
+        
+        if (!response.ok) {
+          const error = await response.json();
+          console.error(`Error fetching details for media ${item.id}:`, error);
+          return null;
+        }
+        
+        const mediaDetail = await response.json();
+        
+        // Create an InstagramPost object from the media details
+        const post: InstagramPost = {
+          id: mediaDetail.id,
+          permalink: mediaDetail.permalink,
+          media_url: mediaDetail.media_url,
+          media_type: mediaDetail.media_type as 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM',
+          caption: mediaDetail.caption,
+          timestamp: mediaDetail.timestamp,
+          username: mediaDetail.username
+        };
+        
+        // Only add thumbnail_url if it exists
+        if (mediaDetail.thumbnail_url) {
+          post.thumbnail_url = mediaDetail.thumbnail_url;
+        }
+        
+        return post;
+      } catch (error) {
+        console.error(`Error fetching details for media ${item.id}:`, error);
+        return null;
+      }
+    });
+    
+    // Wait for all requests to complete
+    const postsResults = await Promise.all(postsPromises);
+    
+    // Filter out any null values (failed requests)
+    const posts = postsResults.filter((post): post is InstagramPost => post !== null);
+    
+    return posts;
+  } catch (error) {
+    console.error('Error fetching Instagram media details:', error);
+    throw error;
+  }
 } 
