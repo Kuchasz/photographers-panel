@@ -443,6 +443,10 @@ export interface Photo {
 export interface InstagramToken {
   id: number;
   label: string;
+  /**
+   * When this token expires
+   */
+  expiresAt: string;
   accessToken: string;
   updatedAt: string;
   createdAt: string;
@@ -824,6 +828,7 @@ export interface PhotosSelect<T extends boolean = true> {
  */
 export interface InstagramTokensSelect<T extends boolean = true> {
   label?: T;
+  expiresAt?: T;
   accessToken?: T;
   updatedAt?: T;
   createdAt?: T;

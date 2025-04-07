@@ -18,6 +18,14 @@ export const InstagramTokens: CollectionConfig = {
             defaultValue: 'Instagram Access Token',
         },
         {
+            name: 'expiresAt',
+            type: 'date',
+            required: true,
+            admin: {
+                description: 'When this token expires',
+            },
+        },
+        {
             name: 'accessToken',
             type: 'text',
             required: true,
