@@ -21,6 +21,7 @@ import { PrivateGalleryVisits } from './collections/private-gallery/private-gall
 import { PrivateGalleryAuthTokens } from './collections/private-gallery/private-gallery-auth-tokens'
 import { PrivateGalleryMediaDownloads } from './collections/private-gallery/private-gallery-media-downloads'
 import { Offer } from './globals/offer'
+import { InstagramTokens } from './collections/instagram/instagram-tokens'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -33,18 +34,19 @@ export default buildConfig({
     },
   },
   collections: [
-    Users, 
-    PrivateGallery, 
-    PrivateGalleryVisits, 
+    Users,
+    PrivateGallery,
+    PrivateGalleryVisits,
     PrivateGalleryAuthTokens,
     PrivateGalleryMediaDownloads,
-    Video, 
-    SiteEvent, 
-    SiteVisit, 
-    OfferMedia, 
-    Opinion, 
+    Video,
+    SiteEvent,
+    SiteVisit,
+    OfferMedia,
+    Opinion,
     OpinionMedia,
-    Photo
+    Photo,
+    InstagramTokens
   ],
   globals: [
     Offer

@@ -1,7 +1,8 @@
 'use server'
 
-// Instagram types and functions moved from the landing page actions 
-// to be reusable across the application
+import { getPayload } from "payload";
+import payloadConfig from "~/payload.config";
+import { INSTAGRAM_TOKENS_SLUG } from '~/collections/collectionSlugs';
 
 export type InstagramPost = {
   id: string;
@@ -39,10 +40,53 @@ interface InstagramMediaResponse {
   };
 }
 
+// Instagram token from database
+export interface InstagramTokenDB {
+  id: string;
+  accessToken: string;
+  expiresAt?: string;
+  [key: string]: unknown;
+}
+
 // Instagram Graph API Configuration
-const INSTAGRAM_ACCESS_TOKEN = process.env.INSTAGRAM_ACCESS_TOKEN ?? 'YOUR_INSTAGRAM_ACCESS_TOKEN';
+// Store cached token to minimize database calls
+let cachedToken: { value: string; expires?: Date } | null = null;
 const INSTAGRAM_USER_ID = process.env.INSTAGRAM_USER_ID ?? 'YOUR_INSTAGRAM_USER_ID';
 const INSTAGRAM_API_VERSION = 'v22.0'; // Update this to the latest version when needed
+
+/**
+ * Fetches the Instagram token from the database using Payload API
+ */
+async function getInstagramToken(): Promise<string> {
+  // Return cached token if it exists (simple caching to avoid frequent DB calls)
+  if (cachedToken?.value) {
+    return cachedToken.value;
+  }
+  
+  // Initialize PayloadCMS client
+  const payload = await getPayload({ config: payloadConfig });
+
+  // Find the most recent token
+  const tokens = await payload.find({
+    collection: INSTAGRAM_TOKENS_SLUG,
+    limit: 1,
+    sort: '-createdAt', // Get the most recent token
+  });
+
+  if (!tokens.docs || tokens.docs.length === 0) {
+    throw new Error('No Instagram token found in database');
+  }
+  
+  // Get the most recent token
+  const token = tokens.docs[0] as unknown as InstagramTokenDB;
+  
+  // Cache the token
+  cachedToken = { 
+    value: token.accessToken
+  };
+  
+  return token.accessToken;
+}
 
 /**
  * Fetches Instagram posts using a two-step approach:
@@ -51,18 +95,30 @@ const INSTAGRAM_API_VERSION = 'v22.0'; // Update this to the latest version when
  */
 export async function getInstagramPosts(limit = 6): Promise<InstagramPost[]> {
   try {
+    // Get token from database instead of env var
+    let accessToken: string;
+    
+    try {
+      accessToken = await getInstagramToken();
+      console.log('accessToken', accessToken);
+    } catch (error) {
+      console.error('Error fetching Instagram token:', error);
+      // Fallback to env var if database token isn't available
+      accessToken = process.env.INSTAGRAM_ACCESS_TOKEN ?? 'YOUR_INSTAGRAM_ACCESS_TOKEN';
+    }
+    
     // Check if we're using real credentials
     const usingMockData =
-      INSTAGRAM_ACCESS_TOKEN === 'YOUR_INSTAGRAM_ACCESS_TOKEN' ||
+      accessToken === 'YOUR_INSTAGRAM_ACCESS_TOKEN' ||
       INSTAGRAM_USER_ID === 'YOUR_INSTAGRAM_USER_ID';
 
     if (usingMockData) {
-      console.warn('Using mock Instagram data. Set up INSTAGRAM_ACCESS_TOKEN and INSTAGRAM_USER_ID env variables for real data.');
+      console.warn('Using mock Instagram data. Set up valid Instagram credentials for real data.');
       return [];
     }
 
     // Step 1: Fetch media IDs
-    const mediaItems = await fetchMediaList(limit);
+    const mediaItems = await fetchMediaList(limit, accessToken);
     
     if (!mediaItems.length) {
       console.warn('No Instagram media items found');
@@ -70,7 +126,7 @@ export async function getInstagramPosts(limit = 6): Promise<InstagramPost[]> {
     }
     
     // Step 2: Fetch detailed information for each media item
-    const posts = await fetchMediaDetails(mediaItems);
+    const posts = await fetchMediaDetails(mediaItems, accessToken);
     return posts;
   } catch (error) {
     console.error('Error fetching Instagram posts:', error);
@@ -83,9 +139,9 @@ export async function getInstagramPosts(limit = 6): Promise<InstagramPost[]> {
 /**
  * Fetches a list of media IDs from the user's Instagram feed
  */
-async function fetchMediaList(limit: number): Promise<InstagramMediaItem[]> {
+async function fetchMediaList(limit: number, accessToken: string): Promise<InstagramMediaItem[]> {
   try {
-    const mediaUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${INSTAGRAM_USER_ID}/media?limit=${limit}&access_token=${INSTAGRAM_ACCESS_TOKEN}`;
+    const mediaUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${INSTAGRAM_USER_ID}/media?limit=${limit}&access_token=${accessToken}`;
     
     const response = await fetch(mediaUrl);
     
@@ -124,7 +180,7 @@ async function fetchMediaList(limit: number): Promise<InstagramMediaItem[]> {
 /**
  * Fetches detailed information for each Instagram media item
  */
-async function fetchMediaDetails(mediaItems: InstagramMediaItem[]): Promise<InstagramPost[]> {
+async function fetchMediaDetails(mediaItems: InstagramMediaItem[], accessToken: string): Promise<InstagramPost[]> {
   try {
     // Fields to fetch for each media item
     const mediaFields = [
@@ -141,7 +197,7 @@ async function fetchMediaDetails(mediaItems: InstagramMediaItem[]): Promise<Inst
     // Fetch details for each media item in parallel
     const postsPromises = mediaItems.map(async (item) => {
       try {
-        const mediaDetailUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${item.id}?fields=${mediaFields}&access_token=${INSTAGRAM_ACCESS_TOKEN}`;
+        const mediaDetailUrl = `https://graph.facebook.com/${INSTAGRAM_API_VERSION}/${item.id}?fields=${mediaFields}&access_token=${accessToken}`;
         const response = await fetch(mediaDetailUrl);
         
         if (!response.ok) {

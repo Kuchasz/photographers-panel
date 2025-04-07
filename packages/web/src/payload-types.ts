@@ -78,6 +78,7 @@ export interface Config {
     opinions: Opinion;
     'opinion-media': OpinionMedia;
     photos: Photo;
+    'instagram-tokens': InstagramToken;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -100,6 +101,7 @@ export interface Config {
     opinions: OpinionsSelect<false> | OpinionsSelect<true>;
     'opinion-media': OpinionMediaSelect<false> | OpinionMediaSelect<true>;
     photos: PhotosSelect<false> | PhotosSelect<true>;
+    'instagram-tokens': InstagramTokensSelect<false> | InstagramTokensSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -436,6 +438,17 @@ export interface Photo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instagram-tokens".
+ */
+export interface InstagramToken {
+  id: number;
+  label: string;
+  accessToken: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -488,6 +501,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'photos';
         value: number | Photo;
+      } | null)
+    | ({
+        relationTo: 'instagram-tokens';
+        value: number | InstagramToken;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -800,6 +817,16 @@ export interface PhotosSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "instagram-tokens_select".
+ */
+export interface InstagramTokensSelect<T extends boolean = true> {
+  label?: T;
+  accessToken?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
