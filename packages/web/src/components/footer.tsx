@@ -4,14 +4,14 @@ import { strings } from "~/resources";
 import Link from "next/link";
 import { routes } from "~/routes";
 import { InstagramGrid } from "./instagram-grid";
-import { getInstagramPosts } from "~/lib/instagram";
+import { getInstagramPostsForFooter } from "~/collections/instagram/actions";
 import { SectionTitle } from "./section-title";
 
 const year: number = getYear(new Date());
 
 export async function Footer() {
     // Fetch Instagram posts for the footer
-    const instagramPosts = await getInstagramPosts();
+    const instagramPosts = await getInstagramPostsForFooter();
 
     return (
     <footer className="bg-white pb-16">
