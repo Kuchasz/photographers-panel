@@ -20,7 +20,6 @@ stats.json
 # pnpm
 .pnpm-store/
 .pnpm-debug.log
-pnpm-lock.yaml
 /public/offer-media/
 /public/photos/
 packages/web/src/public/offer-media/*
