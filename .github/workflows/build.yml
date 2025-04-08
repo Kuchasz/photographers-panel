@@ -127,48 +127,48 @@ jobs:
                   path: |
                       packages/web/dist
 
-    upload_artifacts:
-        name: upload/artifacts
-        needs: [build_utils, build_api, build_web]
-        runs-on: ubuntu-latest
+    # upload_artifacts:
+    #     name: upload/artifacts
+    #     needs: [build_utils, build_api, build_web]
+    #     runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v3
+    #     steps:
+    #         - uses: actions/checkout@v3
 
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '20.x'
-                  cache: 'npm'
-                  check-latest: false
+    #         - uses: actions/setup-node@v3
+    #           with:
+    #               node-version: '20.x'
+    #               cache: 'npm'
+    #               check-latest: false
 
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
+    #         - uses: actions/download-artifact@v4
+    #           with:
+    #               name: dist.utils
+    #               path: ./packages/utils/dist
 
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.api
-                  path: ./packages/api/dist
+    #         - uses: actions/download-artifact@v4
+    #           with:
+    #               name: dist.api
+    #               path: ./packages/api/dist
 
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.web
-                  path: ./packages/web/dist
+    #         - uses: actions/download-artifact@v4
+    #           with:
+    #               name: dist.web
+    #               path: ./packages/web/dist
 
-            - uses: montudor/action-zip@v0.1.0
-              with:
-                  args: zip -qq -r package.zip node_modules packages package.json package-lock.json
+    #         - uses: montudor/action-zip@v0.1.0
+    #           with:
+    #               args: zip -qq -r package.zip node_modules packages package.json package-lock.json
 
-            - run: |
-                  mkdir package
-                  mv package.zip package/package.zip
+    #         - run: |
+    #               mkdir package
+    #               mv package.zip package/package.zip
 
-            - name: upload artifact to stating
-              uses: SamKirkland/FTP-Deploy-Action@4.0.0
-              with:
-                  server: ${{ secrets.ftp_server }}
-                  username: ${{ secrets.ftp_username }}
-                  password: ${{ secrets.ftp_password }}
-                  local-dir: ./package/
-                  server-dir: domains/artifacts/
+    #         - name: upload artifact to stating
+    #           uses: SamKirkland/FTP-Deploy-Action@4.0.0
+    #           with:
+    #               server: ${{ secrets.ftp_server }}
+    #               username: ${{ secrets.ftp_username }}
+    #               password: ${{ secrets.ftp_password }}
+    #               local-dir: ./package/
+    #               server-dir: domains/artifacts/
