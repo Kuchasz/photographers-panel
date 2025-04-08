@@ -5,10 +5,7 @@
     "type": "module",
     "scripts": {
         "build": "next build",
-        "check": "next lint && tsc --noEmit",
         "dev": "next dev --turbo",
-        "lint": "next lint",
-        "lint:fix": "next lint --fix",
         "preview": "next build && next start",
         "start": "next start",
         "typecheck": "tsc --noEmit",
@@ -17,7 +14,6 @@
         "generate:importmap": "payload generate:importmap",
         "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
         "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-        "test": "jest --passWithNoTests",
         "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'"
     },
     "browserslist": [
@@ -52,18 +48,13 @@
         "@tailwindcss/typography": "^0.5.16",
         "@tanstack/react-query": "5.66.9",
         "@ts-rest/react-query": "3.52.0",
-        "@types/eslint": "^8.56.10",
         "@types/node": "^20.14.10",
         "@types/nodemailer": "6.4.17",
         "@types/react": "^19.0.0",
         "@types/react-dom": "^19.0.0",
         "@types/recharts": "1.8.29",
-        "@typescript-eslint/eslint-plugin": "^8.1.0",
-        "@typescript-eslint/parser": "^8.1.0",
         "clsx": "^2.1.1",
         "concurrently": "^8.2.2",
-        "eslint": "^8.57.0",
-        "eslint-config-next": "^15.0.1",
         "nodemailer": "6.10.0",
         "postcss": "^8.4.39",
         "prettier": "^3.3.2",
@@ -72,12 +63,7 @@
         "sharp": "0.32.6",
         "tailwind-merge": "^3.0.2",
         "tailwindcss": "^4.0.8",
-        "typescript": "5.7.3",
-        "jest": "^29.7.0",
-        "@types/jest": "^29.5.12",
-        "ts-jest": "^29.1.2",
-        "@testing-library/react": "^14.2.1",
-        "@testing-library/jest-dom": "^6.4.2"
+        "typescript": "5.7.3"
     },
     "peerDependencies": {
         "react": "19.0.0",
