@@ -12,7 +12,7 @@ echo "💾 Backing up existing directories..."
 [ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup && echo "  ✓ Backed up databases directory" || true
 
 echo "🧹 Cleaning up existing files..."
-rm -rf public_nodejs packages node_modules package-lock.json package.json
+rm -rf public_nodejs packages node_modules pnpm-lock.yaml package.json
 
 echo "📦 Unzipping new package..."
 unzip -o -q ../artifacts/package.zip
@@ -23,8 +23,11 @@ node --version
 echo "⚙️ Copying environment file..."
 cp ../env-vars/pyszstudio.pl.env .env
 
+echo "📥 Installing pnpm..."
+npm install -g pnpm
+
 echo "🔧 Installing dependencies..."
-npm install
+pnpm install
 
 echo "📁 Setting up web package..."
 mkdir -p public_nodejs/public
