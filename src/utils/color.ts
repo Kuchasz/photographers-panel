@@ -7,9 +7,9 @@ export const colorFromString = (text: string) => {
     var f = 1;
     if (text.length > 0) {
         for (var i = 0; i < text.length; i++)
-            text[i].charCodeAt(0) > d && (d = text[i].charCodeAt(0)),
+            text[i]!.charCodeAt(0) > d && (d = text[i]!.charCodeAt(0)),
                 (f = parseInt((SEED / d).toString())),
-                (b = (b + text[i].charCodeAt(0) * f * FACTOR) % SEED);
+                (b = (b + text[i]!.charCodeAt(0) * f * FACTOR) % SEED);
     }
     var hex = ((b * text.length) % SEED).toString(16);
     hex = hex.padEnd(6, hex);
@@ -22,7 +22,7 @@ export const invertColor = (hex: string) => {
         hex = hex.slice(1);
     }
     if (hex.length === 3) {
-        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        hex = hex[0]! + hex[0]! + hex[1]! + hex[1]! + hex[2]! + hex[2]!;
     }
     if (hex.length !== 6) {
         throw new Error('Invalid HEX color.');
