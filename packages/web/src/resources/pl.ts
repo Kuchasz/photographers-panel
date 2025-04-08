@@ -104,7 +104,7 @@ export const pl = {
         emailLabel: 'Adres e-mail:',
         phone: '506 386 443',
         phoneLabel: 'Telefon:',
-        address: ['Ewa I Piotr Pysz', 'ul. Metalowców 5/30', '34-120 Andrychów'],
+        address: ['Ewa i Piotr Pysz', 'ul. Metalowców 5/30', '34-120 Andrychów'],
         addressLabel: 'Adres:',
         socialLinks: {
             instagram: 'Obserwuj nas na Instagramie',

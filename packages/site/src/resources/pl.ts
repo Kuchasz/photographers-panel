@@ -44,7 +44,7 @@ export const pl = {
         emailLabel: 'Adres e-mail:',
         phone: '506 386 443',
         phoneLabel: 'Telefon:',
-        address: ['EWA I PIOTR PYSZ', 'UL. METALOWCÓW 5/30', '34-120 ANDRYCHÓW'],
+        address: ['EWA i PIOTR PYSZ', 'UL. METALOWCÓW 5/30', '34-120 ANDRYCHÓW'],
         addressLabel: 'Adres:',
     },
     head: {

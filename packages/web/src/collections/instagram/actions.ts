@@ -7,19 +7,19 @@ import { fetchMediaList, fetchMediaDetails, type InstagramPost } from "~/lib/ins
 import { unstable_cache } from 'next/cache';
 
 // Store cached token to minimize database calls
-let cachedToken: { value: string; expires: Date } | null = null;
+// let cachedToken: { value: string; expires: Date } | null = null;
 
 /**
  * Fetches the Instagram token from the database using Payload API
  */
 async function getInstagramTokenFromDatabase(): Promise<string> {
     // Return cached token if it exists and hasn't expired
-    if (cachedToken?.value && cachedToken.expires > new Date()) {
-        return cachedToken.value;
-    }
+    // if (cachedToken?.value && cachedToken.expires > new Date()) {
+    //     return cachedToken.value;
+    // }
 
     // Clear expired cached token
-    cachedToken = null;
+    // cachedToken = null;
 
     // Initialize PayloadCMS client
     const payload = await getPayload({ config: payloadConfig });
@@ -49,10 +49,10 @@ async function getInstagramTokenFromDatabase(): Promise<string> {
     }
 
     // Cache the token with its expiration date
-    cachedToken = {
-        value: token.accessToken,
-        expires: new Date(token.expiresAt)
-    };
+    // cachedToken = {
+    //     value: token.accessToken,
+    //     expires: new Date(token.expiresAt)
+    // };
 
     return token.accessToken;
 }
