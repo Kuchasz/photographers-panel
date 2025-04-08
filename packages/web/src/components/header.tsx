@@ -3,7 +3,7 @@ import { first, last, nextElement } from "@pp/utils/dist/array";
 import { firstSegment } from "@pp/utils/dist/url";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { ReactNode } from "react";
+import React from "react";
 import { type MenuItem, menuItems } from "~/menu-items";
 import { Headers } from "./headers";
 import { strings } from "../resources";
@@ -11,9 +11,6 @@ import { routes } from "~/routes";
 import { Button } from "./button";
 
 const getSrc = (photo: string, ext: string) => `/images/top-new/${photo}${ext}`;
-
-const selectedItem = (selectedPath: string, path: string) =>
-    firstSegment(selectedPath) === path ? 'current' : undefined;
 
 interface ImageCarouselProps {
     photos: string[];
@@ -337,7 +334,7 @@ export const Header = () => {
                     <div className="-z-10 absolute h-full w-full">
                         <ImageCarousel photos={strings.main.topPhotos} />
                     </div>
-                    <nav className={`sticky top-0 w-full z-20 transition-all duration-300 ${isScrolled ? 'bg-black/60 backdrop-blur-md shadow-md' : 'border-b border-white/10 backdrop-blur-sm'}`}>
+                    <nav className={`fixed top-0 left-0 right-0 w-full z-50 border-b transition-all duration-300 ${isScrolled ? 'bg-black/60 backdrop-blur-md shadow-md border-transparent' : 'border-white/10 backdrop-blur-sm'}`}>
                         <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
                             <Navigation isHomePage={true} />
                         </div>
@@ -378,12 +375,16 @@ export const Header = () => {
     // Other pages header with white background
     return (
         <div>
-            <Headers title={firstItem?.title}></Headers>
-            <nav className={`sticky top-0 w-full z-20 transition-all duration-300 ${isScrolled ? 'bg-white/95 shadow-md backdrop-blur-md' : 'border-b border-stone-100 bg-white'}`}>
-                <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
-                    <Navigation isHomePage={false} />
-                </div>
-            </nav>
+            {/* Add a spacer div that matches the header height */}
+            <div className="h-[88px]"></div>
+            <div className="fixed top-0 left-0 right-0 w-full z-50">
+                <Headers title={firstItem?.title}></Headers>
+                <nav className={`w-full transition-all duration-300 ${isScrolled ? 'bg-white/95 shadow-md backdrop-blur-md border-b border-transparent' : 'border-b border-stone-100 bg-white'}`}>
+                    <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
+                        <Navigation isHomePage={false} />
+                    </div>
+                </nav>
+            </div>
         </div>
     );
 };
