@@ -4,7 +4,7 @@ import { type Photo, PhotoGallery } from "~/components/gallery";
 import { PageContainer } from "~/components/page-container";
 import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
-import { downloadImageByUrl } from "@pp/utils/dist/file";
+import { downloadImageByUrl } from "~/utils/file";
 import { useParams } from "next/navigation";
 import { registerPhotoDownload } from "./actions";
 

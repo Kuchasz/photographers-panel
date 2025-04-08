@@ -1,6 +1,6 @@
 import { routes } from "~/routes";
 import { strings } from "./resources";
-import { zip } from "@pp/utils/dist/array";
+import { zip } from "~/utils/array";
 
 export type MenuItem = {
     route: string;

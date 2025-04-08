@@ -1,12 +1,13 @@
 /** @type {import('jest').Config} */
 const config = {
     preset: 'ts-jest',
-    testEnvironment: 'node',
-    projects: [
-        '<rootDir>/packages/utils/jest.config.js',
-        '<rootDir>/packages/api/jest.config.js',
-        '<rootDir>/packages/web/jest.config.js',
-    ],
+    testEnvironment: 'jsdom',
+    testMatch: ['<rootDir>/**/*.test.{ts,tsx}'],
+    moduleNameMapper: {
+        '^@pp/(.*)$': '<rootDir>/../$1/src',
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    },
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };
 
 module.exports = config; 

@@ -1,5 +1,5 @@
 import React from "react";
-import { getYear } from "@pp/utils/dist/date";
+import { getYear } from "~/utils/date";
 import { strings } from "~/resources";
 import Link from "next/link";
 import { routes } from "~/routes";
@@ -13,8 +13,7 @@ export async function Footer() {
     // Fetch Instagram posts for the footer
     const instagramPosts = await getInstagramPostsForFooter();
 
-    return (
-    <footer className="bg-white pb-16">
+    return (<footer className="bg-white pb-16">
         {/* Instagram Section */}
         <section className="w-full bg-section-background py-16 md:py-24">
             <div className="container mx-auto px-4">
