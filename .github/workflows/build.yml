@@ -13,69 +13,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    type-check:
-        name: Type Check
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: pnpm/action-setup@v4
-
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: '20.x'
-                  cache: 'pnpm'
-
-            - name: Install dependencies
-              run: pnpm install
-
-            - name: Type checking
-              run: pnpm run type-check
-
-    lint:
-        name: Lint
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: pnpm/action-setup@v4
-
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: '20.x'
-                  cache: 'pnpm'
-
-            - name: Install dependencies
-              run: pnpm install
-
-            - name: Lint
-              run: pnpm run lint
-
-    test:
-        name: Test
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: pnpm/action-setup@v4
-
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: '20.x'
-                  cache: 'pnpm'
-
-            - name: Install dependencies
-              run: pnpm install
-
-            - name: Run tests
-              run: pnpm run test
-
     build_utils:
         name: Build Utils
-        needs: [type-check, lint, test]
         runs-on: ubuntu-latest
 
         steps:
@@ -101,9 +40,87 @@ jobs:
                   name: dist.utils
                   path: packages/utils/dist
 
+    type-check:
+        name: Type Check
+        needs: [build_utils]
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20.x'
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - uses: actions/download-artifact@v4
+              with:
+                  name: dist.utils
+                  path: ./packages/utils/dist
+
+            - name: Type checking
+              run: pnpm run type-check
+
+    lint:
+        name: Lint
+        needs: [build_utils]
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20.x'
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - uses: actions/download-artifact@v4
+              with:
+                  name: dist.utils
+                  path: ./packages/utils/dist
+
+            - name: Lint
+              run: pnpm run lint
+
+    test:
+        name: Test
+        needs: [build_utils]
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20.x'
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - uses: actions/download-artifact@v4
+              with:
+                  name: dist.utils
+                  path: ./packages/utils/dist
+
+            - name: Run tests
+              run: pnpm run test
+
     build_web:
         name: Build Web
-        needs: [build_utils]
+        needs: [build_utils, type-check, lint, test]
         runs-on: ubuntu-latest
 
         steps:
