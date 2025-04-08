@@ -84,8 +84,8 @@ jobs:
                   path: |
                       packages/api/dist
 
-    build_site:
-        name: build/site
+    build_web:
+        name: build/web
         needs: [build_utils, build_api]
         runs-on: ubuntu-latest
 
@@ -118,18 +118,18 @@ jobs:
                   path: ./packages/api/dist
 
             - run: |
-                  cd ./packages/site
+                  cd ./packages/web
                   npm run build
 
             - uses: actions/upload-artifact@v4
               with:
-                  name: dist.site
+                  name: dist.web
                   path: |
-                      packages/site/dist
+                      packages/web/dist
 
-    build_panel:
-        name: build/panel
-        needs: [build_utils, build_api]
+    upload_artifacts:
+        name: upload/artifacts
+        needs: [build_utils, build_api, build_web]
         runs-on: ubuntu-latest
 
         steps:
@@ -140,102 +140,6 @@ jobs:
                   node-version: '20.x'
                   cache: 'npm'
                   check-latest: false
-
-            - uses: actions/cache@v3
-              id: npm-cache
-              with:
-                  path: |
-                      **/node_modules
-                  key: ${{ runner.os }}-npm-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-npm-
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.api
-                  path: ./packages/api/dist
-
-            - run: |
-                  cd ./packages/panel
-                  npm ci
-                  npm run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.panel
-                  path: |
-                      packages/panel/dist
-
-    build_gallery:
-        name: build/gallery
-        needs: [build_utils, build_api]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '20.x'
-                  cache: 'npm'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: npm-cache
-              with:
-                  path: |
-                      **/node_modules
-                  key: ${{ runner.os }}-npm-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-npm-
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.api
-                  path: ./packages/api/dist
-
-            - run: |
-                  cd ./packages/gallery
-                  npm run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.gallery
-                  path: |
-                      packages/gallery/dist
-
-    build_server:
-        name: build/server
-        needs: [build_utils, build_api, build_site, build_panel, build_gallery]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v3
-
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: '20.x'
-                  cache: 'npm'
-                  check-latest: false
-
-            - uses: actions/cache@v3
-              id: npm-cache
-              with:
-                  path: |
-                      **/node_modules
-                  key: ${{ runner.os }}-npm-${{ secrets.CACHE_VERSION }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-npm-
 
             - uses: actions/download-artifact@v4
               with:
@@ -249,24 +153,8 @@ jobs:
 
             - uses: actions/download-artifact@v4
               with:
-                  name: dist.gallery
-                  path: ./packages/gallery/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.panel
-                  path: ./packages/panel/dist
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.site
-                  path: ./packages/site/dist
-
-            - run: |
-                  cd ./packages/server
-                  npm ci
-                  npm run build
-                  cp src/core/logo-watermark.png dist/core/logo-watermark.png
+                  name: dist.web
+                  path: ./packages/web/dist
 
             - uses: montudor/action-zip@v0.1.0
               with:
@@ -284,36 +172,3 @@ jobs:
                   password: ${{ secrets.ftp_password }}
                   local-dir: ./package/
                   server-dir: domains/artifacts/
-#     upload:
-#         needs: [build_fontend]
-#         runs-on: ubuntu-latest
-
-#         steps:
-#             - uses: actions/checkout@v3
-
-#             - uses: actions/download-artifact@v4
-#               with:
-#                   name: build.dist
-#                   path: .
-
-#             - run: |
-#                   cd ./packages/server
-#                   yarn
-#                   yarn run build
-
-#             - uses: montudor/action-zip@v0.1.0
-#               with:
-#                   args: zip -qq -r package.zip node_modules server
-
-#             - run: |
-#                   mkdir package
-#                   mv package.zip package/package.zip
-
-#             - name: upload artifact to stating
-#               uses: SamKirkland/FTP-Deploy-Action@4.0.0
-#               with:
-#                   server: ${{ secrets.ftp_server }}
-#                   username: ${{ secrets.ftp_username }}
-#                   password: ${{ secrets.ftp_password }}
-#                   local-dir: ./packages/package/
-#                   server-dir: domains/artifacts/
