@@ -13,8 +13,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-    build_utils:
-        name: Build Utils
+    build:
+        name: Build
         runs-on: ubuntu-latest
 
         steps:
@@ -29,79 +29,21 @@ jobs:
 
             - name: Install dependencies
               run: pnpm install
-
-            - name: Build utils
-              run: |
-                  cd ./packages/utils
-                  pnpm run build
-
-            - uses: actions/upload-artifact@v4
-              with:
-                  name: dist.utils
-                  path: packages/utils/dist
-
-    type-check:
-        name: Type Check
-        needs: [build_utils]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: pnpm/action-setup@v4
-
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: '20.x'
-                  cache: 'pnpm'
-
-            - name: Install dependencies
-              run: pnpm install
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
 
             - name: Type checking
               run: pnpm run type-check
 
-    build_web:
-        name: Build Web
-        needs: [build_utils, type-check]
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - uses: pnpm/action-setup@v4
-
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: '20.x'
-                  cache: 'pnpm'
-
-            - name: Install dependencies
-              run: pnpm install
-
-            - uses: actions/download-artifact@v4
-              with:
-                  name: dist.utils
-                  path: ./packages/utils/dist
-
-            - name: Build web
-              run: |
-                  cd ./packages/web
-                  pnpm run build
+            - name: Build application
+              run: pnpm run build
 
             - uses: actions/upload-artifact@v4
               with:
-                  name: dist.web
-                  path: packages/web/dist
+                  name: dist
+                  path: dist
 
     # upload_artifacts:
     #     name: upload/artifacts
-    #     needs: [build_utils, build_api, build_web]
+    #     needs: [build]
     #     runs-on: ubuntu-latest
 
     #     steps:
@@ -115,22 +57,12 @@ jobs:
 
     #         - uses: actions/download-artifact@v4
     #           with:
-    #               name: dist.utils
-    #               path: ./packages/utils/dist
-
-    #         - uses: actions/download-artifact@v4
-    #           with:
-    #               name: dist.api
-    #               path: ./packages/api/dist
-
-    #         - uses: actions/download-artifact@v4
-    #           with:
-    #               name: dist.web
-    #               path: ./packages/web/dist
+    #               name: dist
+    #               path: ./dist
 
     #         - uses: montudor/action-zip@v0.1.0
     #           with:
-    #               args: zip -qq -r package.zip node_modules packages package.json package-lock.json
+    #               args: zip -qq -r package.zip node_modules dist package.json pnpm-lock.yaml
 
     #         - run: |
     #               mkdir package

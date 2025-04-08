@@ -12,7 +12,7 @@ echo "💾 Backing up existing directories..."
 [ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup && echo "  ✓ Backed up databases directory" || true
 
 echo "🧹 Cleaning up existing files..."
-rm -rf public_nodejs packages node_modules pnpm-lock.yaml package.json
+rm -rf public_nodejs node_modules pnpm-lock.yaml package.json
 
 echo "📦 Unzipping new package..."
 unzip -o -q ../artifacts/package.zip
@@ -29,9 +29,9 @@ npm install -g pnpm
 echo "🔧 Installing dependencies..."
 pnpm install
 
-echo "📁 Setting up web package..."
+echo "📁 Setting up application..."
 mkdir -p public_nodejs/public
-cp -r packages/web/dist/* public_nodejs/public/
+cp -r dist/* public_nodejs/public/
 
 echo "🔄 Restarting web service..."
 devil www restart staging.pyszstudio.pl
