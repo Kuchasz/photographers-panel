@@ -9,10 +9,10 @@
         "watch:utils": "pnpm run watch --filter=@pp/utils",
         "watch:api": "pnpm run watch --filter=@pp/api",
         "watch:web": "pnpm run watch --filter=@pp/web",
-        "lint": "pnpm run lint --filter=*",
         "lint:fix": "pnpm run lint:fix --filter=*",
-        "test": "pnpm run test --filter=*",
-        "type-check": "pnpm run type-check --filter=*",
+        "type-check": "pnpm -r --if-present run type-check",
+        "lint": "pnpm -r --if-present run lint",
+        "test": "pnpm -r --if-present run test",
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx,json}\" --cache",
         "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx,json}\" --cache"
     },
