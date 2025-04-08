@@ -1,21 +1,13 @@
-import { getPayload } from "payload";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { strings } from "~/resources";
-import payloadConfig from "~/payload.config";
 import { PageContainer } from "~/components/page-container";
 import { type Metadata } from "next";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { getVideos, getVideoByAlias } from "../actions";
 
 export async function generateStaticParams() {
-    const payload = await getPayload({
-        config: payloadConfig,
-    });
-
-    const { docs: videos } = await payload.find({
-        collection: 'videos',
-        sort: ['order'],
-    });
+    const videos = await getVideos();
 
     return videos.map((video) => ({
         alias: video.alias,
@@ -30,17 +22,7 @@ interface VideoDetailPageProps {
 
 export async function generateMetadata({ params }: VideoDetailPageProps): Promise<Metadata> {
     const { alias } = await params;
-
-    const payload = await getPayload({
-        config: payloadConfig,
-    });
-
-    const { docs: videos } = await payload.find({
-        collection: 'videos',
-        where: { alias: { equals: alias } },
-    });
-
-    const video = videos[0];
+    const video = await getVideoByAlias(alias);
 
     if (!video) {
         return {
@@ -56,33 +38,13 @@ export async function generateMetadata({ params }: VideoDetailPageProps): Promis
 
 export default async function VideoDetailPage({ params }: VideoDetailPageProps) {
     const { alias } = await params;
-
-    const payload = await getPayload({
-        config: payloadConfig,
-    });
-
-    // Find the video by alias
-    const { docs: videos } = await payload.find({
-        collection: 'videos',
-        where: {
-            alias: {
-                equals: alias,
-            },
-        },
-    });
-
-    const video = videos[0];
+    const video = await getVideoByAlias(alias);
 
     // If video not found, return 404
     if (!video) {
         notFound();
     }
-
-    // Extract YouTube video ID for related content if needed
-    const youtubeId = video.videoUrl?.includes('youtube.com/embed/') 
-        ? video.videoUrl.split('/').pop() 
-        : null;
-
+    
     return (
         <PageContainer className="pt-8 pb-16 md:pt-12 md:pb-24">
             <Link

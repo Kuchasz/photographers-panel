@@ -1,6 +1,6 @@
 import { INSTAGRAM_TOKENS_SLUG } from '../collectionSlugs';
 import type { CollectionConfig } from 'payload';
-
+import { revalidateInstagram } from '~/lib/cache';
 export const InstagramTokens: CollectionConfig = {
     slug: INSTAGRAM_TOKENS_SLUG,
     admin: {
@@ -9,6 +9,18 @@ export const InstagramTokens: CollectionConfig = {
     },
     access: {
         read: () => true,
+    },
+    hooks: {
+        afterChange: [
+            async () => {
+                revalidateInstagram()
+            }
+        ],
+        afterDelete: [
+            async () => {
+                revalidateInstagram()
+            }
+        ],
     },
     fields: [
         {

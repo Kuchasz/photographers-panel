@@ -12,7 +12,7 @@ import { unstable_cache } from 'next/cache';
 /**
  * Fetches the Instagram token from the database using Payload API
  */
-async function getInstagramTokenFromDatabase(): Promise<string> {
+async function getInstagramToken(): Promise<string> {
     // Return cached token if it exists and hasn't expired
     // if (cachedToken?.value && cachedToken.expires > new Date()) {
     //     return cachedToken.value;
@@ -64,7 +64,7 @@ async function fetchInstagramPosts(limit: number): Promise<InstagramPost[]> {
     let accessToken: string;
 
     try {
-        accessToken = await getInstagramTokenFromDatabase();
+        accessToken = await getInstagramToken();
         console.log('Using valid Instagram token');
     } catch (error) {
         console.error('Error fetching Instagram token:', error);

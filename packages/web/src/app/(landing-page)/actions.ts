@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import { OPINIONS_SLUG, PHOTOS_SLUG } from '../../collections/collectionSlugs'
 import payloadConfig from '~/payload.config'
 import { type OpinionMedia } from '~/payload-types'
+import { unstable_cache } from 'next/cache'
 
 export type Opinion = {
   id: number;
@@ -20,43 +21,50 @@ export type Opinion = {
   };
 }
 
-export async function getOpinions(): Promise<Opinion[]> {
-  try {
-    const payload = await getPayload({
-      config: payloadConfig,
-    })
+export const getOpinions = unstable_cache(
+  async (): Promise<Opinion[]> => {
+    try {
+      const payload = await getPayload({
+        config: payloadConfig,
+      })
 
-    const response = await payload.find({
-      collection: OPINIONS_SLUG,
-      where: {
-        isPublished: {
-          equals: true,
+      const response = await payload.find({
+        collection: OPINIONS_SLUG,
+        where: {
+          isPublished: {
+            equals: true,
+          },
         },
-      },
-      sort: '-date', // Sort by date descending (newest first)
-      limit: 10, // Limit to 10 opinions
-      depth: 1, // Populate the media relationship
-    })
+        sort: '-date', // Sort by date descending (newest first)
+        limit: 10, // Limit to 10 opinions
+        depth: 1, // Populate the media relationship
+      })
 
-    return response.docs.map(doc => ({
-      id: doc.id,
-      title: doc.title,
-      author: doc.author,
-      content: doc.content,
-      rating: doc.rating,
-      source: doc.source,
-      date: new Date(doc.date as string).toLocaleDateString(),
-      media: doc.media ? {
-        id: (doc.media as OpinionMedia).id,
-        url: (doc.media as OpinionMedia).url!,
-        alt: (doc.media as OpinionMedia).alt,
-      } : undefined,
-    }))
-  } catch (error) {
-    console.error('Error fetching opinions:', error)
-    return [] // Return empty array in case of error
+      return response.docs.map(doc => ({
+        id: doc.id,
+        title: doc.title,
+        author: doc.author,
+        content: doc.content,
+        rating: doc.rating,
+        source: doc.source,
+        date: new Date(doc.date as string).toLocaleDateString(),
+        media: doc.media ? {
+          id: (doc.media as OpinionMedia).id,
+          url: (doc.media as OpinionMedia).url!,
+          alt: (doc.media as OpinionMedia).alt,
+        } : undefined,
+      }))
+    } catch (error) {
+      console.error('Error fetching opinions:', error)
+      return [] // Return empty array in case of error
+    }
+  },
+  ['opinions'],
+  {
+    revalidate: 3600, // Cache for 1 hour
+    tags: ['opinions']
   }
-}
+)
 
 // Re-export the Instagram types from the shared utility for backward compatibility
 export { type InstagramPost } from '~/lib/instagram'
@@ -70,32 +78,39 @@ export type Photo = {
   height: number;
 }
 
-export async function getFeaturedPhotos(limit = 24): Promise<Photo[]> {
-  try {
-    const payload = await getPayload({
-      config: payloadConfig,
-    })
+export const getFeaturedPhotos = unstable_cache(
+  async (limit = 24): Promise<Photo[]> => {
+    try {
+      const payload = await getPayload({
+        config: payloadConfig,
+      })
 
-    const response = await payload.find({
-      collection: PHOTOS_SLUG,
-      limit,
-      sort: 'order', // Sort by order field (ascending by default)
-      depth: 0, // No need for relationships
-    })
+      const response = await payload.find({
+        collection: PHOTOS_SLUG,
+        limit,
+        sort: 'order', // Sort by order field (ascending by default)
+        depth: 0, // No need for relationships
+      })
 
-    return response.docs.map(doc => ({
-      id: doc.id,
-      url: doc.url ?? '',
-      alt: doc.alt ?? 'Wedding photo',
-      order: doc.order ?? 0,
-      width: doc.width ?? 800,
-      height: doc.height ?? 600,
-    }))
-  } catch (error) {
-    console.error('Error fetching featured photos:', error)
-    return getMockPhotos() // Return mock photos in case of error
+      return response.docs.map(doc => ({
+        id: doc.id,
+        url: doc.url ?? '',
+        alt: doc.alt ?? 'Wedding photo',
+        order: doc.order ?? 0,
+        width: doc.width ?? 800,
+        height: doc.height ?? 600,
+      }))
+    } catch (error) {
+      console.error('Error fetching featured photos:', error)
+      return getMockPhotos() // Return mock photos in case of error
+    }
+  },
+  ['featured-photos'],
+  {
+    revalidate: 3600, // Cache for 1 hour
+    tags: ['photos']
   }
-}
+)
 
 export type Video = {
   id: string | number;
@@ -106,32 +121,39 @@ export type Video = {
   order: number;
 }
 
-export async function getFeaturedVideos(limit = 3): Promise<Video[]> {
-  try {
-    const payload = await getPayload({
-      config: payloadConfig,
-    })
+export const getFeaturedVideos = unstable_cache(
+  async (limit = 3): Promise<Video[]> => {
+    try {
+      const payload = await getPayload({
+        config: payloadConfig,
+      })
 
-    const response = await payload.find({
-      collection: 'videos',
-      limit,
-      sort: 'order', // Sort by order field (ascending by default)
-      depth: 0, // No need for relationships
-    })
+      const response = await payload.find({
+        collection: 'videos',
+        limit,
+        sort: 'order', // Sort by order field (ascending by default)
+        depth: 0, // No need for relationships
+      })
 
-    return response.docs.map(doc => ({
-      id: doc.id,
-      title: doc.title ?? '',
-      descshort: doc.descshort,
-      alias: doc.alias ?? '',
-      videoUrl: doc.videoUrl ?? '',
-      order: doc.order ?? 0,
-    }))
-  } catch (error) {
-    console.error('Error fetching featured videos:', error)
-    return getMockVideos() // Return mock videos in case of error
+      return response.docs.map(doc => ({
+        id: doc.id,
+        title: doc.title ?? '',
+        descshort: doc.descshort,
+        alias: doc.alias ?? '',
+        videoUrl: doc.videoUrl ?? '',
+        order: doc.order ?? 0,
+      }))
+    } catch (error) {
+      console.error('Error fetching featured videos:', error)
+      return getMockVideos() // Return mock videos in case of error
+    }
+  },
+  ['featured-videos'],
+  {
+    revalidate: 3600, // Cache for 1 hour
+    tags: ['videos']
   }
-}
+)
 
 function getMockVideos(): Video[] {
   return [

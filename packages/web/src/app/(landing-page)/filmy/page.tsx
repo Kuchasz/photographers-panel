@@ -1,10 +1,9 @@
-import { getPayload } from "payload";
 import { strings } from "~/resources";
-import payloadConfig from "~/payload.config";
 import Link from "next/link";
 import { PageContainer } from "~/components/page-container";
 import { SectionTitle } from "~/components/section-title";
 import { type Metadata } from 'next';
+import { getVideos } from "./actions";
 
 export const metadata: Metadata = {
     title: 'Filmy | Fotografia',
@@ -12,14 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function VideosPage() {
-    const payload = await getPayload({
-        config: payloadConfig,
-    });
-
-    const { docs: videos } = await payload.find({
-        collection: 'videos',
-        sort: ['order'],
-    });
+    const videos = await getVideos();
 
     return (
         <PageContainer>

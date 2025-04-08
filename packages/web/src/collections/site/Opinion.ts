@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { OPINIONS_SLUG, OPINION_MEDIA_SLUG } from '../collectionSlugs'
+import { revalidateOpinions } from '~/lib/cache'
 
 export const Opinion: CollectionConfig = {
   slug: OPINIONS_SLUG,
@@ -24,6 +25,27 @@ export const Opinion: CollectionConfig = {
     read: () => true, // Allow public read access for opinions
     update: authenticated,
     delete: authenticated,
+  },
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        // Set the date if not provided
+        if (!data.date) {
+          data.date = new Date().toISOString().split('T')[0]
+        }
+        return data
+      },
+    ],
+    afterChange: [
+      async () => {
+        revalidateOpinions()
+      }
+    ],
+    afterDelete: [
+      async () => {
+        revalidateOpinions()
+      }
+    ],
   },
   fields: [
     {
@@ -114,15 +136,4 @@ export const Opinion: CollectionConfig = {
       },
     },
   ],
-  hooks: {
-    beforeChange: [
-      ({ data }) => {
-        // Set the date if not provided
-        if (!data.date) {
-          data.date = new Date().toISOString().split('T')[0]
-        }
-        return data
-      },
-    ],
-  },
 } 

@@ -2,6 +2,8 @@ import path from 'path'
 import type { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import { PHOTOS_SLUG } from '../collectionSlugs'
+import { revalidatePhotos } from '~/lib/cache'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -16,6 +18,18 @@ export const Photo: CollectionConfig = {
             en: 'Photos',
             pl: 'Zdjęcia',
         },
+    },
+    hooks: {
+        afterChange: [
+            async () => {
+                revalidatePhotos()
+            }
+        ],
+        afterDelete: [
+            async () => {
+                revalidatePhotos()
+            }
+        ]
     },
     access: {
         read: () => true,

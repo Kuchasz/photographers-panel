@@ -1,4 +1,5 @@
 import type { CollectionConfig, TextFieldSingleValidation } from 'payload'
+import { revalidateVideos } from '~/lib/cache'
 
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
@@ -28,6 +29,18 @@ export const Video: CollectionConfig = {
     },
   },
   defaultSort: 'order',
+  hooks: {
+    afterChange: [
+      async () => {
+        revalidateVideos()
+      }
+    ],
+    afterDelete: [
+      async () => {
+        revalidateVideos()
+      }
+    ]
+  },
   fields: [
     {
       name: 'title',
