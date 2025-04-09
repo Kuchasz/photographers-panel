@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     description: 'Galeria zdjęć - najlepsze ujęcia z sesji ślubnych, portretowych i innych wydarzeń.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function PhotosPage() {
     const photos = await getPhotos();
 

@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { strings } from "~/resources";
-import { PageContainer } from "~/components/page-container";
-import { type Metadata } from "next";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
-import { getVideos, getVideoByAlias } from "../actions";
+import { type Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { PageContainer } from "~/components/page-container";
+import { strings } from "~/resources";
+import { getVideoByAlias } from "../actions";
 
 interface VideoDetailPageProps {
     params: Promise<{
@@ -12,21 +12,12 @@ interface VideoDetailPageProps {
     }>;
 }
 
-export async function generateMetadata({ params }: VideoDetailPageProps): Promise<Metadata> {
-    const { alias } = await params;
-    const video = await getVideoByAlias(alias);
+export const metadata: Metadata = {
+    title: 'Filmy | Fotografia',
+    description: 'Kolekcja profesjonalnych filmów z ślubów, uroczystości i wydarzeń specjalnych.',
+};
 
-    if (!video) {
-        return {
-            title: 'Film nie został znaleziony | Fotografia',
-        };
-    }
-
-    return {
-        title: `${video.title} | Filmy | Fotografia`,
-        description: video.descshort || 'Obejrzyj profesjonalny film z naszej kolekcji.',
-    };
-}
+export const dynamic = 'force-dynamic';
 
 export default async function VideoDetailPage({ params }: VideoDetailPageProps) {
     const { alias } = await params;

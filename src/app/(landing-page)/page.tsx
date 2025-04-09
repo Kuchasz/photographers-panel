@@ -7,6 +7,8 @@ import { strings } from "../../resources";
 import { getFeaturedPhotos, getFeaturedVideos, getOpinions } from "./actions";
 import { FeaturedVideos, OpinionCarousel, PhotoGrid } from "./components.client";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const opinions = await getOpinions();
   const featuredPhotos = await getFeaturedPhotos();

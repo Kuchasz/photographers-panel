@@ -9,6 +9,8 @@ import { SectionTitle } from "./section-title";
 
 const year: number = getYear(new Date());
 
+export const dynamic = 'force-dynamic';
+
 export async function Footer() {
     // Fetch Instagram posts for the footer
     const instagramPosts = await getInstagramPostsForFooter();

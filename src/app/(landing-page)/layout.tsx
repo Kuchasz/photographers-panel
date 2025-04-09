@@ -7,8 +7,6 @@ import { Header } from "~/components/header";
 import { Headers } from "~/components/headers";
 import "~/styles/globals.css";
 
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
   title: "PyszStudio - fotografia i film",
   description: "Fotografia i film na ślub, sesję zdjęciową, portret, zwierzęta, produkt, krajobraz",

@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     description: 'Kolekcja profesjonalnych filmów z ślubów, uroczystości i wydarzeń specjalnych.',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function VideosPage() {
     const videos = await getVideos();
 
