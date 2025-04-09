@@ -6,7 +6,7 @@ import {
     type JSXConvertersFunction,
     RichText as RichTextWithoutBlocks
 } from '@payloadcms/richtext-lexical/react'
-import { cn } from '~/utils/ui'
+import { cn } from '~/lib/ui'
 
 type NodeTypes = DefaultNodeTypes
 

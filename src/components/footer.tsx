@@ -1,5 +1,5 @@
 import React from "react";
-import { getYear } from "~/utils/date";
+import { getYear } from "~/lib/date";
 import { strings } from "~/resources";
 import Link from "next/link";
 import { routes } from "~/routes";

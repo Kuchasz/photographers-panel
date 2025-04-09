@@ -1,6 +1,6 @@
 'use client';
-import { first, last, nextElement } from "~/utils/array";
-import { firstSegment } from "~/utils/url";
+import { first, last, nextElement } from "~/lib/array";
+import { firstSegment } from "~/lib/url";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";

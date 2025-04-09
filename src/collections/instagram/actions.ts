@@ -6,30 +6,17 @@ import { INSTAGRAM_TOKENS_SLUG } from '~/collections/collectionSlugs';
 import { fetchMediaList, fetchMediaDetails, type InstagramPost } from "~/lib/instagram";
 import { unstable_cache } from 'next/cache';
 
-// Store cached token to minimize database calls
-// let cachedToken: { value: string; expires: Date } | null = null;
-
 /**
  * Fetches the Instagram token from the database using Payload API
  */
 async function getInstagramToken(): Promise<string> {
-    // Return cached token if it exists and hasn't expired
-    // if (cachedToken?.value && cachedToken.expires > new Date()) {
-    //     return cachedToken.value;
-    // }
-
-    // Clear expired cached token
-    // cachedToken = null;
-
-    // Initialize PayloadCMS client
     const payload = await getPayload({ config: payloadConfig });
 
-    // Find valid tokens that haven't expired
     const currentDate = new Date().toISOString();
     const tokens = await payload.find({
         collection: INSTAGRAM_TOKENS_SLUG,
         limit: 1,
-        sort: '-createdAt', // Get the most recent token
+        sort: '-createdAt',
         where: {
             expiresAt: {
                 greater_than: currentDate
@@ -41,18 +28,11 @@ async function getInstagramToken(): Promise<string> {
         throw new Error('No valid Instagram tokens found (all expired or none exist)');
     }
 
-    // Get the most recent valid token
     const token = tokens.docs[0];
 
     if (!token) {
         throw new Error('No valid Instagram tokens found (all expired or none exist)');
     }
-
-    // Cache the token with its expiration date
-    // cachedToken = {
-    //     value: token.accessToken,
-    //     expires: new Date(token.expiresAt)
-    // };
 
     return token.accessToken;
 }
@@ -109,7 +89,7 @@ export const getInstagramPostsForFooter = unstable_cache(
     },
     ['instagram-posts-footer'],
     {
-        revalidate: 3600, // Cache for 1 hour (3600 seconds)
+        revalidate: 3600,
         tags: ['instagram-posts']
     }
 ); 
