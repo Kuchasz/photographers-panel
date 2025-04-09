@@ -2,7 +2,7 @@
     "name": "@pp/web",
     "version": "0.1.0",
     "private": true,
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "build": "next build",
         "dev": "next dev --turbo",

@@ -62,6 +62,7 @@ jobs:
                   cp -r public .next/standalone/
                   cp -r .next/static .next/standalone/.next/
                   cp app.js .next/standalone/
+                  mv .next/standalone/server.js .next/standalone/server.mjs
 
             - uses: actions/upload-artifact@v4
               with:

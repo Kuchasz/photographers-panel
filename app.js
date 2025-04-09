@@ -1,2 +1,2 @@
 //@ts-ignore
-import("./server.js");
+import("./server.mjs");
