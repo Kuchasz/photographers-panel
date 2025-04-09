@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Master.Publish.Prod
+name: Master.Publish.Test
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -19,5 +19,4 @@ jobs:
                   host: ${{ secrets.SSH_HOST }}
                   username: ${{ secrets.SSH_USERNAME }}
                   key: ${{ secrets.SSH_KEY }}
-                  script_path: .github/scripts/deploy-prod.sh
-                
+                  script_path: .github/scripts/deploy-test.sh

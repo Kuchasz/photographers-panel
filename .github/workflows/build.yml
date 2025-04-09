@@ -61,7 +61,6 @@ jobs:
               run: |
                   cp -r public .next/standalone/
                   cp -r .next/static .next/standalone/.next/
-                  ls -la .next/standalone
 
             - uses: actions/upload-artifact@v4
               with:
