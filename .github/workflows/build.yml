@@ -40,6 +40,7 @@ jobs:
 
             - name: Copy public and static files
               run: |
+                  ls -la
                   cp -r public .next/standalone/
                   cp -r .next/static .next/standalone/.next/
 
