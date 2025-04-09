@@ -6,14 +6,6 @@ import { type Metadata } from "next";
 import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import { getVideos, getVideoByAlias } from "../actions";
 
-export async function generateStaticParams() {
-    const videos = await getVideos();
-
-    return videos.map((video) => ({
-        alias: video.alias,
-    }));
-}
-
 interface VideoDetailPageProps {
     params: Promise<{
         alias: string;
