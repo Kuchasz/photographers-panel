@@ -38,10 +38,15 @@ jobs:
               env:
                   PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
 
+            - name: Copy public and static files
+              run: |
+                  cp -r public .next/standalone/
+                  cp -r .next/static .next/standalone/.next/
+
             - uses: actions/upload-artifact@v4
               with:
-                  name: dist
-                  path: dist
+                  name: next-standalone
+                  path: .next/standalone
 
     upload_artifacts:
         name: upload/artifacts
@@ -58,16 +63,16 @@ jobs:
 
             - uses: actions/download-artifact@v4
               with:
-                  name: dist
-                  path: ./dist
+                  name: next-standalone
+                  path: .next/standalone
 
             - uses: montudor/action-zip@v0.1.0
               with:
-                  args: zip -qq -r package.zip .next node_modules public src package.json pnpm-lock.yaml next.config.js next-env.d.ts tsconfig.json payload.config.ts app.js
+                  args: zip -qq -r next-standalone.zip .next/standalone
 
             - run: |
                   mkdir package
-                  mv package.zip package/package.zip
+                  mv next-standalone.zip package/next-standalone.zip
 
             - name: upload artifact to stating
               uses: SamKirkland/FTP-Deploy-Action@4.0.0
