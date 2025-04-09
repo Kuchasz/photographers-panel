@@ -15,7 +15,8 @@ echo "🧹 Cleaning up existing files..."
 rm -rf public_nodejs node_modules pnpm-lock.yaml package.json
 
 echo "📦 Unzipping new package..."
-unzip -o -q ../artifacts/next-standalone.zip
+mkdir -p public_nodejs
+unzip -o -q ../artifacts/next-standalone.zip -d public_nodejs/
 
 echo "ℹ️ Node.js version:"
 node --version
