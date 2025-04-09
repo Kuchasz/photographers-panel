@@ -18,21 +18,19 @@ echo "📦 Unzipping new package..."
 mkdir -p public_nodejs
 unzip -o -q ../artifacts/next-standalone.zip -d public_nodejs/
 
+cd public_nodejs
+
 echo "ℹ️ Node.js version:"
 node --version
 
 echo "⚙️ Copying environment file..."
-cp ../env-vars/test.pyszstudio.pl.env .env
+cp ../../env-vars/test.pyszstudio.pl.env .env
 
-echo "📥 Installing pnpm..."
-npm install -g pnpm
+# echo "📥 Installing pnpm..."
+# npm install -g pnpm
 
 echo "🔧 Installing dependencies..."
-pnpm install
-
-echo "📁 Setting up application..."
-rm -rf public_nodejs
-cp -r * public_nodejs/
+npm install
 
 echo "🔄 Restarting web service..."
 devil www restart test.pyszstudio.pl
