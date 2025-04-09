@@ -59,11 +59,11 @@ jobs:
             - uses: actions/download-artifact@v4
               with:
                   name: next-standalone
-                  path: .next/standalone
+                  path: ./standalone
 
             - uses: montudor/action-zip@v0.1.0
               with:
-                  args: zip -qq -r next-standalone.zip .next/standalone
+                  args: zip -qq -r next-standalone.zip ./standalone/*
 
             - run: |
                   mkdir package
