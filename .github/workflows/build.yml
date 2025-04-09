@@ -81,9 +81,10 @@ jobs:
                   name: next-standalone
                   path: .next/standalone
 
-            - uses: montudor/action-zip@v0.1.0
+            - uses: montudor/action-zip@v1
               with:
-                  args: zip -qq -r next-standalone.zip .next/standalone/*
+                  args: zip -qq -r ../../next-standalone.zip .
+                  working-directory: .next/standalone
 
             - run: |
                   mkdir package
