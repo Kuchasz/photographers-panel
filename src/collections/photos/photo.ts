@@ -39,7 +39,7 @@ export const Photo: CollectionConfig = {
         group: 'Treść strony',
     },
     upload: {
-        staticDir: path.resolve(dirname, '../../public/photos'),
+        staticDir: path.resolve(dirname, '../../../public/uploads/photos'),
         imageSizes: [
             {
                 name: 'thumbnail',

@@ -10,7 +10,7 @@ import { strings } from "../resources";
 import { routes } from "~/routes";
 import { Button } from "./button";
 
-const getSrc = (photo: string, ext: string) => `/images/top-new/${photo}${ext}`;
+const getSrc = (photo: string, ext: string) => `/images/top/${photo}${ext}`;
 
 interface ImageCarouselProps {
     photos: string[];

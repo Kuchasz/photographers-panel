@@ -68,7 +68,7 @@ yarn-error.log*
 .env
 .env*.local
 
-public/
+public/uploads/
 
 # vercel
 .vercel
