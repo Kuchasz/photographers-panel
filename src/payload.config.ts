@@ -43,6 +43,11 @@ export default buildConfig({
       level: 'debug'
     }
   },
+  upload: {
+    debug: true,
+    useTempFiles: true,
+    tempFileDir: path.resolve(dirname, '../temp'),
+  },
   collections: [
     Users,
     PrivateGallery,
