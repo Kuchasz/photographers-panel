@@ -69,6 +69,11 @@
         "react-dom": "19.1.0"
     },
     "packageManager": "pnpm@10.8.0",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "sharp"
+        ]
+    },
     "ct3aMetadata": {
         "initVersion": "7.38.1"
     }
