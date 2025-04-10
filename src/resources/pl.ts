@@ -320,7 +320,7 @@ export const pl = {
     instagram: {
         title: "Instagram",
         subtitle: "Social media",
-        followUs: "Odwiedź nas na IG",
+        followUs: "Odwiedź nas na",
         seeMore: "Zobacz więcej na Instagramie",
         mediaTypes: {
             image: "Zdjęcie",

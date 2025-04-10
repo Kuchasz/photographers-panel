@@ -33,6 +33,11 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  loggingLevels: {
+    FileUploadError: 'error',
+    FileRetrievalError: 'error',
+    MissingFile: 'error',
+  },
   collections: [
     Users,
     PrivateGallery,

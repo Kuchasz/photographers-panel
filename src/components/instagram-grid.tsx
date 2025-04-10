@@ -1,4 +1,4 @@
-import { FilmStrip, Image as ImageIcon, Images } from "@phosphor-icons/react/dist/ssr";
+import { FilmStrip, Image as ImageIcon, Images, InstagramLogo } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import { Button } from "~/components/button";
 import { type InstagramPost } from "~/lib/instagram";
@@ -64,6 +64,7 @@ export function InstagramGrid({ posts, maxPosts = 6 }: InstagramGridProps) {
                 >
                     <div className="flex items-center gap-2">
                         <span>{strings.instagram.followUs}</span>
+                        <InstagramLogo size={24} weight="bold" />
                     </div>
                 </Button>
             </div>
