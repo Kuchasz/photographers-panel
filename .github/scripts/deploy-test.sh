@@ -11,12 +11,26 @@ cd domains/test.pyszstudio.pl/
 echo "💾 Backing up existing directories..."
 [ -d "public_nodejs/databases" ] && mv public_nodejs/databases databases_backup && echo "  ✓ Backed up databases directory" || true
 
+# Backup uploads directory
+if [ -d "public_nodejs/public/uploads" ]; then
+  echo "💾 Backing up uploads directory..."
+  cp -r public_nodejs/public/uploads ../backups/uploads_backup
+  echo "  ✓ Backed up uploads directory"
+fi
+
 echo "🧹 Cleaning up existing files..."
 rm -rf public_nodejs
 
 echo "📦 Unzipping new package..."
 mkdir -p public_nodejs
 unzip -o -q ../artifacts/next-standalone.zip -d public_nodejs/
+
+# Restore uploads backup
+if [ -d "../backups/uploads_backup" ]; then
+  echo "♻️ Restoring uploads directory..."
+  cp -r ../backups/uploads_backup public_nodejs/public/uploads
+  echo "  ✓ Restored uploads directory"
+fi
 
 cd public_nodejs
 
