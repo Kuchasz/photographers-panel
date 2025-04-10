@@ -27,7 +27,7 @@ export const OfferMedia: CollectionConfig = {
     },
   },
   upload: {
-    staticDir: path.resolve(dirname, '../../../public/uploads/offer-media'),
+    staticDir: path.resolve(dirname, '../../../../public/uploads/offer-media'),
     imageSizes: [
       {
         name: 'thumbnail',
