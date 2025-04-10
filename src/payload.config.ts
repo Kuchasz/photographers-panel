@@ -34,9 +34,9 @@ export default buildConfig({
     },
   },
   loggingLevels: {
-    FileUploadError: 'error',
-    FileRetrievalError: 'error',
-    MissingFile: 'error',
+    FileUploadError: 'debug',
+    FileRetrievalError: 'debug',
+    MissingFile: 'debug',
   },
   collections: [
     Users,
