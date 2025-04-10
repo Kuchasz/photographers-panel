@@ -30,7 +30,7 @@ cp ../../env-vars/test.pyszstudio.pl.env .env
 # npm install -g pnpm
 
 echo "🔧 Installing dependencies..."
-npm install
+# npm install
 npm install sharp@0.32.6
 
 echo "🔄 Restarting web service..."
