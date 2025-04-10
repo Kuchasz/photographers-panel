@@ -1,4 +1,5 @@
 import { GeistSans } from "geist/font/sans";
+import { Hanken_Grotesk, Oranienbaum } from "next/font/google";
 import { type Metadata } from "next";
 import { headers } from "next/headers";
 import { registerVisit } from "~/collections/site/site-visit-actions";
@@ -6,6 +7,19 @@ import { Footer } from "~/components/footer";
 import { Header } from "~/components/header";
 import { Headers } from "~/components/headers";
 import "~/styles/globals.css";
+
+const hankenGrotesk = Hanken_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-hanken-grotesk',
+});
+
+const oranienbaum = Oranienbaum({
+  weight: ['400'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-oranienbaum',
+});
 
 export const metadata: Metadata = {
   title: "PyszStudio - fotografia i film",
@@ -25,7 +39,7 @@ export default async function RootLayout({
   await registerVisit(ip, userAgent, referer);
 
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${GeistSans.variable} ${hankenGrotesk.variable} ${oranienbaum.variable}`}>
       <body>
         <Headers />
         <Header />
