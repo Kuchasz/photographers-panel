@@ -33,7 +33,7 @@ export const PrivateGallery: CollectionConfig = {
       label: 'Statistics',
       admin: {
         components: {
-          Field: '@/components/private-gallery-visits',
+          Field: '~/components/private-gallery-visits',
         },
       },
     },

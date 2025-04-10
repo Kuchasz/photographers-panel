@@ -9,7 +9,7 @@ export const SiteVisit: CollectionConfig = {
     defaultColumns: ['ip', 'date', 'userAgent', 'path'],
     group: 'Monitoring',
     components: {
-      beforeListTable: ['@/components/site-visits'],
+      beforeListTable: ['~/components/site-visits'],
     },
   },
   labels: {
