@@ -26,7 +26,7 @@ export const OpinionMedia: CollectionConfig = {
     },
   },
   upload: {
-    staticDir: path.resolve(dirname, '../../../../public/uploads/opinion-media'),
+    staticDir: path.resolve(dirname, '../../../public/uploads/opinion-media'),
     imageSizes: [
       {
         name: 'thumbnail',
