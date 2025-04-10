@@ -19,6 +19,15 @@ export const Users: CollectionConfig = {
     auth: true,
     fields: [
         // Email added by default
+        {
+            type: 'email',
+            name: 'email',
+            required: true,
+            label: {
+                en: 'Email',
+                pl: 'Email',
+            },
+        },
         // Add more fields as needed
     ],
 }

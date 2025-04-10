@@ -64,11 +64,19 @@ export const Photo: CollectionConfig = {
             name: 'alt',
             type: 'text',
             required: false,
+            label: {
+                en: 'Alternative Text',
+                pl: 'Tekst alternatywny',
+            },
         },
         {
             name: 'order',
             type: 'number',
             defaultValue: 0,
+            label: {
+                en: 'Display Order',
+                pl: 'Kolejność wyświetlania',
+            },
             admin: {
                 description: 'Used for sorting photos (lower numbers appear first)',
             },

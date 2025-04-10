@@ -61,13 +61,19 @@ export const Opinion: CollectionConfig = {
             name: 'author',
             type: 'text',
             required: true,
-            label: 'Author',
+            label: {
+                en: 'Author',
+                pl: 'Autor',
+            },
         },
         {
             name: 'content',
             type: 'textarea',
             required: true,
-            label: 'Content',
+            label: {
+                en: 'Content',
+                pl: 'Treść',
+            },
         },
         {
             name: 'media',
@@ -86,7 +92,10 @@ export const Opinion: CollectionConfig = {
             name: 'rating',
             type: 'number',
             required: true,
-            label: 'Rating',
+            label: {
+                en: 'Rating',
+                pl: 'Ocena',
+            },
             min: 1,
             max: 5,
             defaultValue: 5,
@@ -98,7 +107,10 @@ export const Opinion: CollectionConfig = {
             name: 'source',
             type: 'select',
             required: true,
-            label: 'Source',
+            label: {
+                en: 'Source',
+                pl: 'Źródło',
+            },
             options: [
                 {
                     label: 'Google',
@@ -118,7 +130,10 @@ export const Opinion: CollectionConfig = {
             name: 'date',
             type: 'date',
             required: true,
-            label: 'Date',
+            label: {
+                en: 'Date',
+                pl: 'Data',
+            },
             admin: {
                 date: {
                     pickerAppearance: 'dayOnly',
@@ -129,7 +144,10 @@ export const Opinion: CollectionConfig = {
         {
             name: 'isPublished',
             type: 'checkbox',
-            label: 'Is Published',
+            label: {
+                en: 'Is Published',
+                pl: 'Opublikowana',
+            },
             defaultValue: true,
             admin: {
                 position: 'sidebar',

@@ -30,13 +30,19 @@ export const PrivateGalleryAuthTokens: CollectionConfig = {
             name: 'token',
             type: 'text',
             required: true,
-            label: 'Token',
+            label: {
+                en: 'Token',
+                pl: 'Token',
+            },
         },
         {
             name: 'gallery',
             type: 'relationship',
             required: true,
-            label: 'Gallery',
+            label: {
+                en: 'Gallery',
+                pl: 'Galeria',
+            },
             relationTo: PRIVATE_GALLERIES_SLUG,
             admin: {
                 position: 'sidebar',
@@ -46,7 +52,10 @@ export const PrivateGalleryAuthTokens: CollectionConfig = {
             name: 'ipAddress',
             type: 'text',
             required: true,
-            label: 'IP Address',
+            label: {
+                en: 'IP Address',
+                pl: 'Adres IP',
+            },
             admin: {
                 position: 'sidebar',
             },
@@ -55,7 +64,10 @@ export const PrivateGalleryAuthTokens: CollectionConfig = {
             name: 'expiresAt',
             type: 'date',
             required: true,
-            label: 'Expires At',
+            label: {
+                en: 'Expires At',
+                pl: 'Wygasa',
+            },
             admin: {
                 position: 'sidebar',
                 date: {
@@ -67,7 +79,10 @@ export const PrivateGalleryAuthTokens: CollectionConfig = {
             name: 'createdAt',
             type: 'date',
             required: true,
-            label: 'Created At',
+            label: {
+                en: 'Created At',
+                pl: 'Utworzono',
+            },
             admin: {
                 position: 'sidebar',
                 date: {

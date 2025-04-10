@@ -30,7 +30,10 @@ export const PrivateGallery: CollectionConfig = {
     {
       name: 'statistics',
       type: 'ui',
-      label: 'Statistics',
+      label: {
+        en: 'Statistics',
+        pl: 'Statystyki',
+      },
       admin: {
         components: {
           Field: '~/components/private-gallery-visits',
@@ -41,13 +44,19 @@ export const PrivateGallery: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      label: 'Title',
+      label: {
+        en: 'Title',
+        pl: 'Tytuł',
+      },
     },
     {
       name: 'date',
       type: 'date',
       required: true,
-      label: 'Date',
+      label: {
+        en: 'Date',
+        pl: 'Data',
+      },
       admin: {
         position: 'sidebar',
         date: {
@@ -60,7 +69,10 @@ export const PrivateGallery: CollectionConfig = {
       name: 'state',
       type: 'select',
       required: true,
-      label: 'State',
+      label: {
+        en: 'State',
+        pl: 'Stan',
+      },
       defaultValue: 'draft',
       options: [
         {
@@ -84,7 +96,10 @@ export const PrivateGallery: CollectionConfig = {
       name: 'password',
       type: 'text',
       required: true,
-      label: 'Password',
+      label: {
+        en: 'Password',
+        pl: 'Hasło',
+      },
       unique: true,
       admin: {
         position: 'sidebar',
@@ -94,7 +109,10 @@ export const PrivateGallery: CollectionConfig = {
       name: 'directPath',
       type: 'text',
       required: true,
-      label: 'Direct Path',
+      label: {
+        en: 'Direct Path',
+        pl: 'Ścieżka bezpośrednia',
+      },
       admin: {
         position: 'sidebar',
       },
@@ -102,12 +120,18 @@ export const PrivateGallery: CollectionConfig = {
     {
       name: 'notes',
       type: 'textarea',
-      label: 'Notes',
+      label: {
+        en: 'Notes',
+        pl: 'Notatki',
+      },
     },
     {
       name: 'galleryVisits',
       type: 'join',
-      label: 'Gallery Visits',
+      label: {
+        en: 'Gallery Visits',
+        pl: 'Odwiedziny galerii',
+      },
       collection: PRIVATE_GALLERY_VISITS_SLUG,
       on: 'gallery',
       admin: {

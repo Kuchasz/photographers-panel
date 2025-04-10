@@ -10,6 +10,16 @@ export const InstagramTokens: CollectionConfig = {
     access: {
         read: () => true,
     },
+    labels: {
+        singular: {
+            en: 'Instagram Token',
+            pl: 'Token Instagram',
+        },
+        plural: {
+            en: 'Instagram Tokens',
+            pl: 'Tokeny Instagram',
+        },
+    },
     hooks: {
         afterChange: [
             async () => {
@@ -28,11 +38,19 @@ export const InstagramTokens: CollectionConfig = {
             type: 'text',
             required: true,
             defaultValue: 'Instagram Access Token',
+            label: {
+                en: 'Label',
+                pl: 'Etykieta',
+            },
         },
         {
             name: 'expiresAt',
             type: 'date',
             required: true,
+            label: {
+                en: 'Expires At',
+                pl: 'Wygasa',
+            },
             admin: {
                 description: 'When this token expires',
             },
@@ -41,6 +59,10 @@ export const InstagramTokens: CollectionConfig = {
             name: 'accessToken',
             type: 'text',
             required: true,
+            label: {
+                en: 'Access Token',
+                pl: 'Token dostępu',
+            },
         },
     ],
 };

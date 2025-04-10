@@ -55,6 +55,10 @@ export const OfferMedia: CollectionConfig = {
       name: 'alt',
       type: 'text',
       required: true,
+      label: {
+        en: 'Alternative Text',
+        pl: 'Tekst alternatywny',
+      },
     }
   ],
 } 

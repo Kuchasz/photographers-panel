@@ -33,7 +33,10 @@ export const SiteVisit: CollectionConfig = {
       name: 'ip',
       type: 'text',
       required: true,
-      label: 'IP Address',
+      label: {
+        en: 'IP Address',
+        pl: 'Adres IP',
+      },
       validate: ((value) => {
 
         if (!value) {
@@ -47,7 +50,10 @@ export const SiteVisit: CollectionConfig = {
       name: 'date',
       type: 'date',
       required: true,
-      label: 'Visit Date',
+      label: {
+        en: 'Visit Date',
+        pl: 'Data wizyty',
+      },
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -58,17 +64,26 @@ export const SiteVisit: CollectionConfig = {
     {
       name: 'userAgent',
       type: 'text',
-      label: 'User Agent',
+      label: {
+        en: 'User Agent',
+        pl: 'Agent użytkownika',
+      },
     },
     {
       name: 'referrer',
       type: 'text',
-      label: 'Referrer',
+      label: {
+        en: 'Referrer',
+        pl: 'Źródło odesłania',
+      },
     },
     {
       name: 'path',
       type: 'text',
-      label: 'Path',
+      label: {
+        en: 'Path',
+        pl: 'Ścieżka',
+      },
     },
   ],
   hooks: {

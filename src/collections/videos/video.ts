@@ -46,16 +46,28 @@ export const Video: CollectionConfig = {
             name: 'title',
             type: 'text',
             required: true,
+            label: {
+                en: 'Title',
+                pl: 'Tytuł',
+            },
         },
         {
             name: 'alias',
             type: 'text',
             required: true,
             unique: true,
+            label: {
+                en: 'Alias',
+                pl: 'Alias',
+            },
         },
         {
             name: 'order',
             type: 'number',
+            label: {
+                en: 'Display Order',
+                pl: 'Kolejność wyświetlania',
+            },
             admin: {
                 position: 'sidebar',
                 description: 'Used for manual sorting of videos',
@@ -64,19 +76,28 @@ export const Video: CollectionConfig = {
         },
         {
             name: 'desc',
-            label: 'Description',
+            label: {
+                en: 'Description',
+                pl: 'Opis',
+            },
             type: 'textarea',
             required: true,
         },
         {
             name: 'descshort',
-            label: 'Short Description',
+            label: {
+                en: 'Short Description',
+                pl: 'Krótki opis',
+            },
             type: 'textarea',
             required: true,
         },
         {
             name: 'videoUrl',
-            label: 'Video URL',
+            label: {
+                en: 'Video URL',
+                pl: 'URL wideo',
+            },
             type: 'text',
             required: true,
             validate: ((value) => {

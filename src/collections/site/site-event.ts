@@ -29,13 +29,19 @@ export const SiteEvent: CollectionConfig = {
     {
       name: 'user',
       type: 'text',
-      label: 'User',
+      label: {
+        en: 'User',
+        pl: 'Użytkownik',
+      },
     },
     {
       name: 'type',
       type: 'select',
       required: true,
-      label: 'Event Type',
+      label: {
+        en: 'Event Type',
+        pl: 'Typ wydarzenia',
+      },
       options: [
         {
           label: 'Login',
@@ -67,7 +73,10 @@ export const SiteEvent: CollectionConfig = {
       name: 'occuredOn',
       type: 'date',
       required: true,
-      label: 'Occured On',
+      label: {
+        en: 'Occurred On',
+        pl: 'Wystąpiło',
+      },
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -78,7 +87,10 @@ export const SiteEvent: CollectionConfig = {
     {
       name: 'details',
       type: 'json',
-      label: 'Event Details',
+      label: {
+        en: 'Event Details',
+        pl: 'Szczegóły wydarzenia',
+      },
     },
   ],
   hooks: {

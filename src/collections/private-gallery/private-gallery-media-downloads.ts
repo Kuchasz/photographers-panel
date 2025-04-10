@@ -21,7 +21,10 @@ export const PrivateGalleryMediaDownloads: CollectionConfig = {
       name: 'mediaId',
       type: 'text',
       required: true,
-      label: 'Media ID',
+      label: {
+        en: 'Media ID',
+        pl: 'ID zdjęcia',
+      },
       admin: {
         description: 'ID or filename of the downloaded media',
       },
@@ -32,7 +35,10 @@ export const PrivateGalleryMediaDownloads: CollectionConfig = {
       relationTo: PRIVATE_GALLERIES_SLUG,
       required: true,
       hasMany: false,
-      label: 'Private Gallery',
+      label: {
+        en: 'Private Gallery',
+        pl: 'Galeria prywatna',
+      },
       admin: {
         description: 'The gallery this download belongs to',
       },
@@ -43,7 +49,10 @@ export const PrivateGalleryMediaDownloads: CollectionConfig = {
       relationTo: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
       required: true,
       hasMany: false,
-      label: 'Auth Token',
+      label: {
+        en: 'Auth Token',
+        pl: 'Token dostępu',
+      },
       admin: {
         description: 'The token used for this download',
       },
@@ -52,13 +61,19 @@ export const PrivateGalleryMediaDownloads: CollectionConfig = {
       name: 'ip',
       type: 'text',
       required: true,
-      label: 'IP Address',
+      label: {
+        en: 'IP Address',
+        pl: 'Adres IP',
+      },
     },
     {
       name: 'date',
       type: 'date',
       required: true,
-      label: 'Download Date',
+      label: {
+        en: 'Download Date',
+        pl: 'Data pobrania',
+      },
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -69,7 +84,10 @@ export const PrivateGalleryMediaDownloads: CollectionConfig = {
     {
       name: 'userAgent',
       type: 'text',
-      label: 'User Agent',
+      label: {
+        en: 'User Agent',
+        pl: 'Agent użytkownika',
+      },
     },
   ]
 }; 
