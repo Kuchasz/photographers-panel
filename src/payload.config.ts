@@ -30,7 +30,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: {
-      baseDir: path.resolve(dirname),
+      baseDir: dirname,
     },
   },
   loggingLevels: {
@@ -46,7 +46,7 @@ export default buildConfig({
   upload: {
     debug: true,
     useTempFiles: true,
-    tempFileDir: path.resolve(dirname, '../temp'),
+    tempFileDir: '../temp',
   },
   collections: [
     Users,
@@ -73,7 +73,7 @@ export default buildConfig({
   editor: defaultLexical,
   secret: process.env.PAYLOAD_SECRET ?? '',
   typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
+    outputFile: 'payload-types.ts',
   },
   db: postgresAdapter({
     pool: {
