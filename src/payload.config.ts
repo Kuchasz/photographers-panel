@@ -1,4 +1,3 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import path from 'path'
@@ -14,14 +13,15 @@ import { SiteEvent } from './collections/site/site-event'
 import { SiteVisit } from './collections/site/site-visit'
 import { Opinion } from './collections/site/opinion'
 import { OpinionMedia } from './collections/site/opinion-media'
-import { Users } from './collections/users'
 import { Video } from './collections/videos/video'
-import { defaultLexical } from './fields/defaultLexical'
 import { PrivateGalleryVisits } from './collections/private-gallery/private-gallery-visits'
 import { PrivateGalleryAuthTokens } from './collections/private-gallery/private-gallery-auth-tokens'
 import { PrivateGalleryMediaDownloads } from './collections/private-gallery/private-gallery-media-downloads'
-import { Offer } from './globals/offer'
 import { InstagramTokens } from './collections/instagram/instagram-tokens'
+import { Offer } from './globals/offer'
+import { Users } from './collections/users'
+import { defaultLexical } from './fields/defaultLexical'
+import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,6 +64,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI ?? '',
     },
+    prodMigrations: migrations
   }),
   sharp,
   plugins: [
