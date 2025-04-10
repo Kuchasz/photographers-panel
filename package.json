@@ -14,7 +14,8 @@
         "generate:importmap": "payload generate:importmap",
         "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
         "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-        "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'"
+        "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,css,scss,html}'",
+        "payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload"
     },
     "browserslist": [
         "> 1%",
@@ -41,6 +42,7 @@
         "graphql": "^16.8.1",
         "next": "15.2.4",
         "payload": "3.28.1",
+        "cross-env": "7.0.3",
         "zod": "^3.23.3"
     },
     "devDependencies": {
