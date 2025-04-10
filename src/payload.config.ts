@@ -38,6 +38,11 @@ export default buildConfig({
     FileRetrievalError: 'debug',
     MissingFile: 'debug',
   },
+  logger: {
+    options: {
+      level: 'debug'
+    }
+  },
   collections: [
     Users,
     PrivateGallery,
