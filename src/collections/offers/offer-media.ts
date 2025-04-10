@@ -27,7 +27,7 @@ export const OfferMedia: CollectionConfig = {
     },
   },
   upload: {
-    staticDir: '../../../public/uploads/offer-media',
+    staticDir: 'public/uploads/offer-media',
     imageSizes: [
       {
         name: 'thumbnail',

@@ -39,7 +39,7 @@ export const Photo: CollectionConfig = {
         group: 'Treść strony',
     },
     upload: {
-        staticDir: '../../../public/uploads/photos',
+        staticDir: 'public/uploads/photos',
         imageSizes: [
             {
                 name: 'thumbnail',
