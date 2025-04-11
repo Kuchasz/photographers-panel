@@ -10,13 +10,6 @@ import { strings } from "../resources";
 import { routes } from "~/routes";
 import { Button } from "./button";
 
-// Augment the window interface to include our toggleMobileMenu function
-declare global {
-    interface Window {
-        toggleMobileMenu?: () => void;
-    }
-}
-
 const getSrc = (photo: string, ext: string) => `/images/top/${photo}${ext}`;
 
 interface ImageCarouselProps {
@@ -134,7 +127,13 @@ const NavLink = ({
 };
 
 // Navigation component that can be used in both header variants
-const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
+const Navigation = ({ 
+    isHomePage, 
+    toggleMobileMenu 
+}: { 
+    isHomePage: boolean; 
+    toggleMobileMenu: () => void;
+}) => {
     const pathname = usePathname();
 
     const logoTextClass = isHomePage ? "text-white" : "text-stone-800";
@@ -206,7 +205,7 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
             {/* Mobile menu button */}
             <button
                 className="absolute right-4 top-6 z-[60] flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md md:hidden"
-                onClick={() => window.toggleMobileMenu?.()}
+                onClick={toggleMobileMenu}
                 aria-label="Open menu"
                 aria-expanded="false"
             >
@@ -334,13 +333,9 @@ export const Header = () => {
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
-    // Set a global function to toggle the menu that can be accessed from other components
-    React.useEffect(() => {
-        window.toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-        return () => {
-            delete window.toggleMobileMenu;
-        };
-    }, [isMobileMenuOpen]);
+    const toggleMobileMenu = React.useCallback(() => {
+        setIsMobileMenuOpen(prev => !prev);
+    }, []);
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -395,7 +390,7 @@ export const Header = () => {
                     </div>
                     <nav className={`fixed top-0 left-0 right-0 w-full z-50 border-b transition-all duration-300 ${isScrolled ? 'bg-black/60 backdrop-blur-md shadow-md border-transparent' : 'border-white/10 backdrop-blur-sm'}`}>
                         <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
-                            <Navigation isHomePage={true} />
+                            <Navigation isHomePage={true} toggleMobileMenu={toggleMobileMenu} />
                         </div>
                     </nav>
 
@@ -447,7 +442,7 @@ export const Header = () => {
                 <Headers title={firstItem?.title}></Headers>
                 <nav className={`w-full transition-all duration-300 ${isScrolled ? 'bg-white/95 shadow-md backdrop-blur-md border-b border-transparent' : 'border-b border-stone-100 bg-white'}`}>
                     <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
-                        <Navigation isHomePage={false} />
+                        <Navigation isHomePage={false} toggleMobileMenu={toggleMobileMenu} />
                     </div>
                 </nav>
             </div>
