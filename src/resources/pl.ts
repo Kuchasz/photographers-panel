@@ -43,7 +43,7 @@ export const pl = {
     contact: {
         map: 'Znajdź nas na mapie',
         contactUs: {
-            title: 'Porozmawiajmy o Waszym dniu',
+            title: 'Zróbmy coś pięknego razem',
             subtitle: 'Jesteśmy dostępni, by odpowiedzieć na wszystkie pytania',
             callToAction: 'Napisz do nas już teraz',
             phoneTitle: 'Zadzwoń do nas',
@@ -304,6 +304,8 @@ export const pl = {
         bottomText: 'Tworzymy piękne wspomnienia od 2010 roku',
         privacyPolicy: 'Polityka prywatności',
         termsOfService: 'Regulamin',
+        quickLinks: 'Szybkie linki',
+        contact: 'Kontakt',
     },
     blog: {
         shareMessage: 'Aby podzielić się zdjęciami ze znajomymi możesz udostępnić wpis na facebooku',
