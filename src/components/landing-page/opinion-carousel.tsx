@@ -57,7 +57,7 @@ export const OpinionCarousel = ({ opinions }: { opinions: Opinion[] }) => {
                             className={`absolute w-full h-full grid grid-cols-1 md:grid-cols-2 transition-opacity duration-500 ${index === currentOpinionIndex ? "opacity-100" : "opacity-0"}`}
                         >
                             {/* Left side - Photo */}
-                            <div className="w-full md:h-full bg-stone-100 overflow-hidden relative">
+                            <div className="hidden sm:block w-full md:h-full bg-stone-100 overflow-hidden relative">
                                 <Image
                                     fill
                                     src={opinion.media?.url ?? "https://mangostudios.com/wp-content/uploads/2024/10/alessia-and-lucas.webp"}

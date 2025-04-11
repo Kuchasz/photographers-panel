@@ -14,7 +14,9 @@ echo "💾 Backing up existing directories..."
 # Backup uploads directory
 if [ -d "public_nodejs/public/uploads" ]; then
   echo "💾 Backing up uploads directory..."
-  cp -r public_nodejs/public/uploads ../backups/uploads_backup
+  rm -rf ../backups/uploads_backup
+  mkdir -p ../backups/uploads_backup
+  cp -r public_nodejs/public/uploads/* ../backups/uploads_backup/
   echo "  ✓ Backed up uploads directory"
 fi
 
@@ -28,7 +30,8 @@ unzip -o -q ../artifacts/next-standalone.zip -d public_nodejs/
 # Restore uploads backup
 if [ -d "../backups/uploads_backup" ]; then
   echo "♻️ Restoring uploads directory..."
-  cp -r ../backups/uploads_backup public_nodejs/public/uploads
+  mkdir -p public_nodejs/public/uploads
+  cp -r ../backups/uploads_backup/* public_nodejs/public/uploads/
   echo "  ✓ Restored uploads directory"
 fi
 

@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 
 type NavigationButtonProps = {
     direction: 'left' | 'right';

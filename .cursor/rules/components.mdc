@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Components conventions
+
+## Basic concepts
+
+1. We prefer to write functional components
+2. We prefer RSC compatible components, not setting 'use-client' or using hooks where not needed
