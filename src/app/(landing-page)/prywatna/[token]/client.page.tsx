@@ -35,12 +35,20 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ph
 
     return (
         <PageContainer>
-            <header>
-                <SectionTitle
-                    title={displayTitle}
-                    subtitle={strings.pageTitles.private}
+            <div className="relative w-full h-[60vh] mb-8">
+                <img
+                    src={photo.sizes?.big?.url || photo.url}
+                    alt={photo.alt || ''}
+                    className="w-full h-full object-cover"
                 />
-            </header>
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+                    <SectionTitle
+                        title={displayTitle}
+                        subtitle={strings.pageTitles.private}
+                        className="[&_p]:text-white/90 [&_h2]:text-white"
+                    />
+                </div>
+            </div>
 
             {photos.length === 0 ? (
                 <div className="py-12 text-center">
