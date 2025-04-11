@@ -141,7 +141,7 @@ export const pl = {
         videos: 'Filmy, nasze realizacje filmowe',
         blogs: 'Blog, najnowsze zrealizowane przez nas zdjęcia',
         blog: 'Blog, najnowsze zrealizowane przez nas zdjęcia',
-        private: 'Wasza historia miłosna',
+        private: 'Wasze wspomnienia',
     },
     privateGallery: {
         title: 'Galeria zdjęć',
