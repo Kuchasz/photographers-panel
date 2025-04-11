@@ -15,14 +15,12 @@ export const Button = ({
 }: ButtonProps) => {
     // Common styles for all variants
     const commonStyles = "inline-block rounded-md font-medium uppercase tracking-wide transition duration-300 hover:shadow-md px-8 py-3";
-    
+
     // Variant-specific styles
-    const variantStyles = 
-        variant === 'hero' 
-            ? "bg-gold-500/90 text-white font-light hover:bg-gold-600" 
-            : variant === 'outline'
-                ? "border border-gold-500 text-gold-600 hover:bg-gold-50"
-                : "bg-gold-500 text-white hover:bg-gold-600";
+    const variantStyles =
+        variant === 'hero' || variant === 'default'
+            ? "bg-gold-500/90 text-white font-light hover:bg-gold-600"
+            : "border border-gold-500 text-gold-600 hover:bg-gold-50";
 
     return (
         <a
