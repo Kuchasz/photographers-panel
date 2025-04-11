@@ -265,7 +265,7 @@ export default async function OffersPage() {
             </section>
 
             {/* Other Services Section */}
-            <section className="w-full bg-section-background py-16 md:py-24 mt-16 -mx-4 px-4">
+            <section className="w-full bg-section-background py-16 md:py-24 mt-16 px-4">
                 <div className="mx-auto">
                     <SectionTitle
                         title="Pozostałe usługi"

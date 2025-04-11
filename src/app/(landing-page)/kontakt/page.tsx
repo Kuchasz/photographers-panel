@@ -37,142 +37,177 @@ export default function ContactPage() {
 
     return (
         <PageContainer>
+            {/* Featured Image */}
+            <section className="w-full">
+                <div className="max-w-4xl mx-auto px-4">
+                    <div className="mb-8 text-center">
+                        <SectionTitle
+                            title={strings.contact.reservation.title}
+                            subtitle={strings.contact.reservation.subtitle}
+                        />
+                        <p className="mx-auto max-w-3xl font-light leading-relaxed text-stone-600 mt-6">
+                            Jesteśmy gotowi, aby uwiecznić Wasz wyjątkowy dzień. Skontaktuj się z nami, aby sprawdzić dostępność terminu i omówić szczegóły współpracy.
+                        </p>
+                    </div>
+
+                    {/* Featured Image */}
+                    <div className="mb-16 overflow-hidden rounded-lg shadow-lg">
+                        <img
+                            src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200&h=600"
+                            alt="Para młoda rozmawiająca z fotografem"
+                            className="w-full object-cover h-[400px]"
+                        />
+                    </div>
+                </div>
+            </section>
+
             {/* Process Section */}
             <section className="w-full pb-16 rounded-lg">
                 <div className="max-w-5xl mx-auto px-4">
-                    
-                    <SectionTitle 
-                        title={strings.contact.reservation.title}
-                        subtitle={strings.contact.reservation.subtitle}
-                    />
-                    
                     <div className="grid md:grid-cols-3 gap-8 my-12">
-                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
-                                <CalendarCheck size={24} weight="light" />
+                        <div className="bg-white rounded-lg overflow-hidden shadow-md border border-stone-100 hover:shadow-lg transition-all">
+                            <div className="p-6 text-center">
+                                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
+                                    <CalendarCheck size={24} weight="light" />
+                                </div>
+                                <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[0]?.title ?? 'Ustalenie terminu'}</h3>
+                                <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[0]?.description ?? 'Sprawdzamy dostępność i potwierdzamy termin Waszej uroczystości. Kontaktujemy się w ciągu 24 godzin.'}</p>
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[0]?.title ?? 'Ustalenie terminu'}</h3>
-                            <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[0]?.description ?? 'Sprawdzamy dostępność i potwierdzamy termin Waszej uroczystości. Kontaktujemy się w ciągu 24 godzin.'}</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
-                                <PresentationChart size={24} weight="light" />
+                        <div className="bg-white rounded-lg overflow-hidden shadow-md border border-stone-100 hover:shadow-lg transition-all">
+                            <div className="p-6 text-center">
+                                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
+                                    <PresentationChart size={24} weight="light" />
+                                </div>
+                                <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[1]?.title ?? 'Prezentacja oferty'}</h3>
+                                <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[1]?.description ?? 'Spotykamy się osobiście lub online, aby przedstawić naszą ofertę i dopasować pakiet do Waszych oczekiwań.'}</p>
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[1]?.title ?? 'Prezentacja oferty'}</h3>
-                            <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[1]?.description ?? 'Spotykamy się osobiście lub online, aby przedstawić naszą ofertę i dopasować pakiet do Waszych oczekiwań.'}</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-6 shadow-md border border-stone-100 text-center hover:shadow-lg transition-shadow">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
-                                <CurrencyCircleDollar size={24} weight="light" />
+                        <div className="bg-white rounded-lg overflow-hidden shadow-md border border-stone-100 hover:shadow-lg transition-all">
+                            <div className="p-6 text-center">
+                                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold-100 text-gold-600 mb-4">
+                                    <CurrencyCircleDollar size={24} weight="light" />
+                                </div>
+                                <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[2]?.title ?? 'Zaliczka i rezerwacja'}</h3>
+                                <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[2]?.description ?? 'Podpisujemy umowę i przyjmujemy zaliczkę, która gwarantuje rezerwację terminu wyłącznie dla Was.'}</p>
                             </div>
-                            <h3 className="text-xl font-medium text-stone-800 mb-3">{strings.contact.reservation.steps?.[2]?.title ?? 'Zaliczka i rezerwacja'}</h3>
-                            <p className="text-stone-600 font-light">{strings.contact.reservation.steps?.[2]?.description ?? 'Podpisujemy umowę i przyjmujemy zaliczkę, która gwarantuje rezerwację terminu wyłącznie dla Was.'}</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Contact Form */}
-            <section className="w-full py-12 mb-8">
-                <div className="max-w-3xl mx-auto px-4">
+            <section className="w-full py-12 mb-8 bg-section-background px-4">
+                <div className="max-w-3xl mx-auto">
                     <div className="bg-white rounded-2xl shadow-md border border-stone-100 p-6 md:p-8">
-                        <SectionTitle 
+                        <SectionTitle
                             title={strings.contact.form.title}
                             subtitle={strings.contact.formSubtitle}
                             className="mb-8"
                         />
 
-                        <form action={formAction} className="relative space-y-8">
-                            {state.result && (
-                                <div className={`rounded-lg border p-4 ${state.result.type === 'success'
-                                    ? 'border-green-100 bg-green-50 text-green-800'
-                                    : 'border-red-100 bg-red-50 text-red-800'
-                                    }`}>
-                                    <p className="text-sm">
-                                        {state.result.type === 'success'
-                                            ? strings.contact.form.messageSent
-                                            : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[state.result.error]}`}
-                                    </p>
-                                </div>
-                            )}
-
-                            <div className="space-y-5">
-                                <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    <FormInput
-                                        label={strings.contact.form.name}
-                                        name="name"
-                                        value={state.formData.name}
-                                        required
-                                        className="md:col-span-2"
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.email}
-                                        name="email"
-                                        type="email"
-                                        value={state.formData.email}
-                                        required
-                                        className="md:col-span-2"
-                                    />
-                                </div>
+                        <div className="grid md:grid-cols-5 gap-8 mb-8">
+                            <div className="md:col-span-2 overflow-hidden rounded-lg">
+                                <img
+                                    src="https://images.unsplash.com/photo-1534131707746-25d604851a1f?q=80&w=400&h=600"
+                                    alt="Skontaktuj się z nami"
+                                    className="w-full h-full object-cover rounded-lg"
+                                />
                             </div>
+                            <div className="md:col-span-3">
+                                <form action={formAction} className="relative space-y-8">
+                                    {state.result && (
+                                        <div className={`rounded-lg border p-4 ${state.result.type === 'success'
+                                            ? 'border-green-100 bg-green-50 text-green-800'
+                                            : 'border-red-100 bg-red-50 text-red-800'
+                                            }`}>
+                                            <p className="text-sm">
+                                                {state.result.type === 'success'
+                                                    ? strings.contact.form.messageSent
+                                                    : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[state.result.error]}`}
+                                            </p>
+                                        </div>
+                                    )}
 
-                            <div className="space-y-5">
-                                <SectionHeading>{strings.contact.formSections.weddingInfo}</SectionHeading>
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    <FormInput
-                                        label={strings.contact.form.weddingDate}
-                                        name="weddingDate"
-                                        type="date"
-                                        value={state.formData.weddingDate ?? ''}
-                                        minDate={today}
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.weddingPlace}
-                                        name="weddingPlace"
-                                        value={state.formData.weddingPlace ?? ''}
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.weddingVenue}
-                                        name="weddingVenue"
-                                        value={state.formData.weddingVenue ?? ''}
-                                        className="md:col-span-2"
-                                    />
-                                </div>
+                                    <div className="space-y-5">
+                                        <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
+                                        <div className="grid gap-4 md:grid-cols-2">
+                                            <FormInput
+                                                label={strings.contact.form.name}
+                                                name="name"
+                                                value={state.formData.name}
+                                                required
+                                                className="md:col-span-2"
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.email}
+                                                name="email"
+                                                type="email"
+                                                value={state.formData.email}
+                                                required
+                                                className="md:col-span-2"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-5">
+                                        <SectionHeading>{strings.contact.formSections.weddingInfo}</SectionHeading>
+                                        <div className="grid gap-4 md:grid-cols-2">
+                                            <FormInput
+                                                label={strings.contact.form.weddingDate}
+                                                name="weddingDate"
+                                                type="date"
+                                                value={state.formData.weddingDate ?? ''}
+                                                minDate={today}
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.weddingPlace}
+                                                name="weddingPlace"
+                                                value={state.formData.weddingPlace ?? ''}
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.weddingVenue}
+                                                name="weddingVenue"
+                                                value={state.formData.weddingVenue ?? ''}
+                                                className="md:col-span-2"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-5">
+                                        <SectionHeading>{strings.contact.formSections.additionalInfo}</SectionHeading>
+                                        <div className="grid gap-4">
+                                            <FormInput
+                                                label={strings.contact.form.howDidYouHear}
+                                                name="howDidYouHear"
+                                                value={state.formData.howDidYouHear ?? ''}
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.additionalDetails}
+                                                name="additionalDetails"
+                                                type="textarea"
+                                                value={state.formData.additionalDetails ?? ''}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
+                                        <div className="text-sm font-light text-stone-600">
+                                            <span className="text-red-500">*</span> {strings.contact.form.requiredField}
+                                        </div>
+
+                                        <FormButton
+                                            loadingText={strings.contact.form.sendingMessage}
+                                            fullWidth={false}
+                                        >
+                                            {strings.contact.form.submit}
+                                        </FormButton>
+                                    </div>
+                                </form>
                             </div>
-
-                            <div className="space-y-5">
-                                <SectionHeading>{strings.contact.formSections.additionalInfo}</SectionHeading>
-                                <div className="grid gap-4">
-                                    <FormInput
-                                        label={strings.contact.form.howDidYouHear}
-                                        name="howDidYouHear"
-                                        value={state.formData.howDidYouHear ?? ''}
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.additionalDetails}
-                                        name="additionalDetails"
-                                        type="textarea"
-                                        value={state.formData.additionalDetails ?? ''}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
-                                <div className="text-sm font-light text-stone-600">
-                                    <span className="text-red-500">*</span> {strings.contact.form.requiredField}
-                                </div>
-
-                                <FormButton
-                                    loadingText={strings.contact.form.sendingMessage}
-                                    fullWidth={false}
-                                >
-                                    {strings.contact.form.submit}
-                                </FormButton>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </section>
