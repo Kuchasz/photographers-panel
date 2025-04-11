@@ -1,0 +1,53 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Structure
+
+## Overview
+
+This document describes the structure and organization of the project.
+
+## Directory Structure
+
+```
+src/
+├── access/                    # Access functions for payload collections
+├── app/                    # Next.js app directory
+│   ├── (landing-page)/    # Landing page route group
+│   ├── (payload)/           # Payload route group
+├── collections/            # Payloadcms collection definitions
+├── lib/                # Shared utility functions and types
+├── migrations/              # Database migrations
+├── resources/              # Translation resources
+├── components/            # Shared components
+│   ├── landing-page/     # Landing page specific components
+│   └── ui/              # Reusable UI components
+├── lib/                  # Utility functions and shared logic
+└── resources/           # Static resources and translations
+```
+
+## File Naming Conventions
+
+All file names in the project must use kebab-case (lowercase with hyphens). This applies to:
+
+- Component files (e.g., `photo-grid.tsx`, `navigation-button.tsx`)
+- Utility files (e.g., `date-utils.ts`, `string-helpers.ts`)
+- Test files (e.g., `photo-grid.test.tsx`)
+- Configuration files (e.g., `next.config.js`)
+
+Examples:
+
+- ✅ `photo-grid.tsx`
+- ✅ `navigation-button.tsx`
+- ✅ `featured-videos.tsx`
+- ❌ `PhotoGrid.tsx` (PascalCase)
+- ❌ `photoGrid.tsx` (camelCase)
+- ❌ `photo_grid.tsx` (snake_case)
+
+This convention helps maintain consistency across the codebase and follows common web development practices.
+
+## Component Organization
+
+// ... rest of the file remains unchanged ...

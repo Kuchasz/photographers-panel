@@ -5,7 +5,7 @@ import { Button } from "../../components/button";
 import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
 import { getFeaturedPhotos, getFeaturedVideos, getOpinions } from "./actions";
-import { FeaturedVideos, OpinionCarousel, PhotoGrid } from "./components.client";
+import { FeaturedVideos, OpinionCarousel, PhotoGrid } from "~/components/landing-page";
 
 export const dynamic = 'force-dynamic';
 
