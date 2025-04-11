@@ -4,8 +4,6 @@ import { headers } from "next/headers";
 import { getPayload } from "payload";
 import { authenticateGallery, recordVisit } from "~/collections/private-gallery/private-gallery-actions";
 
-const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 type AuthenticationResult = {
     password: string;
     authenticated: boolean;
@@ -26,8 +24,6 @@ export async function authenticate(
     formData: FormData
 ): Promise<AuthenticationResult> {
     const password = formData.get('password') as string;
-
-    await wait(1000);
 
     if (!password) {
         return { password: '', authenticated: false, isDirty: false };

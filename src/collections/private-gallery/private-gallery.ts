@@ -1,7 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from '../collectionSlugs'
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG, PRIVATE_GALLERY_PHOTO_SLUG } from '../collectionSlugs'
 import { authenticatedOrPublished } from '~/access/authenticatedOrPublished'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const filename = fileURLToPath(import.meta.url)
+const dirname = path.dirname(filename)
 
 export const PrivateGallery: CollectionConfig = {
   slug: PRIVATE_GALLERIES_SLUG,
@@ -26,7 +31,39 @@ export const PrivateGallery: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  upload: {
+    staticDir: 'public/uploads/private-galleries',
+    imageSizes: [
+      {
+        name: 'thumbnail',
+        width: 400,
+        height: 400,
+        position: 'centre',
+      },
+      {
+        name: 'hero',
+        width: 1920,
+        height: 1080,
+        position: 'centre',
+        fit: 'cover',
+      },
+    ],
+    mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
+  },
   fields: [
+    {
+      name: 'photo',
+      type: 'relationship',
+      label: {
+        en: 'Photo',
+        pl: 'Zdjęcie główne',
+      },
+      relationTo: PRIVATE_GALLERY_PHOTO_SLUG,
+      hasMany: false,
+      admin: {
+        description: 'Main photo displayed at the top of the gallery',
+      },
+    },
     {
       name: 'statistics',
       type: 'ui',

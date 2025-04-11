@@ -22,6 +22,7 @@ import { Offer } from './globals/offer'
 import { Users } from './collections/users'
 import { defaultLexical } from './fields/defaultLexical'
 import { migrations } from './migrations'
+import { PrivateGalleryPhoto } from './collections/private-gallery/private-gallery-photo'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -51,6 +52,7 @@ export default buildConfig({
   collections: [
     Users,
     PrivateGallery,
+    PrivateGalleryPhoto,
     PrivateGalleryVisits,
     PrivateGalleryAuthTokens,
     PrivateGalleryMediaDownloads,
