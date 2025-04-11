@@ -168,10 +168,6 @@ export interface User {
  */
 export interface PrivateGallery {
   id: number;
-  /**
-   * Main photo displayed at the top of the gallery
-   */
-  heroPhoto?: (number | null) | PrivateGalleryPhoto;
   title: string;
   date: string;
   state: 'draft' | 'published' | 'archived';
@@ -186,35 +182,25 @@ export interface PrivateGallery {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  /**
+   * Main photo displayed at the top of the gallery
+   */
+  photo?: (number | null) | PrivateGalleryPhoto;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-visits".
+ */
+export interface PrivateGalleryVisit {
+  id: number;
+  ip?: string | null;
+  date?: string | null;
+  userAgent?: string | null;
+  gallery?: (number | null) | PrivateGallery;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -252,19 +238,6 @@ export interface PrivateGalleryPhoto {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "private-gallery-visits".
- */
-export interface PrivateGalleryVisit {
-  id: number;
-  ip?: string | null;
-  date?: string | null;
-  userAgent?: string | null;
-  gallery?: (number | null) | PrivateGallery;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -647,7 +620,6 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "private-galleries_select".
  */
 export interface PrivateGalleriesSelect<T extends boolean = true> {
-  heroPhoto?: T;
   title?: T;
   date?: T;
   state?: T;
@@ -655,41 +627,9 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   directPath?: T;
   notes?: T;
   galleryVisits?: T;
+  photo?: T;
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-  sizes?:
-    | T
-    | {
-        thumbnail?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-        hero?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

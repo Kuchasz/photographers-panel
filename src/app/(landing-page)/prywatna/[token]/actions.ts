@@ -7,7 +7,7 @@ import {
   PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG
 } from '~/collections/collectionSlugs';
 import { fetchJAlbumPhotos } from '~/lib/jalbum';
-import { type PrivateGallery } from '~/payload-types';
+import { PrivateGalleryPhoto, type PrivateGallery } from '~/payload-types';
 import payloadConfig from '~/payload.config';
 
 async function validateGalleryToken(token: string) {
@@ -41,7 +41,8 @@ async function validateGalleryToken(token: string) {
     ip,
     userAgent,
     galleryId: (authToken.gallery as PrivateGallery).id,
-    payload
+    payload,
+    photo: (authToken.gallery as PrivateGallery).photo! as PrivateGalleryPhoto,
   };
 }
 
@@ -61,32 +62,53 @@ export async function getPhotos(token: string) {
   const tokenData = await validateGalleryToken(token);
 
   if (!tokenData) {
-    return [];
+    return null;
   }
 
   const galleryData = tokenData.authToken.gallery as PrivateGallery;
 
-  const jalbumPhotos = await fetchJAlbumPhotos(galleryData.directPath);
+  const jalbumPhotos = await fetchJAlbumPhotos(galleryData.directPath)!;
 
-  return jalbumPhotos.map(photo => ({
-    id: String(photo.id),
-    alt: photo.alt,
-    url: photo.src,
-    width: photo.width,
-    height: photo.height,
-    sizes: {
-      thumbnail: {
-        url: photo.thumbnail,
-        width: photo.thumbw,
-        height: photo.thumbh,
-      },
-      big: {
-        url: photo.src,
-        width: photo.width,
-        height: photo.height,
-      },
-    }
-  }));
+  return ({
+    photo: {
+      id: String(tokenData.photo.id),
+      alt: tokenData.photo.alt,
+      url: tokenData.photo.url!,
+      width: tokenData.photo.width!,
+      height: tokenData.photo.height!,
+      sizes: {
+        thumbnail: {
+          url: tokenData.photo.thumbnailURL!,
+          width: tokenData.photo.width!,
+          height: tokenData.photo.height!,
+        },
+        big: {
+          url: tokenData.photo.url!,
+          width: tokenData.photo.width!,
+          height: tokenData.photo.height!,
+        },
+      }
+    },
+    photos: jalbumPhotos.map(photo => ({
+      id: String(photo.id),
+      alt: photo.alt,
+      url: photo.src,
+      width: photo.width,
+      height: photo.height,
+      sizes: {
+        thumbnail: {
+          url: photo.thumbnail,
+          width: photo.thumbw,
+          height: photo.thumbh,
+        },
+        big: {
+          url: photo.src,
+          width: photo.width,
+          height: photo.height,
+        },
+      }
+    }))
+  })
 }
 
 export async function registerPhotoDownload(token: string, photoId: string) {

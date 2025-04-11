@@ -11,9 +11,10 @@ import { registerPhotoDownload } from "./actions";
 type PrivateGalleryClientPageProps = {
     photos: Photo[];
     galleryTitle?: string;
+    photo: Photo;
 };
 
-export default function PrivateGalleryClientPage({ photos, galleryTitle = '' }: PrivateGalleryClientPageProps) {
+export default function PrivateGalleryClientPage({ photos, galleryTitle = '', photo }: PrivateGalleryClientPageProps) {
     const { token } = useParams<{ token: string }>();
 
     const handleDownload = async (photo: Photo) => {

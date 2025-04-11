@@ -31,39 +31,7 @@ export const PrivateGallery: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
-  upload: {
-    staticDir: 'public/uploads/private-galleries',
-    imageSizes: [
-      {
-        name: 'thumbnail',
-        width: 400,
-        height: 400,
-        position: 'centre',
-      },
-      {
-        name: 'hero',
-        width: 1920,
-        height: 1080,
-        position: 'centre',
-        fit: 'cover',
-      },
-    ],
-    mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
-  },
   fields: [
-    {
-      name: 'photo',
-      type: 'relationship',
-      label: {
-        en: 'Photo',
-        pl: 'Zdjęcie główne',
-      },
-      relationTo: PRIVATE_GALLERY_PHOTO_SLUG,
-      hasMany: false,
-      admin: {
-        description: 'Main photo displayed at the top of the gallery',
-      },
-    },
     {
       name: 'statistics',
       type: 'ui',
@@ -173,6 +141,19 @@ export const PrivateGallery: CollectionConfig = {
       on: 'gallery',
       admin: {
         description: 'Related visits to this gallery',
+      },
+    },
+    {
+      name: 'photo',
+      type: 'relationship',
+      label: {
+        en: 'Photo',
+        pl: 'Zdjęcie główne',
+      },
+      relationTo: PRIVATE_GALLERY_PHOTO_SLUG,
+      hasMany: false,
+      admin: {
+        description: 'Main photo displayed at the top of the gallery',
       },
     },
   ],

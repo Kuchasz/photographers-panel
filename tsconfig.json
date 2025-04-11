@@ -37,6 +37,9 @@
         "react": [
           "./node_modules/@types/react"
         ],
+        "~/payload-types": [
+          "./payload-types.ts"
+        ],
         "~/*": [
           "./src/*"
         ],
