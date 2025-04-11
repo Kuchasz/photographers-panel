@@ -9,6 +9,8 @@ import { Button } from "~/components/button";
 import { routes } from "~/routes";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { SectionDescription } from "~/components/section-description";
+
 // Navigation Button Component 
 type NavigationButtonProps = {
     direction: 'left' | 'right';
@@ -161,11 +163,9 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
     return (
         <div className="space-y-6">
             {/* Text description */}
-            <div className="mx-auto max-w-2xl text-center">
-                <p className="font-light leading-relaxed text-stone-600 mb-4">
-                    {strings.featuredPhotos.description}
-                </p>
-            </div>
+            <SectionDescription>
+                {strings.featuredPhotos.description}
+            </SectionDescription>
 
             {/* Full width container with horizontal layout and navigation */}
             <div className="relative w-full" ref={containerRef}>
