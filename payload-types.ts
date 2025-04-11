@@ -171,7 +171,13 @@ export interface PrivateGallery {
   title: string;
   date: string;
   state: 'draft' | 'published' | 'archived';
+  /**
+   * Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number
+   */
   password: string;
+  /**
+   * URL must start with https://
+   */
   directPath: string;
   notes?: string | null;
   /**
