@@ -10,6 +10,13 @@ import { strings } from "../resources";
 import { routes } from "~/routes";
 import { Button } from "./button";
 
+// Augment the window interface to include our toggleMobileMenu function
+declare global {
+    interface Window {
+        toggleMobileMenu?: () => void;
+    }
+}
+
 const getSrc = (photo: string, ext: string) => `/images/top/${photo}${ext}`;
 
 interface ImageCarouselProps {
@@ -129,31 +136,9 @@ const NavLink = ({
 // Navigation component that can be used in both header variants
 const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
     const pathname = usePathname();
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
     const logoTextClass = isHomePage ? "text-white" : "text-stone-800";
     const logoSubtextClass = isHomePage ? "text-white/75" : "text-stone-800/75";
-    const mobileMenuBgClass = isHomePage
-        ? "bg-black/80 backdrop-blur-md"
-        : "bg-white/95 backdrop-blur-md shadow-md";
-
-    // Close mobile menu when route changes
-    React.useEffect(() => {
-        setIsMobileMenuOpen(false);
-    }, [pathname]);
-
-    // Prevent scroll when mobile menu is open
-    React.useEffect(() => {
-        if (isMobileMenuOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
-    }, [isMobileMenuOpen]);
 
     return (
         <>
@@ -220,78 +205,125 @@ const Navigation = ({ isHomePage }: { isHomePage: boolean }) => {
 
             {/* Mobile menu button */}
             <button
-                className="absolute right-4 top-6 z-50 flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md md:hidden"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMobileMenuOpen}
+                className="absolute right-4 top-6 z-[60] flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md md:hidden"
+                onClick={() => window.toggleMobileMenu?.()}
+                aria-label="Open menu"
+                aria-expanded="false"
             >
                 <span
-                    className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`}
+                    className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'}`}
                 ></span>
                 <span
-                    className={`h-0.5 w-6 transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}
+                    className={`h-0.5 w-6 transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'}`}
                 ></span>
                 <span
-                    className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'} ${isMobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`}
+                    className={`h-0.5 w-6 transform transition-all duration-300 ease-in-out ${isHomePage ? 'bg-white' : 'bg-stone-800'}`}
                 ></span>
             </button>
+        </>
+    );
+};
 
-            {/* Mobile menu */}
-            <div
-                className={`fixed inset-0 z-40 transition-opacity duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-                aria-hidden={!isMobileMenuOpen}
+// Mobile menu component with slide-in animation
+const MobileMenu = ({ isOpen, onClose, isHomePage }: { 
+    isOpen: boolean; 
+    onClose: () => void; 
+    isHomePage: boolean;
+}) => {
+    return (
+        <div 
+            className={`fixed inset-0 z-[200] md:hidden ${isOpen ? 'visible' : 'invisible'}`}
+            style={{ transitionProperty: 'visibility', transitionDuration: isOpen ? '0ms' : '600ms', transitionDelay: isOpen ? '0ms' : '0ms' }}
+        >
+            {/* Overlay background */}
+            <div 
+                className={`absolute inset-0 bg-black/70 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                style={{ transitionProperty: 'opacity', transitionDuration: isOpen ? '300ms' : '600ms' }}
+                onClick={onClose}
+            ></div>
+            
+            {/* Slide-in panel */}
+            <div 
+                className={`absolute right-0 top-0 h-full w-4/5 max-w-xs overflow-y-auto ${isHomePage ? 'bg-black/90 backdrop-blur-lg' : 'bg-white/95 backdrop-blur-md shadow-md'} transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                style={{ transitionProperty: 'transform', transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)', transitionDuration: isOpen ? '300ms' : '600ms' }}
             >
-                {/* Backdrop overlay */}
-                <div
-                    className={`absolute inset-0 transition-opacity duration-300 ${isHomePage ? 'bg-black/60' : 'bg-stone-800/20'}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                ></div>
-
-                {/* Menu content - still slides */}
-                <div
-                    className={`absolute right-0 top-0 h-full w-4/5 max-w-xs transform overflow-y-auto py-8 px-6 transition-transform duration-300 ${mobileMenuBgClass} ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                {/* Close button */}
+                <button 
+                    className="absolute right-4 top-4 rounded-full p-2 transition-colors duration-200 hover:bg-black/10"
+                    onClick={onClose}
+                    aria-label="Close menu"
                 >
-                    <div className="flex flex-col items-start gap-6 text-lg">
-                        <NavLink
-                            href={routes.offers.route}
-                            isActive={firstSegment(pathname) === routes.offers.route}
-                            isHomePage={isHomePage}
-                        >
-                            {strings.menu.offer}
-                        </NavLink>
-                        <NavLink
-                            href={routes.photos.route}
-                            isActive={firstSegment(pathname) === routes.photos.route}
-                            isHomePage={isHomePage}
-                        >
-                            {strings.menu.photos}
-                        </NavLink>
-                        <NavLink
-                            href={routes.videos.route}
-                            isActive={firstSegment(pathname) === routes.videos.route}
-                            isHomePage={isHomePage}
-                        >
-                            {strings.menu.videos}
-                        </NavLink>
-                        <NavLink
-                            href={routes.contact.route}
-                            isActive={firstSegment(pathname) === routes.contact.route}
-                            isHomePage={isHomePage}
-                        >
-                            {strings.menu.contact}
-                        </NavLink>
-                        <NavLink
-                            href={routes.private.route}
-                            isActive={false}
-                            isHomePage={isHomePage}
-                            isPrimary={true}
-                        >
-                            {strings.menu.private}
-                        </NavLink>
+                    <svg className={`h-6 w-6 ${isHomePage ? 'text-white' : 'text-stone-800'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                
+                {/* Logo */}
+                <div className="mt-14 mb-8 flex justify-center">
+                    <div className={`flex flex-col items-center gap-1`}>
+                        <div className={`text-2xl font-light leading-none ${isHomePage ? 'text-white' : 'text-stone-800'}`}>
+                            <span className="tracking-wider">PYSZ</span>
+                            <span className="font-medium tracking-wide">STUDIO</span>
+                        </div>
+                        <div className={`text-[10px] font-light leading-none tracking-[0.2em] ${isHomePage ? 'text-white/75' : 'text-stone-800/75'}`}>
+                            FOTOGRAFIA I FILM
+                        </div>
                     </div>
                 </div>
+                
+                {/* Divider */}
+                <div className={`mx-6 h-px ${isHomePage ? 'bg-white/20' : 'bg-stone-800/10'}`}></div>
+                
+                {/* Menu items */}
+                <div className="flex flex-col items-center gap-7 px-6 py-8 text-lg">
+                    <NavLink
+                        href={routes.offers.route}
+                        isActive={firstSegment(usePathname()) === routes.offers.route}
+                        isHomePage={isHomePage}
+                    >
+                        {strings.menu.offer}
+                    </NavLink>
+                    <NavLink
+                        href={routes.photos.route}
+                        isActive={firstSegment(usePathname()) === routes.photos.route}
+                        isHomePage={isHomePage}
+                    >
+                        {strings.menu.photos}
+                    </NavLink>
+                    <NavLink
+                        href={routes.videos.route}
+                        isActive={firstSegment(usePathname()) === routes.videos.route}
+                        isHomePage={isHomePage}
+                    >
+                        {strings.menu.videos}
+                    </NavLink>
+                    <NavLink
+                        href={routes.contact.route}
+                        isActive={firstSegment(usePathname()) === routes.contact.route}
+                        isHomePage={isHomePage}
+                    >
+                        {strings.menu.contact}
+                    </NavLink>
+                    
+                    {/* Divider before special button */}
+                    <div className={`w-16 h-px my-2 ${isHomePage ? 'bg-white/20' : 'bg-stone-800/10'}`}></div>
+                    
+                    <NavLink
+                        href={routes.private.route}
+                        isActive={false}
+                        isHomePage={isHomePage}
+                        isPrimary={true}
+                    >
+                        {strings.menu.private}
+                    </NavLink>
+                </div>
+                
+                {/* Footer */}
+                <div className={`absolute bottom-8 left-0 right-0 text-center text-sm ${isHomePage ? 'text-white/60' : 'text-stone-600'}`}>
+                    © {new Date().getFullYear()} PYSZSTUDIO
+                </div>
             </div>
-        </>
+        </div>
     );
 };
 
@@ -300,6 +332,15 @@ export const Header = () => {
     const [currentAdvantage, setCurrentAdvantage] = React.useState(strings.offer.slogan.advantages[0]);
     const isHomePage = pathname === '/';
     const [isScrolled, setIsScrolled] = React.useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+    // Set a global function to toggle the menu that can be accessed from other components
+    React.useEffect(() => {
+        window.toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+        return () => {
+            delete window.toggleMobileMenu;
+        };
+    }, [isMobileMenuOpen]);
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -322,12 +363,30 @@ export const Header = () => {
         };
     }, []);
 
+    // Prevent scroll when mobile menu is open
+    React.useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isMobileMenuOpen]);
+
+    // Close menu on route change
+    React.useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [pathname]);
+
     const firstItem = first(menuItems, (mi) => firstSegment(pathname) === mi.route) as MenuItem;
 
     // Home page header with hero image
     if (isHomePage) {
         return (
-            <div>
+            <div className="relative">
                 <Headers title={firstItem?.title}></Headers>
 
                 <div className="relative flex flex-col items-center overflow-hidden h-screen">
@@ -339,6 +398,13 @@ export const Header = () => {
                             <Navigation isHomePage={true} />
                         </div>
                     </nav>
+
+                    {/* Mobile Menu */}
+                    <MobileMenu 
+                        isOpen={isMobileMenuOpen} 
+                        onClose={() => setIsMobileMenuOpen(false)} 
+                        isHomePage={true}
+                    />
 
                     {/* Hero text overlay */}
                     <div className="absolute inset-0 flex items-end z-10 pointer-events-none">
@@ -385,6 +451,13 @@ export const Header = () => {
                     </div>
                 </nav>
             </div>
+            
+            {/* Mobile Menu */}
+            <MobileMenu 
+                isOpen={isMobileMenuOpen} 
+                onClose={() => setIsMobileMenuOpen(false)} 
+                isHomePage={false}
+            />
         </div>
     );
 };
