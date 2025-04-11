@@ -232,19 +232,33 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
     return (
         <div 
             className={`fixed inset-0 z-[200] md:hidden ${isOpen ? 'visible' : 'invisible'}`}
-            style={{ transitionProperty: 'visibility', transitionDuration: isOpen ? '0ms' : '600ms', transitionDelay: isOpen ? '0ms' : '0ms' }}
+            style={{ 
+                transitionProperty: 'visibility', 
+                transitionDuration: isOpen ? '0ms' : '500ms', 
+                transitionDelay: isOpen ? '0ms' : '0ms' 
+            }}
         >
             {/* Overlay background */}
             <div 
                 className={`absolute inset-0 bg-black/70 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-                style={{ transitionProperty: 'opacity', transitionDuration: isOpen ? '300ms' : '600ms' }}
+                style={{ 
+                    transitionProperty: 'opacity', 
+                    transitionDuration: '300ms',
+                    transitionTimingFunction: 'ease-in-out'
+                }}
                 onClick={onClose}
             ></div>
             
             {/* Slide-in panel */}
             <div 
-                className={`absolute right-0 top-0 h-full w-4/5 max-w-xs overflow-y-auto ${isHomePage ? 'bg-black/90 backdrop-blur-lg' : 'bg-white/95 backdrop-blur-md shadow-md'} transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
-                style={{ transitionProperty: 'transform', transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)', transitionDuration: isOpen ? '300ms' : '600ms' }}
+                className={`absolute right-0 top-0 h-full w-4/5 max-w-xs overflow-y-auto ${isHomePage ? 'bg-black/90 backdrop-blur-lg' : 'bg-white/95 backdrop-blur-md shadow-md'}`}
+                style={{ 
+                    transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
+                    transitionProperty: 'transform', 
+                    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)', 
+                    transitionDuration: '300ms',
+                    willChange: 'transform'
+                }}
             >
                 {/* Close button */}
                 <button 
