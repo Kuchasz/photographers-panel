@@ -288,15 +288,15 @@ export interface PrivateGalleryMediaDownload {
  */
 export interface Video {
   id: number;
-  title: string;
-  alias: string;
+  videoUrl: string;
+  title?: string | null;
+  alias?: string | null;
   /**
    * Used for manual sorting of videos
    */
   order?: number | null;
-  desc: string;
-  descshort: string;
-  videoUrl: string;
+  desc?: string | null;
+  descshort?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -722,12 +722,12 @@ export interface PrivateGalleryMediaDownloadsSelect<T extends boolean = true> {
  * via the `definition` "videos_select".
  */
 export interface VideosSelect<T extends boolean = true> {
+  videoUrl?: T;
   title?: T;
   alias?: T;
   order?: T;
   desc?: T;
   descshort?: T;
-  videoUrl?: T;
   updatedAt?: T;
   createdAt?: T;
 }

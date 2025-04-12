@@ -5,6 +5,26 @@ import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { VIDEOS_SLUG } from '../collectionSlugs'
 
+const extractVideoId = (url: string): string | null => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
+    const match = url.match(regExp)
+    return (match && match[2] && match[2].length === 11) ? match[2] : null
+}
+
+const getVideoInfo = async (videoId: string) => {
+    try {
+        const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`)
+        const data = await response.json()
+        return {
+            title: data.title,
+            description: data.description || '',
+        }
+    } catch (error) {
+        console.error('Error fetching video info:', error)
+        return null
+    }
+}
+
 export const Video: CollectionConfig = {
     slug: VIDEOS_SLUG,
     access: {
@@ -30,6 +50,23 @@ export const Video: CollectionConfig = {
     },
     defaultSort: 'order',
     hooks: {
+        beforeChange: [
+            async ({ data, operation }) => {
+                if (operation === 'create' || operation === 'update') {
+                    const videoId = extractVideoId(data.videoUrl)
+                    if (videoId) {
+                        const videoInfo = await getVideoInfo(videoId)
+                        if (videoInfo) {
+                            data.title = videoInfo.title
+                            data.alias = videoInfo.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+                            data.desc = videoInfo.description
+                            data.descshort = videoInfo.description.substring(0, 200) + (videoInfo.description.length > 200 ? '...' : '')
+                        }
+                    }
+                }
+                return data
+            }
+        ],
         afterChange: [
             async () => {
                 revalidateVideos()
@@ -43,9 +80,24 @@ export const Video: CollectionConfig = {
     },
     fields: [
         {
-            name: 'title',
+            name: 'videoUrl',
+            label: {
+                en: 'Video URL',
+                pl: 'URL wideo',
+            },
             type: 'text',
             required: true,
+            validate: ((value) => {
+                if (!value) return 'Video URL is required'
+                if (typeof value === 'string' && !extractVideoId(value)) {
+                    return 'Video URL must be a valid YouTube URL'
+                }
+                return true
+            }) as TextFieldSingleValidation,
+        },
+        {
+            name: 'title',
+            type: 'text',
             label: {
                 en: 'Title',
                 pl: 'Tytuł',
@@ -54,7 +106,6 @@ export const Video: CollectionConfig = {
         {
             name: 'alias',
             type: 'text',
-            required: true,
             unique: true,
             label: {
                 en: 'Alias',
@@ -81,7 +132,6 @@ export const Video: CollectionConfig = {
                 pl: 'Opis',
             },
             type: 'textarea',
-            required: true,
         },
         {
             name: 'descshort',
@@ -90,26 +140,6 @@ export const Video: CollectionConfig = {
                 pl: 'Krótki opis',
             },
             type: 'textarea',
-            required: true,
-        },
-        {
-            name: 'videoUrl',
-            label: {
-                en: 'Video URL',
-                pl: 'URL wideo',
-            },
-            type: 'text',
-            required: true,
-            validate: ((value) => {
-                if (!value) return 'Video URL is required'
-                if (
-                    typeof value === 'string' &&
-                    !value.includes('youtube.com/embed/')
-                ) {
-                    return 'Video URL must be a valid YouTube embed URL like https://www.youtube.com/embed/some_video_id'
-                }
-                return true
-            }) as TextFieldSingleValidation,
         }
     ],
 }

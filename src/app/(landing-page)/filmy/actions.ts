@@ -3,6 +3,7 @@
 import { getPayload } from 'payload'
 import payloadConfig from '~/payload.config'
 import { unstable_cache } from 'next/cache'
+import { convertToEmbedUrl } from '~/lib/youtube'
 
 export type Video = {
   id: string | number
@@ -31,7 +32,7 @@ export const getVideos = unstable_cache(
       descshort: doc.descshort,
       desc: doc.desc,
       alias: doc.alias ?? '',
-      videoUrl: doc.videoUrl ?? '',
+      videoUrl: convertToEmbedUrl(doc.videoUrl ?? ''),
       order: doc.order ?? 0,
     }))
   },
@@ -66,7 +67,7 @@ export const getVideoByAlias = unstable_cache(
       descshort: video.descshort,
       desc: video.desc,
       alias: video.alias ?? '',
-      videoUrl: video.videoUrl ?? '',
+      videoUrl: convertToEmbedUrl(video.videoUrl ?? ''),
       order: video.order ?? 0,
     }
   },

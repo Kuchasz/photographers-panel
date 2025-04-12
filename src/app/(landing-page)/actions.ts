@@ -5,6 +5,7 @@ import { OPINIONS_SLUG, PHOTOS_SLUG } from '../../collections/collectionSlugs'
 import payloadConfig from '~/payload.config'
 import { type OpinionMedia } from '~/payload-types'
 import { unstable_cache } from 'next/cache'
+import { convertToEmbedUrl } from '~/lib/youtube'
 
 export type Opinion = {
   id: number;
@@ -138,9 +139,9 @@ export const getFeaturedVideos = unstable_cache(
       return response.docs.map(doc => ({
         id: doc.id,
         title: doc.title ?? '',
-        descshort: doc.descshort,
+        descshort: doc.descshort ?? undefined,
         alias: doc.alias ?? '',
-        videoUrl: doc.videoUrl ?? '',
+        videoUrl: convertToEmbedUrl(doc.videoUrl ?? ''),
         order: doc.order ?? 0,
       }))
     } catch (error) {
