@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { type Photo, PhotoTile } from './photo-tile';
 import React from 'react';
 import { PhotoLightbox } from './photo-lightbox';
+import { debounce } from '~/lib/function';
 
 type PhotoGalleryProps = {
     photos: Photo[];
@@ -70,20 +71,26 @@ export function PhotoGallery({
 
     // Determine column count based on screen width
     useEffect(() => {
-        const handleResize = () => {
+        const updateColumnCount = () => {
             const width = window.innerWidth;
             if (width < 640) {
-                setColumnCount(1);
+                setColumnCount(1); // Mobile: 1 column
+            } else if (width < 768) {
+                setColumnCount(2); // Small tablets: 2 columns
             } else if (width < 1024) {
-                setColumnCount(2);
+                setColumnCount(3); // Tablets/small laptops: 3 columns
+            } else if (width < 1280) {
+                setColumnCount(3); // Laptops: 3 columns
             } else {
-                setColumnCount(3);
+                setColumnCount(4); // Large screens: 4 columns
             }
         };
 
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        const debouncedUpdateColumnCount = debounce(updateColumnCount, 250);
+
+        updateColumnCount(); // Initial call without debounce
+        window.addEventListener('resize', debouncedUpdateColumnCount);
+        return () => window.removeEventListener('resize', debouncedUpdateColumnCount);
     }, []);
 
     // Distribute photos into columns
