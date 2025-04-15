@@ -3,6 +3,7 @@ import { PageContainer } from "~/components/page-container";
 import { SectionTitle } from "~/components/section-title";
 import { Button } from "~/components/button";
 import { routes } from "~/routes";
+import Image from "next/image";
 
 export default async function OffersPage() {
     return (
@@ -22,11 +23,13 @@ export default async function OffersPage() {
                     </div>
 
                     {/* Featured Image */}
-                    <div className="mb-16 overflow-hidden rounded-lg shadow-lg">
-                        <img
-                            src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1200&h=600"
+                    <div className="mb-16 overflow-hidden rounded-lg shadow-lg relative h-[400px]">
+                        <Image
+                            src="/images/page_oferta_photo.jpg"
                             alt="Para młoda przytulająca się na schodach"
-                            className="w-full object-cover h-[400px]"
+                            fill
+                            className="object-cover"
+                            priority
                         />
                     </div>
 

@@ -146,7 +146,7 @@ export default function PrivateGallery() {
                         {/* Image Section */}
                         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-100 shadow-lg md:aspect-auto md:h-[480px]">
                             <Image
-                                src='/images/page_private_photo.png'
+                                src='/images/page_prywatna_photo.jpg'
                                 alt={strings.privateGallery.imageAlt}
                                 fill
                                 className="object-cover hover:scale-105 transition-transform duration-700"

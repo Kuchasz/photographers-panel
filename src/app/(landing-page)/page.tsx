@@ -25,9 +25,9 @@ export default async function Home() {
           />
 
           <div className="mx-auto max-w-4xl">
-            <div className="flex flex-col items-center gap-12 md:flex-row md:items-start">
-              {/* Image Column */}
-              <div className="w-full md:w-1/2">
+            <div className="flex flex-col items-center">
+              {/* Image Column - temporarily hidden */}
+              {/*<div className="w-full md:w-1/2">
                 <div className="overflow-hidden rounded-md shadow-lg">
                   <Image
                     src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=687&auto=format&fit=crop"
@@ -37,10 +37,10 @@ export default async function Home() {
                     className="w-full object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
-              </div>
+              </div>*/}
 
               {/* Text Column */}
-              <div className="w-full space-y-6 md:w-1/2">
+              <div className="w-full space-y-6">
                 <p className="font-serif text-lg italic leading-relaxed text-stone-700">
                   {strings.meetPhotographer.intro}
                 </p>

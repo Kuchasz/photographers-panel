@@ -17,17 +17,17 @@ export type SendResult = Result<MessageValidationError>;
 
 const notifications = {
     server: {
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
+        host: process.env.NOTIFICATIONS_HOST,
+        port: parseInt(process.env.NOTIFICATIONS_PORT || '465', 10),
+        secure: process.env.NOTIFICATIONS_AUTH_SECURE === 'true',
         auth: {
-            user: 'your-email@gmail.com',
-            pass: 'your-password',
+            user: process.env.NOTIFICATIONS_AUTH_USER,
+            pass: process.env.NOTIFICATIONS_AUTH_PASS,
         },
     },
     message: {
-        from: 'your-email@gmail.com',
-        target: 'your-email@gmail.com',
+        from: process.env.NOTIFICATIONS_MESSAGE_FROM,
+        target: process.env.NOTIFICATIONS_MESSAGE_TARGET,
     },
 };
 
@@ -189,7 +189,7 @@ export const send = async (data: Message): Promise<SendResult> => {
     }
 
     try {
-        // await sendEmail(data);
+        await sendEmail(data);
         console.log('sendEmail', data);
         return { type: 'success' };
     } catch (err) {

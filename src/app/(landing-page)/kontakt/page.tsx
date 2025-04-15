@@ -8,6 +8,7 @@ import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
 import { sendMessage, type ContactState } from "./actions";
 import { CalendarCheck, PresentationChart, CurrencyCircleDollar } from "@phosphor-icons/react";
+import Image from "next/image";
 
 // Section heading component - this is just a UI component, not a directly translatable piece
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
@@ -51,11 +52,13 @@ export default function ContactPage() {
                     </div>
 
                     {/* Featured Image */}
-                    <div className="mb-16 overflow-hidden rounded-lg shadow-lg">
-                        <img
-                            src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?q=80&w=1200&h=600"
+                    <div className="mb-16 overflow-hidden rounded-lg shadow-lg relative h-[400px]">
+                        <Image
+                            src="/images/page_kontakt_photo.jpg"
                             alt="Para młoda rozmawiająca z fotografem"
-                            className="w-full object-cover h-[400px]"
+                            fill
+                            className="object-cover"
+                            priority
                         />
                     </div>
                 </div>
@@ -108,106 +111,95 @@ export default function ContactPage() {
                             className="mb-8"
                         />
 
-                        <div className="grid md:grid-cols-5 gap-8 mb-8">
-                            <div className="md:col-span-2 overflow-hidden rounded-lg">
-                                <img
-                                    src="https://images.unsplash.com/photo-1534131707746-25d604851a1f?q=80&w=400&h=600"
-                                    alt="Skontaktuj się z nami"
-                                    className="w-full h-full object-cover rounded-lg"
-                                />
+                        <form action={formAction} className="relative space-y-8">
+                            {state.result && (
+                                <div className={`rounded-lg border p-4 ${state.result.type === 'success'
+                                    ? 'border-green-100 bg-green-50 text-green-800'
+                                    : 'border-red-100 bg-red-50 text-red-800'
+                                    }`}>
+                                    <p className="text-sm">
+                                        {state.result.type === 'success'
+                                            ? strings.contact.form.messageSent
+                                            : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[state.result.error]}`}
+                                    </p>
+                                </div>
+                            )}
+
+                            <div className="space-y-5">
+                                <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <FormInput
+                                        label={strings.contact.form.name}
+                                        name="name"
+                                        value={state.formData.name}
+                                        required
+                                        className="md:col-span-2"
+                                    />
+                                    <FormInput
+                                        label={strings.contact.form.email}
+                                        name="email"
+                                        type="email"
+                                        value={state.formData.email}
+                                        required
+                                        className="md:col-span-2"
+                                    />
+                                </div>
                             </div>
-                            <div className="md:col-span-3">
-                                <form action={formAction} className="relative space-y-8">
-                                    {state.result && (
-                                        <div className={`rounded-lg border p-4 ${state.result.type === 'success'
-                                            ? 'border-green-100 bg-green-50 text-green-800'
-                                            : 'border-red-100 bg-red-50 text-red-800'
-                                            }`}>
-                                            <p className="text-sm">
-                                                {state.result.type === 'success'
-                                                    ? strings.contact.form.messageSent
-                                                    : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[state.result.error]}`}
-                                            </p>
-                                        </div>
-                                    )}
 
-                                    <div className="space-y-5">
-                                        <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
-                                        <div className="grid gap-4 md:grid-cols-2">
-                                            <FormInput
-                                                label={strings.contact.form.name}
-                                                name="name"
-                                                value={state.formData.name}
-                                                required
-                                                className="md:col-span-2"
-                                            />
-                                            <FormInput
-                                                label={strings.contact.form.email}
-                                                name="email"
-                                                type="email"
-                                                value={state.formData.email}
-                                                required
-                                                className="md:col-span-2"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-5">
-                                        <SectionHeading>{strings.contact.formSections.weddingInfo}</SectionHeading>
-                                        <div className="grid gap-4 md:grid-cols-2">
-                                            <FormInput
-                                                label={strings.contact.form.weddingDate}
-                                                name="weddingDate"
-                                                type="date"
-                                                value={state.formData.weddingDate ?? ''}
-                                                minDate={today}
-                                            />
-                                            <FormInput
-                                                label={strings.contact.form.weddingPlace}
-                                                name="weddingPlace"
-                                                value={state.formData.weddingPlace ?? ''}
-                                            />
-                                            <FormInput
-                                                label={strings.contact.form.weddingVenue}
-                                                name="weddingVenue"
-                                                value={state.formData.weddingVenue ?? ''}
-                                                className="md:col-span-2"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-5">
-                                        <SectionHeading>{strings.contact.formSections.additionalInfo}</SectionHeading>
-                                        <div className="grid gap-4">
-                                            <FormInput
-                                                label={strings.contact.form.howDidYouHear}
-                                                name="howDidYouHear"
-                                                value={state.formData.howDidYouHear ?? ''}
-                                            />
-                                            <FormInput
-                                                label={strings.contact.form.additionalDetails}
-                                                name="additionalDetails"
-                                                type="textarea"
-                                                value={state.formData.additionalDetails ?? ''}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
-                                        <div className="text-sm font-light text-stone-600">
-                                            <span className="text-red-500">*</span> {strings.contact.form.requiredField}
-                                        </div>
-
-                                        <FormButton
-                                            loadingText={strings.contact.form.sendingMessage}
-                                            fullWidth={false}
-                                        >
-                                            {strings.contact.form.submit}
-                                        </FormButton>
-                                    </div>
-                                </form>
+                            <div className="space-y-5">
+                                <SectionHeading>{strings.contact.formSections.weddingInfo}</SectionHeading>
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <FormInput
+                                        label={strings.contact.form.weddingDate}
+                                        name="weddingDate"
+                                        type="date"
+                                        value={state.formData.weddingDate ?? ''}
+                                        minDate={today}
+                                    />
+                                    <FormInput
+                                        label={strings.contact.form.weddingPlace}
+                                        name="weddingPlace"
+                                        value={state.formData.weddingPlace ?? ''}
+                                    />
+                                    <FormInput
+                                        label={strings.contact.form.weddingVenue}
+                                        name="weddingVenue"
+                                        value={state.formData.weddingVenue ?? ''}
+                                        className="md:col-span-2"
+                                    />
+                                </div>
                             </div>
-                        </div>
+
+                            <div className="space-y-5">
+                                <SectionHeading>{strings.contact.formSections.additionalInfo}</SectionHeading>
+                                <div className="grid gap-4">
+                                    <FormInput
+                                        label={strings.contact.form.howDidYouHear}
+                                        name="howDidYouHear"
+                                        value={state.formData.howDidYouHear ?? ''}
+                                    />
+                                    <FormInput
+                                        label={strings.contact.form.additionalDetails}
+                                        name="additionalDetails"
+                                        type="textarea"
+                                        value={state.formData.additionalDetails ?? ''}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
+                                <div className="text-sm font-light text-stone-600">
+                                    <span className="text-red-500">*</span> {strings.contact.form.requiredField}
+                                </div>
+
+                                <FormButton
+                                    loadingText={strings.contact.form.sendingMessage}
+                                    fullWidth={false}
+                                >
+                                    {strings.contact.form.submit}
+                                </FormButton>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </section>
