@@ -3,9 +3,8 @@
 import { type Photo, PhotoGallery } from "~/components/gallery";
 import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
-import { downloadImageByUrl } from "~/lib/file";
 import { useParams } from "next/navigation";
-import { registerPhotoDownload } from "./actions";
+import { downloadPhotoWithCors } from "./actions";
 
 const styles = `
 @keyframes photoZoom {
@@ -47,17 +46,31 @@ type PrivateGalleryClientPageProps = {
     photo: Photo;
 };
 
+async function downloadImageAction(token: string, photo: Photo) {
+    try {
+        const imageUrl = photo.sizes?.big?.url || photo.url;
+        // Call the server action to proxy the image with CORS and register the download
+        const res = await downloadPhotoWithCors(imageUrl, token);
+        if (!res.ok) throw new Error('Failed to download image');
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = photo.alt || 'photo.jpg';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Error during photo download:', error);
+    }
+}
+
 export default function PrivateGalleryClientPage({ photos, galleryTitle = '', photo }: PrivateGalleryClientPageProps) {
     const { token } = useParams<{ token: string }>();
 
     const handleDownload = async (photo: Photo) => {
-        try {
-            const imageUrl = photo.sizes?.big?.url || photo.url;
-            await downloadImageByUrl(imageUrl);
-            await registerPhotoDownload(token as string, photo.id);
-        } catch (error) {
-            console.error('Error during photo download:', error);
-        }
+        await downloadImageAction(token as string, photo);
     };
 
     const displayTitle = galleryTitle || strings.privateGallery.title;
