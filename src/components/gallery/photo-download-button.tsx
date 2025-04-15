@@ -16,18 +16,22 @@ export function PhotoDownloadButton({ url, onDownload, className = '', variant =
     const darkClasses = 'bg-black/30 hover:bg-black/50 active:bg-black/60 text-white';
     const variantClasses = variant === 'dark' ? darkClasses : lightClasses;
 
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (onDownload) {
+            onDownload(e);
+        }
+    };
+
     return (
-        <a
-            href={url}
-            download
-            target="_blank"
-            rel="noopener noreferrer"
+        <button
+            type="button"
             className={`${baseClasses} ${variantClasses} ${className}`}
             aria-label={strings.gallery.download}
-            onClick={onDownload}
+            onClick={handleClick}
         >
             <Download size={16} weight="bold" className="text-inherit" />
             <span className="text-xs text-inherit">{strings.gallery.download}</span>
-        </a>
+        </button>
     );
 } 
