@@ -351,5 +351,8 @@ export const pl = {
         promise: "Jeśli szukacie duetu, który będzie elegancko i z klasą dokumentował ponadczasowe, autentyczne momenty zarówno na zdjęciach jak i filmie, a Wy będziecie mogli cieszyć się swoim dniem ślubnym z bliskimi, to stwórzmy razem coś pięknego.",
         cta: "POZNAJ NAS",
         sayHello: "NAPISZ DO NAS"
-    }
+    },
+    gallery: {
+        download: 'Pobierz zdjęcie'
+    },
 };
