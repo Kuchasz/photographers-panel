@@ -127,3 +127,24 @@ const getExtensionFromMimeType = (mimeType: string): string => {
 
     return mimeToExt[mimeType] || 'jpg';
 };
+
+export function saveBlobAsDownload(blob: Blob, filename: string): void {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+}
+
+export function getFilenameFromUrl(url: string): string {
+    try {
+        const pathname = new URL(url, window.location.origin).pathname;
+        return pathname.substring(pathname.lastIndexOf('/') + 1) || 'file';
+    } catch {
+        // fallback for invalid URLs
+        return url.split('/').pop()?.split('?')[0]?.split('#')[0] || 'file';
+    }
+}

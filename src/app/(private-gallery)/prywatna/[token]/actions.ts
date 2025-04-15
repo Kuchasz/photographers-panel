@@ -9,7 +9,9 @@ import {
 import { fetchJAlbumPhotos } from '~/lib/jalbum';
 import { PrivateGalleryPhoto, type PrivateGallery } from '~/payload-types';
 import payloadConfig from '~/payload.config';
-import { NextResponse } from 'next/server';
+import { getFilenameFromUrl } from '~/lib/file';
+
+type TokenData = Awaited<ReturnType<typeof validateGalleryToken>>;
 
 async function validateGalleryToken(token: string) {
   const payload = await getPayload({
@@ -33,24 +35,27 @@ async function validateGalleryToken(token: string) {
   });
 
   const authToken = authTokens.docs[0];
-  if (!authToken || authToken.expiresAt < new Date().toISOString()) {
+
+  if (!authToken) {
     return null;
   }
 
   return {
+    expired: authToken.expiresAt < new Date().toISOString(),
     authToken,
     ip,
     userAgent,
     galleryId: (authToken.gallery as PrivateGallery).id,
     payload,
     photo: (authToken.gallery as PrivateGallery).photo! as PrivateGalleryPhoto,
+    directPath: (authToken.gallery as PrivateGallery).directPath,
   };
 }
 
 export async function getGalleryTitle(token: string): Promise<string> {
   const tokenData = await validateGalleryToken(token);
 
-  if (!tokenData) {
+  if (!tokenData || tokenData.expired) {
     return '';
   }
 
@@ -62,7 +67,7 @@ export async function getGalleryTitle(token: string): Promise<string> {
 export async function getPhotos(token: string) {
   const tokenData = await validateGalleryToken(token);
 
-  if (!tokenData) {
+  if (!tokenData || tokenData.expired) {
     return null;
   }
 
@@ -116,43 +121,54 @@ export async function getPhotos(token: string) {
  * Server action to proxy photo downloads with CORS support.
  * @param imageDownloadUrl - The direct URL to the image to download
  * @param token - The gallery access token
- * @returns {Promise<Response>} - The proxied image response with CORS headers
+ * @returns {Promise<{ blob?: Blob, filename?: string, error?: string }>} - The image blob and filename or error
  */
-export async function downloadPhotoWithCors(imageDownloadUrl: string, token: string): Promise<Response> {
-  // Get gallery from token, even if expired
-  const payload = await getPayload({ config: payloadConfig });
-  const authTokens = await payload.find({
-    collection: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
-    where: { token: { equals: token } },
-  });
-  const authToken = authTokens.docs[0];
-  if (!authToken) {
-    return new NextResponse('Invalid token', { status: 403 });
-  }
-  const gallery = authToken.gallery as PrivateGallery;
-  if (!gallery || !gallery.directPath) {
-    return new NextResponse('Gallery not found', { status: 404 });
-  }
-  // Verify imageDownloadUrl starts with gallery.directPath
-  if (!imageDownloadUrl.startsWith(gallery.directPath)) {
-    return new NextResponse('Image URL not allowed', { status: 403 });
-  }
-  // Proxy the image download
+export async function downloadPhotoWithCors(imageDownloadUrl: string, token: string): Promise<{ blob?: Blob, filename?: string, error?: string }> {
+
+  // Helper to register the download
+  const registerDownload = async (photoId: string, tokenData: TokenData) => {
+    const payload = await getPayload({ config: payloadConfig });
+    await payload.create({
+      collection: PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG,
+      data: {
+        mediaId: photoId,
+        gallery: tokenData!.galleryId,
+        token: tokenData!.authToken.id,
+        date: new Date().toISOString(),
+        ip: tokenData!.ip,
+        userAgent: tokenData!.userAgent
+      },
+    });
+  };
+
   try {
+    // Get gallery and verify URL
+    const tokenData = await validateGalleryToken(token);
+    if (!tokenData || tokenData.expired) {
+      return { error: 'Gallery not found' };
+    }
+    if (!imageDownloadUrl.startsWith(tokenData.directPath)) {
+      return { error: 'Image URL not allowed' };
+    }
+
+    // Proxy the image download
     const imageRes = await fetch(imageDownloadUrl);
     if (!imageRes.ok) {
-      return new NextResponse('Failed to fetch image', { status: 502 });
+      return { error: 'Failed to fetch image' };
     }
-    // Create a new response with CORS headers
-    const headers = new Headers(imageRes.headers);
-    headers.set('Access-Control-Allow-Origin', '*');
-    headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    return new NextResponse(imageRes.body, {
-      status: imageRes.status,
-      headers,
-    });
-  } catch (err) {
-    return new NextResponse('Error downloading image', { status: 500 });
+
+    // Register the download
+    const urlObj = new URL(imageDownloadUrl);
+    const photoId = urlObj.pathname.split('/').pop() || '';
+    await registerDownload(photoId, tokenData);
+
+    // Get the blob and filename
+    const blob = await imageRes.blob();
+    const filename = getFilenameFromUrl(imageDownloadUrl);
+
+    return { blob, filename };
+  } catch (err: any) {
+    console.error('Error during photo download:', err);
+    return { error: err.message || 'Error downloading image' };
   }
 }
