@@ -2,6 +2,7 @@
 import { Lock } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect, RedirectType } from "next/navigation";
 import { useActionState } from "react";
 import { FormLabel } from "~/components/form";
 import { FormButton } from "~/components/form/button";
@@ -16,6 +17,11 @@ export default function PrivateGallery() {
         authenticated: false,
         isDirty: false
     });
+
+    // Redirect when authenticated and gallery is published
+    if (state?.authenticated && state.galleryData?.state === 'published' && state.token) {
+        redirect(`/prywatna/${state.token}`);
+    }
     
     return (
         <PageContainer>
@@ -146,7 +152,7 @@ export default function PrivateGallery() {
                         {/* Image Section */}
                         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-100 shadow-lg md:aspect-auto md:h-[480px]">
                             <Image
-                                src='/images/page_prywatna_photo.jpg'
+                                src={state?.authenticated && state.galleryData?.mainImage ? state.galleryData.mainImage : '/images/page_prywatna_photo.jpg'}
                                 alt={strings.privateGallery.imageAlt}
                                 fill
                                 className="object-cover hover:scale-105 transition-transform duration-700"

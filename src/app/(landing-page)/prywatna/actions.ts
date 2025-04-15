@@ -3,6 +3,7 @@ import config from "@payload-config";
 import { headers } from "next/headers";
 import { getPayload } from "payload";
 import { authenticateGallery, recordVisit } from "~/collections/private-gallery/private-gallery-actions";
+import { PrivateGalleryPhoto } from "~/payload-types";
 
 type AuthenticationResult = {
     password: string;
@@ -15,6 +16,7 @@ type AuthenticationResult = {
         title: string;
         url: string;
         date: string;
+        mainImage: string;
     };
 };
 
@@ -75,6 +77,7 @@ export async function authenticate(
                 title: gallery.title ?? '',
                 url: gallery.directPath ?? '',
                 date: gallery.date ?? '',
+                mainImage: (gallery.photo as PrivateGalleryPhoto).url ?? '',
             },
             isDirty: true
         };
