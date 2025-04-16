@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Core conventions applied everywhere
+
+1. We prefer not to write code comments above lines or methods that have a clear intent
