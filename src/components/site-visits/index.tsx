@@ -1,6 +1,7 @@
 import { getPayload } from 'payload';
-import config from '../../payload.config';
 import { SITE_VISITS_SLUG } from '../../collections/collectionSlugs';
+import { distinct, groupBy, range } from '../../lib/array';
+import config from '../../payload.config';
 import VisitsChart from '../visits-chart';
 import styles from './styles.module.css';
 
@@ -33,22 +34,22 @@ function subtractDays(date: Date, days: number): Date {
 export default async function SiteVisits() {
   const endDate = new Date();
   const startDate = subtractDays(endDate, 30);
-  
+
   const formattedStartDate = startDate.toISOString();
   const formattedEndDate = endDate.toISOString();
-  
+
   const payload = await getPayload({ config });
-  
+
   try {
     const totalVisitsResult = await payload.count({
       collection: SITE_VISITS_SLUG,
     });
-    
+
     const totalVisits = totalVisitsResult.totalDocs;
-    
+
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
-    
+
     const todayVisitsResult = await payload.count({
       collection: SITE_VISITS_SLUG,
       where: {
@@ -57,9 +58,9 @@ export default async function SiteVisits() {
         },
       },
     });
-    
+
     const todayVisits = todayVisitsResult.totalDocs;
-    
+
     const rangeVisitsResult = await payload.find({
       collection: SITE_VISITS_SLUG,
       where: {
@@ -69,44 +70,29 @@ export default async function SiteVisits() {
         },
       },
       sort: 'date',
-      pagination: true,
-      page: 1,
+      limit: Number.MAX_SAFE_INTEGER,
     });
-    
-    const visitsByDay = new Map<string, number>();
-    const thirtyDaysPeriod: string[] = [];
-    
-    for (let i = 0; i < 30; i++) {
-      const day = subtractDays(endDate, i);
-      const dayStr = formatDateYYYYMMDD(day);
-      visitsByDay.set(dayStr, 0);
-      thirtyDaysPeriod.unshift(dayStr); // Add to start to maintain chronological order
-    }
-    
-    (rangeVisitsResult.docs as SiteVisitDoc[]).forEach((visit) => {
+
+    const visitsByDay = groupBy(rangeVisitsResult.docs as SiteVisitDoc[], (visit) => {
       if (visit.date) {
-        const visitDate = new Date(visit.date);
-        const dayKey = formatDateYYYYMMDD(visitDate);
-        
-        if (visitsByDay.has(dayKey)) {
-          visitsByDay.set(dayKey, (visitsByDay.get(dayKey) ?? 0) + 1);
-        }
+        return formatDateYYYYMMDD(new Date(visit.date));
       }
+      return '';
     });
-    
-    const dailyVisits = thirtyDaysPeriod.map(day => ({
-      date: formatDate(new Date(day)),
-      visits: visitsByDay.get(day) ?? 0,
-      uniqueVisitors: Math.round((visitsByDay.get(day) ?? 0) * 0.7), // Approximation for demo
-    }));
-    
-    let bestDay = { date: '', visits: 0 };
-    for (const [day, count] of visitsByDay.entries()) {
-      if (count > bestDay.visits) {
-        bestDay = { date: day, visits: count };
-      }
-    }
-    
+
+    const dailyVisits = range(30)
+      .map(i => formatDateYYYYMMDD(subtractDays(endDate, 29 - i)))
+      .map(day => {
+        const dayVisits = visitsByDay[day] ?? [];
+        const uniqueVisitors = distinct(dayVisits.map(visit => visit.ip)).length;
+
+        return {
+          date: formatDate(new Date(day)),
+          visits: dayVisits.length,
+          uniqueVisitors,
+        };
+      });
+
     return (
       <div className={styles.container}>
         <div className={styles.statsGrid}>
@@ -119,8 +105,8 @@ export default async function SiteVisits() {
             <p className={styles.statsValue}>{totalVisits}</p>
           </div>
         </div>
-        
-        <VisitsChart 
+
+        <VisitsChart
           data={dailyVisits}
           title="Website Traffic Analysis"
           subtitle={`Last 30 days (${formatDate(startDate)} - ${formatDate(endDate)})`}

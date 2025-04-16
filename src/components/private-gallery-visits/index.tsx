@@ -1,5 +1,6 @@
 import { type UIFieldServerProps } from 'payload';
 import { PRIVATE_GALLERY_VISITS_SLUG } from '~/collections/collectionSlugs';
+import { distinct, groupBy, range } from '~/lib/array';
 import VisitsChart from '../visits-chart';
 import styles from './styles.module.css';
 
@@ -24,7 +25,6 @@ function subtractDays(date: Date, days: number): Date {
 }
 
 const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps) => {
-
     const { id } = siblingData;
 
     if (!id) {
@@ -40,17 +40,13 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
         }
     })).docs;
 
-    // Calculate date range for the last 30 days
     const endDate = new Date();
     const startDate = subtractDays(endDate, 30);
 
-    // Format for filtering
     const formattedStartDate = startDate.toISOString();
 
-    // Get total visits count
     const totalVisits = visits.length;
 
-    // Get today's visits
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
@@ -58,49 +54,29 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
         new Date(visit.date!) >= todayStart
     ).length;
 
-    // Get visits within date range (last 30 days)
     const rangeVisits = visits.filter((visit) =>
         new Date(visit.date!) >= new Date(formattedStartDate)
     );
 
-    // Organize data by day
-    const visitsByDay = new Map<string, number>();
-    const thirtyDaysPeriod: string[] = [];
-
-    // Initialize all days in the period with zero visits
-    for (let i = 0; i < 30; i++) {
-        const day = subtractDays(endDate, i);
-        const dayStr = formatDateYYYYMMDD(day);
-        visitsByDay.set(dayStr, 0);
-        thirtyDaysPeriod.unshift(dayStr); // Add to start to maintain chronological order
-    }
-
-    // Count visits per day
-    rangeVisits.forEach((visit) => {
+    const visitsByDay = groupBy(rangeVisits, (visit) => {
         if (visit.date) {
-            const visitDate = new Date(visit.date);
-            const dayKey = formatDateYYYYMMDD(visitDate);
-
-            if (visitsByDay.has(dayKey)) {
-                visitsByDay.set(dayKey, (visitsByDay.get(dayKey) ?? 0) + 1);
-            }
+            return formatDateYYYYMMDD(new Date(visit.date));
         }
+        return '';
     });
 
-    // Transform data for chart
-    const dailyVisits = thirtyDaysPeriod.map(day => ({
-        date: formatDate(new Date(day)),
-        visits: visitsByDay.get(day) ?? 0,
-        uniqueVisitors: Math.round((visitsByDay.get(day) ?? 0) * 0.8), // Approximation for unique visitors
-    }));
+    const dailyVisits = range(30)
+        .map(i => formatDateYYYYMMDD(subtractDays(endDate, 29 - i)))
+        .map(day => {
+            const dayVisits = visitsByDay[day] ?? [];
+            const uniqueVisitors = distinct(dayVisits.map(visit => visit.ip)).length;
 
-    // Find best day
-    let bestDay = { date: '', visits: 0 };
-    for (const [day, count] of visitsByDay.entries()) {
-        if (count > bestDay.visits) {
-            bestDay = { date: day, visits: count };
-        }
-    }
+            return {
+                date: formatDate(new Date(day)),
+                visits: dayVisits.length,
+                uniqueVisitors,
+            };
+        });
 
     return (
         <div className={styles.container}>
@@ -122,7 +98,6 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
             />
         </div>
     );
-
 }
 
 export default PrivateGalleryVisits;

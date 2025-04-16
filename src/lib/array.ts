@@ -61,6 +61,9 @@ export const distinctBy = <T, U>(items: T[], by: (item: T) => U) => {
     return result;
 };
 
+export const distinct = <T>(items: T[]) =>
+    [...new Set<T>(items)];
+
 export const replace = <T, U>(items: T[], oldItem: T, newItem: T, comparator: (item: T) => U) => {
     const realItem = items.filter((i) => comparator(oldItem) === comparator(i))[0];
 
