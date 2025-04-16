@@ -46,14 +46,10 @@ node --version
 echo "⚙️ Copying environment file..."
 cp ../../env-vars/test.pyszstudio.pl.env .env
 
-# echo "📥 Installing pnpm..."
-# npm install -g pnpm
-
 echo "🔧 Installing dependencies..."
 pnpm install
-# npm install sharp@0.32.6
 
 echo "🔄 Restarting web service..."
 devil www restart test.pyszstudio.pl
 
-echo "✅ Deployment completed successfully!" 
+echo "✅ Test deployment completed successfully!" 
