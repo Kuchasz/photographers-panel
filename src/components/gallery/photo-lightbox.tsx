@@ -256,10 +256,6 @@ export function PhotoLightbox({
                         onLoad={handleImageLoaded}
                     />
                 </div>
-
-                <div className={`absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent transition-all duration-300 ${lightboxVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                    <h2 className="text-white font-serif text-xl font-light">{selectedPhoto.alt}</h2>
-                </div>
             </div>
         </div>
     );
