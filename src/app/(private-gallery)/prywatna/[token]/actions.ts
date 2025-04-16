@@ -13,6 +13,33 @@ import { getFilenameFromUrl } from '~/lib/file';
 
 type TokenData = Awaited<ReturnType<typeof validateGalleryToken>>;
 
+function convertPhoto(photo: number | PrivateGalleryPhoto | null | undefined) {
+
+  if (!photo || typeof photo === 'number') {
+    return null;
+  }
+
+  return {
+    id: String(photo.id),
+    alt: photo.alt,
+    url: photo.url!,
+    width: photo.width!,
+    height: photo.height!,
+    sizes: {
+      thumbnail: {
+        url: photo.thumbnailURL!,
+        width: photo.width!,
+        height: photo.height!,
+      },
+      big: {
+        url: photo.url!,
+        width: photo.width!,
+        height: photo.height!,
+      },
+    }
+  };
+}
+
 async function validateGalleryToken(token: string) {
   const payload = await getPayload({
     config: payloadConfig,
@@ -47,7 +74,7 @@ async function validateGalleryToken(token: string) {
     userAgent,
     galleryId: (authToken.gallery as PrivateGallery).id,
     payload,
-    photo: (authToken.gallery as PrivateGallery).photo! as PrivateGalleryPhoto,
+    photo: (authToken.gallery as PrivateGallery).photo,
     directPath: (authToken.gallery as PrivateGallery).directPath,
   };
 }
@@ -76,25 +103,7 @@ export async function getPhotos(token: string) {
   const jalbumPhotos = await fetchJAlbumPhotos(galleryData.directPath)!;
 
   return ({
-    photo: {
-      id: String(tokenData.photo.id),
-      alt: tokenData.photo.alt,
-      url: tokenData.photo.url!,
-      width: tokenData.photo.width!,
-      height: tokenData.photo.height!,
-      sizes: {
-        thumbnail: {
-          url: tokenData.photo.thumbnailURL!,
-          width: tokenData.photo.width!,
-          height: tokenData.photo.height!,
-        },
-        big: {
-          url: tokenData.photo.url!,
-          width: tokenData.photo.width!,
-          height: tokenData.photo.height!,
-        },
-      }
-    },
+    photo: convertPhoto(tokenData.photo),
     photos: jalbumPhotos.map(photo => ({
       id: String(photo.id),
       alt: photo.alt,

@@ -37,7 +37,9 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
             gallery: {
                 equals: id
             }
-        }
+        },
+        sort: 'date',
+        limit: Number.MAX_SAFE_INTEGER,
     })).docs;
 
     const endDate = new Date();

@@ -77,7 +77,7 @@ export async function authenticate(
                 title: gallery.title ?? '',
                 url: gallery.directPath ?? '',
                 date: gallery.date ?? '',
-                mainImage: (gallery.photo as PrivateGalleryPhoto).url ?? '',
+                mainImage: (gallery?.photo as PrivateGalleryPhoto)?.url ?? '',
             },
             isDirty: true
         };

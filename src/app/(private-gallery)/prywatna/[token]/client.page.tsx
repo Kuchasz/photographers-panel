@@ -44,7 +44,7 @@ const styles = `
 type PrivateGalleryClientPageProps = {
     photos: Photo[];
     galleryTitle?: string;
-    photo: Photo;
+    photo?: Photo | null;
 };
 
 export default function PrivateGalleryClientPage({ photos, galleryTitle = '', photo }: PrivateGalleryClientPageProps) {
@@ -71,8 +71,8 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ph
             <div className="container mx-auto px-4">
                 <div className="relative w-full h-[60vh] mb-2 overflow-hidden rounded-lg">
                     <img
-                        src={photo.sizes?.big?.url || photo.url}
-                        alt={photo.alt || ''}
+                        src={photo?.sizes?.big?.url || photo?.url || ''}
+                        alt={photo?.alt || ''}
                         className="w-full h-full object-cover animate-photo-zoom rounded-lg"
                     />
                     <div className="absolute inset-0 bg-black/40">
