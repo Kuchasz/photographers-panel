@@ -34,7 +34,7 @@ const PhotoTileColumns = React.memo(({
             {columns.map((column, columnIndex) => (
                 <div
                     key={`column-${columnIndex}`}
-                    className="flex-1 flex flex-col justify-between gap-2 min-w-0"
+                    className="flex-1 flex flex-col gap-2 min-w-0"
                 >
                     {column.photos.map((photo) => (
                         <MemoizedPhotoTile
@@ -106,10 +106,7 @@ export function PhotoGallery({
         const availableWidth = containerWidth - gapSpace;
         const columnWidth = availableWidth / columnCount;
 
-        newColumns.forEach(column => {
-            column.width = columnWidth;
-        });
-
+        // Simply distribute photos to columns based on current height
         photos.forEach(photo => {
             const minHeightColumn = newColumns.reduce(
                 (min, col, i) => col.height < newColumns[min]!.height ? i : min,
@@ -127,7 +124,6 @@ export function PhotoGallery({
             const aspectRatio = originalWidth / originalHeight;
             const newHeight = columnWidth / aspectRatio;
             const gapContribution = newColumns[minHeightColumn]!.photos.length > 0 ? GAP_SIZE : 0;
-            const heightContribution = newHeight + gapContribution;
 
             const adjustedPhoto = {
                 ...photo,
@@ -142,62 +138,12 @@ export function PhotoGallery({
             };
 
             newColumns[minHeightColumn]!.photos.push(adjustedPhoto);
-            newColumns[minHeightColumn]!.height += heightContribution;
+            newColumns[minHeightColumn]!.height += newHeight + gapContribution;
+            newColumns[minHeightColumn]!.width = columnWidth;
         });
-
-        balanceColumnHeights(newColumns);
 
         setColumns(newColumns);
     }, [photos, columnCount]);
-
-    const balanceColumnHeights = (columns: Column[]) => {
-        if (columns.length <= 1) return;
-
-        const maxHeight = Math.max(...columns.map(col => col.height));
-
-        console.log("Column heights:", columns.map(c => c.height));
-        console.log("Photo counts:", columns.map(c => c.photos.length));
-        console.log("Column widths:", columns.map(c => c.width));
-
-        columns.forEach(column => {
-            if (column.photos.length === 0) return;
-
-            const heightDifference = maxHeight - column.height;
-            if (heightDifference <= 0) return;
-
-            const totalPhotoHeight = column.photos.reduce((sum, photo) => {
-                return sum + (photo.sizes?.big?.height || 0);
-            }, 0);
-
-            const adjustmentFactor = heightDifference / totalPhotoHeight;
-
-            const adjustedPhotos = column.photos.map(photo => {
-                const height = photo.sizes?.big?.height;
-                const width = photo.sizes?.big?.width;
-
-                if (!height || !width) return photo;
-
-                const heightAdjustment = height * adjustmentFactor;
-                const newHeight = height + heightAdjustment;
-
-                return {
-                    ...photo,
-                    sizes: {
-                        ...photo.sizes,
-                        big: {
-                            ...photo.sizes.big,
-                            width: width,
-                            height: newHeight,
-                        },
-                    },
-                    heightAdjustment,
-                };
-            });
-
-            column.photos = adjustedPhotos;
-            column.height = maxHeight;
-        });
-    };
 
     const openLightbox = (photo: Photo) => {
         const photoIndex = photos.findIndex(p => p.id === photo.id);

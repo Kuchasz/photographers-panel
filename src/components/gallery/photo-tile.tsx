@@ -56,16 +56,12 @@ export function PhotoTile({
     setIsLoading(false);
   };
 
-  // Calculate aspect ratio from big image size
-  const aspectRatioValue = photo.sizes.big.width / photo.sizes.big.height;
-  const aspectRatioStyles = { aspectRatio: aspectRatioValue.toString() };
-
   return (
     <div
-      className="group relative w-full overflow-hidden bg-stone-100 cursor-pointer transition-all duration-300 ease-out hover:z-10 rounded-lg"
+      className="group relative overflow-hidden bg-stone-100 cursor-pointer transition-all duration-300 ease-out hover:z-10 rounded-lg"
       onClick={handleClick}
     >
-      <div className="relative w-full h-full scale-105 transition-transform duration-300 ease-out group-hover:scale-100">
+      <div className="relative w-full flex items-center justify-center scale-105 transition-transform duration-300 ease-out group-hover:scale-100">
         {/* Enhanced skeleton loader with shimmer effect */}
         <div
           className={`absolute inset-0 overflow-hidden transition-opacity duration-500 ${isLoading ? 'opacity-100' : 'opacity-0'}`}
@@ -80,8 +76,7 @@ export function PhotoTile({
           height={photo.sizes.big.height}
           width={photo.sizes.big.width}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-          className={`w-full h-auto object-cover transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
-          style={aspectRatioStyles}
+          className={`w-full h-auto object-contain transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
           onLoad={handleImageLoad}
         />
 
