@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { PhotoDownloadButton } from './photo-download-button';
-import { strings } from '../../resources';
 
 export type Photo = {
   id: string;
@@ -65,7 +64,10 @@ export function PhotoTile({
       className="group relative overflow-hidden bg-stone-100 cursor-pointer transition-all duration-300 ease-out hover:z-10 rounded-lg"
       onClick={handleClick}
     >
-      <div className="relative w-full flex items-center justify-center scale-105 transition-transform duration-300 ease-out group-hover:scale-100">
+      <div 
+        className="relative w-full flex items-center justify-center scale-105 transition-transform duration-300 ease-out group-hover:scale-100"
+        style={{ height: `${photo.sizes.tile.height}px` }}
+      >
         {/* Enhanced skeleton loader with shimmer effect */}
         <div
           className={`absolute inset-0 overflow-hidden transition-opacity duration-500 ${isLoading ? 'opacity-100' : 'opacity-0'}`}
@@ -80,10 +82,7 @@ export function PhotoTile({
           height={photo.sizes.tile.height}
           width={photo.sizes.tile.width}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-          className={`w-full h-auto object-cover transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
-          style={{
-            aspectRatio: `${photo.sizes.tile.width} / ${photo.sizes.tile.height}`
-          }}
+          className={`w-full h-full object-cover transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
           onLoad={handleImageLoad}
         />
 
