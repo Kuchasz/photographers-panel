@@ -107,10 +107,17 @@ export function PhotoGallery({
             const aspectRatio = photo.width / photo.height;
             const scaledHeight = Math.floor(columnWidth / aspectRatio);
 
-            console.log(scaledHeight, columnWidth, photo.width, photo.height);
-
             return {
-                photo,
+                photo: {
+                    ...photo,
+                    sizes: {
+                        ...photo.sizes,
+                        tile: {
+                            width: columnWidth,
+                            height: scaledHeight
+                        }
+                    }
+                },
                 scaledWidth: columnWidth,
                 scaledHeight,
                 aspectRatio
@@ -133,19 +140,7 @@ export function PhotoGallery({
 
             const gapContribution = newColumns[minHeightColumn]!.photos.length > 0 ? GAP_SIZE : 0;
 
-            const adjustedPhoto = {
-                ...photo,
-                sizes: {
-                    ...photo.sizes,
-                    big: {
-                        ...photo.sizes.big,
-                        width: scaledWidth,
-                        height: scaledHeight,
-                    }
-                }
-            };
-
-            newColumns[minHeightColumn]!.photos.push(adjustedPhoto);
+            newColumns[minHeightColumn]!.photos.push(photo);
             newColumns[minHeightColumn]!.height += scaledHeight + gapContribution;
         });
 
