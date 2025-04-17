@@ -44,7 +44,7 @@ const PhotoTileColumns = React.memo(({
 PhotoTileColumns.displayName = 'PhotoTileColumns';
 
 const MemoizedPhotoTile = React.memo(PhotoTile, (prevProps, nextProps) => {
-    return prevProps.photo.id === nextProps.photo.id;
+    return prevProps.photo.id === nextProps.photo.id && prevProps.photo.sizes.tile.height === nextProps.photo.sizes.tile.height;
 });
 MemoizedPhotoTile.displayName = 'MemoizedPhotoTile';
 
@@ -73,6 +73,7 @@ export function PhotoGallery({
 
         // Handle window resize
         const handleResize = debounce(calculateAndSetColumns, 1000);
+        
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [photos]);
