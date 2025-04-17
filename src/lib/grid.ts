@@ -72,12 +72,12 @@ export function calculateGridLayout(photos: Photo[], containerWidth: number): Co
 
         const totalGaps = (column.photos.length - 1) * GAP_SIZE;
         const availableHeight = maxColumnHeight - totalGaps;
-        const totalPhotoHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile.height, 0);
+        const totalPhotoHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile!.height, 0);
         const scaleRatio = availableHeight / totalPhotoHeight;
 
         // Adjust each photo's height proportionally
         column.photos = column.photos.map(photo => {
-            const newHeight = Math.round(photo.sizes.tile.height * scaleRatio);
+            const newHeight = Math.round(photo.sizes.tile!.height * scaleRatio);
 
             return {
                 ...photo,
@@ -92,7 +92,7 @@ export function calculateGridLayout(photos: Photo[], containerWidth: number): Co
         });
 
         // Recalculate column height with new rounded heights
-        const newColumnHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile.height, 0) + 
+        const newColumnHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile!.height, 0) + 
                               ((column.photos.length - 1) * GAP_SIZE);
         
         // If there are remaining pixels to distribute
@@ -112,8 +112,8 @@ export function calculateGridLayout(photos: Photo[], containerWidth: number): Co
                     sizes: {
                         ...photo.sizes,
                         tile: {
-                            ...photo.sizes.tile,
-                            height: photo.sizes.tile.height + 1
+                            ...photo.sizes.tile!,
+                            height: photo.sizes.tile!.height + 1
                         }
                     }
                 };

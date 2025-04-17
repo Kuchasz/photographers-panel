@@ -21,7 +21,7 @@ export type Photo = {
       width: number;
       height: number;
     };
-    tile: {
+    tile?: {
       width: number;
       height: number;
     };
@@ -66,7 +66,7 @@ export function PhotoTile({
     >
       <div 
         className="relative w-full flex items-center justify-center scale-105 transition-transform duration-300 ease-out group-hover:scale-100"
-        style={{ height: `${Math.round(photo.sizes.tile.height)}px` }}
+        style={{ height: `${Math.round(photo.sizes.tile?.height ?? 0)}px` }}
       >
         {/* Enhanced skeleton loader with shimmer effect */}
         <div
@@ -79,8 +79,8 @@ export function PhotoTile({
         <Image
           src={photo.url}
           alt={photo.alt}
-          height={photo.sizes.tile.height}
-          width={photo.sizes.tile.width}
+          height={photo.sizes.tile?.height ?? 0}
+          width={photo.sizes.tile?.width ?? 0}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
           className={`w-full h-full object-cover transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
           onLoad={handleImageLoad}

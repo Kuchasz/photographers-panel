@@ -44,7 +44,7 @@ const PhotoTileColumns = React.memo(({
 PhotoTileColumns.displayName = 'PhotoTileColumns';
 
 const MemoizedPhotoTile = React.memo(PhotoTile, (prevProps, nextProps) => {
-    return prevProps.photo.id === nextProps.photo.id && prevProps.photo.sizes.tile.height === nextProps.photo.sizes.tile.height;
+    return prevProps.photo.id === nextProps.photo.id && prevProps.photo.sizes.tile!.height === nextProps.photo.sizes.tile!.height;
 });
 MemoizedPhotoTile.displayName = 'MemoizedPhotoTile';
 
