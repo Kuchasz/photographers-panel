@@ -102,58 +102,29 @@ export function PhotoGallery({
         const availableWidth = containerWidth - gapSpace;
         const columnWidth = Math.floor(availableWidth / columnCount);
 
-        console.log('Container dimensions:', {
-            containerWidth,
-            gapSpace,
-            availableWidth,
-            columnWidth,
-            columnCount
-        });
-
-        // First calculate scaled dimensions for all photos
+        // First calculate scaled dimensions for all photos based on column width
         const processedPhotos = photos.map(photo => {
-            const originalWidth = photo.sizes.big.width;
-            const originalHeight = photo.sizes.big.height;
-            const originalAspectRatio = originalWidth / originalHeight;
+            const aspectRatio = photo.width / photo.height;
+            const scaledHeight = Math.floor(columnWidth / aspectRatio);
 
-            // Scale photo to fit column width, but don't upscale if original is smaller
-            let scaledWidth = columnWidth;
-            let scaledHeight;
-
-            if (originalWidth <= columnWidth) {
-                // If original is smaller than column, keep original size
-                scaledWidth = originalWidth;
-                scaledHeight = originalHeight;
-            } else {
-                // Scale down to fit column
-                scaledWidth = columnWidth;
-                scaledHeight = Math.floor(columnWidth / originalAspectRatio);
-            }
-
-            console.log('Photo scaling:', {
-                id: photo.id,
-                original: { width: originalWidth, height: originalHeight },
-                scaled: { width: scaledWidth, height: scaledHeight }
-            });
+            console.log(scaledHeight, columnWidth, photo.width, photo.height);
 
             return {
                 photo,
-                scaledWidth,
+                scaledWidth: columnWidth,
                 scaledHeight,
-                aspectRatio: originalAspectRatio
+                aspectRatio
             };
         });
 
-        // Sort photos by scaled height to help with distribution
-        processedPhotos.sort((a, b) => b.scaledHeight - a.scaledHeight);
-
-        // Distribute photos to columns
+        // Distribute photos to columns using scaled heights
         const newColumns: Column[] = Array.from({ length: columnCount }, () => ({
             photos: [],
             height: 0,
-            width: 0
+            width: columnWidth
         }));
 
+        // First pass: distribute photos and calculate real column heights
         processedPhotos.forEach(({ photo, scaledWidth, scaledHeight }) => {
             const minHeightColumn = newColumns.reduce(
                 (min, col, i) => col.height < newColumns[min]!.height ? i : min,
@@ -176,21 +147,22 @@ export function PhotoGallery({
 
             newColumns[minHeightColumn]!.photos.push(adjustedPhoto);
             newColumns[minHeightColumn]!.height += scaledHeight + gapContribution;
-            newColumns[minHeightColumn]!.width = columnWidth;
         });
 
-        // Scale photos in shorter columns to match the tallest
-        const maxColumnHeight = Math.max(...newColumns.map(col => col.height));
-        console.log('Column heights before scaling:', newColumns.map(col => Math.round(col.height)));
+        console.log('Column heights with scaled photos:', newColumns.map(col => Math.round(col.height)));
 
+        // Find tallest column (now contains correctly scaled photos)
+        const maxColumnHeight = Math.max(...newColumns.map(col => col.height));
+
+        // Scale up shorter columns to match tallest
         newColumns.forEach((column, index) => {
             if (column.photos.length === 0 || column.height === maxColumnHeight) return;
 
             const totalGaps = (column.photos.length - 1) * GAP_SIZE;
             const availableHeight = maxColumnHeight - totalGaps;
             const totalPhotoHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.big.height, 0);
-            
-            // Scale each photo proportionally
+
+            // Scale each photo proportionally to match tallest column
             column.photos = column.photos.map(photo => {
                 const scaleRatio = availableHeight / totalPhotoHeight;
                 const newHeight = Math.floor(photo.sizes.big.height * scaleRatio);
