@@ -53,6 +53,12 @@ export const PrivateGallery: CollectionConfig = {
         en: 'Title',
         pl: 'Tytuł',
       },
+      admin: {
+        description: {
+          en: 'Title displayed at the top of the gallery',
+          pl: 'Tytuł wyświetlany na górze galerii',
+        },
+      },
     },
     {
       name: 'date',
@@ -66,6 +72,10 @@ export const PrivateGallery: CollectionConfig = {
         position: 'sidebar',
         date: {
           pickerAppearance: 'dayAndTime',
+        },
+        description: {
+          en: 'Date of the wedding',
+          pl: 'Data ślubu',
         },
       },
       defaultValue: () => new Date(),
@@ -95,6 +105,10 @@ export const PrivateGallery: CollectionConfig = {
       ],
       admin: {
         position: 'sidebar',
+        description: {
+          en: 'Draft: Gallery is not visible to clients. Published: Gallery is visible to clients with password. Archived: Gallery is no longer accessible.',
+          pl: 'Robocza: Galeria nie jest widoczna dla klientów. Opublikowana: Galeria jest widoczna dla klientów z hasłem. Archiwalna: Galeria nie jest już dostępna.',
+        },
       },
     },
     {
@@ -167,18 +181,11 @@ export const PrivateGallery: CollectionConfig = {
         en: 'Notes',
         pl: 'Notatki',
       },
-    },
-    {
-      name: 'galleryVisits',
-      type: 'join',
-      label: {
-        en: 'Gallery Visits',
-        pl: 'Odwiedziny galerii',
-      },
-      collection: PRIVATE_GALLERY_VISITS_SLUG,
-      on: 'gallery',
       admin: {
-        description: 'Related visits to this gallery',
+        description: {
+          en: 'Internal notes for administrative purposes',
+          pl: 'Notatki wewnętrzne do celów administracyjnych',
+        },
       },
     },
     {
@@ -191,8 +198,21 @@ export const PrivateGallery: CollectionConfig = {
       relationTo: PRIVATE_GALLERY_PHOTO_SLUG,
       hasMany: false,
       admin: {
-        description: 'Main photo displayed at the top of the gallery',
+        description: {
+          en: 'Main photo displayed at the top of the gallery',
+          pl: 'Główne zdjęcie wyświetlane na górze galerii',
+        },
       },
+    },
+    {
+      name: 'galleryVisits',
+      type: 'join',
+      label: {
+        en: 'Gallery Visits',
+        pl: 'Odwiedziny galerii',
+      },
+      collection: PRIVATE_GALLERY_VISITS_SLUG,
+      on: 'gallery'
     },
   ],
   hooks: {

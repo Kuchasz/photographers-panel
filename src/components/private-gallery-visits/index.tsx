@@ -3,6 +3,7 @@ import { PRIVATE_GALLERY_VISITS_SLUG } from '~/collections/collectionSlugs';
 import { distinct, groupBy, range } from '~/lib/array';
 import VisitsChart from '../visits-chart';
 import styles from './styles.module.css';
+import { strings } from '~/resources';
 
 // Helper function to format dates
 function formatDate(date: Date): string {
@@ -41,6 +42,18 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
         sort: 'date',
         limit: Number.MAX_SAFE_INTEGER,
     })).docs;
+
+    if (visits.length === 0) {
+        return (
+            <div className={styles.container}>
+                <div className={styles.statsGrid}>
+                    <div className={styles.statsCard}>
+                        <h3 className={styles.statsTitle}>{strings.admin.privateGalleryVisits.noVisits}</h3>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const endDate = new Date();
     const startDate = subtractDays(endDate, 30);
@@ -84,19 +97,19 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
         <div className={styles.container}>
             <div className={styles.statsGrid}>
                 <div className={styles.statsCard}>
-                    <h3 className={styles.statsTitle}>Today&apos;s Visits</h3>
+                    <h3 className={styles.statsTitle}>{strings.admin.privateGalleryVisits.todaysVisits}</h3>
                     <p className={styles.statsValue}>{todayVisits}</p>
                 </div>
                 <div className={styles.statsCard}>
-                    <h3 className={styles.statsTitle}>Total Visits</h3>
+                    <h3 className={styles.statsTitle}>{strings.admin.privateGalleryVisits.totalVisits}</h3>
                     <p className={styles.statsValue}>{totalVisits}</p>
                 </div>
             </div>
 
             <VisitsChart
                 data={dailyVisits}
-                title="Gallery Traffic Analysis"
-                subtitle={`Last 30 days (${formatDate(startDate)} - ${formatDate(endDate)})`}
+                title={strings.admin.privateGalleryVisits.trafficAnalysis}
+                subtitle={`${strings.admin.privateGalleryVisits.lastDays} (${formatDate(startDate)} - ${formatDate(endDate)})`}
             />
         </div>
     );

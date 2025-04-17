@@ -1,6 +1,7 @@
 'use client'
 import { useTheme } from '@payloadcms/ui';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { strings } from '~/resources';
 
 interface VisitsChartProps {
     data: {
@@ -12,7 +13,7 @@ interface VisitsChartProps {
     subtitle?: string;
 }
 
-export default function VisitsChart({ data, title = 'Page Visits Analytics', subtitle }: VisitsChartProps) {
+export default function VisitsChart({ data, title = strings.admin.visitsChart.defaultTitle, subtitle }: VisitsChartProps) {
     // Get Payload config to access theme information
     const { theme } = useTheme();
     const isDarkMode = theme === 'dark';
@@ -99,7 +100,7 @@ export default function VisitsChart({ data, title = 'Page Visits Analytics', sub
                             stroke={colors.line1}
                             strokeWidth={2}
                             activeDot={{ r: 6 }}
-                            name="Total Visits"
+                            name={strings.admin.visitsChart.totalVisits}
                         />
                         <Line
                             type="monotone"
@@ -107,7 +108,7 @@ export default function VisitsChart({ data, title = 'Page Visits Analytics', sub
                             stroke={colors.line2}
                             strokeWidth={2}
                             activeDot={{ r: 6 }}
-                            name="Unique Visitors"
+                            name={strings.admin.visitsChart.uniqueVisitors}
                         />
                     </LineChart>
                 </ResponsiveContainer>

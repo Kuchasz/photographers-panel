@@ -355,4 +355,31 @@ export const pl = {
     gallery: {
         download: 'Pobierz zdjęcie'
     },
+    admin: {
+        privateGalleryVisits: {
+            noVisits: 'Brak odwiedzin',
+            todaysVisits: 'Dzisiejsze odwiedziny',
+            totalVisits: 'Łączna liczba odwiedzin',
+            trafficAnalysis: 'Analiza ruchu w galerii',
+            lastDays: 'Ostatnie 30 dni',
+            chart: {
+                totalVisits: 'Wszystkie odwiedziny',
+                uniqueVisitors: 'Unikalni odwiedzający',
+                defaultTitle: 'Analiza odwiedzin strony'
+            }
+        },
+        visitsChart: {
+            defaultTitle: 'Statystyki odwiedzin',
+            totalVisits: 'Wszystkie wizyty',
+            uniqueVisitors: 'Unikalni goście'
+        },
+        siteVisits: {
+            noVisits: 'Brak odwiedzin',
+            todaysVisits: 'Dzisiejsze odwiedziny',
+            totalVisits: 'Łączna liczba odwiedzin',
+            trafficAnalysis: 'Analiza ruchu na stronie',
+            lastDays: 'Ostatnie 30 dni',
+            errorMessage: 'Nie udało się załadować danych o odwiedzinach. Spróbuj ponownie później.'
+        }
+    },
 };

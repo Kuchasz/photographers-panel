@@ -4,6 +4,7 @@ import { distinct, groupBy, range } from '../../lib/array';
 import config from '../../payload.config';
 import VisitsChart from '../visits-chart';
 import styles from './styles.module.css';
+import { strings } from '~/resources';
 
 interface SiteVisitDoc {
   id: string | number;
@@ -97,19 +98,19 @@ export default async function SiteVisits() {
       <div className={styles.container}>
         <div className={styles.statsGrid}>
           <div className={styles.statsCard}>
-            <h3 className={styles.statsTitle}>Today&apos;s Visits</h3>
+            <h3 className={styles.statsTitle}>{strings.admin.siteVisits.todaysVisits}</h3>
             <p className={styles.statsValue}>{todayVisits}</p>
           </div>
           <div className={styles.statsCard}>
-            <h3 className={styles.statsTitle}>Total Visits</h3>
+            <h3 className={styles.statsTitle}>{strings.admin.siteVisits.totalVisits}</h3>
             <p className={styles.statsValue}>{totalVisits}</p>
           </div>
         </div>
 
         <VisitsChart
           data={dailyVisits}
-          title="Website Traffic Analysis"
-          subtitle={`Last 30 days (${formatDate(startDate)} - ${formatDate(endDate)})`}
+          title={strings.admin.siteVisits.trafficAnalysis}
+          subtitle={`${strings.admin.siteVisits.lastDays} (${formatDate(startDate)} - ${formatDate(endDate)})`}
         />
       </div>
     );
@@ -117,7 +118,7 @@ export default async function SiteVisits() {
     console.error('Error fetching site visit data:', error);
     return (
       <div className={styles.errorMessage}>
-        <p>Failed to load site visits data. Please try again later.</p>
+        <p>{strings.admin.siteVisits.errorMessage}</p>
       </div>
     );
   }

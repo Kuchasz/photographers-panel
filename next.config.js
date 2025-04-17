@@ -12,10 +12,6 @@ const config = {
     images: {
         remotePatterns: [
             {
-                hostname: 'images.unsplash.com',
-                protocol: 'https',
-            },
-            {
                 hostname: 'ps-wed.azurewebsites.net',
                 protocol: 'https',
             },
