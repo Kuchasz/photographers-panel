@@ -78,9 +78,9 @@ export function PhotoGallery({
                 columns = 3;
             }
 
-            if (width >= 1280 && photos.length >= 50) {
-                columns = 4;
-            }
+            // if (width >= 1280 && photos.length >= 50) {
+            //     columns = 4;
+            // }
 
             setColumnCount(columns);
         };
@@ -102,33 +102,56 @@ export function PhotoGallery({
         const availableWidth = containerWidth - gapSpace;
         const columnWidth = Math.floor(availableWidth / columnCount);
 
-        // First distribute photos based on their original dimensions
+        // 1. Calculate initial tile sizes based on column width
+        const photosWithTileSizes = photos.map(photo => {
+            const aspectRatio = photo.width / photo.height;
+            const tileHeight = Math.round(columnWidth / aspectRatio);
+
+            return {
+                ...photo,
+                sizes: {
+                    ...photo.sizes,
+                    tile: {
+                        width: columnWidth,
+                        height: tileHeight
+                    }
+                }
+            };
+        });
+
+        // 2. Distribute photos into columns based on tile heights
         const newColumns: Column[] = Array.from({ length: columnCount }, () => ({
             photos: [],
             height: 0,
             width: columnWidth
         }));
 
-        // Distribute photos based on original dimensions
-        photos.forEach(photo => {
+        photosWithTileSizes.forEach(photo => {
             const minHeightColumn = newColumns.reduce(
                 (min, col, i) => col.height < newColumns[min]!.height ? i : min,
                 0
             );
 
             const gapContribution = newColumns[minHeightColumn]!.photos.length > 0 ? GAP_SIZE : 0;
-            const aspectRatio = photo.width / photo.height;
-            const originalHeight = columnWidth / aspectRatio;
-
             newColumns[minHeightColumn]!.photos.push(photo);
-            newColumns[minHeightColumn]!.height += originalHeight + gapContribution;
+            newColumns[minHeightColumn]!.height += photo.sizes.tile.height + gapContribution;
         });
 
-        // Now adjust the sizes of photos in each column without redistributing
+        // 3. Find the tallest column
+        const maxColumnHeight = Math.max(...newColumns.map(col => col.height));
+
+        // 4 & 5. Adjust heights of shorter columns to match the tallest
         newColumns.forEach(column => {
+            if (column.height === maxColumnHeight) return;
+
+            const totalGaps = (column.photos.length - 1) * GAP_SIZE;
+            const availableHeight = maxColumnHeight - totalGaps;
+            const totalPhotoHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile.height, 0);
+            const scaleRatio = availableHeight / totalPhotoHeight;
+
+            // Adjust each photo's height proportionally
             column.photos = column.photos.map(photo => {
-                const aspectRatio = photo.width / photo.height;
-                const scaledHeight = Math.floor(columnWidth / aspectRatio);
+                const newHeight = Math.round(photo.sizes.tile.height * scaleRatio);
 
                 return {
                     ...photo,
@@ -136,14 +159,46 @@ export function PhotoGallery({
                         ...photo.sizes,
                         tile: {
                             width: columnWidth,
-                            height: scaledHeight
+                            height: newHeight
                         }
                     }
                 };
             });
-        });
 
-        console.log(newColumns.map(c => c.photos.map(p => p.sizes.tile.height)));
+            // Recalculate column height with new rounded heights
+            const newColumnHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile.height, 0) + 
+                                  ((column.photos.length - 1) * GAP_SIZE);
+            
+            // If there are remaining pixels to distribute
+            if (newColumnHeight < maxColumnHeight) {
+                const remainingPixels = maxColumnHeight - newColumnHeight;
+                const photosToAdjust = column.photos.length;
+                let currentHeight = newColumnHeight;
+                let currentPhotoIndex = 0;
+
+                // Keep distributing pixels until we reach the target height
+                while (currentHeight < maxColumnHeight) {
+                    const photo = column.photos[currentPhotoIndex];
+                    if (!photo) continue;
+
+                    column.photos[currentPhotoIndex] = {
+                        ...photo,
+                        sizes: {
+                            ...photo.sizes,
+                            tile: {
+                                ...photo.sizes.tile,
+                                height: photo.sizes.tile.height + 1
+                            }
+                        }
+                    };
+
+                    currentHeight += 1;
+                    currentPhotoIndex = (currentPhotoIndex + 1) % photosToAdjust;
+                }
+            }
+
+            column.height = maxColumnHeight;
+        });
 
         setColumns(newColumns);
     }, [photos, columnCount]);

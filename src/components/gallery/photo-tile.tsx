@@ -66,7 +66,7 @@ export function PhotoTile({
     >
       <div 
         className="relative w-full flex items-center justify-center scale-105 transition-transform duration-300 ease-out group-hover:scale-100"
-        style={{ height: `${photo.sizes.tile.height}px` }}
+        style={{ height: `${Math.round(photo.sizes.tile.height)}px` }}
       >
         {/* Enhanced skeleton loader with shimmer effect */}
         <div
