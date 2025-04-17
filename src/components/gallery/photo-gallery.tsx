@@ -95,34 +95,71 @@ export function PhotoGallery({
     useEffect(() => {
         if (photos.length === 0 || columnCount === 0) return;
 
+        const containerWidth = containerRef.current?.clientWidth ?? 0;
+        if (containerWidth === 0) return;
+
+        const gapSpace = GAP_SIZE * (columnCount - 1);
+        const availableWidth = containerWidth - gapSpace;
+        const columnWidth = Math.floor(availableWidth / columnCount);
+
+        console.log('Container dimensions:', {
+            containerWidth,
+            gapSpace,
+            availableWidth,
+            columnWidth,
+            columnCount
+        });
+
+        // First calculate scaled dimensions for all photos
+        const processedPhotos = photos.map(photo => {
+            const originalWidth = photo.sizes.big.width;
+            const originalHeight = photo.sizes.big.height;
+            const originalAspectRatio = originalWidth / originalHeight;
+
+            // Scale photo to fit column width, but don't upscale if original is smaller
+            let scaledWidth = columnWidth;
+            let scaledHeight;
+
+            if (originalWidth <= columnWidth) {
+                // If original is smaller than column, keep original size
+                scaledWidth = originalWidth;
+                scaledHeight = originalHeight;
+            } else {
+                // Scale down to fit column
+                scaledWidth = columnWidth;
+                scaledHeight = Math.floor(columnWidth / originalAspectRatio);
+            }
+
+            console.log('Photo scaling:', {
+                id: photo.id,
+                original: { width: originalWidth, height: originalHeight },
+                scaled: { width: scaledWidth, height: scaledHeight }
+            });
+
+            return {
+                photo,
+                scaledWidth,
+                scaledHeight,
+                aspectRatio: originalAspectRatio
+            };
+        });
+
+        // Sort photos by scaled height to help with distribution
+        processedPhotos.sort((a, b) => b.scaledHeight - a.scaledHeight);
+
+        // Distribute photos to columns
         const newColumns: Column[] = Array.from({ length: columnCount }, () => ({
             photos: [],
             height: 0,
             width: 0
         }));
 
-        const containerWidth = containerRef.current?.clientWidth ?? 0;
-        const gapSpace = GAP_SIZE * (columnCount - 1);
-        const availableWidth = containerWidth - gapSpace;
-        const columnWidth = availableWidth / columnCount;
-
-        // Simply distribute photos to columns based on current height
-        photos.forEach(photo => {
+        processedPhotos.forEach(({ photo, scaledWidth, scaledHeight }) => {
             const minHeightColumn = newColumns.reduce(
                 (min, col, i) => col.height < newColumns[min]!.height ? i : min,
                 0
             );
 
-            const originalHeight = photo.sizes?.big?.height;
-            const originalWidth = photo.sizes?.big?.width;
-
-            if (typeof originalHeight !== 'number' || originalHeight <= 0 ||
-                typeof originalWidth !== 'number' || originalWidth <= 0) {
-                return;
-            }
-
-            const aspectRatio = originalWidth / originalHeight;
-            const newHeight = columnWidth / aspectRatio;
             const gapContribution = newColumns[minHeightColumn]!.photos.length > 0 ? GAP_SIZE : 0;
 
             const adjustedPhoto = {
@@ -131,16 +168,50 @@ export function PhotoGallery({
                     ...photo.sizes,
                     big: {
                         ...photo.sizes.big,
-                        width: columnWidth,
-                        height: newHeight,
+                        width: scaledWidth,
+                        height: scaledHeight,
                     }
                 }
             };
 
             newColumns[minHeightColumn]!.photos.push(adjustedPhoto);
-            newColumns[minHeightColumn]!.height += newHeight + gapContribution;
+            newColumns[minHeightColumn]!.height += scaledHeight + gapContribution;
             newColumns[minHeightColumn]!.width = columnWidth;
         });
+
+        // Scale photos in shorter columns to match the tallest
+        const maxColumnHeight = Math.max(...newColumns.map(col => col.height));
+        console.log('Column heights before scaling:', newColumns.map(col => Math.round(col.height)));
+
+        newColumns.forEach((column, index) => {
+            if (column.photos.length === 0 || column.height === maxColumnHeight) return;
+
+            const totalGaps = (column.photos.length - 1) * GAP_SIZE;
+            const availableHeight = maxColumnHeight - totalGaps;
+            const totalPhotoHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.big.height, 0);
+            
+            // Scale each photo proportionally
+            column.photos = column.photos.map(photo => {
+                const scaleRatio = availableHeight / totalPhotoHeight;
+                const newHeight = Math.floor(photo.sizes.big.height * scaleRatio);
+
+                return {
+                    ...photo,
+                    sizes: {
+                        ...photo.sizes,
+                        big: {
+                            ...photo.sizes.big,
+                            width: columnWidth,
+                            height: newHeight,
+                        }
+                    }
+                };
+            });
+
+            column.height = maxColumnHeight;
+        });
+
+        console.log('Final column heights:', newColumns.map(col => Math.round(col.height)));
 
         setColumns(newColumns);
     }, [photos, columnCount]);

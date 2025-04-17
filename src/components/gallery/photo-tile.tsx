@@ -76,7 +76,11 @@ export function PhotoTile({
           height={photo.sizes.big.height}
           width={photo.sizes.big.width}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-          className={`w-full h-auto object-contain transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+          className={`w-full h-auto object-cover transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+          style={{
+            width: '100%',
+            height: `${photo.sizes.big.height}px`
+          }}
           onLoad={handleImageLoad}
         />
 
