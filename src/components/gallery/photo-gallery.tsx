@@ -61,42 +61,27 @@ export function PhotoGallery({
     onPhotoDownload
 }: PhotoGalleryProps) {
     const [columns, setColumns] = useState<Column[]>([]);
-    const [columnCount, setColumnCount] = useState(3);
     const containerRef = useRef<HTMLDivElement>(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [initialPhotoIndex, setInitialPhotoIndex] = useState(0);
 
     useEffect(() => {
-        const updateColumnCount = () => {
-            const width = window.innerWidth;
-            let columns;
-            if (width < 640) {
-                columns = 1;
-            } else if (width < 768) {
-                columns = 2;
-            } else {
-                columns = 3;
-            }
-
-            // if (width >= 1280 && photos.length >= 50) {
-            //     columns = 4;
-            // }
-
-            setColumnCount(columns);
-        };
-
-        const debouncedUpdateColumnCount = debounce(updateColumnCount, 250);
-
-        updateColumnCount();
-        window.addEventListener('resize', debouncedUpdateColumnCount);
-        return () => window.removeEventListener('resize', debouncedUpdateColumnCount);
-    }, [photos.length]);
-
-    useEffect(() => {
-        if (photos.length === 0 || columnCount === 0) return;
+        if (photos.length === 0) return;
 
         const containerWidth = containerRef.current?.clientWidth ?? 0;
         if (containerWidth === 0) return;
+
+        // Calculate column count based on container width
+        let columnCount = 3;
+        if (containerWidth < 640) {
+            columnCount = 1;
+        } else if (containerWidth < 768) {
+            columnCount = 2;
+        }
+
+        if (containerWidth >= 1280 && photos.length >= 50) {
+            columnCount = 4;
+        }
 
         const gapSpace = GAP_SIZE * (columnCount - 1);
         const availableWidth = containerWidth - gapSpace;
@@ -201,7 +186,22 @@ export function PhotoGallery({
         });
 
         setColumns(newColumns);
-    }, [photos, columnCount]);
+    }, [photos]);
+
+    // Handle window resize
+    useEffect(() => {
+        const handleResize = debounce(() => {
+            if (containerRef.current) {
+                const containerWidth = containerRef.current.clientWidth;
+                if (containerWidth > 0) {
+                    setColumns([]); // Trigger re-render with new column count
+                }
+            }
+        }, 250);
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const openLightbox = (photo: Photo) => {
         const photoIndex = photos.findIndex(p => p.id === photo.id);
