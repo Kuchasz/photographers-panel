@@ -73,12 +73,12 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ga
   return (
     <>
       <style jsx>{styles}</style>
-      <div className="relative flex flex-col align-center w-full bg-gold-600 px-36 pb-36 h-[80vh] mb-18 overflow-hidden">
-        <div className="flex justify-center items-center py-12 text-lg text-white/90">
-          <p className="text-xs mr-24 absolute -translate-x-1/2 font-bold uppercase tracking-[0.4em]">{strings.pageTitles.private}</p>
-          <span className="w-0.5 h-24 bg-white/90 rounded-full"></span>
+      <div className="relative flex flex-col align-center w-full bg-gold-600 px-4 md:px-24 lg:px-36 pb-12 md:pb-36 h-[60vh] md:h-[80vh] mb-12 md:mb-18 overflow-hidden">
+        <div className="flex justify-center items-center py-6 md:py-12 text-lg text-white/90">
+          <p className="text-[10px] md:text-xs mr-6 md:mr-24 absolute -translate-x-1/2 font-bold uppercase tracking-[0.3em] md:tracking-[0.4em]">{strings.pageTitles.private}</p>
+          <span className="w-0.5 h-12 md:h-24 bg-white/90 rounded-full"></span>
           {formattedDate && (
-            <p className="absolute ml-24 translate-x-1/2 font-serif text-center">
+            <p className="text-sm md:text-base absolute ml-6 md:ml-24 translate-x-1/2 font-serif text-center">
               {formattedDate}
             </p>
           )}
@@ -103,7 +103,7 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ga
           </div>
         )}
         {!photo && (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center px-4">
             <div className="animate-title-zoom">
               <SectionTitle
                 title={displayTitle}
