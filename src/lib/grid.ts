@@ -109,7 +109,6 @@ export function calculateGridLayout(photos: Photo[], containerWidth: number): Co
 
         // If there are remaining pixels to distribute
         if (newColumnHeight < maxColumnHeight) {
-            const remainingPixels = maxColumnHeight - newColumnHeight;
             const photosToAdjust = column.photos.length;
             let currentHeight = newColumnHeight;
             let currentPhotoIndex = 0;
