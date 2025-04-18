@@ -65,7 +65,7 @@ export function PhotoTile({
       onClick={handleClick}
     >
       <div 
-        className="relative w-full flex items-center justify-center scale-105 transition-transform duration-300 ease-out group-hover:scale-100"
+        className="relative w-full flex items-center justify-center scale-105 transition-transform will-change-transform duration-300 ease-out group-hover:scale-100"
         style={{ height: `${Math.round(photo.sizes.tile?.height ?? 0)}px` }}
       >
         {/* Enhanced skeleton loader with shimmer effect */}
@@ -88,7 +88,8 @@ export function PhotoTile({
 
         {/* Dark overlay and download button */}
         {onPhotoDownload && (
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300">
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent via-[20%] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
             <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <PhotoDownloadButton
                 url={photo.sizes?.big?.url || photo.url}

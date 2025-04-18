@@ -2,7 +2,7 @@ import React from "react";
 
 interface SectionTitleProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   className?: string;
 }
 
