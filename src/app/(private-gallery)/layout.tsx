@@ -29,9 +29,7 @@ export default async function RootLayout({
     return (
         <html lang="en" className={`${GeistSans.variable} ${hankenGrotesk.variable} ${oranienbaum.variable}`}>
             <body>
-                <span>
-                    {children}
-                </span>
+                {children}
             </body>
         </html>
     );

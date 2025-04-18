@@ -44,10 +44,11 @@ const styles = `
 type PrivateGalleryClientPageProps = {
   photos: Photo[];
   galleryTitle?: string;
+  galleryDate?: string;
   photo?: Photo | null;
 };
 
-export default function PrivateGalleryClientPage({ photos, galleryTitle = '', photo }: PrivateGalleryClientPageProps) {
+export default function PrivateGalleryClientPage({ photos, galleryTitle = '', galleryDate = '', photo }: PrivateGalleryClientPageProps) {
   const { token } = useParams<{ token: string }>();
 
   const handleDownload = async (photo: Photo) => {
@@ -63,6 +64,11 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ph
   };
 
   const displayTitle = galleryTitle || strings.privateGallery.title;
+  const formattedDate = galleryDate ? new Date(galleryDate).toLocaleDateString('pl-PL', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }) : '';
 
   return (
     <>
@@ -82,6 +88,11 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ph
                   subtitle={strings.pageTitles.private}
                   className="[&_p]:text-white/90 [&_h2]:text-white"
                 />
+                {formattedDate && (
+                  <p className="text-lg text-white/90 font-serif text-center mt-2">
+                    {formattedDate}
+                  </p>
+                )}
               </div>
             </div>
           </div>

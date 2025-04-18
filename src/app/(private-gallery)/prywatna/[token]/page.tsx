@@ -26,13 +26,14 @@ export default async function PrivateGalleryPage({ params }: { params: Promise<{
         redirect('/prywatna');
     }
 
-    const galleryTitle = await getGalleryTitle(token);
+    const { title, date } = await getGalleryTitle(token);
 
     return (
         <PrivateGalleryClientPage
             photo={photos.photo}
             photos={photos.photos}
-            galleryTitle={galleryTitle}
+            galleryTitle={title}
+            galleryDate={date}
         />
     )
 }

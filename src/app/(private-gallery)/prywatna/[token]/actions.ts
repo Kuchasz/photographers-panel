@@ -79,16 +79,19 @@ async function validateGalleryToken(token: string) {
   };
 }
 
-export async function getGalleryTitle(token: string): Promise<string> {
+export async function getGalleryTitle(token: string): Promise<{ title: string; date: string }> {
   const tokenData = await validateGalleryToken(token);
 
   if (!tokenData || tokenData.expired) {
-    return '';
+    return { title: '', date: '' };
   }
 
   const galleryData = tokenData.authToken.gallery as PrivateGallery;
 
-  return galleryData?.title || '';
+  return {
+    title: galleryData?.title || '',
+    date: galleryData?.date || ''
+  };
 }
 
 export async function getPhotos(token: string) {
