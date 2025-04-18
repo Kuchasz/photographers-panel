@@ -50,7 +50,7 @@ export const pl = {
             emailTitle: 'Wyślij nam wiadomość',
             socialTitle: 'Znajdź nas w social mediach',
             description: 'Napisz do nas, aby sprawdzić dostępność terminu i dowiedzieć się więcej o naszej ofercie. Z przyjemnością odpowiemy na wszystkie Twoje pytania.',
-            checkAvailability: 'Potwierdźmy Twój termin! Skontaktuj się z nami, aby sprawdzić dostępność na Twój wymarzony dzień.'
+            checkAvailability: 'Sprawdź naszą dostępność'
         },
         reservation: {
             title: 'Proces rezerwacji',
@@ -252,41 +252,45 @@ export const pl = {
         description: 'Wybierając nasze usługi, otrzymujecie nie tylko piękne zdjęcia i filmy, ale także wyjątkowe podejście do Waszej uroczystości. Stawiamy na naturalne, niewymuszone kadry, które najlepiej oddadzą magię tego dnia.',
         leftColumnTitle: 'Kompleksowa obsługa',
         rightColumnTitle: 'Szybka realizacja',
-        advantages: [
-            {
-                title: 'Duet foto-video',
-                description: 'Obsługujemy zarówno fotografię jak i film, zapewniając spójny styl całej dokumentacji'
-            },
-            {
-                title: 'Bogate doświadczenie',
-                description: 'Mamy na koncie setki zadowolonych par młodych i tysiące godzin reportaży'
-            },
-            {
-                title: 'Nowoczesny sprzęt',
-                description: 'Korzystamy z profesjonalnego sprzętu najwyższej jakości'
-            },
-            {
-                title: 'Szybki podgląd',
-                description: 'Pierwsze zdjęcia otrzymacie już następnego dnia po uroczystości'
-            },
-            {
-                title: 'Plener w cenie',
-                description: 'Sesja plenerowa w dniu ślubu zawsze wliczona w cenę pakietu'
-            },
-            {
-                title: 'Brak limitów czasowych',
-                description: 'Nie ograniczamy czasu pracy - zostajemy do ostatniego tańca'
-            },
-            {
-                title: 'Prywatna galeria',
-                description: 'Zabezpieczona hasłem galeria online do wygodnego udostępniania zdjęć'
-            },
-            {
-                title: 'Krótki czas oczekiwania',
-                description: 'Gotowe materiały dostarczamy szybciej niż konkurencja'
-            }
-        ],
-        cta: 'SPRAWDŹ PEŁNĄ OFERTĘ'
+        cta: 'SPRAWDŹ PEŁNĄ OFERTĘ',
+        items: {
+            left: [
+                {
+                    title: 'Duet foto-video',
+                    description: 'Dwie osoby - fotograf i kamerzysta, tworzący spójną dokumentację Waszego dnia'
+                },
+                {
+                    title: 'Ponad 20 lat doświadczenia',
+                    description: 'Fotografowaliśmy setki uroczystości, wiemy jak uchwycić najważniejsze momenty'
+                },
+                {
+                    title: 'Bogaty pakiet podstawowy',
+                    description: 'Około 1000 zdjęć i film w jakości FullHD, bez ukrytych kosztów'
+                },
+                {
+                    title: 'Plener w dniu ślubu gratis',
+                    description: 'Sesja plenerowa w dniu ślubu zawsze wliczona w cenę pakietu'
+                }
+            ],
+            right: [
+                {
+                    title: 'Pierwsze zdjęcia następnego dnia',
+                    description: 'Pierwsze zdjęcia z wesela zobaczycie już na drugi dzień po uroczystości'
+                },
+                {
+                    title: 'Brak limitów czasowych',
+                    description: 'Pracujemy od przygotowań aż do 1:30 w nocy, nie uciekamy bez słowa'
+                },
+                {
+                    title: 'Internetowa galeria z hasłem',
+                    description: 'Wygodne udostępnianie zdjęć rodzinie i znajomym przez zabezpieczoną galerię'
+                },
+                {
+                    title: 'Szybka realizacja',
+                    description: 'Gotowe materiały dostarczamy do 3 miesięcy od uroczystości'
+                }
+            ]
+        }
     },
     footer: {
         copyrights: 'PyszStudio. All rights reserved.',
@@ -311,8 +315,9 @@ export const pl = {
         shareMessage: 'Aby podzielić się zdjęciami ze znajomymi możesz udostępnić wpis na facebooku',
     },
     opinions: {
-        title: "Opinie",
-        subtitle: "Wasze słowa, nasze największe wyróżnienie",
+        title: 'Opinie',
+        subtitle: 'Wasze słowa, nasze największe wyróżnienie',
+        description: 'Nic nie opisze naszej pracy lepiej niż słowa zadowolonych Par Młodych. Sprawdź, co mówią o nas ci, którzy już nam zaufali i pozwolili uwiecznić ich najważniejszy dzień.',
         sources: {
             google: "google",
             facebook: "facebook",
@@ -382,4 +387,113 @@ export const pl = {
             errorMessage: 'Nie udało się załadować danych o odwiedzinach. Spróbuj ponownie później.'
         }
     },
+    offerPage: {
+        weddingOffer: {
+            title: 'Oferta ślubna',
+            subtitle: 'Kompleksowa usługa dla Waszego wyjątkowego dnia',
+            description: 'Z pasją i profesjonalizmem uwiecznimy każdą wyjątkową chwilę Waszego ślubu, tworząc niepowtarzalną kolekcję wspomnień. Łącząc artystyczną fotografię z kunsztem filmowym, dokumentujemy historię Waszej miłości z dbałością o najmniejszy detal. Nasza dyskretna obecność pozwala Wam swobodnie przeżywać ten wyjątkowy dzień, podczas gdy my zajmujemy się zatrzymaniem tych emocji w czasie. Gwarantujemy szybką realizację materiałów, transparentne zasady współpracy i brak ukrytych kosztów.',
+            imageAlt: 'Para młoda przytulająca się na schodach',
+            photos: {
+                title: 'Zdjęcia',
+                items: [
+                    'Bogata kolekcja około 1000 starannie wyselekcjonowanych zdjęć na pendrive',
+                    'Profesjonalna obróbka i korekcja kolorystyczna wszystkich zdjęć',
+                    'Prywatna galeria internetowa zabezpieczona hasłem do wygodnego udostępniania',
+                    'Eleganckie zdjęcia grupowe i portretowe z rodziną i bliskimi',
+                    'Do wyboru: zestaw 2 albumów ślubnych (200 odbitek 15x10cm, 40 odbitek 21x15cm) lub ekskluzywna fotoksiążka 30x30cm o objętości 80 stron'
+                ]
+            },
+            video: {
+                title: 'Film',
+                items: [
+                    'Profesjonalny film o długości do 3 godzin (możliwość dostosowania długości według preferencji)',
+                    'Film w wysokiej rozdzielczości FullHD dostarczany na pendrive',
+                    'Krystalicznie czyste nagranie audio w kościele za pomocą profesjonalnego rejestratora',
+                    'Płynne ujęcia z użyciem zaawansowanego stabilizatora żyroskopowego (gimbal)',
+                    'Kompletny pakiet: artystyczna czołówka, ujęcia z przygotowań (opcjonalnie), film główny oraz emocjonalny teledysk'
+                ]
+            },
+            included: {
+                title: 'Korzyści w standardowym pakiecie',
+                items: [
+                    'Dwie osoby - fotograf i kamerzysta',
+                    'Sesja plenerowa w dniu ślubu',
+                    'Gotowe materiały do 3 miesięcy od uroczystości',
+                    'Pracujemy w pierwszy dzień od przygotowań do godz 1:30',
+                    'Pracujemy w poprawiny (o ile są) do godz 24:00',
+                    'Nie doliczamy kosztów przejazdu do 100km od Andrychowa'
+                ]
+            },
+            additional: {
+                title: 'Opcje dodatkowe',
+                items: [
+                    'Poprawiny',
+                    'Dodatkowa foto-książka',
+                    'Film na DVD (4 komplety)',
+                    'Sesja plenerowa w innym terminie',
+                    'Film i zdjęcia z drona'
+                ]
+            },
+            whyChooseUs: {
+                title: 'Dlaczego warto wybrać naszą ofertę?',
+                intro: 'Wybierając naszą ofertę, otrzymujecie nie tylko usługę fotograficzną i filmową, ale przede wszystkim gwarancję profesjonalizmu popartą długoletnim doświadczeniem i setkami zadowolonych par.',
+                advantages: [
+                    {
+                        title: 'Profesjonalne doświadczenie',
+                        description: 'Ponad 20 lat doświadczenia i setki zrealizowanych uroczystości ślubnych'
+                    },
+                    {
+                        title: 'Pełne zaangażowanie',
+                        description: 'Nigdy nie opuszczamy wesela bez wcześniejszej konsultacji'
+                    },
+                    {
+                        title: 'Nastawienie na gości',
+                        description: 'Chętnie uwiecznimy każdą grupę czy parę, która zapragnie pamiątkowego zdjęcia'
+                    },
+                    {
+                        title: 'Transparentna współpraca',
+                        description: 'Przejrzysty cennik i bogaty pakiet podstawowy bez żadnych ukrytych kosztów — to co ustalamy na początku, obowiązuje do końca'
+                    },
+                    {
+                        title: 'Indywidualne podejście',
+                        description: 'Każdy gość chętny do udziału w fotografii zostanie uwieczniony na zdjęciach i filmie'
+                    },
+                    {
+                        title: 'Ekspresowa realizacja',
+                        description: 'Już następnego dnia po weselu otrzymacie pierwsze wybrane zdjęcia do publikacji w mediach społecznościowych (za Waszą zgodą)'
+                    },
+                    {
+                        title: 'Dyskretna obecność',
+                        description: 'Działamy w tle, nie ingerujemy w przebieg uroczystości — będziemy tam, gdzie nas potrzebujecie'
+                    },
+                    {
+                        title: 'Szacunek dla komfortu gości',
+                        description: 'Nie fotografujemy ani nie filmujemy osób podczas posiłków — szanujemy prywatność i komfort wszystkich uczestników'
+                    },
+                    {
+                        title: 'Profesjonalna selekcja materiału',
+                        description: 'Niefortunne sytuacje czy niechciane momenty nigdy nie trafią do finalnych materiałów — otrzymacie tylko najlepsze ujęcia'
+                    }
+                ],
+                finalNote: 'Naszym priorytetem jest zadowolenie Pary Młodej i stworzenie pamiątki, do której będziecie wracać z uśmiechem przez długie lata.'
+            }
+        },
+        otherServices: {
+            title: 'Pozostałe usługi',
+            subtitle: 'Inne usługi fotograficzne i filmowe',
+            description: 'Poza kompleksową obsługą ślubną, oferujemy również szereg innych specjalistycznych usług fotograficznych i filmowych. Jeśli poszukujesz rozwiązań niewymienionych poniżej, zachęcamy do bezpośredniego kontaktu — z przyjemnością omówimy Twoje indywidualne potrzeby.',
+            services: [
+                {
+                    title: 'Renowacja i retusz zdjęć',
+                    description: 'Przywrócimy blask Twoim cennym wspomnieniom — profesjonalna renowacja i artystyczny retusz każdego rodzaju fotografii',
+                    imageAlt: 'Renowacja i retusz zdjęć'
+                },
+                {
+                    title: 'Przegrywanie kaset VHS',
+                    description: 'Uchronimy Twoje archiwalne nagrania przed bezpowrotnym zniszczeniem — profesjonalna cyfryzacja kaset VHS i innych formatów analogowych',
+                    imageAlt: 'Przegrywanie kaset VHS'
+                }
+            ]
+        }
+    }
 };
