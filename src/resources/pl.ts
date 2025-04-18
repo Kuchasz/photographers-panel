@@ -278,7 +278,7 @@ export const pl = {
                     description: 'Pierwsze zdjęcia z wesela zobaczycie już na drugi dzień po uroczystości'
                 },
                 {
-                    title: 'Brak limitów czasowych',
+                    title: 'Duże limity czasowe',
                     description: 'Pracujemy od przygotowań aż do 1:30 w nocy, nie uciekamy bez słowa'
                 },
                 {
