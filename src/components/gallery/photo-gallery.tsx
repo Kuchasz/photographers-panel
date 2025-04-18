@@ -26,7 +26,7 @@ const PhotoTileColumns = React.memo(({
             {columns.map((column, columnIndex) => (
                 <div
                     key={`column-${columnIndex}`}
-                    className="flex-1 flex flex-col gap-2 min-w-0"
+                    className="flex-1 flex flex-col gap-1.5 min-w-0"
                 >
                     {column.photos.map((photo) => (
                         <MemoizedPhotoTile
@@ -92,7 +92,7 @@ export function PhotoGallery({
 
     return (
         <div className="space-y-8">
-            <div className="flex flex-wrap gap-2" ref={containerRef}>
+            <div className="flex flex-wrap gap-1.5" ref={containerRef}>
                 <PhotoTileColumns
                     columns={columns}
                     onPhotoClick={openLightbox}

@@ -74,11 +74,11 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ga
     <>
       <style jsx>{styles}</style>
       <div className="container mx-auto px-4">
-        <div className="relative w-full h-[60vh] mb-2 overflow-hidden rounded-lg">
+        <div className="relative w-full h-[60vh] mb-2 overflow-hidden">
           <img
             src={photo?.sizes?.big?.url || photo?.url || ''}
             alt={photo?.alt || ''}
-            className="w-full h-full object-cover animate-photo-zoom rounded-lg"
+            className="w-full h-full object-cover animate-photo-zoom"
           />
           <div className="absolute inset-0 bg-black/40">
             <div className="absolute top-[66%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4">

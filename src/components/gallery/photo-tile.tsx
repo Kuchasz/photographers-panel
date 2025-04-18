@@ -61,7 +61,7 @@ export function PhotoTile({
 
   return (
     <div
-      className="group relative overflow-hidden bg-stone-100 cursor-pointer transition-all duration-300 ease-out hover:z-10 rounded-lg"
+      className="group relative overflow-hidden bg-stone-100 cursor-pointer transition-all duration-300 ease-out hover:z-10"
       onClick={handleClick}
     >
       <div 

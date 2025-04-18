@@ -7,7 +7,14 @@ export type Column = {
 };
 
 // Gap size in pixels - matches the gap-4 class (1rem = 16px)
-const GAP_SIZE = 8;
+// 0.25rem * 1.5 = 0.375rem
+const GAP_SIZE = 6;
+
+function getRandomHeightAdjustment(): number {
+    const adjustments = [-0.05, 0, 0.05, 0.10, 0.15] as const;
+    const randomIndex = Math.floor(Math.random() * adjustments.length);
+    return adjustments[randomIndex] ?? 0;
+}
 
 export function calculateGridLayout(photos: Photo[], containerWidth: number): Column[] {
     if (photos.length === 0 || containerWidth === 0) return [];
@@ -33,13 +40,18 @@ export function calculateGridLayout(photos: Photo[], containerWidth: number): Co
         const aspectRatio = photo.width / photo.height;
         const tileHeight = Math.round(columnWidth / aspectRatio);
 
+        // Apply random height adjustment if there are 2 or more columns
+        const adjustedHeight = columnCount >= 2
+            ? Math.round(tileHeight * (1 + getRandomHeightAdjustment()))
+            : tileHeight;
+
         return {
             ...photo,
             sizes: {
                 ...photo.sizes,
                 tile: {
                     width: columnWidth,
-                    height: tileHeight
+                    height: adjustedHeight
                 }
             }
         };
@@ -92,9 +104,9 @@ export function calculateGridLayout(photos: Photo[], containerWidth: number): Co
         });
 
         // Recalculate column height with new rounded heights
-        const newColumnHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile!.height, 0) + 
-                              ((column.photos.length - 1) * GAP_SIZE);
-        
+        const newColumnHeight = column.photos.reduce((sum, photo) => sum + photo.sizes.tile!.height, 0) +
+            ((column.photos.length - 1) * GAP_SIZE);
+
         // If there are remaining pixels to distribute
         if (newColumnHeight < maxColumnHeight) {
             const remainingPixels = maxColumnHeight - newColumnHeight;
