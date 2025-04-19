@@ -91,13 +91,15 @@ const NavLink = ({
     isActive,
     isHomePage,
     isPrimary = false,
-    children
+    children,
+    onClick
 }: {
     href: string;
     isActive: boolean;
     isHomePage: boolean;
     isPrimary?: boolean;
     children: string | string[];
+    onClick?: () => void;
 }) => {
     const baseTextClass = isHomePage
         ? "text-white/90 hover:text-gold-500"
@@ -114,6 +116,7 @@ const NavLink = ({
     return (
         <Link
             href={href}
+            onClick={onClick}
             className={`
                 relative font-normal tracking-wider transition-all duration-300 flex items-center
                 ${baseTextClass}
@@ -204,7 +207,7 @@ const Navigation = ({
 
             {/* Mobile menu button */}
             <button
-                className="absolute right-4 top-6 z-[60] flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-md md:hidden"
+                className="absolute right-4 top-6 z-[60] flex h-10 w-10 flex-col items-center justify-center gap-1.5 rounded-full md:hidden cursor-pointer transition-colors duration-200 hover:bg-black/10"
                 onClick={toggleMobileMenu}
                 aria-label="Open menu"
                 aria-expanded="false"
@@ -262,7 +265,7 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
             >
                 {/* Close button */}
                 <button 
-                    className="absolute right-4 top-4 rounded-full p-2 transition-colors duration-200 hover:bg-black/10"
+                    className="absolute right-4 top-4 rounded-full p-2 transition-colors duration-200 hover:bg-black/10 cursor-pointer"
                     onClick={onClose}
                     aria-label="Close menu"
                 >
@@ -273,7 +276,12 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
                 
                 {/* Logo */}
                 <div className="mt-14 mb-8 flex justify-center">
-                    <div className={`flex flex-col items-center gap-1`}>
+                    <Link
+                        href="/"
+                        className="flex flex-col items-center gap-1 transition duration-300 hover:opacity-90"
+                        aria-label="Home"
+                        onClick={onClose}
+                    >
                         <div className={`text-2xl font-light leading-none ${isHomePage ? 'text-white' : 'text-stone-800'}`}>
                             <span className="tracking-wider">PYSZ</span>
                             <span className="font-medium tracking-wide">STUDIO</span>
@@ -281,7 +289,7 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
                         <div className={`text-[10px] font-light leading-none tracking-[0.2em] ${isHomePage ? 'text-white/75' : 'text-stone-800/75'}`}>
                             FOTOGRAFIA I FILM
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 
                 {/* Divider */}
@@ -293,6 +301,7 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
                         href={routes.offers.route}
                         isActive={firstSegment(usePathname()) === routes.offers.route}
                         isHomePage={isHomePage}
+                        onClick={onClose}
                     >
                         {strings.menu.offer}
                     </NavLink>
@@ -300,6 +309,7 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
                         href={routes.photos.route}
                         isActive={firstSegment(usePathname()) === routes.photos.route}
                         isHomePage={isHomePage}
+                        onClick={onClose}
                     >
                         {strings.menu.photos}
                     </NavLink>
@@ -307,6 +317,7 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
                         href={routes.videos.route}
                         isActive={firstSegment(usePathname()) === routes.videos.route}
                         isHomePage={isHomePage}
+                        onClick={onClose}
                     >
                         {strings.menu.videos}
                     </NavLink>
@@ -314,6 +325,7 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
                         href={routes.contact.route}
                         isActive={firstSegment(usePathname()) === routes.contact.route}
                         isHomePage={isHomePage}
+                        onClick={onClose}
                     >
                         {strings.menu.contact}
                     </NavLink>
@@ -326,6 +338,7 @@ const MobileMenu = ({ isOpen, onClose, isHomePage }: {
                         isActive={false}
                         isHomePage={isHomePage}
                         isPrimary={true}
+                        onClick={onClose}
                     >
                         {strings.menu.private}
                     </NavLink>
