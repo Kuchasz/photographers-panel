@@ -93,8 +93,34 @@ export const pl = {
             sendingMessage: 'Wysyłam wiadomość...',
             messageSent: 'Wysłano',
             messsageNotSent: 'Nie wysłano',
+            success: {
+                title: 'Wiadomość wysłana pomyślnie!',
+                message: 'Dziękujemy za kontakt! Skontaktujemy się z Tobą w ciągu 24 godzin.'
+            },
+            error: {
+                title: 'Wystąpił błąd podczas wysyłania wiadomości',
+                message: 'Przepraszamy za utrudnienia. Prosimy o kontakt telefoniczny, mailowy lub przez media społecznościowe.',
+                contactMethods: {
+                    phone: {
+                        text: 'Telefon: 506 386 443',
+                        href: 'tel:+48506386443'
+                    },
+                    email: {
+                        text: 'Email: biuro@pyszstudio.pl',
+                        href: 'mailto:biuro@pyszstudio.pl'
+                    },
+                    facebook: {
+                        text: 'Facebook',
+                        href: 'https://www.facebook.com/pyszstudio'
+                    },
+                    instagram: {
+                        text: 'Instagram',
+                        href: 'https://www.instagram.com/pyszstudio'
+                    }
+                }
+            },
             errors: {
-                NameTooShort: 'Imie jest zbyt krótkie.',
+                NameTooShort: 'Imię jest zbyt krótkie.',
                 ContentTooShort: 'Treść jest zbyt krótka.',
                 EmailInvalid: 'Nieprawidłowy adres email.',
                 InternalError: 'Wewnętrzny błąd. Usługa tymczasowo nie działa.',

@@ -7,7 +7,7 @@ import { PageContainer } from "~/components/page-container";
 import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
 import { sendMessage, type ContactState } from "./actions";
-import { CalendarCheck, PresentationChart, CurrencyCircleDollar } from "@phosphor-icons/react";
+import { CalendarCheck, PresentationChart, CurrencyCircleDollar, Phone, Envelope, InstagramLogo, FacebookLogo } from "@phosphor-icons/react";
 import Image from "next/image";
 
 // Section heading component - this is just a UI component, not a directly translatable piece
@@ -113,92 +113,136 @@ export default function ContactPage() {
 
                         <form action={formAction} className="relative space-y-8">
                             {state.result && (
-                                <div className={`rounded-lg border p-4 ${state.result.type === 'success'
+                                <div className={`rounded-xl border p-8 text-center ${state.result.type === 'success'
                                     ? 'border-green-100 bg-green-50 text-green-800'
-                                    : 'border-red-100 bg-red-50 text-red-800'
-                                    }`}>
-                                    <p className="text-sm">
+                                    : 'border-red-100 bg-red-50 text-red-800'}`}>
+                                    <h3 className="text-xl font-medium mb-4">
                                         {state.result.type === 'success'
-                                            ? strings.contact.form.messageSent
-                                            : `${strings.contact.form.messsageNotSent}, ${strings.contact.form.errors[state.result.error]}`}
+                                            ? strings.contact.form.success.title
+                                            : strings.contact.form.error.title}
+                                    </h3>
+                                    <p className="text-base">
+                                        {state.result.type === 'success'
+                                            ? strings.contact.form.success.message
+                                            : strings.contact.form.error.message}
                                     </p>
+                                    {state.result.type === 'error' && (
+                                        <div className="mt-8 space-y-4">
+                                            <a 
+                                                href={strings.contact.form.error.contactMethods.phone.href}
+                                                className="flex items-center space-x-3 text-stone-700 bg-white p-3 rounded-lg shadow-sm border border-red-50 hover:bg-red-50 transition-colors"
+                                            >
+                                                <Phone size={20} weight="light" className="text-red-500" />
+                                                <span>{strings.contact.form.error.contactMethods.phone.text}</span>
+                                            </a>
+                                            <a 
+                                                href={strings.contact.form.error.contactMethods.email.href}
+                                                className="flex items-center space-x-3 text-stone-700 bg-white p-3 rounded-lg shadow-sm border border-red-50 hover:bg-red-50 transition-colors"
+                                            >
+                                                <Envelope size={20} weight="light" className="text-red-500" />
+                                                <span>{strings.contact.form.error.contactMethods.email.text}</span>
+                                            </a>
+                                            <a 
+                                                href={strings.contact.form.error.contactMethods.facebook.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center space-x-3 text-stone-700 bg-white p-3 rounded-lg shadow-sm border border-red-50 hover:bg-red-50 transition-colors"
+                                            >
+                                                <FacebookLogo size={20} weight="light" className="text-red-500" />
+                                                <span>{strings.contact.form.error.contactMethods.facebook.text}</span>
+                                            </a>
+                                            <a 
+                                                href={strings.contact.form.error.contactMethods.instagram.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center space-x-3 text-stone-700 bg-white p-3 rounded-lg shadow-sm border border-red-50 hover:bg-red-50 transition-colors"
+                                            >
+                                                <InstagramLogo size={20} weight="light" className="text-red-500" />
+                                                <span>{strings.contact.form.error.contactMethods.instagram.text}</span>
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
-                            <div className="space-y-5">
-                                <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    <FormInput
-                                        label={strings.contact.form.name}
-                                        name="name"
-                                        value={state.formData.name}
-                                        required
-                                        className="md:col-span-2"
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.email}
-                                        name="email"
-                                        type="email"
-                                        value={state.formData.email}
-                                        required
-                                        className="md:col-span-2"
-                                    />
-                                </div>
-                            </div>
+                            {(!state.result) && (
+                                <>
+                                    <div className="space-y-5">
+                                        <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
+                                        <div className="grid gap-4 md:grid-cols-2">
+                                            <FormInput
+                                                label={strings.contact.form.name}
+                                                name="name"
+                                                value={state.formData.name}
+                                                required
+                                                className="md:col-span-2"
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.email}
+                                                name="email"
+                                                type="email"
+                                                value={state.formData.email}
+                                                required
+                                                className="md:col-span-2"
+                                            />
+                                        </div>
+                                    </div>
 
-                            <div className="space-y-5">
-                                <SectionHeading>{strings.contact.formSections.weddingInfo}</SectionHeading>
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    <FormInput
-                                        label={strings.contact.form.weddingDate}
-                                        name="weddingDate"
-                                        type="date"
-                                        value={state.formData.weddingDate ?? ''}
-                                        minDate={today}
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.weddingPlace}
-                                        name="weddingPlace"
-                                        value={state.formData.weddingPlace ?? ''}
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.weddingVenue}
-                                        name="weddingVenue"
-                                        value={state.formData.weddingVenue ?? ''}
-                                        className="md:col-span-2"
-                                    />
-                                </div>
-                            </div>
+                                    <div className="space-y-5">
+                                        <SectionHeading>{strings.contact.formSections.weddingInfo}</SectionHeading>
+                                        <div className="grid gap-4 md:grid-cols-2">
+                                            <FormInput
+                                                label={strings.contact.form.weddingDate}
+                                                name="weddingDate"
+                                                type="date"
+                                                value={state.formData.weddingDate ?? ''}
+                                                minDate={today}
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.weddingPlace}
+                                                name="weddingPlace"
+                                                value={state.formData.weddingPlace ?? ''}
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.weddingVenue}
+                                                name="weddingVenue"
+                                                value={state.formData.weddingVenue ?? ''}
+                                                className="md:col-span-2"
+                                            />
+                                        </div>
+                                    </div>
 
-                            <div className="space-y-5">
-                                <SectionHeading>{strings.contact.formSections.additionalInfo}</SectionHeading>
-                                <div className="grid gap-4">
-                                    <FormInput
-                                        label={strings.contact.form.howDidYouHear}
-                                        name="howDidYouHear"
-                                        value={state.formData.howDidYouHear ?? ''}
-                                    />
-                                    <FormInput
-                                        label={strings.contact.form.additionalDetails}
-                                        name="additionalDetails"
-                                        type="textarea"
-                                        value={state.formData.additionalDetails ?? ''}
-                                    />
-                                </div>
-                            </div>
+                                    <div className="space-y-5">
+                                        <SectionHeading>{strings.contact.formSections.additionalInfo}</SectionHeading>
+                                        <div className="grid gap-4">
+                                            <FormInput
+                                                label={strings.contact.form.howDidYouHear}
+                                                name="howDidYouHear"
+                                                value={state.formData.howDidYouHear ?? ''}
+                                            />
+                                            <FormInput
+                                                label={strings.contact.form.additionalDetails}
+                                                name="additionalDetails"
+                                                type="textarea"
+                                                value={state.formData.additionalDetails ?? ''}
+                                            />
+                                        </div>
+                                    </div>
 
-                            <div className="flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
-                                <div className="text-sm font-light text-stone-600">
-                                    <span className="text-red-500">*</span> {strings.contact.form.requiredField}
-                                </div>
+                                    <div className="flex flex-col space-y-6 md:flex-row md:items-center md:justify-between md:space-y-0">
+                                        <div className="text-sm font-light text-stone-600">
+                                            <span className="text-red-500">*</span> {strings.contact.form.requiredField}
+                                        </div>
 
-                                <FormButton
-                                    loadingText={strings.contact.form.sendingMessage}
-                                    fullWidth={false}
-                                >
-                                    {strings.contact.form.submit}
-                                </FormButton>
-                            </div>
+                                        <FormButton
+                                            loadingText={strings.contact.form.sendingMessage}
+                                            fullWidth={false}
+                                        >
+                                            {strings.contact.form.submit}
+                                        </FormButton>
+                                    </div>
+                                </>
+                            )}
                         </form>
                     </div>
                 </div>
