@@ -2,6 +2,9 @@
 
 import { type Message, send } from "~/areas/message";
 import { type SendResult } from "~/areas/message";
+import { getPayload } from "payload";
+import config from "~/payload.config";
+import { WEBSITE_INQUIRIES_SLUG } from "~/collections/collectionSlugs";
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -33,6 +36,16 @@ export async function sendMessage(
         howDidYouHear: howDidYouHear || undefined,
         additionalDetails: additionalDetails || undefined,
     };
+
+    // Store inquiry in database
+    const payload = await getPayload({ config });
+    await payload.create({
+        collection: WEBSITE_INQUIRIES_SLUG,
+        data: {
+            ...messageData,
+            date: new Date().toISOString(),
+        },
+    });
 
     await wait(1500);
 

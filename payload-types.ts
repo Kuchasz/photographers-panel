@@ -81,6 +81,7 @@ export interface Config {
     'opinion-media': OpinionMedia;
     photos: Photo;
     'instagram-tokens': InstagramToken;
+    'website-inquiries': WebsiteInquiry;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -105,6 +106,7 @@ export interface Config {
     'opinion-media': OpinionMediaSelect<false> | OpinionMediaSelect<true>;
     photos: PhotosSelect<false> | PhotosSelect<true>;
     'instagram-tokens': InstagramTokensSelect<false> | InstagramTokensSelect<true>;
+    'website-inquiries': WebsiteInquiriesSelect<false> | WebsiteInquiriesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -168,8 +170,17 @@ export interface User {
  */
 export interface PrivateGallery {
   id: number;
+  /**
+   * Title displayed at the top of the gallery
+   */
   title: string;
+  /**
+   * Date of the wedding
+   */
   date: string;
+  /**
+   * Draft: Gallery is not visible to clients. Published: Gallery is visible to clients with password. Archived: Gallery is no longer accessible.
+   */
   state: 'draft' | 'published' | 'archived';
   /**
    * Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number
@@ -179,32 +190,19 @@ export interface PrivateGallery {
    * URL must start with https://
    */
   directPath: string;
+  /**
+   * Internal notes for administrative purposes
+   */
   notes?: string | null;
   /**
-   * Related visits to this gallery
+   * Main photo displayed at the top of the gallery
    */
+  photo?: (number | null) | PrivateGalleryPhoto;
   galleryVisits?: {
     docs?: (number | PrivateGalleryVisit)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  /**
-   * Main photo displayed at the top of the gallery
-   */
-  photo?: (number | null) | PrivateGalleryPhoto;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "private-gallery-visits".
- */
-export interface PrivateGalleryVisit {
-  id: number;
-  ip?: string | null;
-  date?: string | null;
-  userAgent?: string | null;
-  gallery?: (number | null) | PrivateGallery;
   updatedAt: string;
   createdAt: string;
 }
@@ -244,6 +242,19 @@ export interface PrivateGalleryPhoto {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "private-gallery-visits".
+ */
+export interface PrivateGalleryVisit {
+  id: number;
+  ip?: string | null;
+  date?: string | null;
+  userAgent?: string | null;
+  gallery?: (number | null) | PrivateGallery;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -503,6 +514,23 @@ export interface InstagramToken {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website-inquiries".
+ */
+export interface WebsiteInquiry {
+  id: number;
+  name: string;
+  email: string;
+  weddingDate?: string | null;
+  weddingPlace?: string | null;
+  weddingVenue?: string | null;
+  howDidYouHear?: string | null;
+  additionalDetails?: string | null;
+  date: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -563,6 +591,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'instagram-tokens';
         value: number | InstagramToken;
+      } | null)
+    | ({
+        relationTo: 'website-inquiries';
+        value: number | WebsiteInquiry;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -632,8 +664,8 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   password?: T;
   directPath?: T;
   notes?: T;
-  galleryVisits?: T;
   photo?: T;
+  galleryVisits?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -927,6 +959,22 @@ export interface InstagramTokensSelect<T extends boolean = true> {
   label?: T;
   expiresAt?: T;
   accessToken?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "website-inquiries_select".
+ */
+export interface WebsiteInquiriesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  weddingDate?: T;
+  weddingPlace?: T;
+  weddingVenue?: T;
+  howDidYouHear?: T;
+  additionalDetails?: T;
+  date?: T;
   updatedAt?: T;
   createdAt?: T;
 }
