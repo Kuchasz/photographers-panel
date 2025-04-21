@@ -39,6 +39,10 @@ const styles = `
 .animate-title-zoom {
   animation: titleZoom 20s ease-in-out infinite;
 }
+
+.aspect-2-3 {
+  aspect-ratio: 2/3;
+}
 `;
 
 type PrivateGalleryClientPageProps = {
@@ -73,7 +77,7 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ga
   return (
     <>
       <style jsx>{styles}</style>
-      <div className="relative flex flex-col align-center w-full bg-gold-600 px-4 md:px-24 lg:px-36 pb-12 md:pb-36 h-[60vh] md:h-[80vh] mb-12 md:mb-18 overflow-hidden">
+      <div className="relative flex flex-col align-center w-full bg-gold-300 px-4 md:px-24 lg:px-36 pb-12 md:pb-16 h-[60vh] min-h-dvh mb-12 md:mb-16 overflow-hidden">
         <div className="flex sm:hidden gap-2 flex-col py-6 md:py-12 text-lg text-white/90">
           <p className="text-xs md:text-xs mr-6 md:mr-24 font-bold uppercase tracking-[0.3em] md:tracking-[0.4em]">{strings.pageTitles.private}</p>
           <span className="w-24 h-0.5 bg-white/90 rounded-full"></span>
@@ -93,14 +97,14 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ga
           )}
         </div>
         {photo && (
-          <div className="aspect-square overflow-hidden h-full relative">
+          <div className="aspect-2-3 overflow-hidden h-full relative mx-auto">
             <img
               src={photo.sizes?.big?.url || photo.url}
               alt={photo.alt || ''}
               className="w-full h-full object-cover animate-photo-zoom"
             />
             <div className="absolute inset-0 bg-black/40">
-              <div className="absolute top-[66%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4">
+              <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4">
                 <div className="animate-title-zoom">
                   <SectionTitle
                     title={displayTitle}
