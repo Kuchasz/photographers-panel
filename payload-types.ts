@@ -276,7 +276,7 @@ export interface PrivateGalleryAuthToken {
 export interface PrivateGalleryMediaDownload {
   id: number;
   /**
-   * ID or filename of the downloaded media
+   * Full URL of the downloaded media
    */
   mediaId: string;
   /**

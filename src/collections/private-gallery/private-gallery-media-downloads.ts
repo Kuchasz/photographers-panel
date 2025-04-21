@@ -22,11 +22,11 @@ export const PrivateGalleryMediaDownloads: CollectionConfig = {
       type: 'text',
       required: true,
       label: {
-        en: 'Media ID',
-        pl: 'ID zdjęcia',
+        en: 'Media URL',
+        pl: 'URL zdjęcia',
       },
       admin: {
-        description: 'ID or filename of the downloaded media',
+        description: 'Full URL of the downloaded media',
       },
     },
     {

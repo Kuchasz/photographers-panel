@@ -143,7 +143,7 @@ export async function downloadPhotoWithCors(imageDownloadUrl: string, token: str
     await payload.create({
       collection: PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG,
       data: {
-        mediaId: photoId,
+        mediaId: imageDownloadUrl,
         gallery: tokenData!.galleryId,
         token: tokenData!.authToken.id,
         date: new Date().toISOString(),
