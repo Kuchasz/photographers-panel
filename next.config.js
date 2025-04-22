@@ -15,6 +15,18 @@ const config = {
                 hostname: 'ps-wed.azurewebsites.net',
                 protocol: 'https',
             },
+            {
+                hostname: 'pyszstudio.pl',
+                protocol: 'https',
+            },
+            {
+                hostname: 'test.pyszstudio.pl',
+                protocol: 'https',
+            },
+            {
+                hostname: 'staging.pyszstudio.pl',
+                protocol: 'https',
+            },
         ],
     },
 };
