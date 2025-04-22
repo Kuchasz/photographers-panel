@@ -47,7 +47,8 @@ echo "⚙️ Copying environment file..."
 cp ../../env-vars/test.pyszstudio.pl.env .env
 
 echo "🔧 Installing dependencies..."
-pnpm install
+pnpm rebuild sharp
+pnpm install --ignore-scripts
 
 echo "🔄 Restarting web service..."
 devil www restart test.pyszstudio.pl
