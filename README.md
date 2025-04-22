@@ -1,61 +1,33 @@
 # Photographers Panel
 
-This is a monorepo managed with pnpm workspaces.
+A professional website for a wedding photographer and videographer. This project showcases a portfolio of wedding photography and videography work, allowing potential clients to view galleries, learn about services, and get in touch for bookings.
 
-## Setup
+## Project Overview
 
-1. Install pnpm if you don't have it already:
-   ```bash
-   npm install -g pnpm
-   ```
+This website is built with modern web technologies:
+- Next.js for the frontend
+- PayloadCMS for content management
+- TypeScript for type safety
+- pnpm for package management
 
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
+The website is currently live at [pyszstudio.pl](https://pyszstudio.pl)
 
-## Development
+## Project Structure
 
-- Run all packages in watch mode:
-  ```bash
-  pnpm run watch
-  ```
+The project follows a monorepo structure with the following key directories:
 
-- Run a specific package:
-  ```bash
-  pnpm run watch --filter=@pp/web
-  ```
-
-- Build all packages:
-  ```bash
-  pnpm run build
-  ```
-
-- Build a specific package:
-  ```bash
-  pnpm run build --filter=@pp/web
-  ```
-
-## Adding dependencies
-
-- Add a dependency to a specific package:
-  ```bash
-  pnpm add <package> --filter=@pp/<package-name>
-  ```
-
-- Add a dependency to all packages:
-  ```bash
-  pnpm add <package> -w
-  ```
-
-- Add a workspace package as a dependency:
-  ```bash
-  pnpm add @pp/<package-name> --filter=@pp/<target-package> --workspace
-  ```
-
-## Migration from npm
-
-If you're migrating from npm, run the migration script:
-```bash
-./migrate-to-pnpm.sh
 ```
+src/
+├── access/                    # Access functions for payload collections
+├── app/                      # Next.js app directory
+├── collections/              # PayloadCMS collection definitions
+├── components/               # Shared components
+├── lib/                      # Utility functions and types
+└── resources/                # Translation resources
+```
+
+## Contributing
+
+1. Create a new branch for your feature
+2. Make your changes
+3. Submit a pull request
