@@ -6,6 +6,7 @@ import { strings } from "~/resources";
 import { useParams } from "next/navigation";
 import { downloadPhotoWithCors } from "./actions";
 import { saveBlobAsDownload } from "~/lib/file";
+import { useRef } from "react";
 
 const styles = `
 @keyframes photoZoom {
@@ -32,6 +33,18 @@ const styles = `
   }
 }
 
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
 .animate-photo-zoom {
   animation: photoZoom 20s ease-in-out infinite;
 }
@@ -41,7 +54,11 @@ const styles = `
 }
 
 .aspect-2-3 {
-  aspect-ratio: 2/3;
+  max-aspect-ratio: 3/2;
+}
+
+.bounce-arrow {
+  animation: bounce 2s infinite;
 }
 `;
 
@@ -54,6 +71,7 @@ type PrivateGalleryClientPageProps = {
 
 export default function PrivateGalleryClientPage({ photos, galleryTitle = '', galleryDate = '', photo }: PrivateGalleryClientPageProps) {
   const { token } = useParams<{ token: string }>();
+  const photosRef = useRef<HTMLDivElement>(null);
 
   const handleDownload = async (photo: Photo) => {
     try {
@@ -65,6 +83,10 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ga
     } catch (error) {
       console.error('Error during photo download:', error);
     }
+  };
+
+  const scrollToPhotos = () => {
+    photosRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const displayTitle = galleryTitle || strings.privateGallery.title;
@@ -125,9 +147,31 @@ export default function PrivateGalleryClientPage({ photos, galleryTitle = '', ga
             </div>
           </div>
         )}
+        <div 
+          onClick={scrollToPhotos}
+          className="absolute bottom-24 left-1/2 -translate-x-1/2 text-white/80 cursor-pointer group"
+        >
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/80 hover:bg-white/10 transition-colors">
+            <span className="text-sm font-medium ml-1">Zobacz zdjęcia</span>
+            <svg 
+              className="w-4 h-4 bounce-arrow" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+              />
+            </svg>
+          </div>
+        </div>
       </div>
 
-      <div className="container mx-auto px-4">
+      <div ref={photosRef} className="container mx-auto px-4">
         {photos.length === 0 ? (
           <div className="py-12 text-center">
             <p className="text-lg text-stone-600">
