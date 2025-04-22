@@ -60,6 +60,7 @@ jobs:
                   cp -r public .next/standalone/
                   cp -r .next/static .next/standalone/.next/
                   cp app.js .next/standalone/
+                  cp next.config.js .next/standalone/
                   mv .next/standalone/server.js .next/standalone/server.mjs
                   sed -i 's/"type": "module"/"type": "commonjs"/' .next/standalone/package.json
 
