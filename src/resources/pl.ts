@@ -24,13 +24,12 @@ export const pl = {
     },
     main: {
         topPhotos: [
-            'andrychow-fotografia-slubna-32',
-            'andrychow-fotografia-slubna-78',
-            'andrychow-fotografia-slubna-90',
-            'andrychow-fotografia-slubna-92',
-            'andrychow-fotografia-slubna-95',
-            'andrychow-fotografia-slubna-239',
-            'andrychow-fotografia-slubna-243'
+            '8be0facf-3e14-4bc4-9c9a-6a921009bd43-1920x1371',
+            '42b09d19-613b-4af6-9d45-f20c9f871b0d',
+            '1577f601-4e4f-4a75-aaca-4e24187398f8-1920x1371',
+            'd6829e56-d032-4d9a-9b4f-369cccdd1c0b-1920x1371',
+            '45002503-9c00-474b-8695-1ff3b7858f65',
+            'abf401c3-fff0-4d82-8fb5-26c91e715c7f'
         ],
         hero: {
             embrace: 'Witamy',
