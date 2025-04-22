@@ -65,6 +65,11 @@
         "typescript": "5.8.3",
         "sharp": "0.32.6"
     },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "sharp"
+        ]
+    },
     "peerDependencies": {
         "react": "19.1.0",
         "react-dom": "19.1.0"
