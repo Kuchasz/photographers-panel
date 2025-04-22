@@ -19,7 +19,7 @@ interface ImageCarouselProps {
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }) => {
     const [{ currentPhoto, prevPhoto }, setCurrentPhoto] = React.useState({
-        prevPhoto: last(photos) as string,
+        prevPhoto: null as string | null,
         currentPhoto: first(photos) as string,
     });
     const [scrollY, setScrollY] = React.useState(0);
@@ -57,20 +57,22 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }
 
     return (
         <div className="relative w-full h-full overflow-hidden">
-            <picture
-                key={prevPhoto}
-                className="absolute contrast-85 inset-0"
-                style={{ transform: parallaxTransform }}>
-                <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
-                {/* <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} /> */}
-                <img
-                    alt={prevPhoto.split('-').join(' ')}
-                    className="w-full h-full object-center object-cover"
-                    src={getSrc(prevPhoto, '.jpg')} />
-            </picture>
+            {prevPhoto && (
+                <picture
+                    key={prevPhoto}
+                    className="absolute contrast-85 inset-0"
+                    style={{ transform: parallaxTransform }}>
+                    <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
+                    {/* <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} /> */}
+                    <img
+                        alt={prevPhoto.split('-').join(' ')}
+                        className="w-full h-full object-center object-cover"
+                        src={getSrc(prevPhoto, '.jpg')} />
+                </picture>
+            )}
             <picture
                 key={currentPhoto}
-                className="absolute contrast-85 inset-0 animate-fade"
+                className={`absolute contrast-85 inset-0 ${!prevPhoto ? 'animate-fadeIn' : 'animate-fade'}`}
                 style={{ transform: parallaxTransform }}>
                 <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.jpg')} />
                 {/* <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, '-600w.webp')} /> */}
