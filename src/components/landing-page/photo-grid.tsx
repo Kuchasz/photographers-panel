@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { type Photo } from "~/app/(landing-page)/actions";
 import { strings } from "~/resources";
 import { Button } from "~/components/button";
@@ -156,10 +157,13 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                                 onClick={() => handlePhotoClick(index)}
                             >
                                 <div className="relative h-full overflow-hidden">
-                                    <img
+                                    <Image
                                         src={photo.url}
                                         alt={photo.alt}
-                                        className="h-full w-full object-contain"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        className="object-contain"
+                                        priority={index === currentIndex}
                                     />
                                 </div>
                             </div>
