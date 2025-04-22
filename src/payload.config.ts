@@ -2,7 +2,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 // import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import path from 'path'
 import { buildConfig } from 'payload'
-// import sharp from 'sharp'
+import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { en } from '@payloadcms/translations/languages/en'
 import { pl } from '@payloadcms/translations/languages/pl'
@@ -85,7 +85,7 @@ export default buildConfig({
     },
     prodMigrations: migrations
   }),
-  // sharp,
+  sharp,
   plugins: [
     // payloadCloudPlugin(),
     // storage-adapter-placeholder
