@@ -5,87 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { type MenuItem, menuItems } from "~/menu-items";
-import { Headers } from "./headers";
-import { strings } from "../resources";
+import { Headers } from "../headers";
+import { strings } from "../../resources";
 import { routes } from "~/routes";
-import { Button } from "./button";
-
-const getSrc = (photo: string, ext: string) => `/images/top/${photo}${ext}`;
-
-interface ImageCarouselProps {
-    photos: string[];
-    interval?: number;
-}
-
-const ImageCarousel: React.FC<ImageCarouselProps> = ({ photos, interval = 5000 }) => {
-    const [{ currentPhoto, prevPhoto }, setCurrentPhoto] = React.useState({
-        prevPhoto: null as string | null,
-        currentPhoto: first(photos) as string,
-    });
-    const [scrollY, setScrollY] = React.useState(0);
-
-    // Track current photo for carousel
-    React.useEffect(() => {
-        const timer = setTimeout(() => {
-            const nextPhoto = nextElement(photos, currentPhoto) as string;
-            setCurrentPhoto({ currentPhoto: nextPhoto, prevPhoto: currentPhoto });
-        }, interval);
-
-        return () => clearTimeout(timer);
-    }, [currentPhoto, photos, interval]);
-
-    // Track scroll position for parallax effect
-    React.useEffect(() => {
-        const handleScroll = () => {
-            setScrollY(window.scrollY);
-        };
-
-        // Add scroll event listener
-        window.addEventListener('scroll', handleScroll, { passive: true });
-
-        // Get initial scroll position
-        handleScroll();
-
-        // Clean up
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    // Calculate parallax transform (subtle movement)
-    const parallaxTransform = `translateY(${scrollY * 0.35}px)`;
-
-    return (
-        <div className="relative w-full h-full overflow-hidden">
-            {prevPhoto && (
-                <picture
-                    key={prevPhoto}
-                    className="absolute contrast-85 inset-0"
-                    style={{ transform: parallaxTransform }}>
-                    <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
-                    {/* <source media="(max-width: 699px)" srcSet={getSrc(prevPhoto, '-600w.webp')} /> */}
-                    <img
-                        alt={prevPhoto.split('-').join(' ')}
-                        className="w-full h-full object-center object-cover"
-                        src={getSrc(prevPhoto, '.jpg')} />
-                </picture>
-            )}
-            <picture
-                key={currentPhoto}
-                className={`absolute contrast-85 inset-0 ${!prevPhoto ? 'animate-fadeIn' : 'animate-fade'}`}
-                style={{ transform: parallaxTransform }}>
-                <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.jpg')} />
-                {/* <source media="(max-width: 699px)" srcSet={getSrc(currentPhoto, '-600w.webp')} /> */}
-                <img
-                    alt={currentPhoto.split('-').join(' ')}
-                    className="w-full h-full object-center object-cover"
-                    src={getSrc(currentPhoto, '.jpg')} />
-            </picture>
-            <div className="absolute inset-0 bg-black/20"></div>
-            {/* <div className="absolute h-1/4 inset-0 bg-gradient-to-t from-transparent to-black"></div> */}
-        </div>
-    );
-};
+import { Button } from "../button";
+import { HeadImageCarousel } from "./head-image-carousel";
 
 // Enhanced navigation link component for consistent styling
 const NavLink = ({
@@ -415,7 +339,7 @@ export const Header = () => {
 
                 <div className="relative flex flex-col items-center overflow-hidden h-screen">
                     <div className="-z-10 absolute h-full w-full">
-                        <ImageCarousel photos={strings.main.topPhotos} />
+                        <HeadImageCarousel photos={strings.main.topPhotos} />
                     </div>
                     <nav className={`fixed top-0 left-0 right-0 w-full z-50 border-b transition-all duration-300 ${isScrolled ? 'bg-black/60 backdrop-blur-md shadow-md border-transparent' : 'border-white/10 backdrop-blur-sm'}`}>
                         <div className="container mx-auto flex flex-col items-center gap-6 px-4 py-6 md:flex-row md:justify-between md:gap-8 md:py-6 lg:px-12">
@@ -484,4 +408,4 @@ export const Header = () => {
             />
         </div>
     );
-};
+}; 
