@@ -16,6 +16,14 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
     });
     const [scrollY, setScrollY] = React.useState(0);
 
+    // Preload all images
+    React.useEffect(() => {
+        photos.forEach(photo => {
+            const img = new Image();
+            img.src = getSrc(photo, '.jpg');
+        });
+    }, [photos]);
+
     // Track current photo for carousel
     React.useEffect(() => {
         const timer = setTimeout(() => {
@@ -49,6 +57,18 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
 
     return (
         <div className="relative w-full h-full overflow-hidden">
+            {/* Hidden preload images */}
+            <div className="hidden">
+                {photos.map(photo => (
+                    <img
+                        key={photo}
+                        src={getSrc(photo, '.jpg')}
+                        alt=""
+                        loading="eager"
+                    />
+                ))}
+            </div>
+
             {prevPhoto && (
                 <picture
                     key={prevPhoto}
@@ -58,7 +78,8 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                     <img
                         alt={prevPhoto.split('-').join(' ')}
                         className="w-full h-full object-center object-cover"
-                        src={getSrc(prevPhoto, '.jpg')} />
+                        src={getSrc(prevPhoto, '.jpg')}
+                        loading="eager" />
                 </picture>
             )}
             <picture
@@ -69,7 +90,8 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                 <img
                     alt={currentPhoto.split('-').join(' ')}
                     className="w-full h-full object-center object-cover"
-                    src={getSrc(currentPhoto, '.jpg')} />
+                    src={getSrc(currentPhoto, '.jpg')}
+                    loading="eager" />
             </picture>
             <div className="absolute inset-0 bg-black/20"></div>
         </div>
