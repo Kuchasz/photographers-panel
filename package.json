@@ -20,13 +20,6 @@
         "> 1%",
         "Chrome > 65"
     ],
-    "overrides": {
-        "@types/react": "19.1.0",
-        "@types/react-dom": "19.1.2",
-        "react": "19.1.0",
-        "react-dom": "19.1.0",
-        "sharp": "0.32.6"
-    },
     "dependencies": {
         "@payloadcms/db-postgres": "3.35.1",
         "@payloadcms/next": "3.35.1",
@@ -67,7 +60,14 @@
         "onlyBuiltDependencies": [
             "sharp",
             "esbuild"
-        ]
+        ],
+        "overrides": {
+            "@types/react": "19.1.0",
+            "@types/react-dom": "19.1.2",
+            "react": "19.1.0",
+            "react-dom": "19.1.0",
+            "sharp": "0.32.6"
+        }
     },
     "peerDependencies": {
         "react": "19.1.0",
