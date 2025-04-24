@@ -48,7 +48,6 @@ cp ../../env-vars/test.pyszstudio.pl.env .env
 
 echo "🔧 Installing dependencies..."
 pnpm install
-npm install --cpu=wasm32 sharp
 
 echo "🔄 Restarting web service..."
 devil www restart test.pyszstudio.pl
