@@ -6,6 +6,7 @@ export const InstagramTokens: CollectionConfig = {
     admin: {
         useAsTitle: 'label',
         defaultColumns: ['label', 'createdAt'],
+        group: 'Ustawienia',
     },
     access: {
         read: () => true,
