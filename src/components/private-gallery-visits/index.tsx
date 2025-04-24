@@ -1,29 +1,8 @@
 import { type UIFieldServerProps } from 'payload';
-import { PRIVATE_GALLERY_VISITS_SLUG } from '~/collections/collectionSlugs';
-import { distinct, groupBy, range } from '~/lib/array';
-import VisitsChart from '../visits-chart';
-import styles from './styles.module.css';
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from '~/collections/collectionSlugs';
 import { strings } from '~/resources';
-
-// Helper function to format dates
-function formatDate(date: Date): string {
-    return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
-}
-
-// Helper function to format date in YYYY-MM-DD format
-function formatDateYYYYMMDD(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-
-// Helper function to subtract days from a date
-function subtractDays(date: Date, days: number): Date {
-    const result = new Date(date);
-    result.setDate(result.getDate() - days);
-    return result;
-}
+import PrivateGalleryVisitsClient from './client';
+import styles from './styles.module.css';
 
 const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps) => {
     const { id } = siblingData;
@@ -31,6 +10,21 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
     if (!id) {
         return null;
     }
+
+    // Fetch gallery data to get the wedding date
+    const gallery = await payload.findByID({
+        collection: PRIVATE_GALLERIES_SLUG,
+        id,
+    });
+
+    if (!gallery) {
+        return null;
+    }
+
+    const galleryDate = new Date(gallery.date);
+    const initialEndDate = new Date(galleryDate);
+    initialEndDate.setDate(initialEndDate.getDate() + 30);
+    const initialStartDate = galleryDate;
 
     const visits = (await payload.find({
         collection: PRIVATE_GALLERY_VISITS_SLUG,
@@ -41,7 +35,10 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
         },
         sort: 'date',
         limit: Number.MAX_SAFE_INTEGER,
-    })).docs;
+    })).docs.map(visit => ({
+        date: visit.date || new Date().toISOString(),
+        ip: visit.ip || ''
+    }));
 
     if (visits.length === 0) {
         return (
@@ -55,63 +52,13 @@ const PrivateGalleryVisits = async ({ siblingData, payload }: UIFieldServerProps
         );
     }
 
-    const endDate = new Date();
-    const startDate = subtractDays(endDate, 30);
-
-    const formattedStartDate = startDate.toISOString();
-
-    const totalVisits = visits.length;
-
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-
-    const todayVisits = visits.filter((visit) =>
-        new Date(visit.date!) >= todayStart
-    ).length;
-
-    const rangeVisits = visits.filter((visit) =>
-        new Date(visit.date!) >= new Date(formattedStartDate)
-    );
-
-    const visitsByDay = groupBy(rangeVisits, (visit) => {
-        if (visit.date) {
-            return formatDateYYYYMMDD(new Date(visit.date));
-        }
-        return '';
-    });
-
-    const dailyVisits = range(30)
-        .map(i => formatDateYYYYMMDD(subtractDays(endDate, 29 - i)))
-        .map(day => {
-            const dayVisits = visitsByDay[day] ?? [];
-            const uniqueVisitors = distinct(dayVisits.map(visit => visit.ip)).length;
-
-            return {
-                date: formatDate(new Date(day)),
-                visits: dayVisits.length,
-                uniqueVisitors,
-            };
-        });
-
     return (
-        <div className={styles.container}>
-            <div className={styles.statsGrid}>
-                <div className={styles.statsCard}>
-                    <h3 className={styles.statsTitle}>{strings.admin.privateGalleryVisits.todaysVisits}</h3>
-                    <p className={styles.statsValue}>{todayVisits}</p>
-                </div>
-                <div className={styles.statsCard}>
-                    <h3 className={styles.statsTitle}>{strings.admin.privateGalleryVisits.totalVisits}</h3>
-                    <p className={styles.statsValue}>{totalVisits}</p>
-                </div>
-            </div>
-
-            <VisitsChart
-                data={dailyVisits}
-                title={strings.admin.privateGalleryVisits.trafficAnalysis}
-                subtitle={`${strings.admin.privateGalleryVisits.lastDays} (${formatDate(startDate)} - ${formatDate(endDate)})`}
-            />
-        </div>
+        <PrivateGalleryVisitsClient
+            initialStartDate={initialStartDate}
+            initialEndDate={initialEndDate}
+            galleryDate={galleryDate}
+            visits={visits}
+        />
     );
 }
 

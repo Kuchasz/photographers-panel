@@ -49,3 +49,9 @@ export const getDateRange = (startDate: Date, endDate: Date) => {
 };
 
 export const getYear = (date: Date) => date.getFullYear();
+
+export const subtractDays = (date: Date, days: number): Date => {
+    const result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+} 

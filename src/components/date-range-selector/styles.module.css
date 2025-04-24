@@ -1,0 +1,39 @@
+.dateRangeContainer {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: flex-end;
+}
+
+.dateInputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dateInputGroup label {
+    font-size: 0.875rem;
+    color: var(--theme-elevation-600);
+}
+
+/* Target the date picker container */
+.dateInputGroup :global(.date-picker) {
+    width: 100%;
+}
+
+/* Target the input inside the date picker */
+.dateInputGroup :global(.date-picker input) {
+    padding: 8px 12px;
+    border: 1px solid var(--theme-elevation-300);
+    border-radius: 4px;
+    background-color: var(--theme-elevation-100);
+    color: var(--theme-elevation-900);
+    font-size: 0.875rem;
+    width: 100%;
+}
+
+.dateInputGroup :global(.date-picker input:focus) {
+    outline: none;
+    border-color: var(--theme-elevation-400);
+    box-shadow: 0 0 0 2px var(--theme-elevation-200);
+} 

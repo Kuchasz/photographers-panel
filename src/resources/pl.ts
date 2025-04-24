@@ -414,6 +414,10 @@ export const pl = {
             trafficAnalysis: 'Analiza ruchu na stronie',
             lastDays: 'Ostatnie 30 dni',
             errorMessage: 'Nie udało się załadować danych o odwiedzinach. Spróbuj ponownie później.'
+        },
+        dateRange: {
+            startDate: 'Data początkowa',
+            endDate: 'Data końcowa'
         }
     },
     offerPage: {

@@ -191,13 +191,13 @@ export interface PrivateGallery {
    */
   directPath: string;
   /**
-   * Internal notes for administrative purposes
-   */
-  notes?: string | null;
-  /**
    * Main photo displayed at the top of the gallery
    */
   photo?: (number | null) | PrivateGalleryPhoto;
+  /**
+   * Internal notes for administrative purposes
+   */
+  notes?: string | null;
   galleryVisits?: {
     docs?: (number | PrivateGalleryVisit)[];
     hasNextPage?: boolean;
@@ -663,8 +663,8 @@ export interface PrivateGalleriesSelect<T extends boolean = true> {
   state?: T;
   password?: T;
   directPath?: T;
-  notes?: T;
   photo?: T;
+  notes?: T;
   galleryVisits?: T;
   updatedAt?: T;
   createdAt?: T;
