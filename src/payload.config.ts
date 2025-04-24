@@ -85,7 +85,7 @@ export default buildConfig({
     },
     prodMigrations: migrations
   }),
-  sharp,
+  sharp: sharp as any,
   plugins: [
     // payloadCloudPlugin(),
     // storage-adapter-placeholder
