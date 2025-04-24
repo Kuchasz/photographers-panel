@@ -1,6 +1,7 @@
 'use client';
 import { first, nextElement } from "~/lib/array";
 import React from "react";
+import Image from "next/image";
 
 const getSrc = (photo: string, ext: string) => `/images/top/${photo}${ext}`;
 
@@ -15,14 +16,6 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
         currentPhoto: first(photos) as string,
     });
     const [scrollY, setScrollY] = React.useState(0);
-
-    // Preload all images
-    React.useEffect(() => {
-        photos.forEach(photo => {
-            const img = new Image();
-            img.src = getSrc(photo, '.jpg');
-        });
-    }, [photos]);
 
     // Track current photo for carousel
     React.useEffect(() => {
@@ -57,17 +50,21 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
 
     return (
         <div className="relative w-full h-full overflow-hidden">
-            {/* Hidden preload images */}
-            <div className="hidden">
-                {photos.map(photo => (
-                    <img
-                        key={photo}
-                        src={getSrc(photo, '.jpg')}
-                        alt=""
-                        loading="eager"
-                    />
-                ))}
-            </div>
+            {/* Hidden preload image */}
+            {(() => {
+                const nextPhoto = nextElement(photos, currentPhoto);
+                return nextPhoto && (
+                    <div className="hidden absolute inset-0">
+                        <Image
+                            alt=""
+                            src={getSrc(nextPhoto, '.jpg')}
+                            width={1920}
+                            height={1080}
+                            priority
+                        />
+                    </div>
+                );
+            })()}
 
             {prevPhoto && (
                 <picture
@@ -75,11 +72,14 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                     className="absolute contrast-85 inset-0"
                     style={{ transform: parallaxTransform }}>
                     <source media="(min-width: 700px)" srcSet={getSrc(prevPhoto, '.jpg')} />
-                    <img
+                    <Image
                         alt={prevPhoto.split('-').join(' ')}
                         className="w-full h-full object-center object-cover"
                         src={getSrc(prevPhoto, '.jpg')}
-                        loading="eager" />
+                        width={1920}
+                        height={1080}
+                        priority
+                    />
                 </picture>
             )}
             <picture
@@ -87,11 +87,14 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                 className={`absolute contrast-85 inset-0 ${!prevPhoto ? 'animate-fadeIn' : 'animate-fade'}`}
                 style={{ transform: parallaxTransform }}>
                 <source media="(min-width: 700px)" srcSet={getSrc(currentPhoto, '.jpg')} />
-                <img
+                <Image
                     alt={currentPhoto.split('-').join(' ')}
                     className="w-full h-full object-center object-cover"
                     src={getSrc(currentPhoto, '.jpg')}
-                    loading="eager" />
+                    width={1920}
+                    height={1080}
+                    priority
+                />
             </picture>
             <div className="absolute inset-0 bg-black/20"></div>
         </div>

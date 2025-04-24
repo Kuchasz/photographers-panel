@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { type Photo } from './photo-tile';
 import { strings } from '../../resources';
 import { PhotoDownloadButton } from './photo-download-button';
+import Image from 'next/image';
 
 type LightboxProps = {
     photos: Photo[];
@@ -156,25 +157,6 @@ export function PhotoLightbox({
         }
     };
 
-    // Preload adjacent images to leverage browser cache
-    useEffect(() => {
-        if (!isOpen) return;
-
-        const nextIndex = (selectedPhotoIndex + 1) % photos.length;
-        const prevIndex = (selectedPhotoIndex - 1 + photos.length) % photos.length;
-
-        // Preload next and previous images
-        if (photos[nextIndex]) {
-            const nextImg = new window.Image();
-            nextImg.src = photos[nextIndex].sizes?.big?.url || photos[nextIndex].url;
-        }
-
-        if (photos[prevIndex]) {
-            const prevImg = new window.Image();
-            prevImg.src = photos[prevIndex].sizes?.big?.url || photos[prevIndex].url;
-        }
-    }, [selectedPhotoIndex, isOpen, photos]);
-
     // Clean up any timers when component unmounts
     useEffect(() => {
         return () => {
@@ -197,6 +179,11 @@ export function PhotoLightbox({
 
     if (!isOpen || !selectedPhoto) return null;
 
+    const nextIndex = (selectedPhotoIndex + 1) % photos.length;
+    const prevIndex = (selectedPhotoIndex - 1 + photos.length) % photos.length;
+    const nextPhoto = photos[nextIndex];
+    const prevPhoto = photos[prevIndex];
+
     return (
         <div
             ref={lightboxRef}
@@ -204,6 +191,30 @@ export function PhotoLightbox({
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >
+            {/* Hidden preload images */}
+            {nextPhoto && (
+                <div className="hidden absolute inset-0">
+                    <Image
+                        src={nextPhoto.sizes?.big?.url || nextPhoto.url}
+                        alt=""
+                        fill
+                        sizes="100vw"
+                        priority
+                    />
+                </div>
+            )}
+            {prevPhoto && (
+                <div className="hidden absolute inset-0">
+                    <Image
+                        src={prevPhoto.sizes?.big?.url || prevPhoto.url}
+                        alt=""
+                        fill
+                        sizes="100vw"
+                        priority
+                    />
+                </div>
+            )}
+
             <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
                 {onPhotoDownload && (
                     <PhotoDownloadButton
@@ -248,12 +259,15 @@ export function PhotoLightbox({
                 )}
 
                 <div className={`relative w-full h-full ${skipAnimation ? '' : 'transition-opacity duration-500'} ${showImage ? 'opacity-100' : 'opacity-0'}`}>
-                    <img
+                    <Image
                         ref={imageRef}
                         src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                         alt={selectedPhoto.alt}
-                        className={`w-full h-full object-contain ${skipAnimation ? '' : 'transition-transform duration-500'} ${showImage ? 'scale-100' : 'scale-[0.98]'}`}
-                        onLoad={handleImageLoaded}
+                        fill
+                        sizes="100vw"
+                        className={`object-contain ${skipAnimation ? '' : 'transition-transform duration-500'} ${showImage ? 'scale-100' : 'scale-[0.98]'}`}
+                        onLoadingComplete={handleImageLoaded}
+                        priority
                     />
                 </div>
             </div>
