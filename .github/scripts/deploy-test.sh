@@ -48,7 +48,7 @@ cp ../../env-vars/test.pyszstudio.pl.env .env
 
 echo "🔧 Installing dependencies..."
 pnpm install
-pnpm install sharp@0.32.6
+pnpm install sharp@0.32.6 --build-scripts
 
 echo "🔄 Restarting web service..."
 devil www restart test.pyszstudio.pl
