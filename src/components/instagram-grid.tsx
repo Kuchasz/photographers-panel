@@ -37,7 +37,7 @@ export function InstagramGrid({ posts, maxPosts = 6 }: InstagramGridProps) {
                         >
                             <img
                                 src={post.thumbnail_url ?? post.media_url}
-                                alt={post.caption ?? "Instagram post"}
+                                alt={`Instagram post ${post.id}`}
                                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                             />
 

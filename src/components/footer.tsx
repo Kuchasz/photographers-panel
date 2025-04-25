@@ -86,8 +86,8 @@ export async function Footer() {
                 </div>
 
                 {/* Quick Links */}
-                <div className="mt-8 md:mt-0">
-                    <h4 className="text-lg font-medium text-stone-800 mb-4 text-center md:text-left">{strings.footer.quickLinks}</h4>
+                <div className="mt-8 md:mt-0 flex flex-col items-center md:items-start">
+                    <span className="text-lg font-medium text-stone-800 mb-4 text-center md:text-left">{strings.footer.quickLinks}</span>
                     <ul className="space-y-3 font-light flex flex-col items-center md:items-start">
                         <li>
                             <Link href="/" className="text-stone-600 hover:text-gold-500 transition duration-200">
@@ -123,8 +123,8 @@ export async function Footer() {
                 </div>
 
                 {/* Contact Info */}
-                <div className="mt-8 lg:mt-0">
-                    <h4 className="text-lg font-medium text-stone-800 mb-4 text-center md:text-left">{strings.footer.contact}</h4>
+                <div className="mt-8 lg:mt-0 flex flex-col items-center md:items-start">
+                    <span className="text-lg font-medium text-stone-800 mb-4 text-center md:text-left">{strings.footer.contact}</span>
                     <ul className="space-y-4 font-light flex flex-col items-center md:items-start">
                         <li className="flex items-start">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mt-0.5 mr-3 text-gold-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
