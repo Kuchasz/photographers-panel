@@ -13,10 +13,8 @@ export const Button = ({
     className = "",
     variant = 'default'
 }: ButtonProps) => {
-    // Common styles for all variants
     const commonStyles = "inline-block rounded-md font-medium uppercase tracking-wide transition duration-300 hover:shadow-md px-8 py-3 text-center sm:text-left";
 
-    // Variant-specific styles
     const variantStyles =
         variant === 'hero' || variant === 'default'
             ? "bg-gold-500/90 text-white font-light hover:bg-gold-600"

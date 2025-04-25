@@ -142,7 +142,7 @@ export default async function Home() {
                         ❤
                       </span>
                       <div>
-                        <h4 className="font-medium text-stone-900">{item.title}</h4>
+                        <span className="font-medium text-stone-900">{item.title}</span>
                         <p className="font-light text-sm leading-relaxed text-stone-600">{item.description}</p>
                       </div>
                     </li>
@@ -159,7 +159,7 @@ export default async function Home() {
                         ❤
                       </span>
                       <div>
-                        <h4 className="font-medium text-stone-900">{item.title}</h4>
+                        <span className="font-medium text-stone-900">{item.title}</span>
                         <p className="font-light text-sm leading-relaxed text-stone-600">{item.description}</p>
                       </div>
                     </li>
