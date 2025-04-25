@@ -47,7 +47,7 @@ echo "⚙️ Copying environment file..."
 cp ../../env-vars/test.pyszstudio.pl.env .env
 
 echo "🔧 Installing dependencies..."
-rm -rf node_modules/.pnpm/sharp
+rm -rf node_modules
 pnpm install
 
 echo "🔄 Restarting web service..."
