@@ -22,6 +22,14 @@ const config = {
                 hostname: 'staging.pyszstudio.pl',
                 protocol: 'https',
             },
+            {
+                hostname: '*.cdninstagram.com',
+                protocol: 'https',
+            },
+            {
+                hostname: '*.fbcdn.net',
+                protocol: 'https',
+            },
         ],
     },
 };

@@ -1,4 +1,5 @@
 import { FilmStrip, Image as ImageIcon, Images, InstagramLogo } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "~/components/button";
 import { type InstagramPost } from "~/lib/instagram";
@@ -35,10 +36,12 @@ export function InstagramGrid({ posts, maxPosts = 6 }: InstagramGridProps) {
                             rel="noopener noreferrer"
                             className="group relative overflow-hidden rounded-lg bg-stone-100 aspect-square"
                         >
-                            <img
+                            <Image
                                 src={post.thumbnail_url ?? post.media_url}
                                 alt={`Instagram post ${post.id}`}
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                fill
+                                sizes="(max-width: 768px) 33vw, 16vw"
+                                className="object-cover transition-transform duration-300 group-hover:scale-110"
                             />
 
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
