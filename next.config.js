@@ -23,11 +23,11 @@ const config = {
                 protocol: 'https',
             },
             {
-                hostname: 'cdninstagram.com',
+                hostname: '*.cdninstagram.com',
                 protocol: 'https',
             },
             {
-                hostname: 'fbcdn.net',
+                hostname: '*.fbcdn.net',
                 protocol: 'https',
             },
         ],
