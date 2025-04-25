@@ -49,7 +49,6 @@ cp ../../env-vars/pyszstudio.pl.env .env
 echo "🔧 Installing dependencies..."
 pnpm install
 
-
 echo "🔄 Restarting web service..."
 devil www restart pyszstudio.pl
 
