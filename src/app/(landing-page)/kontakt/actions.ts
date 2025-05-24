@@ -5,6 +5,7 @@ import { type SendResult } from "~/areas/message";
 import { getPayload } from "payload";
 import config from "~/payload.config";
 import { WEBSITE_INQUIRIES_SLUG } from "~/collections/collectionSlugs";
+import { isEmailBlacklisted } from "~/lib/blacklist";
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -39,6 +40,33 @@ export async function sendMessage(
 
     // Store inquiry in database
     const payload = await getPayload({ config });
+
+    // Check if email is blacklisted before sending
+    try {
+        const isBlacklisted = await isEmailBlacklisted(payload, messageData.email);
+        if (isBlacklisted) {
+            await wait(2000);
+            console.log('Email sending skipped - email is blacklisted:', messageData.email);
+            // Return success to avoid revealing that the email is blacklisted
+            return {
+                formData: {
+                    name: '',
+                    email: '',
+                    weddingDate: '',
+                    weddingPlace: '',
+                    weddingVenue: '',
+                    howDidYouHear: '',
+                    additionalDetails: '',
+                },
+                isSubmitting: false,
+                result: { type: 'success' }
+            };
+        }
+    } catch (error) {
+        console.error('Error checking blacklist:', error);
+        // Continue with email sending if blacklist check fails
+    }
+
     await payload.create({
         collection: WEBSITE_INQUIRIES_SLUG,
         data: {
@@ -51,7 +79,7 @@ export async function sendMessage(
 
     try {
         const result = await send(messageData);
-        
+
         // If successful, clear form data
         if (result.type === 'success') {
             return {

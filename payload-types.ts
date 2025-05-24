@@ -82,6 +82,7 @@ export interface Config {
     photos: Photo;
     'instagram-tokens': InstagramToken;
     'website-inquiries': WebsiteInquiry;
+    'blacklisted-emails': BlacklistedEmail;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -107,6 +108,7 @@ export interface Config {
     photos: PhotosSelect<false> | PhotosSelect<true>;
     'instagram-tokens': InstagramTokensSelect<false> | InstagramTokensSelect<true>;
     'website-inquiries': WebsiteInquiriesSelect<false> | WebsiteInquiriesSelect<true>;
+    'blacklisted-emails': BlacklistedEmailsSelect<false> | BlacklistedEmailsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -525,7 +527,30 @@ export interface WebsiteInquiry {
   weddingVenue?: string | null;
   howDidYouHear?: string | null;
   additionalDetails?: string | null;
+  /**
+   * Check this to add the email to the blacklist
+   */
+  isBlacklisted?: boolean | null;
+  blacklistReason?: ('spam' | 'invalid' | 'user-request' | 'other') | null;
   date: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blacklisted-emails".
+ */
+export interface BlacklistedEmail {
+  id: number;
+  /**
+   * Email address to blacklist from receiving notifications
+   */
+  email: string;
+  reason: 'spam' | 'invalid' | 'user-request' | 'bounced' | 'other';
+  /**
+   * Additional notes about this blacklisted email
+   */
+  notes?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -595,6 +620,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'website-inquiries';
         value: number | WebsiteInquiry;
+      } | null)
+    | ({
+        relationTo: 'blacklisted-emails';
+        value: number | BlacklistedEmail;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -974,7 +1003,20 @@ export interface WebsiteInquiriesSelect<T extends boolean = true> {
   weddingVenue?: T;
   howDidYouHear?: T;
   additionalDetails?: T;
+  isBlacklisted?: T;
+  blacklistReason?: T;
   date?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blacklisted-emails_select".
+ */
+export interface BlacklistedEmailsSelect<T extends boolean = true> {
+  email?: T;
+  reason?: T;
+  notes?: T;
   updatedAt?: T;
   createdAt?: T;
 }

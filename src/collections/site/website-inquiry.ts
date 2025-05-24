@@ -1,12 +1,13 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { WEBSITE_INQUIRIES_SLUG } from '../collectionSlugs'
+import { addEmailToBlacklist } from '~/lib/blacklist'
 
 export const WebsiteInquiry: CollectionConfig = {
   slug: WEBSITE_INQUIRIES_SLUG,
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'email', 'weddingDate', 'date'],
+    defaultColumns: ['name', 'email', 'weddingDate', 'date', 'isBlacklisted'],
     group: 'Monitoring',
   },
   labels: {
@@ -85,6 +86,65 @@ export const WebsiteInquiry: CollectionConfig = {
       },
     },
     {
+      name: 'isBlacklisted',
+      type: 'checkbox',
+      label: {
+        en: 'Blacklist Email',
+        pl: 'Zablokuj email',
+      },
+      admin: {
+        description: {
+          en: 'Check this to add the email to the blacklist',
+          pl: 'Zaznacz, aby dodać email do listy zablokowanych',
+        },
+        position: 'sidebar',
+      },
+      defaultValue: false,
+    },
+    {
+      name: 'blacklistReason',
+      type: 'select',
+      label: {
+        en: 'Blacklist Reason',
+        pl: 'Powód blokady',
+      },
+      options: [
+        {
+          label: {
+            en: 'Spam',
+            pl: 'Spam',
+          },
+          value: 'spam',
+        },
+        {
+          label: {
+            en: 'Invalid Email',
+            pl: 'Nieprawidłowy email',
+          },
+          value: 'invalid',
+        },
+        {
+          label: {
+            en: 'User Request',
+            pl: 'Prośba użytkownika',
+          },
+          value: 'user-request',
+        },
+        {
+          label: {
+            en: 'Other',
+            pl: 'Inne',
+          },
+          value: 'other',
+        },
+      ],
+      admin: {
+        condition: (data) => Boolean(data.isBlacklisted),
+        position: 'sidebar',
+      },
+      defaultValue: 'spam',
+    },
+    {
       name: 'date',
       type: 'date',
       required: true,
@@ -108,6 +168,24 @@ export const WebsiteInquiry: CollectionConfig = {
           data.date = new Date().toISOString()
         }
         return data
+      },
+    ],
+    afterChange: [
+      async ({ doc, previousDoc, req }) => {
+        // Check if isBlacklisted was just set to true
+        if (doc.isBlacklisted && !previousDoc?.isBlacklisted && doc.email) {
+          try {
+            await addEmailToBlacklist(
+              req.payload,
+              doc.email, 
+              doc.blacklistReason || 'spam',
+              `Added from website inquiry: ${doc.name}`
+            )
+            console.log('Email added to blacklist:', doc.email)
+          } catch (error) {
+            console.error('Failed to add email to blacklist:', error)
+          }
+        }
       },
     ],
   },

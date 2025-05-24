@@ -1,5 +1,8 @@
 import nodemailer from 'nodemailer';
 import { type Result } from "~/result";
+import { isEmailBlacklisted } from '~/lib/blacklist';
+import { getPayload } from 'payload';
+import config from '~/payload.config';
 
 export interface Message {
     name: string;

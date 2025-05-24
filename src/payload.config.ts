@@ -24,6 +24,7 @@ import { defaultLexical } from './fields/defaultLexical'
 import { migrations } from './migrations'
 import { PrivateGalleryPhoto } from './collections/private-gallery/private-gallery-photo'
 import { WebsiteInquiry } from './collections/site/website-inquiry'
+import { BlacklistedEmails } from './collections/site/blacklisted-emails'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,7 +66,8 @@ export default buildConfig({
     OpinionMedia,
     Photo,
     InstagramTokens,
-    WebsiteInquiry
+    WebsiteInquiry,
+    BlacklistedEmails
   ],
   globals: [
     Offer
