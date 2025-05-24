@@ -34,7 +34,7 @@ export default function ContactPage() {
         isSubmitting: false
     };
 
-    const [state, formAction] = useActionState(sendMessage, initialState);
+    const [contactFormState, contactFormAction] = useActionState(sendMessage, initialState);
 
     return (
         <PageContainer>
@@ -111,38 +111,38 @@ export default function ContactPage() {
                             className="mb-8"
                         />
 
-                        <form action={formAction} className="relative space-y-8">
-                            {state.result && (
-                                <div className={`rounded-xl border p-8 text-center ${state.result.type === 'success'
+                        <form action={contactFormAction} className="relative space-y-8">
+                            {contactFormState.result && (
+                                <div className={`rounded-xl border p-8 text-center ${contactFormState.result.type === 'success'
                                     ? 'border-green-100 bg-green-50 text-green-800'
                                     : 'border-red-100 bg-red-50 text-red-800'}`}>
                                     <h3 className="text-xl font-medium mb-4">
-                                        {state.result.type === 'success'
+                                        {contactFormState.result.type === 'success'
                                             ? strings.contact.form.success.title
                                             : strings.contact.form.error.title}
                                     </h3>
                                     <p className="text-base">
-                                        {state.result.type === 'success'
+                                        {contactFormState.result.type === 'success'
                                             ? strings.contact.form.success.message
                                             : strings.contact.form.error.message}
                                     </p>
-                                    {state.result.type === 'error' && (
+                                    {contactFormState.result.type === 'error' && (
                                         <div className="mt-8 space-y-4">
-                                            <a 
+                                            <a
                                                 href={strings.contact.form.error.contactMethods.phone.href}
                                                 className="flex items-center space-x-3 text-stone-700 bg-white p-3 rounded-lg shadow-sm border border-red-50 hover:bg-red-50 transition-colors"
                                             >
                                                 <Phone size={20} weight="light" className="text-red-500" />
                                                 <span>{strings.contact.form.error.contactMethods.phone.text}</span>
                                             </a>
-                                            <a 
+                                            <a
                                                 href={strings.contact.form.error.contactMethods.email.href}
                                                 className="flex items-center space-x-3 text-stone-700 bg-white p-3 rounded-lg shadow-sm border border-red-50 hover:bg-red-50 transition-colors"
                                             >
                                                 <Envelope size={20} weight="light" className="text-red-500" />
                                                 <span>{strings.contact.form.error.contactMethods.email.text}</span>
                                             </a>
-                                            <a 
+                                            <a
                                                 href={strings.contact.form.error.contactMethods.facebook.href}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
@@ -151,7 +151,7 @@ export default function ContactPage() {
                                                 <FacebookLogo size={20} weight="light" className="text-red-500" />
                                                 <span>{strings.contact.form.error.contactMethods.facebook.text}</span>
                                             </a>
-                                            <a 
+                                            <a
                                                 href={strings.contact.form.error.contactMethods.instagram.href}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
@@ -165,7 +165,7 @@ export default function ContactPage() {
                                 </div>
                             )}
 
-                            {(!state.result) && (
+                            {(!contactFormState.result) && (
                                 <>
                                     <div className="space-y-5">
                                         <SectionHeading>{strings.contact.formSections.contactInfo}</SectionHeading>
@@ -173,7 +173,7 @@ export default function ContactPage() {
                                             <FormInput
                                                 label={strings.contact.form.name}
                                                 name="name"
-                                                value={state.formData.name}
+                                                value={contactFormState.formData.name}
                                                 required
                                                 className="md:col-span-2"
                                             />
@@ -181,7 +181,7 @@ export default function ContactPage() {
                                                 label={strings.contact.form.email}
                                                 name="email"
                                                 type="email"
-                                                value={state.formData.email}
+                                                value={contactFormState.formData.email}
                                                 required
                                                 className="md:col-span-2"
                                             />
@@ -194,19 +194,20 @@ export default function ContactPage() {
                                             <FormInput
                                                 label={strings.contact.form.weddingDate}
                                                 name="weddingDate"
+                                                required
                                                 type="date"
-                                                value={state.formData.weddingDate ?? ''}
+                                                value={contactFormState.formData.weddingDate ?? ''}
                                                 minDate={today}
                                             />
                                             <FormInput
                                                 label={strings.contact.form.weddingPlace}
                                                 name="weddingPlace"
-                                                value={state.formData.weddingPlace ?? ''}
+                                                value={contactFormState.formData.weddingPlace ?? ''}
                                             />
                                             <FormInput
                                                 label={strings.contact.form.weddingVenue}
                                                 name="weddingVenue"
-                                                value={state.formData.weddingVenue ?? ''}
+                                                value={contactFormState.formData.weddingVenue ?? ''}
                                                 className="md:col-span-2"
                                             />
                                         </div>
@@ -218,13 +219,13 @@ export default function ContactPage() {
                                             <FormInput
                                                 label={strings.contact.form.howDidYouHear}
                                                 name="howDidYouHear"
-                                                value={state.formData.howDidYouHear ?? ''}
+                                                value={contactFormState.formData.howDidYouHear ?? ''}
                                             />
                                             <FormInput
                                                 label={strings.contact.form.additionalDetails}
                                                 name="additionalDetails"
                                                 type="textarea"
-                                                value={state.formData.additionalDetails ?? ''}
+                                                value={contactFormState.formData.additionalDetails ?? ''}
                                             />
                                         </div>
                                     </div>
