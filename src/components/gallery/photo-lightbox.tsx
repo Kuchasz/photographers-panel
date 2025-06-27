@@ -1,10 +1,11 @@
 'use client';
 
-import { ArrowLeft, ArrowRight, X } from '@phosphor-icons/react';
+import { ArrowLeft, ArrowRight, X, File } from '@phosphor-icons/react';
 import { useEffect, useRef, useState } from 'react';
 import { type Photo } from './photo-tile';
 import { strings } from '../../resources';
 import { PhotoDownloadButton } from './photo-download-button';
+import { getFilenameFromUrl } from '../../lib/file';
 import Image from 'next/image';
 
 type LightboxProps = {
@@ -17,6 +18,20 @@ type LightboxProps = {
 
 // Delay before showing loading indicator or starting animations (ms)
 const LOADING_DELAY = 300;
+
+// Component to display the filename chip
+function PhotoFilenameChip({ filename, url }: { filename?: string; url: string }) {
+    const displayFilename = filename || getFilenameFromUrl(url);
+    
+    if (!displayFilename) return null;
+
+    return (
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/20 text-white">
+            <File size={16} weight="bold" className="text-inherit" />
+            <span className="text-xs text-inherit truncate max-w-48">{displayFilename}</span>
+        </div>
+    );
+}
 
 export function PhotoLightbox({
     photos,
@@ -216,6 +231,11 @@ export function PhotoLightbox({
             )}
 
             <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
+                <PhotoFilenameChip 
+                    filename={selectedPhoto.filename} 
+                    url={selectedPhoto.sizes?.big?.url || selectedPhoto.url} 
+                />
+                
                 {onPhotoDownload && (
                     <PhotoDownloadButton
                         url={selectedPhoto.sizes?.big?.url || selectedPhoto.url}

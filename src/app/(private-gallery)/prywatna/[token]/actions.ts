@@ -25,6 +25,7 @@ function convertPhoto(photo: number | PrivateGalleryPhoto | null | undefined) {
     url: photo.url!,
     width: photo.width!,
     height: photo.height!,
+    filename: photo.filename || undefined,
     sizes: {
       thumbnail: {
         url: photo.thumbnailURL!,
@@ -113,6 +114,7 @@ export async function getPhotos(token: string) {
       url: photo.src,
       width: photo.width,
       height: photo.height,
+      filename: photo.text || photo.alt,
       sizes: {
         thumbnail: {
           url: photo.thumbnail,

@@ -29,6 +29,7 @@ export const getPhotos = unstable_cache(
         url: defaultUrl,
         width: photo.width ?? 0,
         height: photo.height ?? 0,
+        filename: photo.filename || undefined,
         sizes: {
           thumbnail: {
             url: photo.sizes?.thumbnail?.url ?? defaultUrl,

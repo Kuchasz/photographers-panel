@@ -10,6 +10,7 @@ export type Photo = {
   alt: string;
   width: number;
   height: number;
+  filename?: string;
   sizes: {
     thumbnail: {
       url: string;
