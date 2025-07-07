@@ -6,7 +6,7 @@ export const isEmailBlacklisted = async (payload: Payload, email: string): Promi
     const normalizedEmail = email.toLowerCase().trim()
 
     const result = await payload.find({
-      collection: BLACKLISTED_EMAILS_SLUG as any,
+      collection: BLACKLISTED_EMAILS_SLUG,
       where: {
         email: {
           equals: normalizedEmail,
@@ -61,12 +61,12 @@ export const addEmailToBlacklist = async (
     const normalizedEmail = email.toLowerCase().trim()
 
     await payload.create({
-      collection: BLACKLISTED_EMAILS_SLUG as any,
+      collection: BLACKLISTED_EMAILS_SLUG,
       data: {
         email: normalizedEmail,
         reason,
         notes,
-      } as any,
+      },
     })
   } catch (error) {
     console.error('Error adding email to blacklist:', error)

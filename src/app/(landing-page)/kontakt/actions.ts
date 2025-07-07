@@ -70,6 +70,8 @@ export async function sendMessage(
     // Check if message is likely from a bot based on invalid wedding date
     const isBot = isBotMessage(messageData.weddingDate);
     if (isBot) {
+        console.log('Email sending skipped - likely bot message with invalid wedding date:', messageData.weddingDate);
+
         // Automatically add bot email to blacklist
         try {
             await addEmailToBlacklist(payload, messageData.email, 'bot', JSON.stringify(messageData));
@@ -77,9 +79,9 @@ export async function sendMessage(
         } catch (error) {
             console.error('Error adding bot email to blacklist:', error);
         }
-        
+
         await wait(2000);
-        console.log('Email sending skipped - likely bot message with invalid wedding date:', messageData.weddingDate);
+
         // Return success to avoid revealing that the message was filtered
         return {
             formData: {

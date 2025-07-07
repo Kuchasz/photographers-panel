@@ -546,7 +546,7 @@ export interface BlacklistedEmail {
    * Email address to blacklist from receiving notifications
    */
   email: string;
-  reason: 'spam' | 'invalid' | 'user-request' | 'bounced' | 'other';
+  reason: 'spam' | 'bot' | 'invalid' | 'user-request' | 'bounced' | 'other';
   /**
    * Additional notes about this blacklisted email
    */
