@@ -60,6 +60,13 @@ export const BlacklistedEmails: CollectionConfig = {
         },
         {
           label: {
+            en: 'Bot Detected',
+            pl: 'Wykryty bot',
+          },
+          value: 'bot',
+        },
+        {
+          label: {
             en: 'Invalid Email',
             pl: 'Nieprawidłowy email',
           },

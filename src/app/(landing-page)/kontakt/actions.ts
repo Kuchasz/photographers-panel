@@ -5,7 +5,7 @@ import { type SendResult } from "~/areas/message";
 import { getPayload } from "payload";
 import config from "~/payload.config";
 import { WEBSITE_INQUIRIES_SLUG } from "~/collections/collectionSlugs";
-import { isEmailBlacklisted } from "~/lib/blacklist";
+import { isEmailBlacklisted, isBotMessage, addEmailToBlacklist } from "~/lib/blacklist";
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -65,6 +65,35 @@ export async function sendMessage(
     } catch (error) {
         console.error('Error checking blacklist:', error);
         // Continue with email sending if blacklist check fails
+    }
+
+    // Check if message is likely from a bot based on invalid wedding date
+    const isBot = isBotMessage(messageData.weddingDate);
+    if (isBot) {
+        // Automatically add bot email to blacklist
+        try {
+            await addEmailToBlacklist(payload, messageData.email, 'bot', JSON.stringify(messageData));
+            console.log('Bot email automatically blacklisted:', messageData.email);
+        } catch (error) {
+            console.error('Error adding bot email to blacklist:', error);
+        }
+        
+        await wait(2000);
+        console.log('Email sending skipped - likely bot message with invalid wedding date:', messageData.weddingDate);
+        // Return success to avoid revealing that the message was filtered
+        return {
+            formData: {
+                name: '',
+                email: '',
+                weddingDate: '',
+                weddingPlace: '',
+                weddingVenue: '',
+                howDidYouHear: '',
+                additionalDetails: '',
+            },
+            isSubmitting: false,
+            result: { type: 'success' }
+        };
     }
 
     await payload.create({
