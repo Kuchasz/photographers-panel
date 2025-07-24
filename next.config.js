@@ -30,6 +30,10 @@ const config = {
                 hostname: '*.fbcdn.net',
                 protocol: 'https',
             },
+            {
+                hostname: "*.contabostorage.com",
+                protocol: "https",
+            }
         ],
     },
 };
