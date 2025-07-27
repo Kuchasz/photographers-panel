@@ -2,8 +2,8 @@
 import { Lock } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, RedirectType } from "next/navigation";
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { FormLabel } from "~/components/form";
 import { FormButton } from "~/components/form/button";
 import { PageContainer } from "~/components/page-container";
@@ -11,18 +11,58 @@ import { SectionTitle } from "~/components/section-title";
 import { strings } from "~/resources";
 import { authenticate } from "./actions";
 
+type AuthenticationResult = {
+    password: string;
+    authenticated: boolean;
+    isDirty: boolean;
+    token?: string;
+    galleryData?: {
+        id: number;
+        state: string;
+        title: string;
+        url: string;
+        date: string;
+        mainImage: string;
+    };
+};
+
 export default function PrivateGallery() {
-    const [state, formAction] = useActionState(authenticate, {
+    const [state, setState] = useState<AuthenticationResult>({
         password: '',
         authenticated: false,
         isDirty: false
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const router = useRouter();
 
     // Redirect when authenticated and gallery is published
-    if (state?.authenticated && state.galleryData?.state === 'published' && state.token) {
-        redirect(`/prywatna/${state.token}`);
-    }
-    
+    useEffect(() => {
+        if (state?.authenticated && state.galleryData?.state === 'published' && state.token) {
+            router.push(`/prywatna/${state.token}`);
+        }
+    }, [state, router]);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        try {
+            const formData = new FormData(e.currentTarget);
+            const result = await authenticate(state, formData);
+            setState(result);
+        } catch (error) {
+            console.error('Authentication error:', error);
+            setState({
+                password: '',
+                authenticated: false,
+                isDirty: true
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <PageContainer>
             {/* How It Works Section */}
@@ -68,7 +108,7 @@ export default function PrivateGallery() {
                             {/* Authentication Card */}
                             {(!state?.authenticated) && (
                                 <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
-                                    <form action={formAction} className="space-y-6">
+                                    <form onSubmit={handleSubmit} className="space-y-6">
                                         <div className="space-y-2">
                                             <FormLabel htmlFor="password" required>
                                                 {strings.privateGallery.password}
@@ -86,12 +126,13 @@ export default function PrivateGallery() {
                                                         hover:border-stone-300 focus:border-gold-300 focus:ring-1 focus:ring-gold-200"
                                                     placeholder="Wprowadź hasło do galerii..."
                                                     required
+                                                    disabled={isSubmitting}
                                                 />
                                             </div>
                                         </div>
 
-                                        <FormButton>
-                                            {strings.privateGallery.check}
+                                        <FormButton disabled={isSubmitting}>
+                                            {isSubmitting ? 'Sprawdzanie...' : strings.privateGallery.check}
                                         </FormButton>
                                     </form>
 
