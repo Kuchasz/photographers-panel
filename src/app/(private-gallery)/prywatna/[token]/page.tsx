@@ -17,21 +17,14 @@ export default async function PrivateGalleryPage({ params }: { params: Promise<{
     const isValid = await validateToken(token, ip);
 
     if (!isValid) {
-        redirect('/prywatna');
+        redirect('/strefa-klienta');
     }
 
-    const photos = await getPhotos(token);
-
-    if (!photos) {
-        redirect('/prywatna');
-    }
-
-    const { title, date } = await getGalleryTitle(token);
+    const { title, date, photo } = await getGalleryTitle(token);
 
     return (
         <PrivateGalleryClientPage
-            photo={photos.photo}
-            photos={photos.photos}
+            photo={photo}
             galleryTitle={title}
             galleryDate={date}
         />

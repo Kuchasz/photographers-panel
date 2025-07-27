@@ -10,5 +10,5 @@ export const routes = {
         fullPage: false,
         route: '/zdjecia',
     },
-    private: { fullPage: false, route: '/prywatna' },
+    private: { fullPage: false, route: '/strefa-klienta' },
 } as const;
