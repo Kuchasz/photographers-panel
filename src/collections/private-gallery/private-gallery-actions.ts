@@ -4,6 +4,8 @@ import { type PrivateGalleryAuthToken } from "~/payload-types";
 import config from '~/payload.config';
 import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_AUTH_TOKENS_SLUG, PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from "../collectionSlugs";
 
+const PRIVATE_GALLERY_AUTH_TOKEN_TTL_MS = 2 * 60 * 60 * 1000;
+
 export const recordVisit = async (galleryId: number, ip: string, userAgent: string) => {
     const payload = await getPayload({ config });
 
@@ -70,7 +72,7 @@ export const authenticateGallery = async (galleryId: number, ip: string) => {
         data: {
             token,
             gallery,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 30).toISOString(),
+            expiresAt: new Date(Date.now() + PRIVATE_GALLERY_AUTH_TOKEN_TTL_MS).toISOString(),
             ipAddress: ip,
         },
     });
