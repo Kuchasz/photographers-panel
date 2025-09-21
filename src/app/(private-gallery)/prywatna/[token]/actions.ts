@@ -80,7 +80,7 @@ async function validateGalleryToken(token: string) {
   };
 }
 
-export async function getGalleryTitle(token: string) {
+export async function getGalleryHero(token: string) {
   const tokenData = await validateGalleryToken(token);
 
   if (!tokenData || tokenData.expired) {

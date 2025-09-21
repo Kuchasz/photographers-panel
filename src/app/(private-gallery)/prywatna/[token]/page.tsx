@@ -2,7 +2,7 @@ import { type Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { validateToken } from "~/collections/private-gallery/private-gallery-actions";
-import { getPhotos, getGalleryTitle } from "./actions";
+import { getPhotos, getGalleryHero } from "./actions";
 import PrivateGalleryClientPage from "./client.page";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default async function PrivateGalleryPage({ params }: { params: Promise<{
         redirect('/strefa-klienta');
     }
 
-    const { title, date, photo } = await getGalleryTitle(token);
+    const { title, date, photo } = await getGalleryHero(token);
 
     return (
         <PrivateGalleryClientPage

@@ -5,6 +5,7 @@ const config = {
     output: 'standalone',
     serverExternalPackages: ["pg"],
     images: {
+        minimumCacheTTL: 2678400,
         remotePatterns: [
             {
                 hostname: 'ps-wed.azurewebsites.net',
