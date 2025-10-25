@@ -467,6 +467,7 @@ export const pl = {
                 items: [
                     'Dwie osoby - fotograf i kamerzysta',
                     'Sesja plenerowa w dniu ślubu',
+                    'Internetowa galeria zdjęć do 2 tygodni po weselu',
                     'Gotowe materiały do 3 miesięcy od uroczystości',
                     'Pracujemy w pierwszy dzień od przygotowań do godz 1:30',
                     'Pracujemy w poprawiny (o ile są) do godz 24:00',
@@ -477,6 +478,7 @@ export const pl = {
                 items: [
                     'Poprawiny',
                     'Dodatkowa foto-książka',
+                    'Dodatkowe odbitki',
                     'Film na DVD (4 komplety)',
                     'Sesja plenerowa w innym terminie',
                     'Film i zdjęcia z drona',
