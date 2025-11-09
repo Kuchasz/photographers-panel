@@ -21,6 +21,7 @@ if [ -d "public_nodejs/public/uploads" ]; then
 fi
 
 echo "🧹 Cleaning up existing files..."
+chmod -R u+w public_nodejs
 rm -rf public_nodejs
 
 echo "📦 Unzipping new package..."
