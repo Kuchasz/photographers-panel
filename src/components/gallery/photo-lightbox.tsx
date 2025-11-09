@@ -17,7 +17,7 @@ type LightboxProps = {
 };
 
 // Delay before showing loading indicator or starting animations (ms)
-const LOADING_DELAY = 300;
+const LOADING_DELAY = 250;
 
 // Component to display the filename chip
 function PhotoFilenameChip({ filename, url }: { filename?: string; url: string }) {
@@ -46,6 +46,7 @@ export function PhotoLightbox({
     const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
     const [skipAnimation, setSkipAnimation] = useState(false);
     const [showImage, setShowImage] = useState(false);
+    const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
     const imageRef = useRef<HTMLImageElement>(null);
     const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
     const loadingStartTimeRef = useRef<number>(0);
@@ -69,6 +70,11 @@ export function PhotoLightbox({
             });
 
             startLoadingTimer();
+
+            // Focus the lightbox to enable keyboard navigation
+            setTimeout(() => {
+                lightboxRef.current?.focus();
+            }, 0);
         }
     }, [isOpen, initialPhotoIndex]);
 
@@ -127,7 +133,7 @@ export function PhotoLightbox({
     const closeLightbox = () => {
         // Start exit animation
         setLightboxVisible(false);
-        setShowImage(false);
+        // Don't hide the image immediately - let the opacity animation complete
 
         // Wait for animation to complete before removing from DOM
         setTimeout(() => {
@@ -147,8 +153,10 @@ export function PhotoLightbox({
 
         if (direction === 'next') {
             newIndex = (selectedPhotoIndex + 1) % photos.length;
+            setSlideDirection('left');
         } else {
             newIndex = (selectedPhotoIndex - 1 + photos.length) % photos.length;
+            setSlideDirection('right');
         }
 
         startLoadingTimer();
@@ -194,10 +202,19 @@ export function PhotoLightbox({
 
     if (!isOpen || !selectedPhoto) return null;
 
-    const nextIndex = (selectedPhotoIndex + 1) % photos.length;
-    const prevIndex = (selectedPhotoIndex - 1 + photos.length) % photos.length;
-    const nextPhoto = photos[nextIndex];
-    const prevPhoto = photos[prevIndex];
+    // Preload adjacent photos for smoother navigation
+    const getAdjacentPhotos = () => {
+        const adjacentIndices = [];
+        for (let offset = -2; offset <= 2; offset++) {
+            if (offset !== 0) {
+                const index = (selectedPhotoIndex + offset + photos.length) % photos.length;
+                adjacentIndices.push(index);
+            }
+        }
+        return adjacentIndices.map(index => photos[index]).filter(Boolean);
+    };
+
+    const adjacentPhotos = getAdjacentPhotos();
 
     return (
         <div
@@ -206,29 +223,18 @@ export function PhotoLightbox({
             onKeyDown={handleKeyDown}
             tabIndex={0}
         >
-            {/* Hidden preload images */}
-            {nextPhoto && (
-                <div className="hidden absolute inset-0">
+            {/* Hidden preload images for adjacent photos - only load after current photo is ready */}
+            {showImage && adjacentPhotos.map((photo, idx) => photo && (
+                <div key={`preload-${photo.id}-${idx}`} className="hidden absolute inset-0">
                     <Image
-                        src={nextPhoto.sizes?.big?.url || nextPhoto.url}
+                        src={photo.sizes?.big?.url || photo.url}
                         alt=""
                         fill
                         sizes="100vw"
-                        priority
+                        priority={false} // Don't prioritize preloads
                     />
                 </div>
-            )}
-            {prevPhoto && (
-                <div className="hidden absolute inset-0">
-                    <Image
-                        src={prevPhoto.sizes?.big?.url || prevPhoto.url}
-                        alt=""
-                        fill
-                        sizes="100vw"
-                        priority
-                    />
-                </div>
-            )}
+            ))}
 
             <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
                 <PhotoFilenameChip 
@@ -278,17 +284,31 @@ export function PhotoLightbox({
                     </div>
                 )}
 
-                <div className={`relative w-full h-full ${skipAnimation ? '' : 'transition-opacity duration-500'} ${showImage ? 'opacity-100' : 'opacity-0'}`}>
-                    <Image
-                        ref={imageRef}
-                        src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
-                        alt={selectedPhoto.alt}
-                        fill
-                        sizes="100vw"
-                        className={`object-contain ${skipAnimation ? '' : 'transition-transform duration-500'} ${showImage ? 'scale-100' : 'scale-[0.98]'}`}
-                        onLoadingComplete={handleImageLoaded}
-                        priority
-                    />
+                <div className={`relative w-full h-full transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
+                    {showImage && (
+                        <Image
+                            ref={imageRef}
+                            src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
+                            alt={selectedPhoto.alt}
+                            fill
+                            sizes="100vw"
+                            className="object-contain"
+                            onLoadingComplete={handleImageLoaded}
+                            priority
+                        />
+                    )}
+                    {/* Hidden image for loading detection */}
+                    {!showImage && (
+                        <Image
+                            src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
+                            alt=""
+                            fill
+                            sizes="100vw"
+                            className="object-contain opacity-0"
+                            onLoadingComplete={handleImageLoaded}
+                            priority
+                        />
+                    )}
                 </div>
             </div>
         </div>

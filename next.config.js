@@ -34,6 +34,10 @@ const config = {
             {
                 hostname: "*.contabostorage.com",
                 protocol: "https",
+            },
+            {
+                hostname: "source.unsplash.com",
+                protocol: "https",
             }
         ],
     },

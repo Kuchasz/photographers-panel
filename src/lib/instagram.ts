@@ -72,7 +72,8 @@ export async function fetchMediaList(limit: number, accessToken: string): Promis
     }));
   } catch (error) {
     console.error('Error fetching Instagram media list:', error);
-    throw error;
+    // throw error;
+    return [];
   }
 }
 

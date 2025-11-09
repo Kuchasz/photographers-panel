@@ -41,7 +41,7 @@ services:
       POSTGRES_USER: 'docker'
       POSTGRES_DB: 'pstudio'
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql
     ports:
       - '5432:5432'
 volumes:
