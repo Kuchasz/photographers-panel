@@ -69,7 +69,7 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
             {prevPhoto && (
                 <div
                     key={prevPhoto}
-                    className="absolute contrast-85 inset-0"
+                    className="absolute inset-0"
                     style={{ transform: parallaxTransform }}>
                     <Image
                         alt={prevPhoto.split('-').join(' ')}
@@ -83,7 +83,7 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
             )}
             <div
                 key={currentPhoto}
-                className={`absolute contrast-85 inset-0 ${!prevPhoto ? 'animate-fadeIn' : 'animate-fade'}`}
+                className={`absolute inset-0 ${!prevPhoto ? 'animate-fadeIn' : 'animate-fade'}`}
                 style={{ transform: parallaxTransform }}>
                 <Image
                     alt={currentPhoto.split('-').join(' ')}
@@ -94,7 +94,6 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                     priority
                 />
             </div>
-            <div className="absolute inset-0 bg-black/20"></div>
         </div>
     );
 }; 
