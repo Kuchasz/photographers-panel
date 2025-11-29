@@ -3,24 +3,30 @@ import { first, nextElement } from "~/lib/array";
 import React from "react";
 import Image from "next/image";
 
-const getSrc = (photo: string, ext: string) => `/images/top/${photo}${ext}`;
+const getSrc = (photo: TopPhoto, ext: string) => `/images/top/${photo.id}${ext}`;
+
+export interface TopPhoto {
+    id: string;
+    focusX: number;
+    focusY: number;
+}
 
 interface HeadImageCarouselProps {
-    photos: string[];
+    photos: TopPhoto[];
     interval?: number;
 }
 
 export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, interval = 5000 }) => {
     const [{ currentPhoto, prevPhoto }, setCurrentPhoto] = React.useState({
-        prevPhoto: null as string | null,
-        currentPhoto: first(photos) as string,
+        prevPhoto: null as TopPhoto | null,
+        currentPhoto: first(photos) as TopPhoto,
     });
     const [scrollY, setScrollY] = React.useState(0);
 
     // Track current photo for carousel
     React.useEffect(() => {
         const timer = setTimeout(() => {
-            const nextPhoto = nextElement(photos, currentPhoto) as string;
+            const nextPhoto = nextElement(photos, currentPhoto) as TopPhoto;
             setCurrentPhoto({ currentPhoto: nextPhoto, prevPhoto: currentPhoto });
         }, interval);
 
@@ -58,6 +64,7 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                         <Image
                             alt=""
                             src={getSrc(nextPhoto, '.jpg')}
+                            style={{ objectPosition: `${nextPhoto.focusX}% ${nextPhoto.focusY}%` }}
                             width={1920}
                             height={1080}
                             priority
@@ -68,12 +75,13 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
 
             {prevPhoto && (
                 <div
-                    key={prevPhoto}
+                    key={prevPhoto.id}
                     className="absolute inset-0"
                     style={{ transform: parallaxTransform }}>
                     <Image
-                        alt={prevPhoto.split('-').join(' ')}
-                        className="w-full h-full object-center object-cover"
+                        alt={prevPhoto.id.split('-').join(' ')}
+                        className="w-full h-full object-cover"
+                        style={{ objectPosition: `${prevPhoto.focusX}% ${prevPhoto.focusY}%` }}
                         src={getSrc(prevPhoto, '.jpg')}
                         width={1920}
                         height={1080}
@@ -82,12 +90,13 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                 </div>
             )}
             <div
-                key={currentPhoto}
+                key={currentPhoto.id}
                 className={`absolute inset-0 ${!prevPhoto ? 'animate-fadeIn' : 'animate-fade'}`}
                 style={{ transform: parallaxTransform }}>
                 <Image
-                    alt={currentPhoto.split('-').join(' ')}
-                    className="w-full h-full object-center object-cover"
+                    alt={currentPhoto.id.split('-').join(' ')}
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: `${currentPhoto.focusX}% ${currentPhoto.focusY}%` }}
                     src={getSrc(currentPhoto, '.jpg')}
                     width={1920}
                     height={1080}
