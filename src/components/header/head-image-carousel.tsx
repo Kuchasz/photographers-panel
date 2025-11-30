@@ -1,7 +1,7 @@
 'use client';
-import { first, nextElement } from "~/lib/array";
-import React from "react";
 import Image from "next/image";
+import React from "react";
+import { first, nextElement } from "~/lib/array";
 
 const getSrc = (photo: TopPhoto, ext: string) => `/images/top/${photo.id}${ext}`;
 
@@ -65,8 +65,8 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                             alt=""
                             src={getSrc(nextPhoto, '.jpg')}
                             style={{ objectPosition: `${nextPhoto.focusX}% ${nextPhoto.focusY}%` }}
-                            width={1920}
-                            height={1080}
+                            objectFit="cover"
+                            fill
                             priority
                         />
                     </div>
@@ -80,11 +80,10 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                     style={{ transform: parallaxTransform }}>
                     <Image
                         alt={prevPhoto.id.split('-').join(' ')}
-                        className="w-full h-full object-cover"
                         style={{ objectPosition: `${prevPhoto.focusX}% ${prevPhoto.focusY}%` }}
                         src={getSrc(prevPhoto, '.jpg')}
-                        width={1920}
-                        height={1080}
+                        objectFit="cover"
+                        fill
                         priority
                     />
                 </div>
@@ -95,11 +94,10 @@ export const HeadImageCarousel: React.FC<HeadImageCarouselProps> = ({ photos, in
                 style={{ transform: parallaxTransform }}>
                 <Image
                     alt={currentPhoto.id.split('-').join(' ')}
-                    className="w-full h-full object-cover"
                     style={{ objectPosition: `${currentPhoto.focusX}% ${currentPhoto.focusY}%` }}
                     src={getSrc(currentPhoto, '.jpg')}
-                    width={1920}
-                    height={1080}
+                    objectFit="cover"
+                    fill
                     priority
                 />
             </div>
