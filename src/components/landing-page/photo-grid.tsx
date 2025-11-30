@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { type Photo } from "~/app/(landing-page)/actions";
@@ -23,6 +23,13 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
 
     // Reference to the container element
     const containerRef = useRef<HTMLDivElement>(null);
+    const stripRef = useRef<HTMLDivElement>(null);
+
+    // Pointer/touch gesture state
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragOffset, setDragOffset] = useState(0);
+    const dragStartX = useRef(0);
+    const dragStartIndex = useRef(0);
 
     useEffect(() => {
         // Display all photos we received
@@ -67,6 +74,70 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
         });
     };
 
+    // Calculate photo widths for gesture handling
+    const getPhotoWidths = useCallback(() => {
+        const height = 484;
+        return visiblePhotos.map(photo => {
+            const aspectRatio = photo.width / photo.height;
+            return height * aspectRatio;
+        });
+    }, [visiblePhotos]);
+
+    // Pointer gesture handlers
+    const handlePointerDown = useCallback((e: React.PointerEvent) => {
+        if (visiblePhotos.length === 0) return;
+        
+        setIsDragging(true);
+        setDragOffset(0);
+        dragStartX.current = e.clientX;
+        dragStartIndex.current = currentIndex;
+        
+        // Capture pointer for smooth tracking
+        (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    }, [visiblePhotos.length, currentIndex]);
+
+    const handlePointerMove = useCallback((e: React.PointerEvent) => {
+        if (!isDragging) return;
+        
+        const deltaX = e.clientX - dragStartX.current;
+        setDragOffset(deltaX);
+    }, [isDragging]);
+
+    const handlePointerUp = useCallback((e: React.PointerEvent) => {
+        if (!isDragging) return;
+        
+        const deltaX = e.clientX - dragStartX.current;
+        const photoWidths = getPhotoWidths();
+        
+        // Calculate average photo width for threshold
+        const avgWidth = photoWidths.reduce((a, b) => a + b, 0) / photoWidths.length;
+        const threshold = avgWidth * 0.15; // 15% of average photo width
+        
+        let newIndex = dragStartIndex.current;
+        
+        if (Math.abs(deltaX) > threshold) {
+            if (deltaX > 0) {
+                // Swiped right -> go to previous
+                newIndex = Math.max(0, dragStartIndex.current - 1);
+            } else {
+                // Swiped left -> go to next
+                newIndex = Math.min(visiblePhotos.length - 1, dragStartIndex.current + 1);
+            }
+        }
+        
+        setCurrentIndex(newIndex);
+        setIsDragging(false);
+        setDragOffset(0);
+        
+        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    }, [isDragging, getPhotoWidths, visiblePhotos.length]);
+
+    const handlePointerCancel = useCallback((e: React.PointerEvent) => {
+        setIsDragging(false);
+        setDragOffset(0);
+        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    }, []);
+
     // Calculate if navigation buttons should be enabled
     const canScrollLeft = currentIndex > 0;
     const canScrollRight = currentIndex < (visiblePhotos.length - 1);
@@ -106,9 +177,12 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
         // Calculate translation to center the current photo
         translateX = centerPosition - currentPhotoLeftEdge - (currentPhotoWidth / 2);
 
+        // Add drag offset when dragging
+        const finalTranslateX = translateX + dragOffset;
+
         return {
-            transform: `translateX(${translateX}px)`,
-            transition: 'transform 300ms ease-in-out'
+            transform: `translateX(${finalTranslateX}px)`,
+            transition: isDragging ? 'none' : 'transform 300ms ease-in-out'
         };
     };
 
@@ -144,9 +218,18 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
             {/* Full width container with horizontal layout and navigation */}
             <div className="relative w-full" ref={containerRef}>
                 {/* Photo strip */}
-                <div className="relative w-full overflow-hidden">
+                <div 
+                    className="relative w-full overflow-hidden touch-pan-y"
+                    ref={stripRef}
+                    onPointerDown={handlePointerDown}
+                    onPointerMove={handlePointerMove}
+                    onPointerUp={handlePointerUp}
+                    onPointerCancel={handlePointerCancel}
+                    onPointerLeave={handlePointerCancel}
+                    style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+                >
                     <div
-                        className="flex h-[484px] gap-1 transition-all duration-300 ease-in-out"
+                        className="flex h-[484px] gap-1 select-none"
                         style={getPhotoStyles()}
                     >
                         {visiblePhotos.map((photo, index) => (
@@ -162,7 +245,8 @@ export const PhotoGrid = ({ photos }: PhotoGridProps) => {
                                         alt={photo.alt}
                                         fill
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                        className="object-contain"
+                                        className="object-contain pointer-events-none"
+                                        draggable={false}
                                         priority={index === currentIndex}
                                     />
                                 </div>
