@@ -19,6 +19,9 @@ export const PrivateGalleryAuthTokens: CollectionConfig = {
             pl: 'Tokeny dostępu',
         },
     },
+     versions: {
+    drafts: false,
+  },
     access: {
         create: authenticated,
         read: authenticated,

@@ -16,6 +16,9 @@ export const PrivateGalleryMediaDownloads: CollectionConfig = {
       pl: 'Pobrania zdjęć',
     },
   },
+   versions: {
+    drafts: false,
+  },
   fields: [
     {
       name: 'mediaId',

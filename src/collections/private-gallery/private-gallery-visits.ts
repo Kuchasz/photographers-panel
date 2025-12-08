@@ -16,6 +16,9 @@ export const PrivateGalleryVisits: CollectionConfig = {
             pl: 'Wizyty',
         },
     },
+     versions: {
+    drafts: false,
+  },
     fields: [
         {
             name: 'ip',

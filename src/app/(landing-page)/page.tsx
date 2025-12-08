@@ -1,11 +1,10 @@
 import { FacebookLogo, InstagramLogo, Mailbox, Phone } from "@phosphor-icons/react/dist/ssr";
-import Image from "next/image";
+import { FeaturedVideos, OpinionCarousel, PhotoGrid } from "~/components/landing-page";
 import { routes } from "~/routes";
 import { Button } from "../../components/button";
 import { SectionTitle } from "../../components/section-title";
 import { strings } from "../../resources";
 import { getFeaturedPhotos, getFeaturedVideos, getOpinions } from "./actions";
-import { FeaturedVideos, OpinionCarousel, PhotoGrid } from "~/components/landing-page";
 
 export const dynamic = 'force-dynamic';
 

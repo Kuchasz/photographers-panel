@@ -15,6 +15,9 @@ export const PrivateGalleryPhoto: CollectionConfig = {
     useAsTitle: 'filename',
     group: 'Galeria prywatna',
   },
+   versions: {
+    drafts: false,
+  },
   labels: {
     singular: {
       en: 'Gallery Photo',

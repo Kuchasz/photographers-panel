@@ -1,9 +1,8 @@
-import type { CollectionConfig } from 'payload'
-import { authenticated } from '../../access/authenticated'
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_VISITS_SLUG, PRIVATE_GALLERY_PHOTO_SLUG } from '../collectionSlugs'
-import { authenticatedOrPublished } from '~/access/authenticatedOrPublished'
 import path from 'path'
+import type { CollectionConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { authenticated } from '../../access/authenticated'
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_PHOTO_SLUG, PRIVATE_GALLERY_VISITS_SLUG } from '../collectionSlugs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -14,6 +13,9 @@ export const PrivateGallery: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'notes', 'date', 'state'],
     group: 'Galeria prywatna'
+  },
+  versions: {
+    drafts: false,
   },
   labels: {
     singular: {
@@ -27,7 +29,7 @@ export const PrivateGallery: CollectionConfig = {
   },
   access: {
     create: authenticated,
-    read: authenticatedOrPublished,
+    read: authenticated,
     update: authenticated,
     delete: authenticated,
   },
