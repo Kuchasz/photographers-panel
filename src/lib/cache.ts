@@ -3,20 +3,20 @@
 import { revalidateTag } from 'next/cache'
 
 export const revalidatePhotos = async () => {
-    revalidateTag('photos', 'max');
-    revalidateTag('photos-page', 'max');
-    revalidateTag('featured-photos', 'max');
+    revalidateTag('photos');
+    revalidateTag('photos-page');
+    revalidateTag('featured-photos');
 }
 
 export const revalidateOpinions = async () => {
-    revalidateTag('opinions', 'max')
+    revalidateTag('opinions')
 }
 
 export const revalidateVideos = async () => {
-    revalidateTag('featured-videos', 'max')
-    revalidateTag('videos', 'max')
+    revalidateTag('featured-videos')
+    revalidateTag('videos')
 }
 
 export const revalidateInstagram = async () => {
-    revalidateTag('instagram-posts', 'max')
+    revalidateTag('instagram-posts')
 }
