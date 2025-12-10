@@ -41,6 +41,7 @@ async function getInstagramToken(): Promise<string> {
  * Internal function to fetch Instagram posts without caching
  */
 async function fetchInstagramPosts(limit: number): Promise<InstagramPost[]> {
+    // return [];
     let accessToken: string;
 
     try {
@@ -79,6 +80,7 @@ async function fetchInstagramPosts(limit: number): Promise<InstagramPost[]> {
  */
 export const getInstagramPostsForFooter = unstable_cache(
     async () => {
+        return [];
         try {
             return await fetchInstagramPosts(6);
         } catch (error) {
