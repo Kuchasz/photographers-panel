@@ -1,13 +1,13 @@
-import type { CollectionConfig } from 'payload'
-import { authenticated } from '../../access/authenticated'
-import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_AUTH_TOKENS_SLUG } from '../collectionSlugs'
+import type { CollectionConfig } from 'payload';
+import { authenticated } from '../../access/authenticated';
+import { PRIVATE_GALLERIES_SLUG, PRIVATE_GALLERY_AUTH_TOKENS_SLUG } from '../collectionSlugs';
 
 export const PrivateGalleryAuthTokens: CollectionConfig = {
     slug: PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
     admin: {
         useAsTitle: 'token',
         defaultColumns: ['token', 'gallery', 'ipAddress', 'expiresAt', 'createdAt'],
-        group: 'Galeria prywatna'
+        group: 'Galeria prywatna',
     },
     labels: {
         singular: {
@@ -19,9 +19,7 @@ export const PrivateGalleryAuthTokens: CollectionConfig = {
             pl: 'Tokeny dostępu',
         },
     },
-     versions: {
-    drafts: false,
-  },
+    versions: false,
     access: {
         create: authenticated,
         read: authenticated,
@@ -99,34 +97,34 @@ export const PrivateGalleryAuthTokens: CollectionConfig = {
             ({ data, req }) => {
                 // Set createdAt timestamp if it's a new document
                 if (!data.createdAt) {
-                    data.createdAt = new Date().toISOString()
+                    data.createdAt = new Date().toISOString();
                 }
 
                 // Set IP address from request
                 if (!data.ipAddress) {
                     // Default to unknown
-                    let ipAddress = 'unknown'
+                    let ipAddress = 'unknown';
 
                     // Safely check if headers exist and if the get method is available
                     if (req && req.headers && typeof req.headers.get === 'function') {
-                        const forwardedHeader = req.headers.get('x-forwarded-for')
+                        const forwardedHeader = req.headers.get('x-forwarded-for');
 
                         if (forwardedHeader) {
                             // Get the first IP if multiple are present (comma-separated)
-                            const ips = String(forwardedHeader).split(',')
+                            const ips = String(forwardedHeader).split(',');
                             if (ips.length > 0) {
-                                ipAddress = ips[0]?.trim() ?? 'unknown'
+                                ipAddress = ips[0]?.trim() ?? 'unknown';
                             }
                         }
                     }
 
-                    data.ipAddress = ipAddress
+                    data.ipAddress = ipAddress;
                 }
 
-                return data
+                return data;
             },
         ],
     },
     // By default, tokens expire after 24 hours if not otherwise specified
     timestamps: true,
-} 
+};

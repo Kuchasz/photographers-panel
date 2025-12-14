@@ -1,5 +1,5 @@
-import { type CollectionConfig } from "payload";
-import { PRIVATE_GALLERIES_SLUG } from "../collectionSlugs";
+import { type CollectionConfig } from 'payload';
+import { PRIVATE_GALLERIES_SLUG } from '../collectionSlugs';
 
 export const PrivateGalleryVisits: CollectionConfig = {
     slug: 'private-gallery-visits',
@@ -16,9 +16,7 @@ export const PrivateGalleryVisits: CollectionConfig = {
             pl: 'Wizyty',
         },
     },
-     versions: {
-    drafts: false,
-  },
+    versions: false,
     fields: [
         {
             name: 'ip',
@@ -55,4 +53,4 @@ export const PrivateGalleryVisits: CollectionConfig = {
             },
         },
     ],
-}
+};
