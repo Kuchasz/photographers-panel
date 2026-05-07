@@ -170,10 +170,10 @@ export function PhotoLightbox({
     };
 
     // Calculate distance between two touch points (for pinch detection)
-    const getTouchDistance = (touches: TouchList) => {
+    const getTouchDistance = (touches: React.TouchList) => {
         if (touches.length < 2) return 0;
-        const dx = touches[0].clientX - touches[1].clientX;
-        const dy = touches[0].clientY - touches[1].clientY;
+        const dx = (touches[0]?.clientX ?? 0) - (touches[1]?.clientX ?? 0);
+        const dy = (touches[0]?.clientY ?? 0) - (touches[1]?.clientY ?? 0);
         return Math.sqrt(dx * dx + dy * dy);
     };
 
@@ -188,8 +188,8 @@ export function PhotoLightbox({
         } else if (e.touches.length === 1) {
             // Single touch for swipe
             isPinching.current = false;
-            touchStartX.current = e.touches[0].clientX;
-            touchStartY.current = e.touches[0].clientY;
+            touchStartX.current = e.touches[0]?.clientX ?? 0;
+            touchStartY.current = e.touches[0]?.clientY ?? 0;
             touchStartTime.current = Date.now();
         }
     };
@@ -212,8 +212,8 @@ export function PhotoLightbox({
         }
 
         // Check if this was a swipe gesture
-        const touchEndX = e.changedTouches[0].clientX;
-        const touchEndY = e.changedTouches[0].clientY;
+        const touchEndX = e.changedTouches[0]?.clientX ?? 0;
+        const touchEndY = e.changedTouches[0]?.clientY ?? 0;
         const touchEndTime = Date.now();
 
         const deltaX = touchEndX - touchStartX.current;
