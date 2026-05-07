@@ -59,7 +59,11 @@ export function PhotoLightbox({
     const isPinching = useRef<boolean>(false);
 
     // Get the currently selected photo
-    const selectedPhoto = photos[selectedPhotoIndex];
+    // Use initialPhotoIndex when lightbox is first opening (before visible) to prevent flashing old photo
+    const currentPhotoIndex = (!lightboxVisible && isOpen) 
+        ? initialPhotoIndex 
+        : selectedPhotoIndex;
+    const selectedPhoto = photos[currentPhotoIndex];
 
     // Initialize the lightbox when it opens
     useEffect(() => {
@@ -81,6 +85,10 @@ export function PhotoLightbox({
             setTimeout(() => {
                 lightboxRef.current?.focus();
             }, 0);
+        } else {
+            // Reset state when closing to prevent flashing old photo on next open
+            setShowImage(false);
+            setLightboxVisible(false);
         }
     }, [isOpen, initialPhotoIndex]);
 
@@ -297,7 +305,7 @@ export function PhotoLightbox({
         const adjacentIndices = [];
         for (let offset = -2; offset <= 2; offset++) {
             if (offset !== 0) {
-                const index = (selectedPhotoIndex + offset + photos.length) % photos.length;
+                const index = (currentPhotoIndex + offset + photos.length) % photos.length;
                 adjacentIndices.push(index);
             }
         }
