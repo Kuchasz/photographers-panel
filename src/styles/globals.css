@@ -137,6 +137,15 @@
   animation: spinner 1.2s linear infinite;
 }
 
+/* iOS Safari touch handling fixes */
+.fixed.z-50 img {
+  /* Prevent iOS Safari from allowing user zoom on images */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
 /* Instagram-like heart animation */
 .animate-like-heart {
   animation: likeHeart 1s cubic-bezier(0.17, 0.89, 0.32, 1.25) forwards;

@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     title: "PyszStudio - fotografia i film",
     description: "Fotografia i film na ślub, sesję zdjęciową, portret, zwierzęta, produkt, krajobraz",
     icons: [{ rel: "icon", url: "/favicon.ico" }],
+    viewport: {
+        width: 'device-width',
+        initialScale: 1,
+        maximumScale: 1,
+        userScalable: false,
+    },
 };
 
 export default async function RootLayout({

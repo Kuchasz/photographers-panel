@@ -1,12 +1,11 @@
 'use client';
 
-import { ArrowLeft, ArrowRight, X, File } from '@phosphor-icons/react';
-import { useEffect, useRef, useState } from 'react';
-import { type Photo } from './photo-tile';
-import { strings } from '../../resources';
-import { PhotoDownloadButton } from './photo-download-button';
-import { getFilenameFromUrl } from '../../lib/file';
+import { ArrowLeft, ArrowRight, File, X } from '@phosphor-icons/react';
 import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import { getFilenameFromUrl } from '../../lib/file';
+import { PhotoDownloadButton } from './photo-download-button';
+import { type Photo } from './photo-tile';
 
 type LightboxProps = {
     photos: Photo[];
@@ -51,6 +50,13 @@ export function PhotoLightbox({
     const loadingTimerRef = useRef<NodeJS.Timeout | null>(null);
     const loadingStartTimeRef = useRef<number>(0);
     const lightboxRef = useRef<HTMLDivElement>(null);
+    
+    // Touch handling state
+    const touchStartX = useRef<number>(0);
+    const touchStartY = useRef<number>(0);
+    const touchStartTime = useRef<number>(0);
+    const initialPinchDistance = useRef<number>(0);
+    const isPinching = useRef<boolean>(false);
 
     // Get the currently selected photo
     const selectedPhoto = photos[selectedPhotoIndex];
@@ -163,6 +169,90 @@ export function PhotoLightbox({
         setSelectedPhotoIndex(newIndex);
     };
 
+    // Calculate distance between two touch points (for pinch detection)
+    const getTouchDistance = (touches: TouchList) => {
+        if (touches.length < 2) return 0;
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    // Handle touch start
+    const handleTouchStart = (e: React.TouchEvent) => {
+        if (e.touches.length === 2) {
+            // Pinch gesture started
+            isPinching.current = true;
+            initialPinchDistance.current = getTouchDistance(e.touches);
+            // Prevent default to stop iOS Safari zoom
+            e.preventDefault();
+        } else if (e.touches.length === 1) {
+            // Single touch for swipe
+            isPinching.current = false;
+            touchStartX.current = e.touches[0].clientX;
+            touchStartY.current = e.touches[0].clientY;
+            touchStartTime.current = Date.now();
+        }
+    };
+
+    // Handle touch move
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (isPinching.current && e.touches.length === 2) {
+            // Prevent default zoom behavior on iOS Safari
+            e.preventDefault();
+        }
+    };
+
+    // Handle touch end
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (isPinching.current) {
+            // Reset pinch state
+            isPinching.current = false;
+            initialPinchDistance.current = 0;
+            return;
+        }
+
+        // Check if this was a swipe gesture
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const touchEndTime = Date.now();
+
+        const deltaX = touchEndX - touchStartX.current;
+        const deltaY = touchEndY - touchStartY.current;
+        const deltaTime = touchEndTime - touchStartTime.current;
+
+        // Calculate swipe velocity and direction
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+        const velocity = absDeltaX / deltaTime;
+
+        // Swipe thresholds
+        const MIN_SWIPE_DISTANCE = 50; // Minimum distance in pixels
+        const MIN_VELOCITY = 0.3; // Minimum velocity (px/ms)
+        const MAX_TIME = 300; // Maximum time for a swipe (ms)
+
+        // Check if this is a horizontal swipe
+        const isHorizontalSwipe = absDeltaX > absDeltaY && absDeltaX > MIN_SWIPE_DISTANCE;
+        const isFastEnough = velocity > MIN_VELOCITY || deltaTime < MAX_TIME;
+
+        if (isHorizontalSwipe && isFastEnough) {
+            // Prevent default to stop any iOS Safari gestures
+            e.preventDefault();
+
+            if (deltaX > 0) {
+                // Swiped right - show previous photo
+                navigatePhoto('prev');
+            } else {
+                // Swiped left - show next photo
+                navigatePhoto('next');
+            }
+        }
+
+        // Reset touch state
+        touchStartX.current = 0;
+        touchStartY.current = 0;
+        touchStartTime.current = 0;
+    };
+
     // Handle keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent) => {
         switch (e.key) {
@@ -221,7 +311,11 @@ export function PhotoLightbox({
             ref={lightboxRef}
             className={`fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out ${lightboxVisible ? 'bg-black/95' : 'bg-black/0'}`}
             onKeyDown={handleKeyDown}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             tabIndex={0}
+            style={{ touchAction: 'none' }}
         >
             {/* Hidden preload images for adjacent photos - only load after current photo is ready */}
             {showImage && adjacentPhotos.map((photo, idx) => photo && (
