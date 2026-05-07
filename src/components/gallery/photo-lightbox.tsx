@@ -13,6 +13,7 @@ type LightboxProps = {
     isOpen: boolean;
     onClose: () => void;
     onPhotoDownload?: (photo: Photo) => void;
+    onPhotoChange?: (photoIndex: number) => void;
 };
 
 // Delay before showing loading indicator or starting animations (ms)
@@ -37,7 +38,8 @@ export function PhotoLightbox({
     initialPhotoIndex = 0,
     isOpen,
     onClose,
-    onPhotoDownload
+    onPhotoDownload,
+    onPhotoChange
 }: LightboxProps) {
     const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(initialPhotoIndex);
     const [lightboxVisible, setLightboxVisible] = useState(false);
@@ -91,6 +93,13 @@ export function PhotoLightbox({
             setLightboxVisible(false);
         }
     }, [isOpen, initialPhotoIndex]);
+
+    // Notify parent when photo changes (for scrolling in background grid)
+    useEffect(() => {
+        if (isOpen && lightboxVisible && onPhotoChange) {
+            onPhotoChange(selectedPhotoIndex);
+        }
+    }, [selectedPhotoIndex, isOpen, lightboxVisible, onPhotoChange]);
 
     const startLoadingTimer = () => {
         // Clear any existing timer

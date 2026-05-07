@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { PhotoDownloadButton } from './photo-download-button';
 
 export type Photo = {
@@ -36,11 +36,11 @@ type PhotoTileProps = {
   aspectRatio?: string;
 };
 
-export function PhotoTile({
+export const PhotoTile = forwardRef<HTMLDivElement, PhotoTileProps>(function PhotoTile({
   photo,
   onClick,
   onPhotoDownload,
-}: PhotoTileProps) {
+}, ref) {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleClick = () => {
@@ -62,6 +62,7 @@ export function PhotoTile({
 
   return (
     <div
+      ref={ref}
       className="group relative overflow-hidden bg-stone-100 cursor-pointer transition-all duration-300 ease-out hover:z-10"
       onClick={handleClick}
     >
@@ -102,4 +103,4 @@ export function PhotoTile({
       </div>
     </div>
   );
-} 
+}); 

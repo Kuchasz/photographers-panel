@@ -15,11 +15,13 @@ type PhotoGalleryProps = {
 const PhotoTileColumns = React.memo(({
     columns,
     onPhotoClick,
-    onPhotoDownload
+    onPhotoDownload,
+    photoRefs
 }: {
     columns: ReturnType<typeof calculateGridLayout>;
     onPhotoClick: (photo: Photo) => void;
     onPhotoDownload?: (photo: Photo) => void;
+    photoRefs: React.MutableRefObject<Map<string, HTMLDivElement>>;
 }) => {
     return (
         <>
@@ -34,6 +36,13 @@ const PhotoTileColumns = React.memo(({
                             photo={photo}
                             onClick={onPhotoClick}
                             onPhotoDownload={onPhotoDownload}
+                            ref={(el) => {
+                                if (el) {
+                                    photoRefs.current.set(photo.id, el);
+                                } else {
+                                    photoRefs.current.delete(photo.id);
+                                }
+                            }}
                         />
                     ))}
                 </div>
@@ -56,6 +65,7 @@ export function PhotoGallery({
     const containerRef = useRef<HTMLDivElement>(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [initialPhotoIndex, setInitialPhotoIndex] = useState(0);
+    const photoRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
     useEffect(() => {
         const calculateAndSetColumns = () => {
@@ -90,6 +100,19 @@ export function PhotoGallery({
         setLightboxOpen(false);
     };
 
+    const scrollToPhoto = (photoIndex: number) => {
+        const photo = photos[photoIndex];
+        if (!photo) return;
+        
+        const photoElement = photoRefs.current.get(photo.id);
+        if (photoElement) {
+            photoElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
+        }
+    };
+
     return (
         <div className="space-y-8">
             <div className="flex flex-wrap gap-1.5" ref={containerRef}>
@@ -97,6 +120,7 @@ export function PhotoGallery({
                     columns={columns}
                     onPhotoClick={openLightbox}
                     onPhotoDownload={onPhotoDownload}
+                    photoRefs={photoRefs}
                 />
             </div>
 
@@ -106,6 +130,7 @@ export function PhotoGallery({
                 isOpen={lightboxOpen}
                 onClose={closeLightbox}
                 onPhotoDownload={onPhotoDownload}
+                onPhotoChange={scrollToPhoto}
             />
         </div>
     );
