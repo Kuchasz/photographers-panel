@@ -197,7 +197,7 @@ export const pl = {
         notReady: {
             title: 'Galeria :title już wkrótce...',
             description:
-                'Galeria nie jest jeszcze dostępna. Zostaw nam swój adres email lub polub nas na facebooku a poinformujemy Cię kiedy galeria będzie gotowa.',
+                'Galeria nie jest jeszcze dostępna. Spróbuj ponownie później lub skontaktuj się z Parą Młodą.',
         },
         password: 'Hasło do galerii',
         check: 'SPRAWDŹ',
@@ -207,6 +207,9 @@ export const pl = {
         galleryFound:
             'Znaleziono galerię <strong>{title}</strong>! Możesz teraz uzyskać dostęp do galerii za pomocą przycisku poniżej.',
         unavailable: 'Galeria nie jest obecnie dostępna.',
+        sessionExpired: {
+            description: 'Twoja sesja dostępu wygasła lub jest już nieważna. Wpisz hasło do galerii ponownie.',
+        },
         imageAlt: 'Galeria prywatna',
         notification: {
             subscribe: 'ZAPISZ POWIADOMIENIE',

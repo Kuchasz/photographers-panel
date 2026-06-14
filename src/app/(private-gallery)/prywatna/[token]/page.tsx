@@ -2,6 +2,7 @@ import { type Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { validateToken } from "~/collections/private-gallery/private-gallery-actions";
+import { getPrivateGalleryLoginPath } from "~/lib/private-gallery-login-status";
 import { getPhotos, getGalleryHero } from "./actions";
 import PrivateGalleryClientPage from "./client.page";
 
@@ -17,7 +18,7 @@ export default async function PrivateGalleryPage({ params }: { params: Promise<{
     const isValid = await validateToken(token, ip);
 
     if (!isValid) {
-        redirect('/strefa-klienta');
+        redirect(getPrivateGalleryLoginPath('session-expired'));
     }
 
     const { title, date, photo } = await getGalleryHero(token);

@@ -1,67 +1,65 @@
-'use client';
-import { Lock } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 import { FormLabel } from "~/components/form";
 import { FormButton } from "~/components/form/button";
 import { PageContainer } from "~/components/page-container";
 import { SectionTitle } from "~/components/section-title";
+import { isPrivateGalleryLoginStatus, type PrivateGalleryLoginStatus } from "~/lib/private-gallery-login-status";
 import { strings } from "~/resources";
-import { authenticate } from "./actions";
+import { loginToPrivateGallery } from "./actions";
+import { PasswordIcon } from "./password-icon";
 
-type AuthenticationResult = {
-    password: string;
-    authenticated: boolean;
-    isDirty: boolean;
-    token?: string;
-    galleryData?: {
-        id: number;
-        state: string;
-        title: string;
-        url: string;
-        date: string;
-        mainImage: string;
-    };
+type PageProps = {
+    searchParams?: Promise<{
+        status?: string | string[];
+    }>;
 };
 
-export default function PrivateGallery() {
-    const [state, setState] = useState<AuthenticationResult>({
-        password: '',
-        authenticated: false,
-        isDirty: false
-    });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+const getStatus = (status: string | string[] | undefined): PrivateGalleryLoginStatus | null => {
+    const value = Array.isArray(status) ? status[0] : status;
 
-    const router = useRouter();
+    if (isPrivateGalleryLoginStatus(value)) {
+        return value;
+    }
 
-    // Redirect when authenticated and gallery is published
-    useEffect(() => {
-        if (state?.authenticated && state.galleryData?.state === 'published' && state.token) {
-            router.push(`/prywatna/${state.token}`);
-        }
-    }, [state, router]);
+    return null;
+};
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setIsSubmitting(true);
+const getFeedback = (status: PrivateGalleryLoginStatus | null) => {
+    switch (status) {
+        case 'not-found':
+            return {
+                className: 'border-red-100 bg-red-50 text-red-800',
+                message: strings.privateGallery.notExists.description,
+            };
+        case 'draft':
+            return {
+                className: 'border-yellow-100 bg-yellow-50 text-yellow-800',
+                message: strings.privateGallery.notReady.description,
+            };
+        case 'archived':
+            return {
+                className: 'border-yellow-100 bg-yellow-50 text-yellow-800',
+                message: strings.privateGallery.turnedOff.description,
+            };
+        case 'session-expired':
+            return {
+                className: 'border-yellow-100 bg-yellow-50 text-yellow-800',
+                message: strings.privateGallery.sessionExpired.description,
+            };
+        case 'error':
+            return {
+                className: 'border-red-100 bg-red-50 text-red-800',
+                message: strings.privateGallery.unavailable,
+            };
+        default:
+            return null;
+    }
+};
 
-        try {
-            const formData = new FormData(e.currentTarget);
-            const result = await authenticate(state, formData);
-            setState(result);
-        } catch (error) {
-            console.error('Authentication error:', error);
-            setState({
-                password: '',
-                authenticated: false,
-                isDirty: true
-            });
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+export default async function PrivateGallery({ searchParams }: PageProps) {
+    const resolvedSearchParams = await searchParams;
+    const feedback = getFeedback(getStatus(resolvedSearchParams?.status));
 
     return (
         <PageContainer>
@@ -106,94 +104,48 @@ export default function PrivateGallery() {
                             </div>
 
                             {/* Authentication Card */}
-                            {(!state?.authenticated) && (
-                                <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
-                                    <form onSubmit={handleSubmit} className="space-y-6">
-                                        <div className="space-y-2">
-                                            <FormLabel htmlFor="password" required>
-                                                {strings.privateGallery.password}
-                                            </FormLabel>
-                                            <div className="relative">
-                                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <Lock size={20} className="text-stone-400" />
-                                                </div>
-                                                <input
-                                                    id="password"
-                                                    type="password"
-                                                    name="password"
-                                                    className="w-full rounded-lg border border-stone-200 bg-white pl-10 px-4 py-3 text-stone-800 
-                                                        outline-none transition duration-200 placeholder:text-stone-400 
-                                                        hover:border-stone-300 focus:border-gold-300 focus:ring-1 focus:ring-gold-200"
-                                                    placeholder="Wprowadź hasło do galerii..."
-                                                    required
-                                                    disabled={isSubmitting}
-                                                />
+                            <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
+                                <form action={loginToPrivateGallery} className="space-y-6">
+                                    <div className="space-y-2">
+                                        <FormLabel htmlFor="password" required>
+                                            {strings.privateGallery.password}
+                                        </FormLabel>
+                                        <div className="relative">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <PasswordIcon />
                                             </div>
+                                            <input
+                                                id="password"
+                                                type="password"
+                                                name="password"
+                                                className="w-full rounded-lg border border-stone-200 bg-white pl-10 px-4 py-3 text-stone-800 
+                                                    outline-none transition duration-200 placeholder:text-stone-400 
+                                                    hover:border-stone-300 focus:border-gold-300 focus:ring-1 focus:ring-gold-200"
+                                                placeholder="Wprowadź hasło do galerii..."
+                                                required
+                                            />
                                         </div>
-
-                                        <FormButton disabled={isSubmitting}>
-                                            {isSubmitting ? 'Sprawdzanie...' : strings.privateGallery.check}
-                                        </FormButton>
-                                    </form>
-
-                                    {/* Error message for failed authentication attempts */}
-                                    {state.isDirty && !state.authenticated && (
-                                        <div className="mt-4 rounded-lg border border-red-100 bg-red-50 p-4 text-red-800">
-                                            <p className="text-sm">
-                                                {strings.privateGallery.notExists.description}
-                                            </p>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-
-                            {/* Success Card */}
-                            {state?.authenticated && state.galleryData && (
-                                <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
-                                    <div className="space-y-6">
-                                        {state.galleryData.state === 'published' ? (
-                                            <>
-                                                <div className="rounded-lg border border-green-100 bg-green-50 p-4 text-green-800">
-                                                    <p className="text-sm" dangerouslySetInnerHTML={{
-                                                        __html: strings.privateGallery.galleryFound.replace('{title}', state.galleryData.title)
-                                                    }} />
-                                                </div>
-                                                <Link
-                                                    href={`/prywatna/${state.token}`}
-                                                    className="inline-block w-full rounded-lg bg-gold-500 px-8 py-3 text-center font-medium text-white 
-                                                        transition duration-200 hover:bg-gold-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gold-300"
-                                                >
-                                                    {strings.privateGallery.enterGallery}
-                                                </Link>
-                                            </>
-                                        ) : state.galleryData.state === 'archived' ? (
-                                            <div className="rounded-lg border border-yellow-100 bg-yellow-50 p-4 text-yellow-800">
-                                                <p className="text-sm">
-                                                    {strings.privateGallery.turnedOff.description}
-                                                </p>
-                                            </div>
-                                        ) : state.galleryData.state === 'draft' ? (
-                                            <div className="rounded-lg border border-yellow-100 bg-yellow-50 p-4 text-yellow-800">
-                                                <p className="text-sm">
-                                                    {strings.privateGallery.notReady.description}
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            <div className="rounded-lg border border-yellow-100 bg-yellow-50 p-4 text-yellow-800">
-                                                <p className="text-sm">
-                                                    {strings.privateGallery.unavailable}
-                                                </p>
-                                            </div>
-                                        )}
                                     </div>
-                                </div>
-                            )}
+
+                                    <FormButton>
+                                        {strings.privateGallery.check}
+                                    </FormButton>
+                                </form>
+
+                                {feedback && (
+                                    <div className={`mt-4 rounded-lg border p-4 ${feedback.className}`}>
+                                        <p className="text-sm">
+                                            {feedback.message}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* Image Section */}
                         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-stone-100 shadow-lg md:aspect-auto md:h-[480px]">
                             <Image
-                                src={state?.authenticated && state.galleryData?.mainImage ? state.galleryData.mainImage : '/images/page_prywatna_photo.jpg'}
+                                src="/images/page_prywatna_photo.jpg"
                                 alt={strings.privateGallery.imageAlt}
                                 fill
                                 className="object-cover hover:scale-105 transition-transform duration-700"

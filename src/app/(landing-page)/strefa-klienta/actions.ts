@@ -1,34 +1,18 @@
 "use server";
 import config from "@payload-config";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { getPayload } from "payload";
 import { authenticateGallery, recordVisit } from "~/collections/private-gallery/private-gallery-actions";
-import { PrivateGalleryPhoto } from "~/payload-types";
-
-type AuthenticationResult = {
-    password: string;
-    authenticated: boolean;
-    isDirty: boolean;
-    token?: string;
-    galleryData?: {
-        id: number;
-        state: string;
-        title: string;
-        url: string;
-        date: string;
-        mainImage: string;
-    };
-};
+import { getPrivateGalleryLoginPath, type PrivateGalleryLoginStatus } from "~/lib/private-gallery-login-status";
 
 // Check if gallery exists with the given password
-export async function authenticate(
-    previousState: AuthenticationResult,
-    formData: FormData
-): Promise<AuthenticationResult> {
+export async function loginToPrivateGallery(formData: FormData): Promise<void> {
     const password = formData.get('password') as string;
+    let redirectPath: string = getPrivateGalleryLoginPath('error');
 
     if (!password) {
-        return { password: '', authenticated: false, isDirty: false };
+        redirect(getPrivateGalleryLoginPath('not-found'));
     }
 
     try {
@@ -47,42 +31,33 @@ export async function authenticate(
             depth: 1 // To populate related blog if exists
         });
 
-        if (!docs || docs.length === 0) {
-            return { password: '', authenticated: false, isDirty: true };
-        }
-
         const gallery = docs[0];
 
-        if (!gallery) {
-            return { password: '', authenticated: false, isDirty: true };
+        if (!docs || docs.length === 0 || !gallery) {
+            redirectPath = getPrivateGalleryLoginPath('not-found');
+        } else {
+            const headersList = await headers();
+
+            const ip = headersList.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
+            const userAgent = headersList.get('user-agent') ?? 'unknown';
+
+            await recordVisit(gallery.id, ip, userAgent);
+
+            if (gallery.state === 'draft' || gallery.state === 'archived') {
+                const unavailableStatus: PrivateGalleryLoginStatus = gallery.state;
+                redirectPath = getPrivateGalleryLoginPath(unavailableStatus);
+            } else if (gallery.state !== 'published') {
+                redirectPath = getPrivateGalleryLoginPath('error');
+            } else {
+                const token = await authenticateGallery(gallery.id, ip);
+                redirectPath = `/prywatna/${token.token}`;
+            }
+
         }
-
-        const headersList = await headers();
-
-        const ip = headersList.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
-        const userAgent = headersList.get('user-agent') ?? 'unknown';
-
-        await recordVisit(gallery.id, ip, userAgent);
-
-        const token = await authenticateGallery(gallery.id, ip);
-
-        // Format the response with improved structure
-        return {
-            password,
-            authenticated: true,
-            token: token.token,
-            galleryData: {
-                id: gallery.id,
-                state: gallery.state,
-                title: gallery.title ?? '',
-                url: gallery.directPath ?? '',
-                date: gallery.date ?? '',
-                mainImage: (gallery?.photo as PrivateGalleryPhoto)?.url ?? '',
-            },
-            isDirty: true
-        };
     } catch (error) {
         console.error('Error checking gallery password:', error);
-        return { password: '', authenticated: false, isDirty: true };
+        redirectPath = getPrivateGalleryLoginPath('error');
     }
+
+    redirect(redirectPath);
 }
