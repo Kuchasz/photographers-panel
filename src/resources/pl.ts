@@ -196,8 +196,7 @@ export const pl = {
         },
         notReady: {
             title: 'Galeria :title już wkrótce...',
-            description:
-                'Galeria nie jest jeszcze dostępna. Spróbuj ponownie później lub skontaktuj się z Parą Młodą.',
+            description: 'Galeria nie jest jeszcze dostępna. Spróbuj ponownie później lub skontaktuj się z Parą Młodą.',
         },
         password: 'Hasło do galerii',
         check: 'SPRAWDŹ',
@@ -248,6 +247,17 @@ export const pl = {
             description:
                 'Jeśli masz problem z dostępem do galerii lub nie posiadasz hasła, skontaktuj się bezpośrednio z Parą Młodą lub z nami:',
             contact: 'Skontaktuj się z nami',
+        },
+        passwordPrompt: {
+            kicker: 'Galeria dla gości',
+            title: 'Zdjęcia, które czekają tylko na Was',
+            description:
+                'Wpisz hasło przekazane przez Parę Młodą. Po poprawnym kodzie przejdziesz bezpośrednio do prywatnej kolekcji z uroczystości.',
+            password: 'Hasło do prywatnej galerii',
+            placeholder: 'Otrzymane hasło',
+            submit: 'PRZEJDŹ DO GALERII',
+            helper: 'Nie masz hasła? Zapytaj Parę Młodą.',
+            emptyStatus: 'Pole jest puste.',
         },
     },
     offer: {
