@@ -41,7 +41,7 @@ export const pl = {
             timeless: 'w kolejnym rozdziale',
             celebrating: 'Waszej',
             through: 'miłosnej historii',
-            pricing: 'CENNIK I DOSTĘPNOŚĆ',
+            pricing: 'ZAPYTAJ O CENNIK I DOSTĘPNOŚĆ',
         },
     },
     contact: {

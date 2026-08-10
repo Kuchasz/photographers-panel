@@ -372,7 +372,7 @@ export const Header = () => {
                                 </h1>
                                 <div className="mt-8 pointer-events-auto animate-fadeIn animation-delay-800">
                                     <Button
-                                        href="kontakt"
+                                        href={`${routes.contact.route}#formularz`}
                                         variant="hero"
                                     >
                                         {strings.main.hero.pricing}
@@ -408,4 +408,4 @@ export const Header = () => {
             />
         </div>
     );
-}; 
+};

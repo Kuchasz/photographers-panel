@@ -102,7 +102,7 @@ export default function ContactPage() {
             </section>
 
             {/* Contact Form */}
-            <section className="w-full py-12 mb-8 bg-section-background px-4">
+            <section id="formularz" className="w-full scroll-mt-24 py-12 mb-8 bg-section-background px-4">
                 <div className="max-w-3xl mx-auto">
                     <div className="bg-white rounded-2xl shadow-md border border-stone-100 p-6 md:p-8">
                         <SectionTitle
