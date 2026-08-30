@@ -11,6 +11,7 @@ export type Photo = {
   width: number;
   height: number;
   filename?: string;
+  downloadUrl?: string;
   sizes: {
     thumbnail: {
       url: string;
@@ -79,11 +80,11 @@ export const PhotoTile = forwardRef<HTMLDivElement, PhotoTileProps>(function Pho
         </div>
 
         <Image
-          src={photo.url}
+          src={photo.sizes.thumbnail.url || photo.url}
           alt={photo.alt}
-          height={photo.sizes.tile?.height ?? 0}
-          width={photo.sizes.tile?.width ?? 0}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+          height={photo.sizes.thumbnail.height}
+          width={photo.sizes.thumbnail.width}
+          unoptimized
           className={`w-full h-full object-cover transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
           onLoad={handleImageLoad}
         />
@@ -94,7 +95,7 @@ export const PhotoTile = forwardRef<HTMLDivElement, PhotoTileProps>(function Pho
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent via-[20%] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out"></div>
             <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <PhotoDownloadButton
-                url={photo.sizes?.big?.url || photo.url}
+                url={photo.downloadUrl || photo.sizes?.big?.url || photo.url}
                 onDownload={handleDownload}
               />
             </div>
@@ -103,4 +104,4 @@ export const PhotoTile = forwardRef<HTMLDivElement, PhotoTileProps>(function Pho
       </div>
     </div>
   );
-}); 
+});

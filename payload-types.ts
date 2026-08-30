@@ -201,7 +201,7 @@ export interface PrivateGallery {
    */
   password: string;
   /**
-   * URL must start with https://
+   * Gallery root URL containing gallery.json; must start with https://
    */
   directPath: string;
   /**

@@ -42,7 +42,7 @@ export const PhotosClient = ({ token }: PhotoGalleryProps) => {
 
     const handleDownload = async (photo: Photo) => {
         try {
-            const imageUrl = photo.sizes?.big?.url || photo.url;
+            const imageUrl = photo.downloadUrl || photo.sizes?.big?.url || photo.url;
             const result = await downloadPhotoWithCors(imageUrl, token);
             if (result.error) throw new Error(result.error);
             if (!result.blob || !result.filename) throw new Error('Missing blob or filename');

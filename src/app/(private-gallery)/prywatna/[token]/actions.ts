@@ -6,7 +6,7 @@ import {
   PRIVATE_GALLERY_AUTH_TOKENS_SLUG,
   PRIVATE_GALLERY_MEDIA_DOWNLOADS_SLUG
 } from '~/collections/collectionSlugs';
-import { fetchJAlbumPhotos } from '~/lib/jalbum';
+import { fetchGalleryManifestPhotos } from '~/lib/gallery-manifest';
 import { PrivateGalleryPhoto, type PrivateGallery } from '~/payload-types';
 import payloadConfig from '~/payload.config';
 import { getFilenameFromUrl } from '~/lib/file';
@@ -105,25 +105,26 @@ export async function getPhotos(token: string) {
 
   const galleryData = tokenData.authToken.gallery as PrivateGallery;
 
-  const jalbumPhotos = await fetchJAlbumPhotos(galleryData.directPath)!;
+  const galleryPhotos = await fetchGalleryManifestPhotos(galleryData.directPath);
 
   return ({
     photo: convertPhoto(tokenData.photo),
-    photos: jalbumPhotos.map(photo => ({
+    photos: galleryPhotos.map(photo => ({
       id: String(photo.id),
-      alt: photo.alt,
-      url: photo.src,
+      alt: photo.title,
+      url: photo.slideUrl,
       width: photo.width,
       height: photo.height,
-      filename: photo.text || photo.alt,
+      filename: getFilenameFromUrl(photo.downloadUrl),
+      downloadUrl: photo.downloadUrl,
       sizes: {
         thumbnail: {
-          url: photo.thumbnail,
-          width: photo.thumbw,
-          height: photo.thumbh,
+          url: photo.thumbnailUrl,
+          width: photo.thumbnailWidth,
+          height: photo.thumbnailHeight,
         },
         big: {
-          url: photo.src,
+          url: photo.slideUrl,
           width: photo.width,
           height: photo.height,
         },

@@ -341,7 +341,7 @@ export function PhotoLightbox({
                         src={photo.sizes?.big?.url || photo.url}
                         alt=""
                         fill
-                        sizes="100vw"
+                        unoptimized
                         priority={false} // Don't prioritize preloads
                     />
                 </div>
@@ -350,12 +350,12 @@ export function PhotoLightbox({
             <div className={`absolute top-4 right-4 flex items-center space-x-2 z-10 transition-opacity duration-300 ${lightboxVisible ? 'opacity-100' : 'opacity-0'}`}>
                 <PhotoFilenameChip 
                     filename={selectedPhoto.filename} 
-                    url={selectedPhoto.sizes?.big?.url || selectedPhoto.url} 
+                    url={selectedPhoto.downloadUrl || selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                 />
                 
                 {onPhotoDownload && (
                     <PhotoDownloadButton
-                        url={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
+                        url={selectedPhoto.downloadUrl || selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                         onDownload={(e) => handleDownload(e, selectedPhoto)}
                         className="bg-black/20 hover:bg-black/40"
                         variant="dark"
@@ -402,7 +402,7 @@ export function PhotoLightbox({
                             src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                             alt={selectedPhoto.alt}
                             fill
-                            sizes="100vw"
+                            unoptimized
                             className="object-contain"
                             onLoadingComplete={handleImageLoaded}
                             priority
@@ -414,7 +414,7 @@ export function PhotoLightbox({
                             src={selectedPhoto.sizes?.big?.url || selectedPhoto.url}
                             alt=""
                             fill
-                            sizes="100vw"
+                            unoptimized
                             className="object-contain opacity-0"
                             onLoadingComplete={handleImageLoaded}
                             priority
@@ -424,4 +424,4 @@ export function PhotoLightbox({
             </div>
         </div>
     );
-} 
+}

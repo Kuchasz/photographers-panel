@@ -5,6 +5,7 @@ import * as migration_20250420_002748 from './20250420_002748';
 import * as migration_20250524_134529 from './20250524_134529';
 import * as migration_20250727_213033 from './20250727_213033';
 import * as migration_20251208_211125_packages_bump from './20251208_211125_packages_bump';
+import * as migration_20260830_100000_gallery_storage_url from './20260830_100000_gallery_storage_url';
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20251208_211125_packages_bump.up,
     down: migration_20251208_211125_packages_bump.down,
     name: '20251208_211125_packages_bump'
+  },
+  {
+    up: migration_20260830_100000_gallery_storage_url.up,
+    down: migration_20260830_100000_gallery_storage_url.down,
+    name: '20260830_100000_gallery_storage_url'
   },
 ];

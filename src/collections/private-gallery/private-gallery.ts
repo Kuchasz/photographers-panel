@@ -158,8 +158,8 @@ export const PrivateGallery: CollectionConfig = {
             admin: {
                 position: 'sidebar',
                 description: {
-                    en: 'URL must start with https://',
-                    pl: 'URL musi zaczynać się od https://',
+                    en: 'Gallery root URL containing gallery.json; must start with https://',
+                    pl: 'Główny URL galerii zawierający gallery.json; musi zaczynać się od https://',
                 },
             },
             validate: (value: string | string[] | null | undefined) => {
