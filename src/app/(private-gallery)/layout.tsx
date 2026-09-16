@@ -1,5 +1,5 @@
 import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
+import { type Metadata, type Viewport } from "next";
 import { Hanken_Grotesk, Oranienbaum } from "next/font/google";
 import "~/styles/globals.css";
 
@@ -20,12 +20,13 @@ export const metadata: Metadata = {
     title: "PyszStudio - fotografia i film",
     description: "Fotografia i film na ślub, sesję zdjęciową, portret, zwierzęta, produkt, krajobraz",
     icons: [{ rel: "icon", url: "/favicon.ico" }],
-    viewport: {
-        width: 'device-width',
-        initialScale: 1,
-        maximumScale: 1,
-        userScalable: false,
-    },
+};
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
 };
 
 export default async function RootLayout({
@@ -34,7 +35,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en" className={`${GeistSans.variable} ${hankenGrotesk.variable} ${oranienbaum.variable}`}>
-            <body>
+            <body className="touch-pan-y">
                 {children}
             </body>
         </html>

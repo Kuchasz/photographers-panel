@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { PhotoDownloadButton } from './photo-download-button';
 
 export type Photo = {
@@ -23,26 +23,37 @@ export type Photo = {
       width: number;
       height: number;
     };
-    tile?: {
-      width: number;
-      height: number;
-    };
   };
 }
 
 type PhotoTileProps = {
   photo: Photo;
+  /** Rendered tile height in px (computed by the grid layout). */
+  height: number;
   onClick?: (photo: Photo) => void;
   onPhotoDownload?: (photo: Photo) => void;
-  aspectRatio?: string;
+  className?: string;
+  style?: React.CSSProperties;
 };
 
 export const PhotoTile = forwardRef<HTMLDivElement, PhotoTileProps>(function PhotoTile({
   photo,
+  height,
   onClick,
   onPhotoDownload,
+  className = '',
+  style,
 }, ref) {
   const [isLoading, setIsLoading] = useState(true);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  // Virtualized tiles get remounted while scrolling; when the thumbnail is
+  // already in the browser cache `onLoad` may not fire, so check `complete`.
+  useEffect(() => {
+    if (imageRef.current?.complete && imageRef.current.naturalWidth > 0) {
+      setIsLoading(false);
+    }
+  }, []);
 
   const handleClick = () => {
     if (onClick) {
@@ -64,28 +75,36 @@ export const PhotoTile = forwardRef<HTMLDivElement, PhotoTileProps>(function Pho
   return (
     <div
       ref={ref}
-      className="group relative overflow-hidden bg-stone-100 cursor-pointer transition-all duration-300 ease-out hover:z-10"
+      className={`group overflow-hidden bg-stone-100 cursor-pointer hover:z-10 ${className}`}
+      style={style}
       onClick={handleClick}
     >
-      <div 
-        className="relative w-full flex items-center justify-center scale-105 transition-transform will-change-transform duration-300 ease-out group-hover:scale-100"
-        style={{ height: `${Math.round(photo.sizes.tile?.height ?? 0)}px` }}
+      {/* The subtle zoom-out on hover only exists on devices with a pointer;
+          on touch devices we avoid transforms entirely so tiles do not become
+          separate compositing layers (a memory problem on iOS Safari). */}
+      <div
+        className="relative w-full flex items-center justify-center transition-transform duration-300 ease-out [@media(hover:hover)]:scale-105 group-hover:scale-100"
+        style={{ height: `${Math.round(height)}px` }}
       >
-        {/* Enhanced skeleton loader with shimmer effect */}
-        <div
-          className={`absolute inset-0 overflow-hidden transition-opacity duration-500 ${isLoading ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-200 via-stone-100 to-stone-200 animate-pulse" />
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-stone-50/30 to-transparent animate-shimmer" />
-        </div>
+        {/* Skeleton loader - unmounted once the image is loaded so its
+            infinite animations stop running for every tile on the page */}
+        {isLoading && (
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-stone-200 via-stone-100 to-stone-200 animate-pulse" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-stone-50/30 to-transparent animate-shimmer" />
+          </div>
+        )}
 
         <Image
+          ref={imageRef}
           src={photo.sizes.thumbnail.url || photo.url}
           alt={photo.alt}
           height={photo.sizes.thumbnail.height}
           width={photo.sizes.thumbnail.width}
           unoptimized
-          className={`w-full h-full object-cover transition-all duration-500 ${isLoading ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+          decoding="async"
+          draggable={false}
+          className={`w-full h-full object-cover transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
           onLoad={handleImageLoad}
         />
 

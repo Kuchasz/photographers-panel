@@ -28,6 +28,7 @@
         "@payloadcms/translations": "3.84.1",
         "@payloadcms/ui": "3.84.1",
         "@phosphor-icons/react": "2.1.10",
+        "@tanstack/react-virtual": "3.14.13",
         "cross-env": "10.1.0",
         "fast-xml-parser": "5.8.0",
         "geist": "1.5.1",

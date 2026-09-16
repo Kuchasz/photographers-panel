@@ -404,7 +404,7 @@ export function PhotoLightbox({
                             fill
                             unoptimized
                             className="object-contain"
-                            onLoadingComplete={handleImageLoaded}
+                            onLoad={handleImageLoaded}
                             priority
                         />
                     )}
@@ -416,7 +416,7 @@ export function PhotoLightbox({
                             fill
                             unoptimized
                             className="object-contain opacity-0"
-                            onLoadingComplete={handleImageLoaded}
+                            onLoad={handleImageLoaded}
                             priority
                         />
                     )}
