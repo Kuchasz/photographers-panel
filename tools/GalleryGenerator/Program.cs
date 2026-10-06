@@ -1243,9 +1243,9 @@ internal static class GalleryBuilder
     private const int JpegQuality = 88;
     private const string WatermarkResourceName = "logo-watermark.png";
     private const double WatermarkWidthFraction = 0.12;
-    private const double WatermarkMarginFraction = 0.02;
-    private const int WatermarkMinimumMargin = 12;
-    private const float WatermarkOpacity = 0.85f;
+    private const double WatermarkMarginFraction = 0.01;
+    private const int WatermarkMinimumMargin = 6;
+    private const float WatermarkOpacity = 0.6f;
 
     private static readonly Lazy<Image<Rgba32>> Watermark = new(LoadWatermark, LazyThreadSafetyMode.ExecutionAndPublication);
 
@@ -1465,13 +1465,15 @@ internal static class GalleryBuilder
         return (width, height);
     }
 
-    /// <summary>Draws the logo watermark in the bottom-left corner, scaled relative to the image width.</summary>
+    /// <summary>Draws the logo watermark in the bottom-left corner, scaled relative to the image's longer edge
+    /// so portrait and landscape slides receive the same logo size.</summary>
     private static void ApplyWatermark(ImageSharpImage target)
     {
         Image<Rgba32> logo = Watermark.Value;
-        int logoWidth = Math.Min(logo.Width, Math.Max(1, (int)Math.Round(target.Width * WatermarkWidthFraction)));
+        int longerEdge = Math.Max(target.Width, target.Height);
+        int logoWidth = Math.Min(logo.Width, Math.Max(1, (int)Math.Round(longerEdge * WatermarkWidthFraction)));
         int logoHeight = Math.Max(1, (int)Math.Round(logo.Height * ((double)logoWidth / logo.Width)));
-        int margin = Math.Max(WatermarkMinimumMargin, (int)Math.Round(target.Width * WatermarkMarginFraction));
+        int margin = Math.Max(WatermarkMinimumMargin, (int)Math.Round(longerEdge * WatermarkMarginFraction));
 
         if (logoWidth + margin > target.Width || logoHeight + margin > target.Height)
             return;
