@@ -20,7 +20,7 @@ Before choosing the destination, the app displays a responsive, scrollable grid 
 
 A four-stage wizard at the top tracks **Source**, **Review**, **Destination**, and **Create**. Each stage has its own focused view, with **Previous** and **Next** navigation. Localized descriptions update with discovered and selected photo counts, destination choice, generation progress, completion, and errors.
 
-Slides have a maximum width or height of 2000 px, thumbnails 600 px, and both use JPEG quality 88. Images are never enlarged. EXIF orientation is applied, and the metadata date uses EXIF `DateTimeOriginal` where available (otherwise the source file's modified date).
+Slides have a maximum width or height of 2000 px, thumbnails 600 px, and both use JPEG quality 88. Images are never enlarged. Slides receive the `logo-watermark.png` logo in the bottom-left corner (scaled to about 12% of the slide width, never above its native size); thumbnails are left unmarked. EXIF orientation is applied, and the metadata date uses EXIF `DateTimeOriginal` where available (otherwise the source file's modified date).
 
 Image decoding, resizing, and JPEG encoding run in parallel. The worker count adapts to available processors and memory, leaves one processor available for the interface, and is capped at eight concurrent images to avoid excessive memory use. Output metadata remains in the original filename order.
 

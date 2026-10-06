@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Globalization;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using Avalonia;
@@ -13,6 +14,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Themes.Fluent;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Metadata.Profiles.Exif;
 using SixLabors.ImageSharp.Processing;
 using Color = Avalonia.Media.Color;
@@ -1239,6 +1241,13 @@ internal static class GalleryBuilder
     private const int SlideMaximum = 2000;
     private const int ThumbnailMaximum = 600;
     private const int JpegQuality = 88;
+    private const string WatermarkResourceName = "logo-watermark.png";
+    private const double WatermarkWidthFraction = 0.12;
+    private const double WatermarkMarginFraction = 0.02;
+    private const int WatermarkMinimumMargin = 12;
+    private const float WatermarkOpacity = 0.85f;
+
+    private static readonly Lazy<Image<Rgba32>> Watermark = new(LoadWatermark, LazyThreadSafetyMode.ExecutionAndPublication);
 
     public static string[] FindInvalidEntries(string sourceDirectory) =>
         Directory.EnumerateFileSystemEntries(sourceDirectory)
@@ -1414,8 +1423,8 @@ internal static class GalleryBuilder
         DateTime photoDate = ReadPhotoDate(image) ?? File.GetLastWriteTime(sourcePath);
         image.Mutate(context => context.AutoOrient());
 
-        (int Width, int Height) slideSize = ResizeAndSave(image, slidePath, SlideMaximum);
-        (int Width, int Height) thumbnailSize = ResizeAndSave(image, thumbnailPath, ThumbnailMaximum);
+        (int Width, int Height) slideSize = ResizeAndSave(image, slidePath, SlideMaximum, applyWatermark: true);
+        (int Width, int Height) thumbnailSize = ResizeAndSave(image, thumbnailPath, ThumbnailMaximum, applyWatermark: false);
         long sizeInKilobytes = (long)Math.Round(
             new FileInfo(slidePath).Length / 1024d,
             MidpointRounding.AwayFromZero);
@@ -1441,7 +1450,8 @@ internal static class GalleryBuilder
     private static (int Width, int Height) ResizeAndSave(
         ImageSharpImage source,
         string outputPath,
-        int maximumDimension)
+        int maximumDimension,
+        bool applyWatermark)
     {
         double scale = Math.Min(1d, (double)maximumDimension / Math.Max(source.Width, source.Height));
         int width = Math.Max(1, (int)Math.Round(source.Width * scale));
@@ -1449,8 +1459,34 @@ internal static class GalleryBuilder
 
         using ImageSharpImage output = source.Clone(
             context => context.Resize(width, height, KnownResamplers.Lanczos3));
+        if (applyWatermark)
+            ApplyWatermark(output);
         output.Save(outputPath, new JpegEncoder { Quality = JpegQuality });
         return (width, height);
+    }
+
+    /// <summary>Draws the logo watermark in the bottom-left corner, scaled relative to the image width.</summary>
+    private static void ApplyWatermark(ImageSharpImage target)
+    {
+        Image<Rgba32> logo = Watermark.Value;
+        int logoWidth = Math.Min(logo.Width, Math.Max(1, (int)Math.Round(target.Width * WatermarkWidthFraction)));
+        int logoHeight = Math.Max(1, (int)Math.Round(logo.Height * ((double)logoWidth / logo.Width)));
+        int margin = Math.Max(WatermarkMinimumMargin, (int)Math.Round(target.Width * WatermarkMarginFraction));
+
+        if (logoWidth + margin > target.Width || logoHeight + margin > target.Height)
+            return;
+
+        using Image<Rgba32> scaledLogo = logo.Clone(
+            context => context.Resize(logoWidth, logoHeight, KnownResamplers.Lanczos3));
+        SixLabors.ImageSharp.Point position = new(margin, target.Height - logoHeight - margin);
+        target.Mutate(context => context.DrawImage(scaledLogo, position, WatermarkOpacity));
+    }
+
+    private static Image<Rgba32> LoadWatermark()
+    {
+        using Stream? stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(WatermarkResourceName)
+            ?? throw new InvalidOperationException($"Embedded resource '{WatermarkResourceName}' was not found.");
+        return ImageSharpImage.Load<Rgba32>(stream);
     }
 
     private static DateTime? ReadPhotoDate(ImageSharpImage image)
